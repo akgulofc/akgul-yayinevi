@@ -5022,11 +5022,18 @@ async function selAiMood(el,mood){
   _aiOffset=0;_aiMoodKey=mood;
   const catalog=books.map(b=>({id:b.id,title:b.title,author:b.author,cat:CATS[b.cat]||b.cat,desc:b.desc,rating:b.rating}));
   try{
-    const r=await fetch('http://localhost:3000/api/ai-recommend',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mood,books:catalog})});
-    const data=await r.json();
+    const prompt=`Kullanıcının ruh hali: "${mood}". Aşağıdaki kitap kataloğundan bu ruh haline en uygun 4-6 kitabı seç. Her kitap için kısa ve samimi bir Türkçe neden yaz (1-2 cümle). Yanıtı SADECE geçerli JSON olarak ver, başka metin ekleme:\n{"recommendations":[{"id":KITAP_ID,"reason":"neden"}]}\n\nKatalog:\n${JSON.stringify(catalog)}`;
+    const r=await fetch(GROQ_EP,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_API_KEY},
+      body:JSON.stringify({model:GROQ_MODEL,messages:[{role:'system',content:'Sen Akgül Yayınevi\'nin kitap öneri asistanısın. Sadece JSON formatında yanıt ver.'},{role:'user',content:prompt}],response_format:{type:'json_object'},temperature:0.7,max_tokens:1024})
+    });
+    const raw=await r.json();
+    if(!r.ok)throw new Error(raw.error?.message||'Groq hatası');
+    const data=JSON.parse(raw.choices[0].message.content);
     if(data.error)throw new Error(data.error);
     const scores=[98,94,90,86];
-    _aiMatches=(data.recommendations||[]).map((rec,i)=>{const b=books.find(x=>x.id===rec.id);return b?{...b,_aiReason:rec.reason,_score:scores[i]??82}:null}).filter(Boolean);
+    _aiMatches=(data.recommendations||[]).map((rec,i)=>{const b=books.find(x=>x.id===rec.id||String(x.id)===String(rec.id));return b?{...b,_aiReason:rec.reason,_score:scores[i]??82}:null}).filter(Boolean);
   }catch(err){
     load.style.display='none';
     if(res)res.innerHTML='<p style="text-align:center;color:var(--muted);padding:2rem">Öneri alınırken bir hata oluştu. Lütfen tekrar deneyin.</p>';
@@ -6933,6 +6940,9 @@ updateLiveBar();
    SİTE KULLANICI AI
 ═══════════════════════════════════════ */
 const AI_SITE_EP = 'http://localhost:3000/api/site-ai';
+const GROQ_API_KEY = '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';
+const GROQ_EP = 'https://api.groq.com/openai/v1/chat/completions';
+const GROQ_MODEL = 'llama-3.3-70b-versatile';
 let aiSiteHistory = [];
 let aiSiteOpen = false;
 
