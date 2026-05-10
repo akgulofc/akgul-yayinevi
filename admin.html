@@ -6922,6 +6922,19 @@ updateUserMenu();
 trackVisit();
 updateLiveBar();
 
+/* ── ADMIN OTOMATIK AÇ ── */
+(function(){
+  if(currentUser?.email==='akgulyayinevi@gmail.com'){
+    adminLoggedIn=true;
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
+    const panel=sid('adminPanel');
+    if(panel){panel.style.display='block';}
+    renderAdminDashboard();
+    const adminBtn=sid('adminPanelBtn');
+    if(adminBtn)adminBtn.style.display='flex';
+  }
+})();
+
 /* ── URL HASH YÖNLENDİRME ── */
 (function handleHashNav(){
   const hash=window.location.hash;
