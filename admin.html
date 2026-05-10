@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -874,12 +874,89 @@ tr:hover td{background:rgba(200,169,110,.03)}
           </div>
           <div class="card-body">
             <p style="font-size:.75rem;color:var(--txt2);margin-bottom:.8rem">Her slide için başlık, üst etiket ve açıklamayı düzenleyin. Başlıkta italik/altın rengi için <code style="background:var(--bg2);padding:1px 4px;border-radius:3px">&lt;em&gt;kelime&lt;/em&gt;</code> kullanabilirsiniz.</p>
-            <div style="display:flex;gap:.5rem;margin-bottom:1rem" id="slideTabRow">
+            <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem" id="slideTabRow">
               <button class="tb-btn act" onclick="selSlideTab(0,this)">Slide 1</button>
               <button class="tb-btn" onclick="selSlideTab(1,this)">Slide 2</button>
               <button class="tb-btn" onclick="selSlideTab(2,this)">Slide 3</button>
+              <button class="tb-btn" onclick="selSlideTab(3,this)">Slide 4</button>
+              <button class="tb-btn" onclick="selSlideTab(4,this)">Slide 5</button>
+              <button class="tb-btn" onclick="selSlideTab(5,this)">Slide 6 — Kampanya</button>
+              <button class="tb-btn" onclick="selSlideTab(6,this)">Slide 7</button>
             </div>
             <div id="slideEditorWrap"></div>
+          </div>
+        </div>
+
+        <!-- SEO -->
+        <div class="card" style="margin-bottom:1.25rem">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-search"></i>SEO Ayarları</span>
+            <div class="card-acts">
+              <button class="card-btn primary" onclick="saveSeoContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="field"><label>Sayfa Başlığı (browser tab)</label><input type="text" id="seo-title-inp" placeholder="Akgül Yayınevi — Adana'nın Edebiyat Evi"></div>
+            <div class="field"><label>Meta Açıklama (Google önizlemesi, ~155 karakter)</label><textarea id="seo-desc-inp" rows="2" style="width:100%;resize:vertical" placeholder="Akgül Yayınevi, Adana merkezli bağımsız yayınevidir..."></textarea></div>
+            <div class="field"><label>Anahtar Kelimeler (virgülle ayırın)</label><input type="text" id="seo-keys-inp" placeholder="akgül yayınevi, türk edebiyatı, kitap, adana yayınevi"></div>
+          </div>
+        </div>
+
+        <!-- Kampanya -->
+        <div class="card" style="margin-bottom:1.25rem">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-tag"></i>Kampanya & İndirim (Slide 6)</span>
+            <div class="card-acts">
+              <button class="card-btn primary" onclick="saveCampaignContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <p style="font-size:.75rem;color:var(--txt2);margin-bottom:.8rem">Hero slider'daki kampanya slaydının içeriğini buradan yönetin.</p>
+            <div class="g2">
+              <div class="field"><label>Rozet Metni</label><input type="text" id="camp-badge-inp" placeholder="Sınırlı Süre · Yaz Kampanyası"></div>
+              <div class="field"><label>Kampanya Bitiş Tarihi</label><input type="date" id="camp-end-inp"></div>
+            </div>
+            <div class="field"><label>Üst Etiket</label><input type="text" id="camp-ey-inp" placeholder="Özel İndirim"></div>
+            <div class="field"><label>Başlık</label><input type="text" id="camp-h1-inp" placeholder="Tüm Kitaplarda &lt;em&gt;%20 İndirim&lt;/em&gt;"></div>
+            <div class="field"><label>Açıklama</label><textarea id="camp-p-inp" rows="2" style="width:100%;resize:vertical" placeholder="Haziran boyunca tüm kitaplarda geçerli..."></textarea></div>
+          </div>
+        </div>
+
+        <!-- Kargo & Ödeme -->
+        <div class="card" style="margin-bottom:1.25rem">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-truck"></i>Kargo & Ödeme</span>
+            <div class="card-acts">
+              <button class="card-btn primary" onclick="saveShippingContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="g2">
+              <div class="field"><label>Ücretsiz Kargo Eşiği (₺)</label><input type="number" id="ship-free-inp" placeholder="500" min="0"></div>
+              <div class="field"><label>Kargo Ücreti (₺)</label><input type="number" id="ship-cost-inp" placeholder="35" min="0"></div>
+            </div>
+            <div class="field"><label>WhatsApp Numarası (90 ile başlayarak)</label><input type="text" id="ship-wa-inp" placeholder="905366483096" maxlength="12"></div>
+          </div>
+        </div>
+
+        <!-- Okuma Kulübü -->
+        <div class="card" style="margin-bottom:1.25rem">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-book"></i>Okuma Kulübü</span>
+            <div class="card-acts">
+              <button class="card-btn primary" onclick="saveClubContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="g2">
+              <div class="field"><label>Ay'ın Kitabı Başlığı</label><input type="text" id="club-book-inp" placeholder="Mavi Oda"></div>
+              <div class="field"><label>Yazar</label><input type="text" id="club-author-inp" placeholder="Deniz Kaya"></div>
+            </div>
+            <div class="g2">
+              <div class="field"><label>Ay / Dönem</label><input type="text" id="club-month-inp" placeholder="Mayıs 2026"></div>
+              <div class="field"><label>Toplantı Tarihi & Saati (geri sayım)</label><input type="datetime-local" id="club-date-inp"></div>
+            </div>
+            <div class="field"><label>Kulüp Açıklaması</label><textarea id="club-desc-inp" rows="2" style="width:100%;resize:vertical" placeholder="Bu ay okuma kulübümüz..."></textarea></div>
           </div>
         </div>
 
@@ -1049,7 +1126,7 @@ function saveUsers(){save(STORE_USERS,users)}
 function saveNotifs(){save(STORE_NOTIFS,notifs)}
 
 const STORE_CONTENT='akgulSiteContent';
-let siteContentAdmin=load(STORE_CONTENT,{slides:[{},{},{}],about:{},contact:{},footer:{}});
+let siteContentAdmin=load(STORE_CONTENT,{slides:[{},{},{},{},{},{},{}],about:{},contact:{},footer:{},seo:{},campaign:{},shipping:{},club:{}});
 function saveContent(){save(STORE_CONTENT,siteContentAdmin)}
 
 /* ─── DEFAULTS ─── */
@@ -1812,10 +1889,28 @@ function renderContent(){
   const c=siteContentAdmin;
   renderSlideEditor(_curSlideTab);
   const fv=(id,val)=>{const e=g(id);if(e&&val!=null)e.value=val};
+  // SEO
+  const seo=c.seo||{};
+  fv('seo-title-inp',seo.title);fv('seo-desc-inp',seo.description);fv('seo-keys-inp',seo.keywords);
+  // Kampanya
+  const camp=(c.slides&&c.slides[5])||{};
+  const campMeta=c.campaign||{};
+  fv('camp-badge-inp',camp.badge);fv('camp-ey-inp',camp.eyebrow);
+  fv('camp-h1-inp',camp.title);fv('camp-p-inp',camp.desc);fv('camp-end-inp',campMeta.endDate);
+  // Kargo
+  const sh=c.shipping||{};
+  const siteS=load('akgulSettings',{});
+  fv('ship-free-inp',sh.freeShip||siteS.freeShip);fv('ship-cost-inp',sh.shipCost||siteS.shipCost);fv('ship-wa-inp',sh.whatsapp||siteS.waPhone);
+  // Kulüp
+  const cl=c.club||{};
+  fv('club-book-inp',cl.book||siteS.clubBook);fv('club-author-inp',cl.author);
+  fv('club-month-inp',cl.month);fv('club-date-inp',cl.date||siteS.clubDate);fv('club-desc-inp',cl.desc);
+  // Hakkımızda
   const a=c.about||{};
   fv('ab-sub-inp',a.heroSub);fv('ab-quote-inp',a.heroQuote);fv('ab-meta-inp',a.heroMeta);
   fv('ab-fname-inp',a.founderName);fv('ab-frole-inp',a.founderRole);
   fv('ab-fquote-inp',a.founderQuote);fv('ab-fbio-inp',a.founderBio);
+  // İletişim
   const ct=c.contact||{};
   fv('ct-addr-inp',ct.address);fv('ct-maps-inp',ct.mapsUrl);fv('ct-phone-inp',ct.phone);
   fv('ct-wa-inp',ct.whatsapp);fv('ct-email-inp',ct.email);fv('ct-ig-inp',ct.instagram);
@@ -1831,16 +1926,22 @@ function selSlideTab(i,btn){
 }
 
 function renderSlideEditor(i){
-  const slides=siteContentAdmin.slides||[{},{},{}];
+  const slides=siteContentAdmin.slides||[{},{},{},{},{},{},{}];
   const s=slides[i]||{};
   const defaults=[
     {ey:'Akgül Yayınevi',h1:'Kelimelerin &lt;em&gt;Büyüsüne&lt;/em&gt; Kapılın',p:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.'},
     {ey:'Yeni Çıktı',h1:'&lt;em&gt;Mavi Oda&lt;/em&gt; — Deniz Kaya',p:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.'},
-    {ey:'Yazar mısınız?',h1:'Eserinizi &lt;em&gt;Dünyayla&lt;/em&gt; Buluşturun',p:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.'}
+    {ey:'Yazar mısınız?',h1:'Eserinizi &lt;em&gt;Dünyayla&lt;/em&gt; Buluşturun',p:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.'},
+    {ey:'Adana\'dan Türkiye\'ye',h1:'Güney\'in &lt;em&gt;Edebiyat Kalesi&lt;/em&gt;',p:'Akgül Yayınevi olarak Adana\'nın derin kültür mirasını ve güney edebiyatının sesini tüm Türkiye\'ye taşıyoruz.'},
+    {ey:'Zengin Katalog',h1:'Her Zevke Hitap Eden &lt;em&gt;Edebi Seçki&lt;/em&gt;',p:'Roman, şiir, deneme, tarih, felsefe ve kişisel gelişim... 18\'den fazla özgün eserle Türk okuyucusunun yanındayız.'},
+    {ey:'Özel İndirim',h1:'Tüm Kitaplarda &lt;em&gt;%20 İndirim&lt;/em&gt;',p:'Haziran boyunca kataloğumuzdaki tüm eserlerde geçerli yaz kampanyamızdan yararlanın. Fırsatı kaçırmayın!',badge:'Sınırlı Süre · Yaz Kampanyası'},
+    {ey:'Birlikte Okuyalım',h1:'Akgül &lt;em&gt;Okuma Kulübü&lt;/em&gt;',p:'Her ay yeni bir eser, yeni bir sohbet. Okuma kulübümüze katılın; yazarlarla buluşun, fikirlerinizi paylaşın.'}
   ];
   const d=defaults[i]||{};
   const wrap=g('slideEditorWrap');if(!wrap)return;
+  const badgeRow=i===5?`<div class="field" style="margin-bottom:.75rem"><label>Kampanya Rozeti Metni</label><input type="text" id="sl-badge" placeholder="${d.badge||''}" value="${esc(s.badge||'')}"></div>`:'';
   wrap.innerHTML=`
+    ${badgeRow}
     <div class="g2" style="margin-bottom:.75rem">
       <div class="field"><label>Üst Etiket (Eyebrow)</label><input type="text" id="sl-ey" placeholder="${d.ey||''}" value="${esc(s.eyebrow||'')}"></div>
       <div class="field"><label>Açıklama</label><input type="text" id="sl-p" placeholder="Kısa açıklama..." value="${esc(s.desc||'')}"></div>
@@ -1851,8 +1952,9 @@ function renderSlideEditor(i){
 }
 
 function saveHeroContent(){
-  if(!siteContentAdmin.slides)siteContentAdmin.slides=[{},{},{}];
+  if(!siteContentAdmin.slides||siteContentAdmin.slides.length<7)siteContentAdmin.slides=[{},{},{},{},{},{},{}];
   const s={eyebrow:gv('sl-ey'),title:gv('sl-h1'),desc:gv('sl-p')};
+  if(_curSlideTab===5){const b=gv('sl-badge');if(b)s.badge=b;}
   siteContentAdmin.slides[_curSlideTab]=s;
   saveContent();toast('✦ Slide '+(+_curSlideTab+1)+' güncellendi!');
 }
@@ -1864,6 +1966,56 @@ function saveAboutContent(){
     founderQuote:g('ab-fquote-inp')?.value.trim(),founderBio:g('ab-fbio-inp')?.value.trim()
   };
   saveContent();toast('✦ Hakkımızda sayfası güncellendi!');
+}
+
+function saveSeoContent(){
+  siteContentAdmin.seo={
+    title:gv('seo-title-inp'),
+    description:g('seo-desc-inp')?.value.trim(),
+    keywords:gv('seo-keys-inp')
+  };
+  saveContent();toast('✦ SEO ayarları güncellendi!');
+}
+
+function saveCampaignContent(){
+  if(!siteContentAdmin.slides||siteContentAdmin.slides.length<7)siteContentAdmin.slides=[{},{},{},{},{},{},{}];
+  const existing=siteContentAdmin.slides[5]||{};
+  siteContentAdmin.slides[5]={
+    ...existing,
+    badge:gv('camp-badge-inp'),
+    eyebrow:gv('camp-ey-inp'),
+    title:gv('camp-h1-inp'),
+    desc:g('camp-p-inp')?.value.trim()
+  };
+  siteContentAdmin.campaign={endDate:gv('camp-end-inp')};
+  saveContent();toast('✦ Kampanya içeriği güncellendi!');
+}
+
+function saveShippingContent(){
+  const wa=gv('ship-wa-inp').replace(/\D/g,'');
+  const freeShip=parseInt(gv('ship-free-inp'))||500;
+  const shipCost=parseInt(gv('ship-cost-inp'))||35;
+  siteContentAdmin.shipping={freeShip,shipCost,whatsapp:wa};
+  const s=load('akgulSettings',{});
+  s.freeShip=freeShip;s.shipCost=shipCost;if(wa.length>=10)s.waPhone=wa;
+  save('akgulSettings',s);
+  saveContent();toast('✦ Kargo ayarları güncellendi!');
+}
+
+function saveClubContent(){
+  const club={
+    book:gv('club-book-inp'),
+    author:gv('club-author-inp'),
+    month:gv('club-month-inp'),
+    date:gv('club-date-inp'),
+    desc:g('club-desc-inp')?.value.trim()
+  };
+  siteContentAdmin.club=club;
+  const s=load('akgulSettings',{});
+  if(club.book)s.clubBook=club.book;
+  if(club.date)s.clubDate=club.date;
+  save('akgulSettings',s);
+  saveContent();toast('✦ Okuma Kulübü içeriği güncellendi!');
 }
 
 function saveContactContent(){
