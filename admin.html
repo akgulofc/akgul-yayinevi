@@ -1,0 +1,2283 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akgül Yayınevi — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+/* ── RESET & TOKENS ─────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0F0E0B;--cream:#F5F0E8;--paper:#FAF7F1;--gold:#C8A96E;--gold-l:#E8D5A3;--gold-d:#9A7A45;
+  --rust:#8B3A2A;--sage:#2D4A3E;--muted:#6B6355;--border:#DDD5C5;--white:#fff;
+  --fs:'Cormorant Garamond',Georgia,serif;
+  --fss:'DM Sans','Segoe UI',system-ui,sans-serif;
+  --rad:8px;--rad-sm:5px;--rad-lg:14px;
+  --shadow:0 1px 4px rgba(15,14,11,.07),0 4px 16px rgba(15,14,11,.06);
+  --shadow-lg:0 4px 24px rgba(15,14,11,.12),0 1px 4px rgba(15,14,11,.06);
+  --bg1:var(--white);--bg2:var(--cream);--bg3:var(--paper);
+  --txt1:var(--ink);--txt2:var(--muted);--txt3:#A09882;
+  --brd1:var(--border);--brd2:#EAE3D5;
+  --success-bg:#EDF7EE;--success-txt:#2E7D32;
+  --warn-bg:#FFF8EE;--warn-txt:#B45309;
+  --danger-bg:#FEF0EF;--danger-txt:#B91C1C;
+  --info-bg:#EFF6FF;--info-txt:#1D4ED8;
+  --sb-bg:#0F0E0B;--sb-gold:rgba(200,169,110,.85);--sb-muted:rgba(176,168,152,.6);
+  --sb-brd:rgba(200,169,110,.1);--sb-hover:rgba(200,169,110,.07);--sb-act:rgba(200,169,110,.12);
+  --trans:.16s cubic-bezier(.4,0,.2,1);
+  --sidebar-w:230px;
+}
+html{font-size:15px}
+body{font-family:var(--fss);background:var(--bg3);color:var(--txt1);line-height:1.5;overflow-x:hidden}
+button,input,select,textarea{font-family:var(--fss)}
+a{color:inherit;text-decoration:none}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--brd1);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#c5b89a}
+
+/* ── LAYOUT ────────────────────────────────────────────────── */
+.app{display:flex;min-height:100vh}
+.sidebar{width:var(--sidebar-w);background:var(--sb-bg);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform var(--trans)}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh}
+
+/* ── SIDEBAR ───────────────────────────────────────────────── */
+.sb-header{padding:1.1rem 1rem .9rem;border-bottom:1px solid var(--sb-brd);display:flex;align-items:center;gap:.65rem}
+.sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#C8A96E,#9A7A45);display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-weight:700;color:#0F0E0B;font-size:.85rem;flex-shrink:0;letter-spacing:-.02em}
+.sb-brand{font-family:var(--fs);color:var(--sb-gold);font-size:1.05rem;font-weight:600;line-height:1.15}
+.sb-tagline{font-size:.58rem;color:rgba(200,169,110,.35);text-transform:uppercase;letter-spacing:.14em}
+
+.sb-nav{flex:1;overflow-y:auto;padding:.5rem 0}
+.sb-section{padding:.7rem .9rem .2rem;font-size:.58rem;text-transform:uppercase;letter-spacing:.18em;color:rgba(200,169,110,.28);font-weight:500}
+.nav-item{display:flex;align-items:center;gap:.6rem;padding:.58rem .9rem;cursor:pointer;border-radius:var(--rad-sm);margin:1px .5rem;color:var(--sb-muted);font-size:.8rem;transition:all var(--trans);border:1px solid transparent;position:relative;user-select:none}
+.nav-item i{font-size:15px;flex-shrink:0;width:17px;opacity:.8}
+.nav-item:hover{background:var(--sb-hover);color:rgba(200,169,110,.8)}
+.nav-item.act{background:var(--sb-act);color:var(--sb-gold);border-color:rgba(200,169,110,.16)}
+.nav-item.act i{opacity:1}
+.nav-item.act::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--gold);border-radius:0 3px 3px 0}
+.nav-badge{margin-left:auto;font-size:.55rem;font-weight:600;padding:1px 7px;border-radius:20px;min-width:20px;text-align:center;line-height:1.6}
+.nb-red{background:rgba(185,28,28,.85);color:#fff}
+.nb-gold{background:rgba(200,169,110,.18);color:var(--sb-gold)}
+
+.sb-footer{padding:.65rem;border-top:1px solid var(--sb-brd)}
+.sb-user{display:flex;align-items:center;gap:.5rem;padding:.5rem .6rem;border-radius:var(--rad-sm);cursor:pointer;transition:background var(--trans)}
+.sb-user:hover{background:var(--sb-hover)}
+.sb-user-mini{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#C8A96E,#9A7A45);display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:#0F0E0B;flex-shrink:0}
+.sb-user-info{flex:1;min-width:0}
+.sb-user-name{font-size:.75rem;color:rgba(200,169,110,.75);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-user-email{font-size:.6rem;color:rgba(200,169,110,.3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── TOPBAR ────────────────────────────────────────────────── */
+.topbar{background:var(--bg1);border-bottom:1px solid var(--brd2);padding:.65rem 1.5rem;display:flex;align-items:center;gap:.8rem;position:sticky;top:0;z-index:50;box-shadow:0 1px 0 var(--brd2)}
+.topbar-left{display:flex;align-items:center;gap:.75rem}
+.tb-hamb{display:none;background:none;border:none;color:var(--txt2);cursor:pointer;padding:.25rem;font-size:20px}
+.tb-title{font-family:var(--fs);font-size:1.1rem;font-weight:600;color:var(--txt1);white-space:nowrap}
+.tb-breadcrumb{font-size:.72rem;color:var(--txt3);display:flex;align-items:center;gap:.3rem}
+.tb-breadcrumb i{font-size:11px}
+.tb-search{flex:1;max-width:300px;margin:0 1rem;position:relative}
+.tb-search input{width:100%;padding:.42rem .8rem .42rem 2.1rem;border:1px solid var(--brd2);border-radius:20px;background:var(--bg3);font-size:.78rem;color:var(--txt1);outline:none;transition:all var(--trans)}
+.tb-search input:focus{border-color:var(--gold);background:var(--bg1);box-shadow:0 0 0 3px rgba(200,169,110,.1)}
+.tb-search i{position:absolute;left:.7rem;top:50%;transform:translateY(-50%);font-size:14px;color:var(--txt3)}
+.tb-search .sr-clear{position:absolute;right:.7rem;top:50%;transform:translateY(-50%);font-size:14px;color:var(--txt3);cursor:pointer;display:none}
+.tb-search input:not(:placeholder-shown) ~ .sr-clear{display:block}
+.tb-actions{display:flex;align-items:center;gap:.5rem;margin-left:auto}
+.tb-btn{padding:.38rem .75rem;background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--rad-sm);font-size:.75rem;color:var(--txt2);cursor:pointer;display:flex;align-items:center;gap:.3rem;transition:all var(--trans);white-space:nowrap}
+.tb-btn:hover{border-color:var(--gold);color:var(--txt1);background:var(--bg2)}
+.tb-btn.primary{background:var(--gold);color:#0F0E0B;border-color:var(--gold);font-weight:500}
+.tb-btn.primary:hover{background:var(--gold-l)}
+.notif-btn{position:relative}
+.notif-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;background:#EF4444;border-radius:50%;border:1.5px solid var(--bg1)}
+.tb-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#C8A96E,#9A7A45);display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-weight:700;color:#0F0E0B;font-size:.75rem;cursor:pointer;flex-shrink:0;border:2px solid var(--brd2)}
+
+/* ── PAGE CONTENT ──────────────────────────────────────────── */
+.page-body{padding:1.5rem;flex:1}
+.page{display:none;animation:fadeUp .22s ease}
+.page.act{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── KPI CARDS ─────────────────────────────────────────────── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.25rem}
+.kpi{background:var(--bg1);border:1px solid var(--brd2);border-radius:var(--rad);padding:1rem 1.1rem;position:relative;overflow:hidden;transition:box-shadow var(--trans)}
+.kpi:hover{box-shadow:var(--shadow)}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--rad) var(--rad) 0 0}
+.kpi.k1::after{background:linear-gradient(90deg,#C8A96E,#E8D5A3)}
+.kpi.k2::after{background:linear-gradient(90deg,#2D4A3E,#4a7a6a)}
+.kpi.k3::after{background:linear-gradient(90deg,#8B3A2A,#c05040)}
+.kpi.k4::after{background:linear-gradient(90deg,#4A2D3E,#7a4d6a)}
+.kpi-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.6rem}
+.kpi-icon{width:34px;height:34px;border-radius:var(--rad-sm);display:flex;align-items:center;justify-content:center;font-size:16px}
+.kpi-badge{font-size:.62rem;font-weight:600;padding:2px 8px;border-radius:20px}
+.kb-up{background:var(--success-bg);color:var(--success-txt)}
+.kb-dn{background:var(--danger-bg);color:var(--danger-txt)}
+.kpi-val{font-family:var(--fs);font-size:1.85rem;font-weight:700;color:var(--txt1);line-height:1;letter-spacing:-.03em}
+.kpi-lbl{font-size:.66rem;color:var(--txt2);margin-top:.3rem;text-transform:uppercase;letter-spacing:.07em;font-weight:500}
+
+/* ── CARDS ─────────────────────────────────────────────────── */
+.card{background:var(--bg1);border:1px solid var(--brd2);border-radius:var(--rad);overflow:hidden;box-shadow:var(--shadow)}
+.card-head{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.1rem;border-bottom:1px solid var(--brd2);background:var(--bg1)}
+.card-title{font-size:.82rem;font-weight:500;color:var(--txt1);display:flex;align-items:center;gap:.45rem}
+.card-title i{font-size:15px;color:var(--txt3)}
+.card-acts{display:flex;align-items:center;gap:.4rem}
+.card-btn{font-size:.7rem;color:var(--txt3);cursor:pointer;padding:.25rem .6rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:none;transition:all var(--trans);white-space:nowrap}
+.card-btn:hover{border-color:var(--gold);color:var(--txt2)}
+.card-body{padding:.9rem 1.1rem}
+
+/* ── GRIDS ─────────────────────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1.65fr 1fr;gap:.85rem;margin-bottom:.85rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin-bottom:.85rem}
+.g2-eq{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:.85rem}
+.mb-1{margin-bottom:.85rem}
+
+/* ── CHART ─────────────────────────────────────────────────── */
+.mini-chart{display:flex;align-items:flex-end;gap:4px;height:80px}
+.bar{border-radius:4px 4px 0 0;flex:1;min-width:6px;background:var(--gold);opacity:.45;transition:opacity var(--trans),transform var(--trans);cursor:default;position:relative}
+.bar:hover{opacity:1;transform:scaleY(1.03);transform-origin:bottom}
+.bar.hi{opacity:.88}
+.bar.today{opacity:1;background:var(--gold)}
+.chart-labels{display:flex;gap:4px;margin-top:.35rem}
+.chart-labels span{flex:1;text-align:center;font-size:.58rem;color:var(--txt3)}
+
+/* ── ORDERS / LISTS ─────────────────────────────────────────── */
+.order-row{display:flex;align-items:center;gap:.8rem;padding:.6rem .4rem;border-bottom:1px solid var(--brd2);transition:background var(--trans)}
+.order-row:last-child{border-bottom:none}
+.order-row:hover{background:var(--bg3);border-radius:var(--rad-sm)}
+.o-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:600;color:#fff;flex-shrink:0}
+.o-info{flex:1;min-width:0}
+.o-name{font-size:.8rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.o-detail{font-size:.68rem;color:var(--txt2)}
+.o-price{font-family:var(--fs);font-size:.9rem;font-weight:600;flex-shrink:0}
+
+/* ── TOP BOOKS ─────────────────────────────────────────────── */
+.top-book{display:flex;align-items:center;gap:.65rem;padding:.5rem 0;border-bottom:1px solid var(--brd2)}
+.top-book:last-child{border-bottom:none}
+.bcover{width:26px;height:38px;border-radius:3px;object-fit:cover;flex-shrink:0;border:1px solid var(--brd2)}
+.top-book-info{flex:1;min-width:0}
+.top-book-title{font-size:.78rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-book-author{font-size:.63rem;color:var(--txt2)}
+.top-book-views{font-size:.75rem;font-weight:600;color:var(--gold);flex-shrink:0}
+
+/* ── STATUS & BADGES ────────────────────────────────────────── */
+.pill{font-size:.6rem;padding:2px 8px;border-radius:20px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:inline-flex;align-items:center;gap:.25rem;white-space:nowrap}
+.p-done{background:var(--success-bg);color:var(--success-txt)}
+.p-proc{background:var(--warn-bg);color:var(--warn-txt)}
+.p-ship{background:var(--info-bg);color:var(--info-txt)}
+.p-canc{background:var(--danger-bg);color:var(--danger-txt)}
+.p-pub{background:var(--success-bg);color:var(--success-txt)}
+.p-draft{background:var(--warn-bg);color:var(--warn-txt)}
+.cat-pill{font-size:.62rem;padding:2px 8px;background:var(--bg3);border:1px solid var(--brd2);border-radius:20px;color:var(--txt2)}
+
+.role-badge{font-size:.6rem;padding:2px 8px;border-radius:20px;font-weight:600}
+.r-okur{background:var(--info-bg);color:var(--info-txt)}
+.r-yazar{background:#F3E5F5;color:#6A1B9A}
+.r-admin{background:var(--warn-bg);color:var(--warn-txt)}
+
+/* ── TABLES ─────────────────────────────────────────────────── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.79rem}
+thead tr{border-bottom:1px solid var(--brd2)}
+th{text-align:left;font-size:.64rem;text-transform:uppercase;letter-spacing:.09em;color:var(--txt3);padding:.55rem .85rem;font-weight:600;white-space:nowrap;background:var(--bg3)}
+td{padding:.65rem .85rem;border-bottom:1px solid var(--brd2);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(200,169,110,.03)}
+.act-btn{padding:3px 10px;border:1px solid var(--brd2);border-radius:var(--rad-sm);font-size:.67rem;cursor:pointer;color:var(--txt2);background:none;transition:all var(--trans);display:inline-flex;align-items:center;gap:.25rem}
+.act-btn:hover{border-color:var(--gold);color:var(--txt1);background:rgba(200,169,110,.06)}
+.act-btn.red:hover{border-color:var(--danger-txt);color:var(--danger-txt);background:var(--danger-bg)}
+.act-btn.green:hover{border-color:var(--success-txt);color:var(--success-txt);background:var(--success-bg)}
+
+/* ── FORMS ──────────────────────────────────────────────────── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem .85rem}
+.field{display:flex;flex-direction:column;gap:.28rem}
+.field label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--txt2);font-weight:600}
+.field input,.field select,.field textarea{font-size:.82rem;color:var(--txt1);background:var(--bg3);border:1px solid var(--brd1);border-radius:var(--rad-sm);padding:.48rem .75rem;outline:none;transition:border-color var(--trans),box-shadow var(--trans);width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,169,110,.1)}
+.field textarea{min-height:72px;resize:vertical;line-height:1.55}
+.field-full{grid-column:1/-1}
+.admin-img-preview{display:none;flex-wrap:wrap;gap:.5rem;margin-top:.5rem}
+.admin-img-preview.on{display:flex}
+.admin-img-preview .aip-item{position:relative;width:70px;height:70px;border-radius:4px;overflow:hidden;border:1px solid var(--brd1)}
+.admin-img-preview .aip-item img{width:100%;height:100%;object-fit:cover;display:block}
+.admin-img-preview .aip-item .aip-del{position:absolute;top:1px;right:1px;width:16px;height:16px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;border:none;cursor:pointer;font-size:10px;line-height:16px;text-align:center;padding:0}
+.form-actions{display:flex;align-items:center;gap:.5rem;padding-top:.5rem;border-top:1px solid var(--brd2);margin-top:.25rem}
+
+/* ── LIVE INDICATOR ────────────────────────────────────────── */
+.live-bar{display:flex;align-items:center;gap:.6rem;background:var(--bg1);border:1px solid var(--brd2);border-radius:var(--rad-sm);padding:.5rem .9rem;margin-bottom:1rem;font-size:.75rem;color:var(--txt2);box-shadow:var(--shadow)}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#22C55E;animation:lp 2s ease-in-out infinite;flex-shrink:0}
+@keyframes lp{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(34,197,94,0)}}
+.live-num{font-family:var(--fs);font-size:1.05rem;font-weight:700;color:var(--gold)}
+.live-sep{color:var(--brd1)}
+
+/* ── DONUT ──────────────────────────────────────────────────── */
+.donut-wrap{display:flex;align-items:center;gap:1.2rem}
+.donut-legend{display:flex;flex-direction:column;gap:.5rem;flex:1}
+.legend-item{display:flex;align-items:center;gap:.45rem;font-size:.72rem;color:var(--txt2)}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.legend-pct{margin-left:auto;font-weight:600;color:var(--txt1);font-size:.72rem}
+
+/* ── REVIEWS ────────────────────────────────────────────────── */
+.review-item{padding:.65rem 0;border-bottom:1px solid var(--brd2)}
+.review-item:last-child{border-bottom:none}
+.review-book{font-size:.67rem;color:var(--gold);font-weight:600;margin-bottom:.15rem}
+.review-stars{color:var(--gold);font-size:.75rem;letter-spacing:.08em}
+.review-text{font-size:.78rem;color:var(--txt2);line-height:1.55;margin-top:.15rem}
+.review-by{font-size:.65rem;color:var(--txt3);margin-top:.25rem}
+
+/* ── STAT ROWS ──────────────────────────────────────────────── */
+.stat-row{display:flex;align-items:center;gap:.6rem;padding:.48rem 0;border-bottom:1px solid var(--brd2)}
+.stat-row:last-child{border-bottom:none}
+.stat-lbl{flex:0 0 80px;font-size:.73rem;color:var(--txt2)}
+.stat-bar-wrap{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.stat-bar{height:100%;border-radius:3px;background:var(--gold);transition:width .8s cubic-bezier(.4,0,.2,1)}
+.stat-val{font-size:.72rem;font-weight:600;color:var(--txt1);min-width:28px;text-align:right}
+
+/* ── TOGGLE ─────────────────────────────────────────────────── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:.52rem 0;font-size:.78rem;color:var(--txt2);border-bottom:1px solid var(--brd2)}
+.toggle-row:last-child{border-bottom:none}
+.toggle{position:relative;width:36px;height:20px;cursor:pointer;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(--bg3);border:1px solid var(--brd1);border-radius:10px;transition:all var(--trans)}
+.toggle input:checked~.toggle-track{background:var(--gold);border-color:var(--gold)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform var(--trans)}
+.toggle input:checked~.toggle-thumb{transform:translateX(16px)}
+
+/* ── MODAL ──────────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,14,11,.45);z-index:500;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity var(--trans);backdrop-filter:blur(3px)}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--bg1);border-radius:var(--rad-lg);border:1px solid var(--brd2);box-shadow:var(--shadow-lg);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;transform:translateY(12px) scale(.98);transition:transform var(--trans)}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border-bottom:1px solid var(--brd2);position:sticky;top:0;background:var(--bg1);z-index:1}
+.modal-title{font-family:var(--fs);font-size:1.1rem;font-weight:600}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--txt3);font-size:20px;padding:.2rem;border-radius:var(--rad-sm);transition:all var(--trans);display:flex;align-items:center}
+.modal-close:hover{background:var(--bg3);color:var(--txt1)}
+.modal-body{padding:1.25rem}
+
+/* ── NOTIFICATIONS PANEL ─────────────────────────────────────── */
+.notif-panel{position:fixed;top:56px;right:1rem;width:320px;background:var(--bg1);border:1px solid var(--brd2);border-radius:var(--rad-lg);box-shadow:var(--shadow-lg);z-index:200;display:none;overflow:hidden}
+.notif-panel.open{display:block;animation:fadeUp .18s ease}
+.notif-head{padding:.75rem 1rem;border-bottom:1px solid var(--brd2);display:flex;align-items:center;justify-content:space-between;font-size:.8rem;font-weight:500}
+.notif-item{display:flex;align-items:flex-start;gap:.6rem;padding:.65rem 1rem;border-bottom:1px solid var(--brd2);transition:background var(--trans);cursor:pointer}
+.notif-item:last-child{border-bottom:none}
+.notif-item:hover{background:var(--bg3)}
+.notif-item.unread{background:rgba(200,169,110,.04)}
+.notif-icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.notif-text{flex:1}
+.notif-msg{font-size:.76rem;font-weight:500;color:var(--txt1)}
+.notif-time{font-size:.65rem;color:var(--txt3);margin-top:.1rem}
+
+/* ── SEARCH RESULTS ─────────────────────────────────────────── */
+.search-drop{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--bg1);border:1px solid var(--brd2);border-radius:var(--rad);box-shadow:var(--shadow-lg);z-index:200;display:none;overflow:hidden}
+.search-drop.open{display:block}
+.search-item{display:flex;align-items:center;gap:.6rem;padding:.6rem .85rem;cursor:pointer;transition:background var(--trans);font-size:.8rem}
+.search-item:hover{background:var(--bg3)}
+.search-item i{font-size:14px;color:var(--txt3);flex-shrink:0}
+.search-no{padding:.85rem;text-align:center;font-size:.78rem;color:var(--txt3)}
+
+/* ── NOTICE / ALERT ─────────────────────────────────────────── */
+.notice{display:flex;align-items:flex-start;gap:.6rem;background:var(--info-bg);border:1px solid rgba(29,78,216,.15);border-radius:var(--rad-sm);padding:.65rem .9rem;font-size:.75rem;color:var(--info-txt);margin-bottom:1rem}
+.notice i{font-size:15px;flex-shrink:0;margin-top:.05rem}
+
+/* ── SETTINGS ───────────────────────────────────────────────── */
+.settings-section{margin-bottom:1.5rem}
+.settings-section h4{font-size:.8rem;font-weight:600;color:var(--txt1);margin-bottom:.75rem;padding-bottom:.4rem;border-bottom:1px solid var(--brd2)}
+
+/* ── TOAST ──────────────────────────────────────────────────── */
+.toast-wrap{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;gap:.4rem;align-items:center;z-index:1000;pointer-events:none}
+.toast{background:#0F0E0B;color:#C8A96E;padding:.55rem 1.25rem;border-radius:var(--rad-sm);font-size:.78rem;border:1px solid rgba(200,169,110,.2);animation:toastIn .2s ease forwards;white-space:nowrap;display:flex;align-items:center;gap:.4rem}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastOut{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(8px)}}
+
+/* ── LOGIN ──────────────────────────────────────────────────── */
+.login-overlay{position:fixed;inset:0;background:linear-gradient(135deg,#0F0E0B 60%,#1a1815);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1rem}
+.login-card{background:rgba(245,240,232,.06);border:1px solid rgba(200,169,110,.2);border-radius:var(--rad-lg);padding:2.25rem;width:100%;max-width:380px;backdrop-filter:blur(20px)}
+.login-logo{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#C8A96E,#9A7A45);display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-weight:700;color:#0F0E0B;margin:0 auto .85rem;font-size:1.1rem;box-shadow:0 4px 20px rgba(200,169,110,.3)}
+.login-title{font-family:var(--fs);font-size:1.35rem;font-weight:700;color:#F5F0E8;text-align:center;margin-bottom:.3rem}
+.login-sub{font-size:.78rem;color:rgba(200,169,110,.5);text-align:center;margin-bottom:1.75rem}
+.login-field label{display:block;font-size:.66rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(200,169,110,.5);margin-bottom:.35rem;font-weight:600}
+.login-field input{width:100%;padding:.52rem .85rem;background:rgba(245,240,232,.05);border:1px solid rgba(200,169,110,.2);border-radius:var(--rad-sm);color:#F5F0E8;font-size:.85rem;outline:none;transition:all var(--trans);margin-bottom:1rem}
+.login-field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,169,110,.12)}
+.login-field input::placeholder{color:rgba(200,169,110,.25)}
+.login-err{font-size:.73rem;color:#FCA5A5;text-align:center;min-height:.9rem;margin-bottom:.75rem}
+.login-btn{width:100%;padding:.6rem;background:linear-gradient(135deg,#C8A96E,#9A7A45);border:none;border-radius:var(--rad-sm);font-size:.88rem;font-weight:500;color:#0F0E0B;cursor:pointer;transition:opacity var(--trans),transform var(--trans)}
+.login-btn:hover{opacity:.9;transform:translateY(-1px)}
+.login-btn:active{transform:translateY(0)}
+.login-hint{font-size:.68rem;color:rgba(200,169,110,.3);text-align:center;margin-top:1rem}
+
+/* ── MOBILE OVERLAY ─────────────────────────────────────────── */
+.mob-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99;display:none}
+
+/* ── COVER PREVIEW ──────────────────────────────────────────── */
+.cover-preview{margin-top:.5rem;display:none;align-items:flex-start;gap:.75rem}
+.cover-preview img{width:75px;height:117px;object-fit:cover;border-radius:4px;border:1px solid var(--brd2)}
+.cover-prev-info{font-size:.7rem;color:var(--txt3);line-height:1.6}
+
+/* ── SECTION HEADER ─────────────────────────────────────────── */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.sec-title{font-family:var(--fs);font-size:1.15rem;font-weight:600;color:var(--txt1)}
+
+/* ── BLOG FORM ──────────────────────────────────────────────── */
+.editor-area{min-height:120px}
+
+/* ── TOGGLE CHART ───────────────────────────────────────────── */
+.chart-toggle{display:flex;gap:.2rem;background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--rad-sm);padding:2px}
+.chart-toggle button{padding:.28rem .65rem;border:none;background:none;border-radius:calc(var(--rad-sm) - 2px);font-size:.7rem;cursor:pointer;color:var(--txt2);transition:all var(--trans)}
+.chart-toggle button.act{background:var(--bg1);color:var(--txt1);border:1px solid var(--brd2)}
+
+/* ── RESPONSIVE ─────────────────────────────────────────────── */
+@media(max-width:1024px){.kpi-row{grid-template-columns:repeat(2,1fr)}.g2{grid-template-columns:1fr}}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.mob-open{transform:translateX(0)}
+  .main{margin-left:0}
+  .tb-hamb{display:flex;align-items:center}
+  .mob-overlay.open{display:block}
+  .kpi-row{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:1fr}
+  .tb-search{max-width:180px}
+  .page-body{padding:1rem}
+}
+@media(max-width:480px){
+  .kpi-row{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .tb-actions .tb-btn:not(.primary){display:none}
+}
+
+/* ── SR-ONLY ─────────────────────────────────────────────────── */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+/* ── AI PANEL ─────────────────────────────────────────────── */
+.ai-fab{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;background:linear-gradient(135deg,#C8A96E,#9A7A45);border:none;border-radius:50px;padding:.58rem 1.05rem;cursor:pointer;display:flex;align-items:center;gap:.42rem;font-size:.8rem;font-weight:600;color:#0F0E0B;box-shadow:0 4px 20px rgba(200,169,110,.4);transition:all var(--trans);font-family:var(--fss)}
+.ai-fab:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(200,169,110,.5)}
+.ai-fab i{font-size:15px}
+.ai-panel{position:fixed;top:0;right:0;width:370px;height:100vh;background:var(--bg1);border-left:1px solid var(--brd2);z-index:450;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 32px rgba(15,14,11,.1)}
+.ai-panel.open{transform:translateX(0)}
+.ai-panel-head{padding:.78rem 1rem;border-bottom:1px solid var(--brd2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ai-panel-title{display:flex;align-items:center;gap:.42rem;font-size:.84rem;font-weight:600;color:var(--txt1)}
+.ai-panel-title i{font-size:15px;color:var(--gold)}
+.ai-panel-btns{display:flex;align-items:center;gap:.2rem}
+.ai-messages{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.55rem}
+.ai-welcome{background:linear-gradient(135deg,rgba(200,169,110,.07),rgba(200,169,110,.02));border:1px solid rgba(200,169,110,.15);border-radius:var(--rad);padding:.85rem}
+.ai-welcome-title{font-size:.8rem;font-weight:600;color:var(--txt1);margin-bottom:.35rem}
+.ai-welcome-title i{color:var(--gold);margin-right:.25rem}
+.ai-welcome-hint{font-size:.7rem;color:var(--txt2);margin-bottom:.45rem}
+.ai-examples{display:flex;flex-direction:column;gap:.25rem}
+.ai-example{font-size:.71rem;color:var(--txt2);background:var(--bg1);border:1px solid var(--brd2);border-radius:var(--rad-sm);padding:.3rem .62rem;cursor:pointer;transition:all var(--trans)}
+.ai-example:hover{border-color:var(--gold);color:var(--txt1)}
+.ai-bubble{max-width:90%;animation:fadeUp .15s ease}
+.ai-bubble.user{align-self:flex-end}
+.ai-bubble.ai{align-self:flex-start}
+.ai-bubble-inner{padding:.52rem .78rem;border-radius:var(--rad);font-size:.78rem;line-height:1.55}
+.ai-bubble.user .ai-bubble-inner{background:var(--gold);color:#0F0E0B;border-radius:var(--rad) var(--rad) 4px var(--rad)}
+.ai-bubble.ai .ai-bubble-inner{background:var(--bg3);border:1px solid var(--brd2);color:var(--txt1);border-radius:4px var(--rad) var(--rad) var(--rad)}
+.ai-action-chip{align-self:flex-start;background:var(--success-bg);border:1px solid rgba(46,125,50,.18);border-radius:var(--rad-sm);padding:.28rem .62rem;font-size:.69rem;color:var(--success-txt);display:flex;align-items:center;gap:.32rem;animation:fadeUp .15s ease}
+.ai-action-chip i{font-size:11px}
+.ai-thinking{align-self:flex-start;background:var(--bg3);border:1px solid var(--brd2);border-radius:4px var(--rad) var(--rad) var(--rad);padding:.42rem .72rem;display:flex;align-items:center;gap:.38rem}
+.ai-dot-row{display:flex;gap:3px}
+.ai-dot-row span{width:5px;height:5px;border-radius:50%;background:var(--txt3);animation:aiDot 1.1s ease-in-out infinite}
+.ai-dot-row span:nth-child(2){animation-delay:.18s}
+.ai-dot-row span:nth-child(3){animation-delay:.36s}
+@keyframes aiDot{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}
+.ai-input-row{padding:.68rem .9rem;border-top:1px solid var(--brd2);display:flex;gap:.42rem;align-items:flex-end;background:var(--bg1);flex-shrink:0}
+.ai-input-row textarea{flex:1;resize:none;border:1px solid var(--brd1);border-radius:var(--rad-sm);padding:.4rem .68rem;font-size:.78rem;color:var(--txt1);background:var(--bg3);outline:none;line-height:1.5;max-height:110px;font-family:var(--fss);transition:border-color var(--trans),box-shadow var(--trans)}
+.ai-input-row textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,169,110,.1)}
+.ai-send{width:33px;height:33px;border-radius:var(--rad-sm);background:var(--gold);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#0F0E0B;font-size:14px;transition:opacity var(--trans);flex-shrink:0}
+.ai-send:hover{opacity:.85}
+.ai-send:disabled{opacity:.42;cursor:not-allowed}
+@media(max-width:480px){.ai-panel{width:100vw}.ai-fab span{display:none}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-card">
+    <div class="login-logo">AY</div>
+    <div class="login-title">Yönetici Girişi</div>
+    <div class="login-sub">Akgül Yayınevi yönetim paneli</div>
+    <div class="login-field">
+      <label>Kullanıcı Adı</label>
+      <input type="text" id="loginUser" placeholder="admin" autocomplete="username" required>
+    </div>
+    <div class="login-field">
+      <label>Şifre</label>
+      <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" required onkeydown="if(event.key==='Enter')handleLogin()">
+    </div>
+    <div class="login-err" id="loginErr"></div>
+    <button class="login-btn" onclick="handleLogin()">Giriş Yap</button>
+    <div class="login-hint">Varsayılan: admin / akgul2026</div>
+  </div>
+</div>
+
+<!-- MOBİL OVERLAY -->
+<div class="mob-overlay" id="mobOverlay" onclick="closeSidebar()"></div>
+
+<!-- NOTIF PANEL -->
+<div class="notif-panel" id="notifPanel">
+  <div class="notif-head">
+    <span>Bildirimler</span>
+    <button onclick="markAllRead()" class="card-btn">Tümünü okundu işaretle</button>
+  </div>
+  <div id="notifList"></div>
+</div>
+
+<!-- EDIT MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title" id="editModalTitle">Kitabı Düzenle</span>
+      <button class="modal-close" onclick="closeModal('editModal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body" id="editModalBody"></div>
+  </div>
+</div>
+
+<!-- BLOG YAZISI MODAL -->
+<div class="modal-overlay" id="blogModal">
+  <div class="modal">
+    <div class="modal-head">
+      <span class="modal-title">Yeni Blog Yazısı</span>
+      <button class="modal-close" onclick="closeModal('blogModal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="field field-full"><label>Başlık</label><input id="bm-title" placeholder="Yazı başlığı"></div>
+        <div class="field"><label>Yazar</label><select id="bm-author"></select></div>
+        <div class="field"><label>Kategori</label><input id="bm-cat" placeholder="Roman, Şiir, Tarih..."></div>
+        <div class="field field-full"><label>İçerik (özet)</label><textarea id="bm-content" class="editor-area" placeholder="Yazı içeriği veya özeti..."></textarea></div>
+        <div class="field field-full"><label>Kapak Görseli — Cloudinary URL</label>
+          <div style="display:flex;gap:.5rem;align-items:center">
+            <input type="text" id="bm-cover-url" placeholder="https://res.cloudinary.com/..." oninput="previewBlogCover(this)" style="flex:1">
+            <button class="act-btn red" type="button" onclick="removeBlogCover()" title="Temizle"><i class="ti ti-x" style="font-size:12px"></i></button>
+          </div>
+          <div style="margin-top:.35rem;font-size:.68rem;color:var(--txt3)"><i class="ti ti-cloud-upload" style="font-size:11px"></i> Cloudinary'e yükle → URL'yi kopyala → buraya yapıştır</div>
+          <div class="cover-preview" id="blogCoverPreview">
+            <img id="blogCoverImg" alt="Kapak önizleme">
+          </div>
+        </div>
+        <div class="field"><label>Durum</label>
+          <select id="bm-status"><option value="Yayında">Yayında</option><option value="Taslak">Taslak</option></select>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="tb-btn primary" onclick="saveBlogPost()"><i class="ti ti-check"></i>Yayınla</button>
+        <button class="tb-btn" onclick="closeModal('blogModal')">İptal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<!-- APP -->
+<div class="app" id="appWrap" style="display:none">
+  <!-- SIDEBAR -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sb-header">
+      <div class="sb-av">AY</div>
+      <div>
+        <div class="sb-brand">Akgül Yayınevi</div>
+        <div class="sb-tagline">Admin Paneli</div>
+      </div>
+    </div>
+    <div class="sb-nav">
+      <div class="sb-section">Genel</div>
+      <div class="nav-item act" data-page="p-dash" onclick="nav(this)"><i class="ti ti-layout-dashboard"></i>Genel Bakış<span class="nav-badge nb-gold">Canlı</span></div>
+      <div class="nav-item" data-page="p-analytics" onclick="nav(this)"><i class="ti ti-chart-bar"></i>Analizler</div>
+
+      <div class="sb-section">Katalog</div>
+      <div class="nav-item" data-page="p-books" onclick="nav(this)"><i class="ti ti-books"></i>Kitaplar<span class="nav-badge nb-gold" id="navBookCount">14</span></div>
+      <div class="nav-item" data-page="p-authors" onclick="nav(this)"><i class="ti ti-pencil"></i>Yazarlar</div>
+
+      <div class="sb-section">Topluluk</div>
+      <div class="nav-item" data-page="p-orders" onclick="nav(this)"><i class="ti ti-shopping-cart"></i>Siparişler<span class="nav-badge nb-red" id="navOrderCount">2</span></div>
+      <div class="nav-item" data-page="p-users" onclick="nav(this)"><i class="ti ti-users"></i>Kullanıcılar</div>
+      <div class="nav-item" data-page="p-blog" onclick="nav(this)"><i class="ti ti-news"></i>Blog<span class="nav-badge nb-gold" id="navBlogCount">6</span></div>
+      <div class="nav-item" data-page="p-reviews" onclick="nav(this)"><i class="ti ti-star"></i>Yorumlar<span class="nav-badge nb-gold" id="navReviewCount">0</span></div>
+
+      <div class="sb-section">İçerik</div>
+      <div class="nav-item" data-page="p-content" onclick="nav(this)"><i class="ti ti-layout"></i>Site İçeriği</div>
+
+      <div class="sb-section">Sistem</div>
+      <div class="nav-item" data-page="p-settings" onclick="nav(this)"><i class="ti ti-settings"></i>Ayarlar</div>
+
+    </div>
+    <div class="sb-footer">
+      <div class="sb-user">
+        <div class="sb-user-mini">AD</div>
+        <div class="sb-user-info">
+          <div class="sb-user-name">admin</div>
+          <div class="sb-user-email">akgulyayinevi.com</div>
+        </div>
+        <i class="ti ti-logout" style="font-size:14px;color:rgba(200,169,110,.3)" onclick="adminLogout()" title="Çıkış"></i>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="tb-hamb" onclick="openSidebar()"><i class="ti ti-menu-2"></i></button>
+        <div>
+          <div class="tb-title" id="tbTitle">Genel Bakış</div>
+          <div class="tb-breadcrumb" id="tbBread"><i class="ti ti-chevron-right"></i><span>Mayıs 2026</span></div>
+        </div>
+      </div>
+      <div class="tb-search">
+        <i class="ti ti-search"></i>
+        <input placeholder="Kitap, yazar, sipariş ara..." id="searchInput" oninput="handleSearch(this.value)" autocomplete="off">
+        <i class="ti ti-x sr-clear" onclick="clearSearch()"></i>
+        <div class="search-drop" id="searchDrop"></div>
+      </div>
+      <div class="tb-actions">
+        <a class="tb-btn" href="akgul_yayinevi_website.html" style="text-decoration:none"><i class="ti ti-world"></i>Siteyi Görüntüle</a>
+        <button class="tb-btn notif-btn" onclick="toggleNotif(event)" id="notifBtn">
+          <i class="ti ti-bell"></i>
+          <span id="notifCount">3</span>
+          <div class="notif-dot" id="notifDot"></div>
+        </button>
+        <button class="tb-btn primary" onclick="openAddBook()"><i class="ti ti-plus"></i>Kitap Ekle</button>
+        <div class="tb-avatar" title="Admin">AD</div>
+      </div>
+    </div>
+
+    <div class="page-body">
+
+      <!-- ── DASHBOARD ──────────────────── -->
+      <div class="page act" id="p-dash">
+        <div class="live-bar">
+          <div class="live-dot"></div>
+          <span>Şu an</span>
+          <span class="live-num" id="liveVisitors">24</span>
+          <span>ziyaretçi</span>
+          <span class="live-sep">·</span>
+          <span>Bugün</span>
+          <span class="live-num" id="liveSales">7</span>
+          <span>satış</span>
+          <span class="live-sep">·</span>
+          <span>Gelir</span>
+          <span class="live-num" id="liveRevenue">₺0</span>
+        </div>
+
+        <div class="kpi-row">
+          <div class="kpi k1">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-books" style="color:#C8A96E"></i></div><span class="kpi-badge kb-up">+2 yeni</span></div>
+            <div class="kpi-val" id="kpiBooks">14</div><div class="kpi-lbl">Katalog Kitap</div>
+          </div>
+          <div class="kpi k2">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-users" style="color:#2D4A3E"></i></div><span class="kpi-badge kb-up">+5</span></div>
+            <div class="kpi-val" id="kpiUsers">47</div><div class="kpi-lbl">Toplam Üye</div>
+          </div>
+          <div class="kpi k3">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-shopping-bag" style="color:#8B3A2A"></i></div><span class="kpi-badge kb-up">+12%</span></div>
+            <div class="kpi-val" id="kpiRevenue">₺0</div><div class="kpi-lbl">Toplam Gelir</div>
+          </div>
+          <div class="kpi k4">
+            <div class="kpi-top"><div class="kpi-icon" style="background:rgba(74,45,62,.1)"><i class="ti ti-eye" style="color:#4A2D3E"></i></div><span class="kpi-badge kb-up">+8%</span></div>
+            <div class="kpi-val" id="kpiViews">0</div><div class="kpi-lbl">Görüntüleme</div>
+          </div>
+        </div>
+
+        <div class="g2">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-chart-bar"></i>Aylık Satış Trendi</span>
+              <div class="chart-toggle">
+                <button class="act" onclick="setChartView('7',this)">7 Ay</button>
+                <button onclick="setChartView('12',this)">12 Ay</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="mini-chart" id="dashChart"></div>
+              <div class="chart-labels" id="dashChartLabels"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-trending-up"></i>En Çok Görüntülenen</span>
+              <button class="card-btn" onclick="navTo('p-books')">Tümü →</button>
+            </div>
+            <div class="card-body" id="dashTopBooks"></div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1.65fr 1fr;gap:.85rem;margin-bottom:.85rem" class="g2-auto">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-receipt"></i>Son Siparişler</span>
+              <button class="card-btn" onclick="navTo('p-orders')">Tümünü Gör →</button>
+            </div>
+            <div style="padding:.3rem .9rem" id="dashOrders"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title"><i class="ti ti-chart-donut"></i>Kategori Dağılımı</span></div>
+            <div class="card-body">
+              <div class="donut-wrap">
+                <svg width="78" height="78" viewBox="0 0 78 78" style="flex-shrink:0">
+                  <circle cx="39" cy="39" r="30" fill="none" stroke="#C8A96E" stroke-width="11" stroke-dasharray="75 113" stroke-dashoffset="0"/>
+                  <circle cx="39" cy="39" r="30" fill="none" stroke="#2D4A3E" stroke-width="11" stroke-dasharray="41 147" stroke-dashoffset="-75"/>
+                  <circle cx="39" cy="39" r="30" fill="none" stroke="#8B3A2A" stroke-width="11" stroke-dasharray="29 159" stroke-dashoffset="-116"/>
+                  <circle cx="39" cy="39" r="30" fill="none" stroke="#4A2D3E" stroke-width="11" stroke-dasharray="44 144" stroke-dashoffset="-145"/>
+                </svg>
+                <div class="donut-legend">
+                  <div class="legend-item"><div class="legend-dot" style="background:#C8A96E"></div>Roman<span class="legend-pct">%40</span></div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#2D4A3E"></div>Tarih<span class="legend-pct">%22</span></div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#8B3A2A"></div>Şiir<span class="legend-pct">%15</span></div>
+                  <div class="legend-item"><div class="legend-dot" style="background:#4A2D3E"></div>Diğer<span class="legend-pct">%23</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom:.85rem">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-chart-bar"></i>Site Ziyaret İstatistikleri</span>
+            <div style="display:flex;gap:1rem;align-items:center">
+              <span style="font-size:.75rem;color:var(--txt2)">Bugün: <strong id="visitTodayCount">0</strong></span>
+              <span style="font-size:.75rem;color:var(--txt2)">Toplam: <strong id="visitTotal">0</strong></span>
+            </div>
+          </div>
+          <div class="card-body" id="visitStatsChart" style="padding:.5rem .9rem"></div>
+        </div>
+      </div>
+
+      <!-- ── ANALİTİK ──────────────────── -->
+      <div class="page" id="p-analytics">
+        <div class="notice"><i class="ti ti-info-circle"></i>Veriler demo amaçlıdır; gerçek analitik entegrasyonu ile canlıya alınabilir.</div>
+        <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+          <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-trending-up" style="color:#C8A96E"></i></div><span class="kpi-badge kb-up">+34%</span></div><div class="kpi-val">138</div><div class="kpi-lbl">Toplam Satış</div></div>
+          <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-calendar" style="color:#2D4A3E"></i></div><span class="kpi-badge kb-up">+12%</span></div><div class="kpi-val">34</div><div class="kpi-lbl">Bu Ayki Satış</div></div>
+          <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-cash" style="color:#8B3A2A"></i></div><span class="kpi-badge kb-up">+18%</span></div><div class="kpi-val">₺185</div><div class="kpi-lbl">Ort. Sipariş</div></div>
+        </div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-head"><span class="card-title"><i class="ti ti-chart-line"></i>12 Aylık Satış</span></div>
+            <div class="card-body">
+              <div class="mini-chart" id="analyticsChart" style="height:90px"></div>
+              <div class="chart-labels" id="analyticsLabels"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title"><i class="ti ti-map-pin"></i>Şehir Bazlı Satışlar</span></div>
+            <div class="card-body" id="cityStats"></div>
+          </div>
+        </div>
+        <div class="card mb-1">
+          <div class="card-head"><span class="card-title"><i class="ti ti-list"></i>Kategori Performansı</span></div>
+          <div class="card-body" id="catPerf"></div>
+        </div>
+      </div>
+
+      <!-- ── KİTAPLAR ───────────────────── -->
+      <div class="page" id="p-books">
+        <div class="sec-head">
+          <span class="sec-title">Kitap Yönetimi</span>
+          <button class="tb-btn primary" onclick="openAddBook()"><i class="ti ti-plus"></i>Yeni Kitap</button>
+        </div>
+        <div class="card mb-1" id="addBookCard" style="display:none">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-plus"></i>Yeni Kitap Ekle</span>
+            <button class="card-btn" onclick="toggleAddBook()">✕ Kapat</button>
+          </div>
+          <div class="card-body">
+            <div class="form-grid">
+              <div class="field"><label>Kitap Adı *</label><input id="nb-title" placeholder="Kitabın adı"></div>
+              <div class="field"><label>Yazar *</label><input id="nb-author" placeholder="Yazar adı"></div>
+              <div class="field"><label>Fiyat (₺) *</label><input id="nb-price" type="number" placeholder="150" min="1"></div>
+              <div class="field"><label>Kategori</label>
+                <select id="nb-cat">
+                  <option value="roman">Roman</option><option value="siir">Şiir</option><option value="tarih">Tarih</option>
+                  <option value="deneme">Deneme</option><option value="felsefe">Felsefe</option><option value="kisisel">Kişisel Gelişim</option>
+                  <option value="cocuk">Çocuk</option><option value="hikaye">Hikâye</option><option value="akademik">Akademik</option>
+                </select>
+              </div>
+              <div class="field"><label>Rozet</label><input id="nb-badge" placeholder="Yeni · Bestseller · Öne Çıkan"></div>
+              <div class="field"><label>Sayfa Sayısı</label><input id="nb-pages" type="number" placeholder="280" min="1"></div>
+              <div class="field field-full">
+                <label>Kapak Görseli — Cloudinary URL <span style="font-weight:400;color:var(--txt3)">(510×794 önerilir)</span></label>
+                <div style="display:flex;gap:.5rem;align-items:center">
+                  <input type="text" id="nb-cover" placeholder="https://res.cloudinary.com/..." oninput="previewCover(this)" style="flex:1">
+                  <button class="act-btn red" type="button" onclick="removeCover()" title="Temizle"><i class="ti ti-x" style="font-size:12px"></i></button>
+                </div>
+                <div style="margin-top:.35rem;font-size:.68rem;color:var(--txt3)"><i class="ti ti-cloud-upload" style="font-size:11px"></i> Cloudinary'e yükle → URL'yi kopyala → buraya yapıştır</div>
+                <div class="cover-preview" id="coverPreview">
+                  <img id="coverImg" alt="Kapak önizleme">
+                  <div class="cover-prev-info">
+                    <div id="coverDims"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="field field-full"><label>Açıklama</label><textarea id="nb-desc" placeholder="Kitabın kısa açıklaması..."></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button class="tb-btn primary" onclick="adminAddBook()"><i class="ti ti-check"></i>Kitabı Ekle</button>
+              <button class="tb-btn" onclick="toggleAddBook()">İptal</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-books"></i>Katalog <span id="bookCountLabel" style="color:var(--txt3);font-weight:400;font-size:.73rem"></span></span>
+            <div class="card-acts">
+              <select id="catFilter" onchange="renderBooks()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+                <option value="">Tüm Kategoriler</option>
+                <option value="roman">Roman</option><option value="siir">Şiir</option><option value="tarih">Tarih</option>
+                <option value="deneme">Deneme</option><option value="felsefe">Felsefe</option><option value="kisisel">Kişisel Gelişim</option>
+                <option value="cocuk">Çocuk</option><option value="hikaye">Hikâye</option><option value="akademik">Akademik</option>
+              </select>
+              <input placeholder="Kitap veya yazar ara..." oninput="renderBooks()" id="bookSearch" style="padding:.32rem .65rem;font-size:.75rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none;width:190px">
+            </div>
+          </div>
+          <div class="table-wrap"><table id="booksTable"></table></div>
+        </div>
+      </div>
+
+      <!-- ── YAZARLAR ────────────────────── -->
+      <div class="page" id="p-authors">
+        <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+          <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-users" style="color:#C8A96E"></i></div></div><div class="kpi-val" id="authorKpiActive">0</div><div class="kpi-lbl">Toplam Yazar</div></div>
+          <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-books" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="authorKpiBooks">0</div><div class="kpi-lbl">Toplam Kitap</div></div>
+          <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-eye" style="color:#8B3A2A"></i></div></div><div class="kpi-val" id="authorKpiViews">0</div><div class="kpi-lbl">Toplam Görüntüleme</div></div>
+        </div>
+        <div class="card mb-1">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-user-plus"></i>Yazar Ekle</span>
+            <button class="card-btn" onclick="toggleNewAuthorForm()" id="newAuthorToggleBtn"><i class="ti ti-chevron-down"></i> Formu Aç</button>
+          </div>
+          <div id="newAuthorFormWrap" style="display:none">
+            <div class="card-body">
+              <div class="form-grid">
+                <div class="field"><label>Ad Soyad *</label><input id="na-name" placeholder="Yazar adı soyadı"></div>
+                <div class="field"><label>Tür / Uzmanlık *</label><input id="na-genre" placeholder="Roman, Şiir, Tarih…"></div>
+                <div class="field field-full"><label>Biyografi</label><textarea id="na-bio" placeholder="Yazar hakkında kısa bilgi…" style="min-height:60px"></textarea></div>
+                <div class="field field-full"><label>Alıntı / Motto</label><input id="na-quote" placeholder="Yazara ait bir söz…"></div>
+                <div class="field"><label>Fotoğraf URL</label><input id="na-photo" placeholder="https://res.cloudinary.com/…"></div>
+                <div class="field"><label>Instagram</label><input id="na-ig" placeholder="@kullanici"></div>
+                <div class="field"><label>Twitter / X</label><input id="na-tw" placeholder="@kullanici"></div>
+                <div class="field"><label>Web Sitesi</label><input id="na-web" placeholder="https://…"></div>
+                <div class="field field-full">
+                  <label>Öne Çıkan Yazar</label>
+                  <label class="toggle" style="margin-top:.25rem"><input type="checkbox" id="na-featured"><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="tb-btn primary" onclick="addAuthorDirect()"><i class="ti ti-check"></i>Yazar Ekle</button>
+                <button class="tb-btn" onclick="toggleNewAuthorForm()">İptal</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-users"></i>Yazar Listesi</span>
+            <input id="authorSearch" placeholder="Yazar ara…" oninput="renderAuthorsTable(this.value)" style="padding:.32rem .65rem;font-size:.75rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none;width:180px">
+          </div>
+          <div class="table-wrap"><table id="authorsTable"></table></div>
+        </div>
+      </div>
+
+      <!-- ── SİPARİŞLER ─────────────────── -->
+      <div class="page" id="p-orders">
+        <div class="kpi-row">
+          <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-check" style="color:#C8A96E"></i></div></div><div class="kpi-val" id="ordKpiDone">4</div><div class="kpi-lbl">Tamamlandı</div></div>
+          <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-truck" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="ordKpiShip">1</div><div class="kpi-lbl">Kargoda</div></div>
+          <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-loader" style="color:#8B3A2A"></i></div></div><div class="kpi-val" id="ordKpiProc">1</div><div class="kpi-lbl">Hazırlanıyor</div></div>
+          <div class="kpi k4"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(74,45,62,.1)"><i class="ti ti-currency-lira" style="color:#4A2D3E"></i></div></div><div class="kpi-val" id="ordKpiRev">₺1.340</div><div class="kpi-lbl">Toplam Gelir</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-receipt"></i>Sipariş Listesi</span>
+            <div class="card-acts">
+              <select id="orderStatusFilter" onchange="renderOrders()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+                <option value="">Tüm Durumlar</option>
+                <option value="Hazırlanıyor">Hazırlanıyor</option>
+                <option value="Kargoda">Kargoda</option>
+                <option value="Tamamlandı">Tamamlandı</option>
+                <option value="İptal">İptal</option>
+              </select>
+              <button class="card-btn" onclick="exportOrders()"><i class="ti ti-download" style="font-size:13px"></i>CSV</button>
+            </div>
+          </div>
+          <div class="table-wrap"><table id="ordersTable"></table></div>
+        </div>
+      </div>
+
+      <!-- ── KULLANICILAR ──────────────── -->
+      <div class="page" id="p-users">
+        <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+          <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-user" style="color:#C8A96E"></i></div><span class="kpi-badge kb-up">+5</span></div><div class="kpi-val" id="kpiOkur">0</div><div class="kpi-lbl">Okur</div></div>
+          <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-pencil" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="kpiYazar">0</div><div class="kpi-lbl">Yazar</div></div>
+          <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-shield" style="color:#8B3A2A"></i></div></div><div class="kpi-val">1</div><div class="kpi-lbl">Admin</div></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-users"></i>Kullanıcılar</span>
+            <input placeholder="İsim veya e-posta ara..." oninput="renderUsers(this.value)" style="padding:.32rem .65rem;font-size:.75rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none;width:220px">
+          </div>
+          <div class="table-wrap"><table id="usersTable"></table></div>
+        </div>
+      </div>
+
+      <!-- ── BLOG ──────────────────────── -->
+      <div class="page" id="p-blog">
+        <div class="sec-head">
+          <span class="sec-title">Blog Yazıları</span>
+          <button class="tb-btn primary" onclick="openBlogModal()"><i class="ti ti-plus"></i>Yeni Yazı</button>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-news"></i>Yazılar <span id="blogCountLabel" style="color:var(--txt3);font-weight:400;font-size:.73rem"></span></span>
+            <select id="blogStatusFilter" onchange="renderBlog()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+              <option value="">Tüm Durumlar</option>
+              <option value="Yayında">Yayında</option>
+              <option value="Taslak">Taslak</option>
+            </select>
+          </div>
+          <div class="table-wrap"><table id="blogTable"></table></div>
+        </div>
+      </div>
+
+      <!-- ── YORUMLAR ───────────────────── -->
+      <div class="page" id="p-reviews">
+        <div class="notice"><i class="ti ti-info-circle"></i>Okuyucu yorumlarını buradan inceleyip moderasyon yapabilirsiniz.</div>
+        <div class="g2">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-star"></i>Tüm Yorumlar</span>
+              <span style="font-size:.72rem;color:var(--txt3)" id="reviewTotalLabel"></span>
+            </div>
+            <div class="card-body" id="reviewList" style="max-height:360px;overflow-y:auto;padding:0 .6rem"></div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title"><i class="ti ti-chart-bar"></i>Puan Dağılımı</span></div>
+            <div class="card-body" id="ratingDist"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SİTE İÇERİĞİ ─────────────── -->
+      <div class="page" id="p-content">
+
+        <!-- Hero Slider -->
+        <div class="card" style="margin-bottom:1.25rem">
+          <div class="card-head">
+            <span class="card-title"><i class="ti ti-photo"></i>Ana Sayfa Hero Slider</span>
+            <div class="card-acts">
+              <button class="card-btn primary" onclick="saveHeroContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <p style="font-size:.75rem;color:var(--txt2);margin-bottom:.8rem">Her slide için başlık, üst etiket ve açıklamayı düzenleyin. Başlıkta italik/altın rengi için <code style="background:var(--bg2);padding:1px 4px;border-radius:3px">&lt;em&gt;kelime&lt;/em&gt;</code> kullanabilirsiniz.</p>
+            <div style="display:flex;gap:.5rem;margin-bottom:1rem" id="slideTabRow">
+              <button class="tb-btn act" onclick="selSlideTab(0,this)">Slide 1</button>
+              <button class="tb-btn" onclick="selSlideTab(1,this)">Slide 2</button>
+              <button class="tb-btn" onclick="selSlideTab(2,this)">Slide 3</button>
+            </div>
+            <div id="slideEditorWrap"></div>
+          </div>
+        </div>
+
+        <div class="g2">
+          <!-- Hakkımızda -->
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-info-circle"></i>Hakkımızda Sayfası</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="saveAboutContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="settings-section">
+                <h4>Hero Bölümü</h4>
+                <div class="field"><label>Alt Başlık</label><input type="text" id="ab-sub-inp" placeholder="Adana'dan Türk edebiyatına uzanan umut dolu yolculuğumuz."></div>
+                <div class="field"><label>Ana Alıntı (tırnaklar otomatik eklenir)</label><input type="text" id="ab-quote-inp" placeholder="Fikrin gülleri, Akgül Yayınevi'nde açacak."></div>
+                <div class="field"><label>Meta Satırı (konum · tarih)</label><input type="text" id="ab-meta-inp" placeholder="Adana · Mayıs 2026'dan beri"></div>
+              </div>
+              <div class="settings-section">
+                <h4>Kurucu Bölümü</h4>
+                <div class="field"><label>Kurucu Adı</label><input type="text" id="ab-fname-inp" placeholder="Ömer Faruk Akgül"></div>
+                <div class="field"><label>Ünvan</label><input type="text" id="ab-frole-inp" placeholder="Kurucu & Genel Yayın Yönetmeni"></div>
+                <div class="field"><label>Kurucu Alıntısı</label><textarea id="ab-fquote-inp" rows="2" style="width:100%;resize:vertical" placeholder="Edebiyat; kalbin söyleyemediğini dilin söylemesine yardım eden en güçlü araçtır."></textarea></div>
+                <div class="field"><label>Kurucu Biyografisi</label><textarea id="ab-fbio-inp" rows="3" style="width:100%;resize:vertical" placeholder="Adanalı bir yazar ve editör olan..."></textarea></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- İletişim & Footer -->
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-phone"></i>İletişim & Footer</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="saveContactContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="settings-section">
+                <h4>İletişim Bilgileri</h4>
+                <div class="field"><label>Adres (satır için Enter)</label><textarea id="ct-addr-inp" rows="2" style="width:100%;resize:vertical" placeholder="Tavşantepe Mah. TOKİ&#10;FG/5 A Blok K:5 No:12, Adana"></textarea></div>
+                <div class="field"><label>Google Maps URL</label><input type="text" id="ct-maps-inp" placeholder="https://maps.app.goo.gl/..."></div>
+                <div class="field"><label>Telefon (görünecek metin)</label><input type="text" id="ct-phone-inp" placeholder="0 536 648 30 96"></div>
+                <div class="field"><label>WhatsApp Numarası (90 ile başlayarak)</label><input type="text" id="ct-wa-inp" placeholder="905366483096" maxlength="12"></div>
+                <div class="field"><label>E-posta</label><input type="email" id="ct-email-inp" placeholder="akgulyayinevi@gmail.com"></div>
+              </div>
+              <div class="settings-section">
+                <h4>Sosyal Medya</h4>
+                <div class="field"><label>Instagram kullanıcı adı (@ olmadan)</label><input type="text" id="ct-ig-inp" placeholder="akgulyayinevi"></div>
+                <div class="field"><label>Facebook URL</label><input type="text" id="ct-fb-inp" placeholder="https://facebook.com/..."></div>
+                <div class="field"><label>X / Twitter URL</label><input type="text" id="ct-tw-inp" placeholder="https://twitter.com/..."></div>
+              </div>
+              <div class="settings-section">
+                <h4>Footer Metinleri</h4>
+                <div class="field"><label>Slogan</label><input type="text" id="ft-slogan-inp" placeholder="Fikrin gülleri, Akgül Yayınevi'nde açacak…"></div>
+                <div class="field"><label>Kısa Hakkında Metni</label><textarea id="ft-about-inp" rows="2" style="width:100%;resize:vertical" placeholder="Adana merkezli Akgül Yayınevi, Türk edebiyatını ve yerli yazarları destekleme misyonuyla hizmet vermektedir."></textarea></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── AYARLAR ────────────────────── -->
+      <div class="page" id="p-settings">
+        <div class="g2">
+          <div class="card">
+            <div class="card-head"><span class="card-title"><i class="ti ti-lock"></i>Admin Şifresi</span></div>
+            <div class="card-body">
+              <div class="field" style="margin-bottom:.6rem"><label>Mevcut Şifre</label><input type="password" id="oldp" placeholder="••••••••"></div>
+              <div class="field" style="margin-bottom:.6rem"><label>Yeni Şifre</label><input type="password" id="newp" placeholder="En az 6 karakter"></div>
+              <div class="field" style="margin-bottom:.8rem"><label>Yeni Şifre (Tekrar)</label><input type="password" id="newp2" placeholder="Şifreyi tekrarlayın"></div>
+              <button class="tb-btn primary" onclick="changePass()"><i class="ti ti-check"></i>Güncelle</button>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head"><span class="card-title"><i class="ti ti-adjustments"></i>Site Ayarları</span></div>
+            <div class="card-body">
+              <div class="settings-section">
+                <h4>Bildirimler</h4>
+                <div class="toggle-row">Yeni sipariş bildirimi<label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div class="toggle-row">Yeni üye bildirimi<label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div class="toggle-row">Yorum bildirimi<label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+              </div>
+              <div class="settings-section">
+                <h4>Katalog</h4>
+                <div class="toggle-row">Stok dışı kitapları gizle<label class="toggle"><input type="checkbox"><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+                <div class="toggle-row">AI öneri aktif<label class="toggle"><input type="checkbox" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-head"><span class="card-title"><i class="ti ti-database"></i>Anlık İstatistikler</span>
+            <div class="card-acts">
+              <button class="card-btn" onclick="exportAllData()"><i class="ti ti-download" style="font-size:13px"></i>Yedek Al</button>
+              <button class="card-btn" onclick="importData()"><i class="ti ti-upload" style="font-size:13px"></i>İçe Aktar</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="kpi-row" id="statsKpis"></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /page-body -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ── AI PANEL ──────────────────────────────────────────── -->
+<button class="ai-fab" onclick="toggleAI()" id="aiFab">
+  <i class="ti ti-sparkles"></i><span>AI Asistan</span>
+</button>
+
+<div class="ai-panel" id="aiPanel">
+  <div class="ai-panel-head">
+    <div class="ai-panel-title"><i class="ti ti-sparkles"></i>AI Asistan</div>
+    <div class="ai-panel-btns">
+      <button class="card-btn" onclick="clearAIChat()" title="Sohbeti temizle" style="padding:.22rem .5rem"><i class="ti ti-trash" style="font-size:12px"></i></button>
+      <button class="modal-close" onclick="toggleAI()"><i class="ti ti-x"></i></button>
+    </div>
+  </div>
+  <div class="ai-messages" id="aiMessages"></div>
+  <div class="ai-input-row">
+    <textarea id="aiInput" placeholder="Komut yazın veya soru sorun…" rows="1"
+      onkeydown="aiKeyDown(event)" oninput="aiAutoResize(this)"></textarea>
+    <button class="ai-send" id="aiSendBtn" onclick="sendAIMessage()"><i class="ti ti-send"></i></button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   STATE & STORAGE
+═══════════════════════════════════════ */
+const STORE_BOOKS   = 'akgul_books_v2';
+const STORE_ORDERS  = 'akgul_orders_v2';
+const STORE_BLOG    = 'akgul_blog_v2';
+const STORE_AUTHORS = 'akgul_authors_v2';
+const STORE_USERS   = 'akgulUsers';
+const STORE_CREDS   = 'akgul_creds';
+const STORE_NOTIFS  = 'akgul_notifs';
+
+const CATS = {roman:'Roman',siir:'Şiir',tarih:'Tarih',deneme:'Deneme',felsefe:'Felsefe',kisisel:'Kişisel Gelişim',cocuk:'Çocuk',hikaye:'Hikâye',akademik:'Akademik'};
+const AV_COLORS = ['#2D4A3E','#4A2D3E','#3E3A2D','#2D3A4A','#2D3E3A','#2A4A5A','#8B3A2A','#4A3A2D'];
+const avColor = s => AV_COLORS[Math.abs(s.split('').reduce((a,c)=>a+c.charCodeAt(0),0)) % AV_COLORS.length];
+
+/* ─── HELPERS ─── */
+const g=id=>document.getElementById(id);
+const gv=id=>g(id)?g(id).value.trim():'';
+const setTxt=(id,v)=>{const e=g(id);if(e)e.textContent=v};
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+function load(k,def){ try{const v=localStorage.getItem(k);return v?JSON.parse(v):def}catch(e){return def} }
+function save(k,v){ try{localStorage.setItem(k,JSON.stringify(v))}catch(e){} }
+
+let books    = load(STORE_BOOKS,   defaultBooks());
+let orders   = load(STORE_ORDERS,  defaultOrders());
+let blogPosts= load(STORE_BLOG,    defaultBlog());
+let authorsData=load(STORE_AUTHORS,defaultAuthors());
+let users    = load(STORE_USERS,   []);
+let notifs   = load(STORE_NOTIFS,  defaultNotifs());
+
+function saveBooks(){save(STORE_BOOKS,books);save('akgulAdminBooks',books);updateNavBadges()}
+function saveOrders(){save(STORE_ORDERS,orders)}
+function saveBlog(){save(STORE_BLOG,blogPosts);save('akgulSiteBlog',blogPosts);updateNavBadges()}
+function saveAuthors(){save(STORE_AUTHORS,authorsData)}
+function saveUsers(){save(STORE_USERS,users)}
+function saveNotifs(){save(STORE_NOTIFS,notifs)}
+
+const STORE_CONTENT='akgulSiteContent';
+let siteContentAdmin=load(STORE_CONTENT,{slides:[{},{},{}],about:{},contact:{},footer:{}});
+function saveContent(){save(STORE_CONTENT,siteContentAdmin)}
+
+/* ─── DEFAULTS ─── */
+function defaultBooks(){return[
+  {id:1,title:"Gece Sesleri",author:"Leyla Karadeniz",price:185,cat:"roman",badge:"Yeni",pages:312,desc:"Karanlık bir gecede başlayan yolculuk...",cover:'',views:142,reviews:[{u:"Zeynep A.",s:5,t:"Muhteşem bir roman, çok etkilendim!"}]},
+  {id:2,title:"Sessiz Kıyılar",author:"Ahmet Demir",price:160,cat:"siir",badge:null,pages:128,desc:"Ege'nin sessizliğinden doğan şiirler.",cover:'',views:87,reviews:[]},
+  {id:3,title:"Anadolu'nun Sesi",author:"Fatma Yıldız",price:195,cat:"tarih",badge:"Bestseller",pages:480,desc:"Anadolu medeniyetlerinin derin izleri.",cover:'',views:231,reviews:[{u:"Murat K.",s:5,t:"Tarih kitabı, gerçekten kapsamlı!"}]},
+  {id:4,title:"Kayıp Kelimeler",author:"Can Öztürk",price:170,cat:"roman",badge:null,pages:264,desc:"",cover:'',views:119,reviews:[]},
+  {id:5,title:"İz Bırakanlar",author:"Selin Arslan",price:155,cat:"deneme",badge:"Yeni",pages:210,desc:"",cover:'',views:73,reviews:[]},
+  {id:6,title:"Bozkır Şiirleri",author:"Osman Çelik",price:145,cat:"siir",badge:null,pages:96,desc:"",cover:'',views:64,reviews:[]},
+  {id:7,title:"Osmanlı'dan Bugüne",author:"Prof. M. Aydın",price:220,cat:"tarih",badge:null,pages:520,desc:"",cover:'',views:188,reviews:[]},
+  {id:8,title:"Mavi Oda",author:"Deniz Kaya",price:175,cat:"roman",badge:"Öne Çıkan",pages:340,desc:"",cover:'',views:316,reviews:[{u:"Elif D.",s:5,t:"Çarpıcı, bir solukta okudum!"}]},
+  {id:9,title:"Küçük Prens'in Dönüşü",author:"Ayşe Nur",price:120,cat:"cocuk",badge:"Yeni",pages:144,desc:"",cover:'',views:95,reviews:[]},
+  {id:10,title:"Güneşin Altında",author:"Barış Tekin",price:135,cat:"cocuk",badge:null,pages:168,desc:"",cover:'',views:58,reviews:[]},
+  {id:11,title:"Ruhun Aynası",author:"Dr. Zeynep Koç",price:190,cat:"kisisel",badge:"Yeni",pages:286,desc:"",cover:'',views:147,reviews:[]},
+  {id:12,title:"Varoluşun Eşiğinde",author:"Mehmet Aksoy",price:165,cat:"felsefe",badge:null,pages:330,desc:"",cover:'',views:104,reviews:[]},
+  {id:13,title:"Son Hikâye",author:"Neslihan Yılmaz",price:140,cat:"hikaye",badge:null,pages:196,desc:"",cover:'',views:82,reviews:[]},
+  {id:14,title:"Dil ve Toplum",author:"Prof. H. Çetin",price:240,cat:"akademik",badge:null,pages:412,desc:"",cover:'',views:61,reviews:[]},
+];}
+function defaultAuthors(){return[
+  {name:"Leyla Karadeniz",genre:"Roman",books:["Gece Sesleri"],photo:""},
+  {name:"Ahmet Demir",genre:"Şiir",books:["Sessiz Kıyılar"],photo:""},
+  {name:"Fatma Yıldız",genre:"Tarih",books:["Anadolu'nun Sesi"],photo:""},
+  {name:"Can Öztürk",genre:"Roman",books:["Kayıp Kelimeler"],photo:""},
+  {name:"Deniz Kaya",genre:"Roman",books:["Mavi Oda"],photo:""},
+  {name:"Dr. Zeynep Koç",genre:"Kişisel Gelişim",books:["Ruhun Aynası"],photo:""},
+  {name:"Osman Çelik",genre:"Şiir",books:["Bozkır Şiirleri"],photo:""},
+  {name:"Selin Arslan",genre:"Deneme",books:["İz Bırakanlar"],photo:""},
+];}
+function defaultOrders(){return[
+  {id:'#001',customer:'Zeynep Arslan',book:'Mavi Oda',total:175,date:'5 May 2026',status:'Tamamlandı',city:'Adana'},
+  {id:'#002',customer:'Murat Demir',book:"Anadolu'nun Sesi + Gece Sesleri",total:380,date:'4 May 2026',status:'Hazırlanıyor',city:'Mersin'},
+  {id:'#003',customer:'Elif Çelik',book:'Sürpriz Kutu',total:390,date:'3 May 2026',status:'Tamamlandı',city:'İstanbul'},
+  {id:'#004',customer:'Ahmet Yılmaz',book:'Ruhun Aynası',total:190,date:'3 May 2026',status:'Kargoda',city:'Ankara'},
+  {id:'#005',customer:'Selin Kara',book:'Varoluşun Eşiğinde',total:165,date:'2 May 2026',status:'Tamamlandı',city:'İzmir'},
+  {id:'#006',customer:'Can Öz',book:"Osmanlı'dan Bugüne",total:220,date:'1 May 2026',status:'İptal',city:'Adana'},
+];}
+function defaultBlog(){return[
+  {id:1,title:"Roman Yazarken Yaşadığım En Büyük Kriz",author:"Deniz Kaya",date:"2 May 2026",cat:"Yazarlık",status:"Yayında",content:""},
+  {id:2,title:"Şiir: Dili Seviyor musunuz?",author:"Ahmet Demir",date:"28 Nis 2026",cat:"Şiir & Dil",status:"Yayında",content:""},
+  {id:3,title:"Anadolu'da Araştırma Yapmak",author:"Fatma Yıldız",date:"20 Nis 2026",cat:"Tarih",status:"Yayında",content:""},
+  {id:4,title:"Felsefe Neden 'Zor' Gelir?",author:"Mehmet Aksoy",date:"15 Nis 2026",cat:"Felsefe",status:"Yayında",content:""},
+  {id:5,title:"Çocuk Kitabı Yazmak Neden En Zor İştir?",author:"Ayşe Nur",date:"10 Nis 2026",cat:"Çocuk Edeb.",status:"Yayında",content:""},
+  {id:6,title:"Kendi Kendine Şifacı Olmak",author:"Dr. Zeynep Koç",date:"5 Nis 2026",cat:"Psikoloji",status:"Yayında",content:""},
+];}
+function defaultNotifs(){return[
+  {id:1,icon:'ti-shopping-cart',iconBg:'rgba(45,74,62,.12)',iconColor:'#2D4A3E',msg:'Yeni sipariş: Zeynep Arslan — ₺175',time:'2 saat önce',read:false},
+  {id:2,icon:'ti-user-plus',iconBg:'rgba(200,169,110,.12)',iconColor:'#C8A96E',msg:'Yeni üye kaydı: Burak Şahin',time:'5 saat önce',read:false},
+  {id:3,icon:'ti-star',iconBg:'rgba(139,58,42,.12)',iconColor:'#8B3A2A',msg:'Yeni yorum: "Mavi Oda" — Elif D. ★★★★★',time:'1 gün önce',read:false},
+];}
+
+/* ═══════════════════════════════════════
+   AUTH
+═══════════════════════════════════════ */
+function getCreds(){return load(STORE_CREDS,{user:'admin',pass:'akgul2026'})}
+
+function handleLogin(){
+  const user=g('loginUser').value.trim();
+  const pass=g('loginPass').value;
+  const c=getCreds();
+  if(user===c.user&&pass===c.pass){
+    localStorage.setItem('akgul_auth','1');
+    g('loginOverlay').style.display='none';
+    g('appWrap').style.display='flex';
+    initApp();
+  }else{
+    g('loginErr').textContent='Kullanıcı adı veya şifre hatalı!';
+    g('loginPass').value='';
+    g('loginPass').focus();
+  }
+}
+
+function adminLogout(){
+  localStorage.removeItem('akgul_auth');
+  g('appWrap').style.display='none';
+  g('loginOverlay').style.display='flex';
+  g('loginUser').value='';g('loginPass').value='';g('loginErr').textContent='';
+  toast('Çıkış yapıldı');
+}
+
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+function initApp(){
+  renderDashChart();
+  renderTopBooks();
+  renderDashOrders();
+  updateNavBadges();
+  renderNotifs();
+  updateAdminLive();
+  renderVisitStats();
+}
+
+/* ═══════════════════════════════════════
+   NAV
+═══════════════════════════════════════ */
+const PAGE_META={
+  'p-dash':    {title:'Genel Bakış',    bread:'Mayıs 2026'},
+  'p-analytics':{title:'Analizler',     bread:'Satış & Trafik'},
+  'p-books':   {title:'Kitap Yönetimi', bread:'Katalog'},
+  'p-authors': {title:'Yazarlar',       bread:'Katalog'},
+  'p-orders':  {title:'Siparişler',     bread:'Topluluk'},
+  'p-users':   {title:'Kullanıcılar',   bread:'Topluluk'},
+  'p-blog':    {title:'Blog',           bread:'Topluluk'},
+  'p-reviews': {title:'Yorumlar',       bread:'Moderasyon'},
+  'p-content': {title:'Site İçeriği',   bread:'İçerik Yönetimi'},
+  'p-settings':{title:'Ayarlar',        bread:'Sistem'},
+};
+
+function nav(el){
+  const pid=el.dataset.page;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('act'));
+  el.classList.add('act');
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
+  const pg=g(pid);if(pg)pg.classList.add('act');
+  const m=PAGE_META[pid]||{};
+  g('tbTitle').textContent=m.title||'';
+  g('tbBread').innerHTML=`<i class="ti ti-chevron-right"></i><span>${m.bread||''}</span>`;
+  closeSidebar();
+  // render on nav
+  if(pid==='p-books')    renderBooks();
+  if(pid==='p-analytics')renderAnalytics();
+  if(pid==='p-authors')  renderAuthorsTable();
+  if(pid==='p-orders')   renderOrders();
+  if(pid==='p-users')    renderUsers();
+  if(pid==='p-blog')     renderBlog();
+  if(pid==='p-reviews')  renderReviews();
+  if(pid==='p-content')  renderContent();
+  if(pid==='p-settings') renderStatsKpis();
+}
+
+function navTo(pid){
+  const el=document.querySelector(`[data-page="${pid}"]`);
+  if(el)nav(el);
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR MOBILE
+═══════════════════════════════════════ */
+function openSidebar(){g('sidebar').classList.add('mob-open');g('mobOverlay').classList.add('open')}
+function closeSidebar(){g('sidebar').classList.remove('mob-open');g('mobOverlay').classList.remove('open')}
+
+/* ═══════════════════════════════════════
+   CHART
+═══════════════════════════════════════ */
+const DATA7={d:[8,15,22,18,29,34,44],l:['Kas','Ara','Oca','Şub','Mar','Nis','May']};
+const DATA12={d:[5,8,12,8,15,22,18,29,34,28,38,44],l:['Haz','Tem','Ağu','Eyl','Eki','Kas','Ara','Oca','Şub','Mar','Nis','May']};
+let currentChartView='7';
+
+function renderDashChart(){
+  const data=currentChartView==='7'?DATA7:DATA12;
+  renderChart('dashChart','dashChartLabels',data.d,data.l);
+}
+function setChartView(v,btn){
+  currentChartView=v;
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('act'));
+  btn.classList.add('act');
+  renderDashChart();
+}
+function renderChart(chartId,lblId,data,labels){
+  const el=g(chartId);if(!el)return;
+  const mx=Math.max(...data,1);
+  el.innerHTML=data.map((v,i)=>`<div class="bar${i===data.length-1?' today':v===mx?' hi':''}" style="height:${Math.round(v/mx*100)}%" title="${labels[i]}: ${v} satış"></div>`).join('');
+  const lb=g(lblId);if(lb)lb.innerHTML=labels.map(l=>`<span>${l}</span>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   DASHBOARD
+═══════════════════════════════════════ */
+function renderTopBooks(){
+  const top=[...books].sort((a,b)=>b.views-a.views).slice(0,5);
+  const el=g('dashTopBooks');if(!el)return;
+  el.innerHTML=top.map(b=>`
+    <div class="top-book">
+      ${coverImg(b,'26px','38px')}
+      <div class="top-book-info"><div class="top-book-title">${b.title}</div><div class="top-book-author">${b.author}</div></div>
+      <div class="top-book-views">${b.views}</div>
+    </div>`).join('');
+}
+function renderDashOrders(){
+  const el=g('dashOrders');if(!el)return;
+  el.innerHTML=orders.slice(0,4).map(o=>`
+    <div class="order-row">
+      <div class="o-av" style="background:${avColor(o.customer)}">${o.customer.slice(0,2).toUpperCase()}</div>
+      <div class="o-info">
+        <div class="o-name">${o.customer} <span style="color:var(--txt3);font-size:.63rem;font-weight:400">${o.id}</span></div>
+        <div class="o-detail">${o.book.length>32?o.book.slice(0,32)+'…':o.book} · ${o.date}</div>
+      </div>
+      <span class="pill ${sPill(o.status)}">${o.status}</span>
+      <div class="o-price">₺${o.total}</div>
+    </div>`).join('');
+}
+function sPill(s){return s==='Tamamlandı'?'p-done':s==='Kargoda'?'p-ship':s==='Hazırlanıyor'?'p-proc':'p-canc'}
+
+/* ═══════════════════════════════════════
+   BOOKS
+═══════════════════════════════════════ */
+let currentCoverData=null;
+
+function coverImg(b,w,h){
+  const fallback=`data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='51' height='79'><rect width='51' height='79' fill='%23DDD5C5'/><text x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='%23A09882' font-size='9' font-family='sans-serif'>Kapak</text></svg>`;
+  return `<img src="${b.cover||fallback}" class="bcover" style="width:${w};height:${h};border-radius:3px;object-fit:cover;border:1px solid var(--brd2)" alt="Kapak">`;
+}
+
+function openAddBook(){navTo('p-books');setTimeout(()=>{g('addBookCard').style.display='block';g('addBookCard').scrollIntoView({behavior:'smooth',block:'start'})},50)}
+function toggleAddBook(){const c=g('addBookCard');c.style.display=c.style.display==='none'?'block':'none'}
+
+function previewCover(input){
+  const url=(input.value||'').trim();
+  if(!url){g('coverPreview').style.display='none';currentCoverData=null;return}
+  const img=new Image();
+  img.onload=()=>{
+    g('coverImg').src=url;
+    g('coverPreview').style.display='flex';
+    g('coverDims').textContent=`${img.width}×${img.height}px${img.width!==510||img.height!==794?' ⚠ Önerilen 510×794':''}`;
+    currentCoverData=url;
+  };
+  img.onerror=()=>{g('coverPreview').style.display='none';currentCoverData=null};
+  img.src=url;
+}
+function removeCover(){
+  g('nb-cover').value='';g('coverPreview').style.display='none';g('coverImg').src='';currentCoverData=null;
+}
+
+function adminAddBook(){
+  const title=gv('nb-title'),author=gv('nb-author'),price=parseInt(gv('nb-price'))||0,cat=gv('nb-cat'),badge=gv('nb-badge')||null,pages=parseInt(gv('nb-pages'))||0,desc=gv('nb-desc');
+  if(!title){toast('Kitap adı zorunlu!','warn');return}
+  if(!author){toast('Yazar adı zorunlu!','warn');return}
+  if(price<1){toast('Geçerli bir fiyat girin!','warn');return}
+  const newBook={id:Date.now(),title,author,price,cat,badge,pages,desc,cover:currentCoverData||'',views:0,reviews:[]};
+  books.unshift(newBook);
+  saveBooks();renderBooks();renderTopBooks();
+  ['nb-title','nb-author','nb-price','nb-badge','nb-pages','nb-desc'].forEach(id=>{const e=g(id);if(e)e.value=''});
+  removeCover();g('nb-cat').value='roman';
+  g('addBookCard').style.display='none';
+  toast(`✦ "${title}" eklendi!`);
+  updateNavBadges();
+}
+
+function renderBooks(){
+  const q=(g('bookSearch')?.value||'').toLowerCase();
+  const cat=g('catFilter')?.value||'';
+  let list=books.filter(b=>{
+    const mQ=!q||(b.title.toLowerCase().includes(q)||b.author.toLowerCase().includes(q));
+    const mC=!cat||b.cat===cat;
+    return mQ&&mC;
+  });
+  const lbl=g('bookCountLabel');if(lbl)lbl.textContent=`(${list.length} kitap)`;
+  const t=g('booksTable');if(!t)return;
+  t.innerHTML=`<thead><tr><th>Kapak</th><th>Kitap</th><th>Yazar</th><th>Kategori</th><th>Fiyat</th><th>Görüntüleme</th><th>Yorum</th><th>Rozet</th><th>İşlem</th></tr></thead><tbody>`+
+    list.map(b=>`<tr>
+      <td>${coverImg(b,'33px','50px')}</td>
+      <td style="font-weight:500;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${b.title}">${b.title}</td>
+      <td style="color:var(--txt2);font-size:.75rem">${b.author}</td>
+      <td><span class="cat-pill">${CATS[b.cat]||b.cat}</span></td>
+      <td style="font-weight:600">₺${b.price}</td>
+      <td style="color:var(--txt2)">${b.views}</td>
+      <td style="color:var(--txt2)">${b.reviews.length}</td>
+      <td>${b.badge?`<span style="font-size:.6rem;padding:2px 8px;background:rgba(200,169,110,.1);color:#C8A96E;border-radius:20px">${b.badge}</span>`:'<span style="color:var(--txt3)">—</span>'}</td>
+      <td style="display:flex;gap:.3rem;flex-wrap:nowrap">
+        <button class="act-btn" onclick="editBook(${b.id})"><i class="ti ti-edit" style="font-size:12px"></i></button>
+        <button class="act-btn red" onclick="deleteBook(${b.id})"><i class="ti ti-trash" style="font-size:12px"></i></button>
+      </td>
+    </tr>`).join('')+'</tbody>';
+}
+
+function editBook(id){
+  const b=books.find(x=>x.id===id);if(!b)return;
+  g('editModalTitle').textContent=`Düzenle — ${b.title}`;
+  g('editModalBody').innerHTML=`
+    <div class="form-grid">
+      <div class="field"><label>Kitap Adı</label><input id="eb-title" value="${esc(b.title)}"></div>
+      <div class="field"><label>Yazar</label><input id="eb-author" value="${esc(b.author)}"></div>
+      <div class="field"><label>Fiyat (₺)</label><input id="eb-price" type="number" value="${b.price}"></div>
+      <div class="field"><label>Kategori</label>
+        <select id="eb-cat">${Object.entries(CATS).map(([v,l])=>`<option value="${v}"${b.cat===v?' selected':''}>${l}</option>`).join('')}</select>
+      </div>
+      <div class="field"><label>Rozet</label><input id="eb-badge" value="${esc(b.badge||'')}"></div>
+      <div class="field"><label>Sayfa Sayısı</label><input id="eb-pages" type="number" value="${b.pages||''}"></div>
+      <div class="field field-full"><label>Kapak URL <span style="font-weight:400;color:var(--txt3)">(Cloudinary)</span></label><input id="eb-cover" value="${esc(b.cover||'')}" placeholder="https://res.cloudinary.com/..." oninput="previewEditCover(this)"></div>
+      <div class="cover-preview" id="ebCoverPreview" style="${b.cover?'display:flex':'display:none'}">
+        <img id="ebCoverImg" src="${esc(b.cover||'')}" alt="Kapak önizleme">
+        <div class="cover-prev-info"><div id="ebCoverDims"></div></div>
+      </div>
+      <div class="field field-full"><label>Açıklama</label><textarea id="eb-desc">${esc(b.desc||'')}</textarea></div>
+    </div>
+    <div class="form-actions">
+      <button class="tb-btn primary" onclick="saveEditBook(${b.id})"><i class="ti ti-check"></i>Kaydet</button>
+      <button class="tb-btn" onclick="closeModal('editModal')">İptal</button>
+    </div>`;
+  openModal('editModal');
+}
+
+function saveEditBook(id){
+  const b=books.find(x=>x.id===id);if(!b)return;
+  const price=parseInt(gv('eb-price'))||0;
+  if(!gv('eb-title')){toast('Kitap adı zorunlu!','warn');return}
+  if(price<1){toast('Geçerli fiyat girin!','warn');return}
+  b.title=gv('eb-title');b.author=gv('eb-author');b.price=price;
+  b.cat=gv('eb-cat');b.badge=gv('eb-badge')||null;
+  b.pages=parseInt(gv('eb-pages'))||0;b.desc=gv('eb-desc');
+  b.cover=(gv('eb-cover')||'').trim();
+  saveBooks();renderBooks();renderTopBooks();
+  closeModal('editModal');
+  toast(`"${b.title}" güncellendi`);
+}
+function previewEditCover(input){
+  const url=(input.value||'').trim();
+  if(!url){g('ebCoverPreview').style.display='none';return}
+  const img=new Image();
+  img.onload=()=>{g('ebCoverImg').src=url;g('ebCoverPreview').style.display='flex'};
+  img.onerror=()=>{g('ebCoverPreview').style.display='none'};
+  img.src=url;
+}
+
+function deleteBook(id){
+  const b=books.find(x=>x.id===id);if(!b)return;
+  if(!confirm(`"${b.title}" silinsin mi?`))return;
+  books.splice(books.indexOf(b),1);
+  saveBooks();renderBooks();renderTopBooks();
+  toast(`"${b.title}" silindi`,'warn');
+}
+
+/* ═══════════════════════════════════════
+   AUTHORS
+═══════════════════════════════════════ */
+function adminCreateAuthor(){
+  const name=gv('aa-name'),email=gv('aa-email'),pass=gv('aa-pass'),genre=gv('aa-genre');
+  if(!name||!email||!pass){toast('Ad, e-posta ve şifre zorunlu!','warn');return}
+  if(pass.length<6){toast('Şifre en az 6 karakter!','warn');return}
+  if(users.find(u=>u.email===email)){toast('Bu e-posta zaten kayıtlı!','warn');return}
+  const joined=new Date().toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
+  users.push({name,email,pass,role:'yazar',joined});
+  saveUsers();
+  if(!authorsData.find(a=>a.name===name)){
+    authorsData.push({
+      name,genre:genre||'Genel',books:[],photo:'',bio:'',quote:'',
+      soc:{ig:'',tw:'',web:''},featured:false,
+      initials:name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),
+      color:avColor(name)
+    });
+    saveAuthors();
+  }
+  renderUsers();renderAuthorsTable();
+  g('aa-name').value='';g('aa-email').value='';g('aa-pass').value='';g('aa-genre').value='';
+  toast(`✦ "${name}" yazar hesabı oluşturuldu!`);
+}
+
+function toggleNewAuthorForm(){
+  const wrap=g('newAuthorFormWrap');
+  const btn=g('newAuthorToggleBtn');
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  if(btn)btn.innerHTML=open?'<i class="ti ti-chevron-up"></i> Kapat':'<i class="ti ti-chevron-down"></i> Formu Aç';
+}
+
+function addAuthorDirect(){
+  const name=gv('na-name'),genre=gv('na-genre');
+  if(!name||!genre){toast('Ad Soyad ve Tür zorunlu!','warn');return}
+  if(authorsData.find(a=>a.name===name)){toast('Bu isimde yazar zaten var!','warn');return}
+  authorsData.push({
+    name,genre,
+    bio:gv('na-bio'),quote:gv('na-quote'),photo:gv('na-photo'),
+    soc:{ig:gv('na-ig'),tw:gv('na-tw'),web:gv('na-web')},
+    books:[],featured:g('na-featured')?.checked||false,
+    initials:name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),
+    color:avColor(name)
+  });
+  saveAuthors();renderAuthorsTable();
+  ['na-name','na-genre','na-bio','na-quote','na-photo','na-ig','na-tw','na-web'].forEach(id=>{const e=g(id);if(e)e.value=''});
+  if(g('na-featured'))g('na-featured').checked=false;
+  toggleNewAuthorForm();
+  toast(`✦ "${name}" yazar listesine eklendi!`);
+}
+
+function renderAuthorsTable(filter=''){
+  const totalBooks=authorsData.reduce((s,a)=>(s+(a.books||[]).length),0);
+  const totalViews=authorsData.reduce((s,a)=>s+books.filter(b=>b.author===a.name).reduce((ss,b)=>ss+b.views,0),0);
+  setTxt('authorKpiActive',authorsData.length);
+  setTxt('authorKpiBooks',totalBooks);
+  setTxt('authorKpiViews',totalViews);
+  const list=filter?authorsData.filter(a=>a.name.toLowerCase().includes(filter.toLowerCase())||a.genre.toLowerCase().includes(filter.toLowerCase())):authorsData;
+  const t=g('authorsTable');if(!t)return;
+  t.innerHTML=`<thead><tr><th>Yazar</th><th>Tür</th><th>Kitapları</th><th>Görüntüleme</th><th>Öne Çıkan</th><th style="text-align:center">İşlem</th></tr></thead><tbody>`+
+    list.map((a,i)=>{
+      const realIdx=authorsData.indexOf(a);
+      const views=books.filter(b=>b.author===a.name).reduce((s,b)=>s+b.views,0);
+      const av=a.photo
+        ?`<img src="${esc(a.photo)}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--brd2)">`
+        :`<div style="width:30px;height:30px;border-radius:50%;background:${avColor(a.name)};display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:600;color:#fff;flex-shrink:0">${(a.initials||a.name.slice(0,2))}</div>`;
+      const bookList=(a.books||[]);
+      return`<tr>
+        <td><div style="display:flex;align-items:center;gap:.6rem">${av}<div><div style="font-weight:500">${esc(a.name)}</div>${a.bio?`<div style="font-size:.65rem;color:var(--txt3);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(a.bio)}</div>`:''}</div></div></td>
+        <td><span class="cat-pill">${esc(a.genre)}</span></td>
+        <td style="font-size:.75rem;color:var(--txt2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${esc(bookList.join(', '))}">${bookList.length?esc(bookList.join(', ')):'<span style="color:var(--txt3)">—</span>'}</td>
+        <td style="font-weight:600;color:var(--gold)">${views}</td>
+        <td style="text-align:center">${a.featured?'<i class="ti ti-star-filled" style="color:var(--gold);font-size:14px"></i>':'<span style="color:var(--txt3);font-size:.72rem">—</span>'}</td>
+        <td style="text-align:center">
+          <div style="display:flex;gap:.3rem;justify-content:center">
+            <button class="act-btn" onclick="editAuthorFull(${realIdx})" title="Düzenle"><i class="ti ti-edit" style="font-size:12px"></i> Düzenle</button>
+            <button class="act-btn red" onclick="deleteAuthor(${realIdx})" title="Sil"><i class="ti ti-trash" style="font-size:12px"></i></button>
+          </div>
+        </td>
+      </tr>`;
+    }).join('')+'</tbody>';
+}
+
+function editAuthorFull(idx){
+  const a=authorsData[idx];if(!a)return;
+  const bookCheckboxes=books.map(b=>`
+    <label style="display:flex;align-items:center;gap:.4rem;font-size:.78rem;padding:.2rem 0;cursor:pointer">
+      <input type="checkbox" value="${esc(b.title)}" ${(a.books||[]).includes(b.title)?'checked':''}
+        onchange="toggleAuthorBook(${idx},'${esc(b.title)}',this.checked)" style="accent-color:var(--gold)">
+      ${esc(b.title)} <span style="color:var(--txt3);font-size:.65rem">— ${esc(b.author)}</span>
+    </label>`).join('');
+  g('editModalTitle').textContent=`Yazar Düzenle — ${a.name}`;
+  g('editModalBody').innerHTML=`
+    <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--brd2)">
+      <div id="aep-av" style="width:56px;height:56px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--fs);font-size:1.2rem;font-weight:700;color:#fff;background:${avColor(a.name)}">
+        ${a.photo?`<img src="${esc(a.photo)}" style="width:100%;height:100%;object-fit:cover">`:(a.initials||a.name.slice(0,2))}
+      </div>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:.95rem">${esc(a.name)}</div>
+        <div style="font-size:.72rem;color:var(--txt2)">${esc(a.genre)}</div>
+      </div>
+    </div>
+    <div class="form-grid" style="margin-bottom:1rem">
+      <div class="field"><label>Ad Soyad</label><input id="aep-name" value="${esc(a.name)}"></div>
+      <div class="field"><label>Tür / Uzmanlık</label><input id="aep-genre" value="${esc(a.genre)}"></div>
+      <div class="field field-full"><label>Biyografi</label><textarea id="aep-bio" style="min-height:60px">${esc(a.bio||'')}</textarea></div>
+      <div class="field field-full"><label>Alıntı / Motto</label><input id="aep-quote" value="${esc(a.quote||'')}"></div>
+      <div class="field field-full"><label>Fotoğraf URL</label>
+        <input id="aep-photo" value="${esc(a.photo||'')}" placeholder="https://res.cloudinary.com/…" oninput="previewAep(this.value)">
+      </div>
+      <div class="field"><label>Instagram</label><input id="aep-ig" value="${esc((a.soc||{}).ig||'')}"></div>
+      <div class="field"><label>Twitter / X</label><input id="aep-tw" value="${esc((a.soc||{}).tw||'')}"></div>
+      <div class="field field-full"><label>Web Sitesi</label><input id="aep-web" value="${esc((a.soc||{}).web||'')}" placeholder="https://…"></div>
+      <div class="field field-full" style="flex-direction:row;align-items:center;justify-content:space-between">
+        <label style="text-transform:uppercase;letter-spacing:.08em;font-size:.65rem;font-weight:600;color:var(--txt2)">Öne Çıkan Yazar</label>
+        <label class="toggle"><input type="checkbox" id="aep-featured" ${a.featured?'checked':''}><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+      </div>
+    </div>
+    <div style="margin-bottom:1rem">
+      <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;font-weight:600;color:var(--txt2);margin-bottom:.5rem">Kitapları</div>
+      <div style="max-height:160px;overflow-y:auto;border:1px solid var(--brd2);border-radius:var(--rad-sm);padding:.5rem .75rem;background:var(--bg3)">
+        ${books.length?bookCheckboxes:'<span style="font-size:.78rem;color:var(--txt3)">Henüz kitap yok</span>'}
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="tb-btn primary" onclick="saveAuthorFull(${idx})" style="flex:1"><i class="ti ti-check"></i>Kaydet</button>
+      <button class="tb-btn" onclick="closeModal('editModal')">İptal</button>
+    </div>`;
+  openModal('editModal');
+}
+
+function previewAep(url){
+  const av=g('aep-av');if(!av)return;
+  if(url){av.innerHTML=`<img src="${esc(url)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`;}
+}
+
+function toggleAuthorBook(idx,title,checked){
+  const a=authorsData[idx];if(!a)return;
+  if(!a.books)a.books=[];
+  if(checked){if(!a.books.includes(title))a.books.push(title);}
+  else{a.books=a.books.filter(t=>t!==title);}
+  saveAuthors();
+}
+
+function saveAuthorFull(idx){
+  const a=authorsData[idx];if(!a)return;
+  a.name=gv('aep-name')||a.name;
+  a.genre=gv('aep-genre')||a.genre;
+  a.bio=g('aep-bio')?.value.trim()||'';
+  a.quote=gv('aep-quote')||'';
+  a.photo=gv('aep-photo')||'';
+  a.soc={ig:gv('aep-ig'),tw:gv('aep-tw'),web:gv('aep-web')};
+  a.featured=g('aep-featured')?.checked||false;
+  a.initials=a.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  a.color=a.color||avColor(a.name);
+  saveAuthors();
+  renderAuthorsTable(g('authorSearch')?.value||'');
+  closeModal('editModal');
+  toast(`✦ "${a.name}" güncellendi!`);
+}
+
+function deleteAuthor(idx){
+  const a=authorsData[idx];if(!a)return;
+  if(!confirm(`"${a.name}" yazarını listeden kaldırmak istediğinizden emin misiniz?`))return;
+  authorsData.splice(idx,1);
+  saveAuthors();
+  renderAuthorsTable(g('authorSearch')?.value||'');
+  toast(`"${a.name}" kaldırıldı.`,'warn');
+}
+
+/* ═══════════════════════════════════════
+   ORDERS
+═══════════════════════════════════════ */
+function renderOrders(){
+  orders=load(STORE_ORDERS,defaultOrders());
+  const sf=g('orderStatusFilter')?.value||'';
+  let list=sf?orders.filter(o=>o.status===sf):orders;
+  const done=orders.filter(o=>o.status==='Tamamlandı').length;
+  const ship=orders.filter(o=>o.status==='Kargoda').length;
+  const proc=orders.filter(o=>o.status==='Hazırlanıyor').length;
+  const rev=orders.filter(o=>o.status!=='İptal').reduce((s,o)=>s+o.total,0);
+  setTxt('ordKpiDone',done);setTxt('ordKpiShip',ship);setTxt('ordKpiProc',proc);setTxt('ordKpiRev','₺'+rev.toLocaleString('tr-TR'));
+  const t=g('ordersTable');if(!t)return;
+  t.innerHTML=`<thead><tr><th>No</th><th>Müşteri</th><th>Telefon</th><th>Ürün</th><th>Şehir</th><th>Toplam</th><th>Tarih</th><th>Durum</th><th style="text-align:center">İşlem</th></tr></thead><tbody>`+
+    list.map(o=>`<tr style="cursor:pointer" onclick="openOrderDetail('${o.id}')">
+      <td style="font-weight:600;color:var(--gold)">${o.id}</td>
+      <td style="font-weight:500">${o.customer}</td>
+      <td style="color:var(--txt2);font-size:.75rem">${o.phone||'—'}</td>
+      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt2);font-size:.75rem" title="${o.book}">${o.book}</td>
+      <td style="color:var(--txt2);font-size:.75rem">${o.city}</td>
+      <td style="font-weight:600">₺${o.total}</td>
+      <td style="color:var(--txt3);font-size:.72rem">${o.date}</td>
+      <td><span class="pill ${sPill(o.status)}">${o.status}</span></td>
+      <td style="text-align:center" onclick="event.stopPropagation()">
+        <button class="act-btn red" onclick="deleteOrder('${o.id}')" title="Sil"><i class="ti ti-trash" style="font-size:12px"></i></button>
+      </td>
+    </tr>`).join('')+'</tbody>';
+}
+
+function updateOrder(id,status){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  o.status=status;saveOrders();renderOrders();renderDashOrders();
+  toast(`Sipariş ${id} → ${status}`);
+}
+
+function openOrderDetail(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  const waPhone=(o.phone||'').replace(/\D/g,'');
+  const itemRows=(o.items||[]).map(i=>`<tr><td style="padding:.25rem .2rem">${esc(i.title)}</td><td style="text-align:center;padding:.25rem .2rem">${i.qty}</td><td style="text-align:right;padding:.25rem .2rem">₺${i.price}</td><td style="text-align:right;padding:.25rem .2rem;font-weight:600">₺${i.lineTotal}</td></tr>`).join('');
+  g('editModalTitle').textContent=`Sipariş Detayı — ${o.id}`;
+  g('editModalBody').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem 1.2rem;margin-bottom:1rem">
+    <div><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">Müşteri</div><div style="font-weight:600">${esc(o.customer)}</div></div>
+    <div><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">Telefon</div><div>${esc(o.phone||'—')}</div></div>
+    <div><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">E-posta</div><div style="font-size:.82rem">${esc(o.email||'—')}</div></div>
+    <div><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">Şehir</div><div>${esc(o.city||'—')}</div></div>
+    <div style="grid-column:1/-1"><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">Adres</div><div style="font-size:.82rem">${esc(o.address||'—')}</div></div>
+    ${o.note?`<div style="grid-column:1/-1"><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">Not</div><div style="font-size:.82rem;color:var(--txt2)">${esc(o.note)}</div></div>`:''}
+  </div>
+  <table style="width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:1rem">
+    <thead><tr style="border-bottom:1px solid var(--brd2)"><th style="text-align:left;padding:.28rem .2rem">Ürün</th><th style="text-align:center;padding:.28rem .2rem">Adet</th><th style="text-align:right;padding:.28rem .2rem">Fiyat</th><th style="text-align:right;padding:.28rem .2rem">Toplam</th></tr></thead>
+    <tbody>${itemRows||`<tr><td colspan="4" style="color:var(--txt3);padding:.4rem .2rem">${esc(o.book)}</td></tr>`}</tbody>
+    <tfoot><tr style="border-top:2px solid var(--brd2)">
+      <td colspan="3" style="padding:.3rem .2rem;font-weight:700">Genel Toplam</td><td style="text-align:right;padding:.3rem .2rem;font-weight:700;color:var(--gold)">₺${o.total}</td>
+    </tr></tfoot>
+  </table>
+  <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">
+    <label style="font-size:.78rem;color:var(--txt2)">Durum:</label>
+    <select id="odStatusSel" style="font-size:.78rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+      ${['Hazırlanıyor','Kargoda','Tamamlandı','İptal'].map(s=>`<option${o.status===s?' selected':''}>${s}</option>`).join('')}
+    </select>
+    <button class="card-btn" onclick="updateOrderFromDetail('${o.id}')">Güncelle</button>
+    ${waPhone?`<button class="card-btn" style="margin-left:auto" onclick="window.open('https://wa.me/${waPhone}','_blank')">WhatsApp</button>`:'<span style="flex:1"></span>'}
+    <button class="act-btn red" onclick="deleteOrder('${o.id}')"><i class="ti ti-trash" style="font-size:12px"></i> Sil</button>
+  </div>`;
+  openModal('editModal');
+}
+
+function updateOrderFromDetail(id){
+  const status=gv('odStatusSel');if(!status)return;
+  updateOrder(id,status);closeModal('editModal');
+}
+
+function deleteOrder(id){
+  const o=orders.find(x=>x.id===id);if(!o)return;
+  if(!confirm(`"${o.id}" siparişi silinsin mi?`))return;
+  orders.splice(orders.indexOf(o),1);saveOrders();closeModal('editModal');renderOrders();renderDashOrders();
+  toast(`Sipariş ${id} silindi`,'warn');
+}
+
+function exportOrders(){
+  const header='No,Müşteri,Telefon,E-posta,Şehir,Adres,Not,Ürün,Ara Toplam,Kargo,Toplam,Tarih,Durum';
+  const rows=orders.map(o=>`${o.id},"${o.customer}","${o.phone||''}","${o.email||''}","${o.city||''}","${o.address||''}","${o.note||''}","${o.book}",₺${o.subtotal||''},₺${o.shipping||0},₺${o.total},${o.date},${o.status}`);
+  const csv=[header,...rows].join('\n');
+  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='siparisler.csv';a.click();URL.revokeObjectURL(url);
+  toast('CSV indirildi');
+}
+/* ═══════════════════════════════════════
+   USERS
+═══════════════════════════════════════ */
+function renderUsers(filter=''){
+  const all=[{name:'Admin',email:'admin@akgulyayinevi.com',role:'admin',joined:'Kuruluş'},...users];
+  const list=filter?all.filter(u=>u.name.toLowerCase().includes(filter.toLowerCase())||u.email.toLowerCase().includes(filter.toLowerCase())):all;
+  const okurC=users.filter(u=>u.role==='okur').length;
+  const yazarC=users.filter(u=>u.role==='yazar').length;
+  setTxt('kpiOkur',okurC);setTxt('kpiYazar',yazarC);
+  const t=g('usersTable');if(!t)return;
+  t.innerHTML=`<thead><tr><th>Kullanıcı</th><th>E-posta</th><th>Rol</th><th>Üyelik</th><th>İşlem</th></tr></thead><tbody>`+
+    list.map(u=>`<tr>
+      <td><div style="display:flex;align-items:center;gap:.5rem"><div style="width:26px;height:26px;border-radius:50%;background:${avColor(u.name)};display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:600;color:#fff">${u.name.slice(0,2).toUpperCase()}</div><span style="font-weight:500;font-size:.8rem">${u.name}</span></div></td>
+      <td style="color:var(--txt2);font-size:.75rem">${u.email}</td>
+      <td><span class="role-badge ${u.role==='admin'?'r-admin':u.role==='yazar'?'r-yazar':'r-okur'}">${u.role==='admin'?'Admin':u.role==='yazar'?'Yazar':'Okur'}</span></td>
+      <td style="color:var(--txt3);font-size:.72rem">${u.joined||'—'}</td>
+      <td>${u.role!=='admin'?`<button class="act-btn red" onclick="deleteUser('${u.email}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:'<span style="color:var(--txt3);font-size:.7rem">—</span>'}</td>
+    </tr>`).join('')+'</tbody>';
+}
+
+function deleteUser(email){
+  const u=users.find(x=>x.email===email);if(!u)return;
+  if(!confirm(`"${u.name}" silinsin mi?`))return;
+  users.splice(users.indexOf(u),1);saveUsers();renderUsers();
+  toast(`"${u.name}" silindi`,'warn');
+}
+
+/* ═══════════════════════════════════════
+   BLOG
+═══════════════════════════════════════ */
+function previewBlogCover(input){
+  const url=(input.value||'').trim();
+  if(!url){g('blogCoverPreview').style.display='none';return}
+  const img=new Image();
+  img.onload=()=>{g('blogCoverImg').src=url;g('blogCoverPreview').style.display='flex'};
+  img.onerror=()=>{g('blogCoverPreview').style.display='none'};
+  img.src=url;
+}
+function removeBlogCover(){
+  const inp=g('bm-cover-url');if(inp)inp.value='';
+  g('blogCoverPreview').style.display='none';g('blogCoverImg').src='';
+}
+
+function openBlogModal(){
+  removeBlogCover();
+  const sel=g('bm-author');
+  if(sel){sel.innerHTML=authorsData.map(a=>`<option value="${esc(a.name)}">${esc(a.name)}</option>`).join('')}
+  openModal('blogModal');
+}
+
+function saveBlogPost(){
+  const title=gv('bm-title');
+  if(!title){toast('Başlık zorunlu!','warn');return}
+  const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+  const coverUrl=(g('bm-cover-url')?.value||'').trim();
+  blogPosts.unshift({id:Date.now(),title,author:gv('bm-author'),date:today,cat:gv('bm-cat')||'Genel',status:gv('bm-status'),content:gv('bm-content'),cover:coverUrl});
+  saveBlog();renderBlog();closeModal('blogModal');
+  g('bm-title').value='';g('bm-content').value='';g('bm-cat').value='';removeBlogCover();
+  toast(`"${title}" yayınlandı`);
+  updateNavBadges();
+}
+
+function renderBlog(){
+  const sf=g('blogStatusFilter')?.value||'';
+  let list=sf?blogPosts.filter(p=>p.status===sf):blogPosts;
+  const lbl=g('blogCountLabel');if(lbl)lbl.textContent=`(${list.length} yazı)`;
+  const t=g('blogTable');if(!t)return;
+  t.innerHTML=`<thead><tr><th>Başlık</th><th>Yazar</th><th>Kategori</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>`+
+    list.map(p=>`<tr>
+      <td style="font-weight:500;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${p.title}">${p.title}</td>
+      <td style="color:var(--txt2);font-size:.75rem">${p.author}</td>
+      <td><span class="cat-pill">${p.cat}</span></td>
+      <td style="color:var(--txt3);font-size:.72rem">${p.date}</td>
+      <td><span class="pill ${p.status==='Yayında'?'p-pub':'p-draft'}">${p.status}</span></td>
+      <td style="display:flex;gap:.3rem">
+        <button class="act-btn" onclick="toggleBlogStatus(${p.id})" title="Durum değiştir"><i class="ti ti-refresh" style="font-size:12px"></i></button>
+        <button class="act-btn red" onclick="deletePost(${p.id})"><i class="ti ti-trash" style="font-size:12px"></i></button>
+      </td>
+    </tr>`).join('')+'</tbody>';
+}
+
+function toggleBlogStatus(id){
+  const p=blogPosts.find(x=>x.id===id);if(!p)return;
+  p.status=p.status==='Yayında'?'Taslak':'Yayında';
+  saveBlog();renderBlog();toast(`"${p.title.slice(0,30)}…" → ${p.status}`);
+}
+function deletePost(id){
+  const p=blogPosts.find(x=>x.id===id);if(!p)return;
+  if(!confirm(`"${p.title}" silinsin mi?`))return;
+  blogPosts.splice(blogPosts.indexOf(p),1);saveBlog();renderBlog();
+  toast('Yazı silindi','warn');updateNavBadges();
+}
+
+/* ═══════════════════════════════════════
+   REVIEWS
+═══════════════════════════════════════ */
+function renderReviews(){
+  const allRevs=[];
+  books.forEach(b=>b.reviews.forEach((r,ri)=>allRevs.push({...r,bookTitle:b.title,bookId:b.id,reviewIdx:ri})));
+  const lbl=g('reviewTotalLabel');if(lbl)lbl.textContent=`${allRevs.length} yorum`;
+  const el=g('reviewList');if(!el)return;
+  el.innerHTML=allRevs.length?allRevs.map(r=>`
+    <div class="review-item">
+      <div class="review-book">${escHtml(r.bookTitle)}</div>
+      <div class="review-stars">${'★'.repeat(r.s)}${'☆'.repeat(5-r.s)}</div>
+      <div class="review-text">${escHtml(r.t)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:.3rem">
+        <div class="review-by">— ${escHtml(r.u)}</div>
+        <button class="act-btn red" onclick="deleteReview(${r.bookId},${r.reviewIdx})"><i class="ti ti-trash" style="font-size:11px"></i></button>
+      </div>
+    </div>`).join(''):`<p style="color:var(--txt3);font-size:.8rem;text-align:center;padding:2rem">Henüz yorum yok.</p>`;
+  const rd=g('ratingDist');if(!rd)return;
+  if(!allRevs.length){rd.innerHTML='<p style="color:var(--txt3);font-size:.8rem;text-align:center;padding:1rem">Henüz yorum yok.</p>';return}
+  rd.innerHTML=[5,4,3,2,1].map(s=>{
+    const cnt=allRevs.filter(r=>r.s===s).length;
+    const pct=Math.round(cnt/allRevs.length*100);
+    return`<div class="stat-row">
+      <div class="stat-lbl" style="font-size:.72rem;color:var(--gold)">${'★'.repeat(s)}</div>
+      <div class="stat-bar-wrap"><div class="stat-bar" style="width:${pct}%"></div></div>
+      <div class="stat-val">${cnt}</div>
+    </div>`;
+  }).join('');
+}
+
+function deleteReview(bookId,idx){
+  const b=books.find(x=>x.id===bookId);if(!b)return;
+  if(idx>-1&&idx<b.reviews.length){b.reviews.splice(idx,1);saveBooks();renderReviews();toast('Yorum silindi','warn');}
+}
+
+
+
+// XSS koruması - HTML özel karakterlerini kaçışla
+function escHtml(str){
+  const div=document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+/* ═══════════════════════════════════════
+   ANALYTICS
+═══════════════════════════════════════ */
+function renderAnalytics(){
+  renderChart('analyticsChart','analyticsLabels',DATA12.d,DATA12.l);
+  const cities=[{city:'Adana',sales:52,pct:38},{city:'İstanbul',sales:34,pct:25},{city:'Ankara',sales:22,pct:16},{city:'Mersin',sales:16,pct:12},{city:'Diğer',sales:14,pct:10}];
+  const cs=g('cityStats');if(cs)cs.innerHTML=cities.map(c=>`<div class="stat-row"><div class="stat-lbl">${c.city}</div><div class="stat-bar-wrap"><div class="stat-bar" style="width:${c.pct}%"></div></div><div class="stat-val">${c.sales}</div></div>`).join('');
+  const cp=g('catPerf');if(!cp)return;
+  const cats=[{cat:'Roman',pct:40,n:56},{cat:'Tarih',pct:22,n:31},{cat:'Şiir',pct:15,n:21},{cat:'Diğer',pct:23,n:30}];
+  cp.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:.78rem">
+    <thead><tr>${['Kategori','Pay','Satış'].map(h=>`<th style="text-align:left;padding:.5rem .75rem;font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3);border-bottom:1px solid var(--brd2);font-weight:600;background:var(--bg3)">${h}</th>`).join('')}</tr></thead>
+    <tbody>${cats.map(c=>`<tr>
+      <td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2)">${c.cat}</td>
+      <td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2)"><div style="display:flex;align-items:center;gap:.5rem"><div style="flex:1;height:5px;background:var(--bg3);border-radius:3px"><div style="height:100%;border-radius:3px;background:var(--gold);width:${c.pct}%"></div></div><span style="font-size:.7rem;color:var(--txt2)">%${c.pct}</span></div></td>
+      <td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2);font-weight:600">${c.n}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+/* ═══════════════════════════════════════
+   SETTINGS
+═══════════════════════════════════════ */
+function renderStatsKpis(){
+  const el=g('statsKpis');if(!el)return;
+  const totalRevs=books.reduce((s,b)=>s+b.reviews.length,0);
+  el.innerHTML=[
+    {cls:'k1',val:books.length,lbl:'Katalog Kitap'},
+    {cls:'k2',val:users.length+1,lbl:'Kayıtlı Üye'},
+    {cls:'k3',val:blogPosts.length,lbl:'Blog Yazısı'},
+    {cls:'k4',val:totalRevs,lbl:'Toplam Yorum'},
+  ].map(k=>`<div class="kpi ${k.cls}"><div class="kpi-val">${k.val}</div><div class="kpi-lbl">${k.lbl}</div></div>`).join('');
+}
+
+/* ═══════════════════════════════════════
+   SİTE İÇERİĞİ YÖNETİMİ
+═══════════════════════════════════════ */
+let _curSlideTab=0;
+
+function renderContent(){
+  const c=siteContentAdmin;
+  renderSlideEditor(_curSlideTab);
+  const fv=(id,val)=>{const e=g(id);if(e&&val!=null)e.value=val};
+  const a=c.about||{};
+  fv('ab-sub-inp',a.heroSub);fv('ab-quote-inp',a.heroQuote);fv('ab-meta-inp',a.heroMeta);
+  fv('ab-fname-inp',a.founderName);fv('ab-frole-inp',a.founderRole);
+  fv('ab-fquote-inp',a.founderQuote);fv('ab-fbio-inp',a.founderBio);
+  const ct=c.contact||{};
+  fv('ct-addr-inp',ct.address);fv('ct-maps-inp',ct.mapsUrl);fv('ct-phone-inp',ct.phone);
+  fv('ct-wa-inp',ct.whatsapp);fv('ct-email-inp',ct.email);fv('ct-ig-inp',ct.instagram);
+  fv('ct-fb-inp',ct.facebook);fv('ct-tw-inp',ct.twitter);
+  const ft=c.footer||{};
+  fv('ft-slogan-inp',ft.slogan);fv('ft-about-inp',ft.about);
+}
+
+function selSlideTab(i,btn){
+  _curSlideTab=i;
+  document.querySelectorAll('#slideTabRow .tb-btn').forEach((b,j)=>b.classList.toggle('act',j===i));
+  renderSlideEditor(i);
+}
+
+function renderSlideEditor(i){
+  const slides=siteContentAdmin.slides||[{},{},{}];
+  const s=slides[i]||{};
+  const defaults=[
+    {ey:'Akgül Yayınevi',h1:'Kelimelerin &lt;em&gt;Büyüsüne&lt;/em&gt; Kapılın',p:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.'},
+    {ey:'Yeni Çıktı',h1:'&lt;em&gt;Mavi Oda&lt;/em&gt; — Deniz Kaya',p:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.'},
+    {ey:'Yazar mısınız?',h1:'Eserinizi &lt;em&gt;Dünyayla&lt;/em&gt; Buluşturun',p:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.'}
+  ];
+  const d=defaults[i]||{};
+  const wrap=g('slideEditorWrap');if(!wrap)return;
+  wrap.innerHTML=`
+    <div class="g2" style="margin-bottom:.75rem">
+      <div class="field"><label>Üst Etiket (Eyebrow)</label><input type="text" id="sl-ey" placeholder="${d.ey||''}" value="${esc(s.eyebrow||'')}"></div>
+      <div class="field"><label>Açıklama</label><input type="text" id="sl-p" placeholder="Kısa açıklama..." value="${esc(s.desc||'')}"></div>
+    </div>
+    <div class="field"><label>Başlık — italic için <code style="background:var(--bg2);padding:1px 5px;border-radius:3px;font-size:.8em">&lt;em&gt;kelime&lt;/em&gt;</code></label>
+      <input type="text" id="sl-h1" placeholder="${d.h1||'Slide başlığı...'}" value="${esc(s.title||'')}">
+    </div>`;
+}
+
+function saveHeroContent(){
+  if(!siteContentAdmin.slides)siteContentAdmin.slides=[{},{},{}];
+  const s={eyebrow:gv('sl-ey'),title:gv('sl-h1'),desc:gv('sl-p')};
+  siteContentAdmin.slides[_curSlideTab]=s;
+  saveContent();toast('✦ Slide '+(+_curSlideTab+1)+' güncellendi!');
+}
+
+function saveAboutContent(){
+  siteContentAdmin.about={
+    heroSub:gv('ab-sub-inp'),heroQuote:gv('ab-quote-inp'),heroMeta:gv('ab-meta-inp'),
+    founderName:gv('ab-fname-inp'),founderRole:gv('ab-frole-inp'),
+    founderQuote:g('ab-fquote-inp')?.value.trim(),founderBio:g('ab-fbio-inp')?.value.trim()
+  };
+  saveContent();toast('✦ Hakkımızda sayfası güncellendi!');
+}
+
+function saveContactContent(){
+  const ct={
+    address:g('ct-addr-inp')?.value.trim(),mapsUrl:gv('ct-maps-inp'),
+    phone:gv('ct-phone-inp'),whatsapp:gv('ct-wa-inp').replace(/\D/g,''),
+    email:gv('ct-email-inp'),instagram:gv('ct-ig-inp').replace('@',''),
+    facebook:gv('ct-fb-inp'),twitter:gv('ct-tw-inp')
+  };
+  const ft={slogan:gv('ft-slogan-inp'),about:g('ft-about-inp')?.value.trim()};
+  siteContentAdmin.contact=ct;
+  siteContentAdmin.footer=ft;
+  if(ct.whatsapp&&ct.whatsapp.length>=10){
+    const s=load('akgulSettings',{});s.waPhone=ct.whatsapp;save('akgulSettings',s);
+  }
+  saveContent();toast('✦ İletişim bilgileri güncellendi!');
+}
+
+function changePass(){
+  const old=gv('oldp'),np=gv('newp'),np2=gv('newp2');
+  const creds=getCreds();
+  if(old!==creds.pass){toast('Mevcut şifre hatalı!','warn');return}
+  if(np.length<6){toast('En az 6 karakter!','warn');return}
+  if(np!==np2){toast('Şifreler eşleşmiyor!','warn');return}
+  save(STORE_CREDS,{...creds,pass:np});
+  ['oldp','newp','newp2'].forEach(id=>{const e=g(id);if(e)e.value=''});
+  toast('✦ Şifre güncellendi!');
+}
+
+function exportAllData(){
+  const data={books,orders,blogPosts,authorsData,exportDate:new Date().toISOString()};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=`akgul_yedek_${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);
+  toast('Yedek dosyası indirildi');
+}
+
+function importData(){
+  const input=document.createElement('input');input.type='file';input.accept='.json';
+  input.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        const data=JSON.parse(ev.target.result);
+        if(data.books)books=data.books;
+        if(data.orders)orders=data.orders;
+        if(data.blogPosts)blogPosts=data.blogPosts;
+        if(data.authorsData)authorsData=data.authorsData;
+        saveBooks();saveOrders();saveBlog();saveAuthors();
+        renderTopBooks();renderDashOrders();updateNavBadges();
+        toast('Veriler içe aktarıldı');
+      }catch(err){toast('Hatalı dosya formatı!','warn')}
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+/* ═══════════════════════════════════════
+   NOTIFICATIONS
+═══════════════════════════════════════ */
+function renderNotifs(){
+  const el=g('notifList');if(!el)return;
+  const unreadCnt=notifs.filter(n=>!n.read).length;
+  setTxt('notifCount',unreadCnt);
+  g('notifDot').style.display=unreadCnt>0?'block':'none';
+  el.innerHTML=notifs.map(n=>`
+    <div class="notif-item${n.read?'':' unread'}" onclick="readNotif(${n.id})">
+      <div class="notif-icon" style="background:${n.iconBg}"><i class="ti ${n.icon}" style="color:${n.iconColor}"></i></div>
+      <div class="notif-text">
+        <div class="notif-msg">${n.msg}</div>
+        <div class="notif-time">${n.time}</div>
+      </div>
+      ${!n.read?'<div style="width:7px;height:7px;border-radius:50%;background:var(--gold);flex-shrink:0"></div>':''}
+    </div>`).join('');
+}
+
+function readNotif(id){
+  const n=notifs.find(x=>x.id===id);if(n)n.read=true;
+  saveNotifs();renderNotifs();
+}
+function markAllRead(){notifs.forEach(n=>n.read=true);saveNotifs();renderNotifs()}
+
+let notifOpen=false;
+function toggleNotif(e){
+  e.stopPropagation();
+  notifOpen=!notifOpen;
+  g('notifPanel').classList.toggle('open',notifOpen);
+}
+document.addEventListener('click',e=>{
+  const panel=g('notifPanel'),btn=g('notifBtn');
+  if(notifOpen&&panel&&btn&&!panel.contains(e.target)&&!btn.contains(e.target)){
+    notifOpen=false;panel.classList.remove('open');
+  }
+});
+
+/* ═══════════════════════════════════════
+   SEARCH
+═══════════════════════════════════════ */
+function handleSearch(q){
+  const drop=g('searchDrop');
+  if(!q.trim()){drop.classList.remove('open');return}
+  const ql=q.toLowerCase();
+  const bRes=books.filter(b=>b.title.toLowerCase().includes(ql)||b.author.toLowerCase().includes(ql)).slice(0,4);
+  const oRes=orders.filter(o=>o.customer.toLowerCase().includes(ql)||o.id.includes(ql)).slice(0,2);
+  const items=[
+    ...bRes.map(b=>`<div class="search-item" onclick="navTo('p-books');closeSearch()"><i class="ti ti-book"></i><div><div style="font-size:.8rem;font-weight:500">${b.title}</div><div style="font-size:.68rem;color:var(--txt3)">${b.author} · ₺${b.price}</div></div></div>`),
+    ...oRes.map(o=>`<div class="search-item" onclick="navTo('p-orders');closeSearch()"><i class="ti ti-receipt"></i><div><div style="font-size:.8rem;font-weight:500">${o.customer}</div><div style="font-size:.68rem;color:var(--txt3)">${o.id} · ₺${o.total}</div></div></div>`),
+  ];
+  drop.innerHTML=items.length?items.join(''):`<div class="search-no">Sonuç bulunamadı</div>`;
+  drop.classList.add('open');
+}
+function clearSearch(){g('searchInput').value='';closeSearch()}
+function closeSearch(){g('searchDrop').classList.remove('open')}
+document.addEventListener('click',e=>{const sd=g('searchDrop'),si=g('searchInput');if(sd&&si&&!sd.contains(e.target)&&!si.contains(e.target))closeSearch()});
+
+/* ═══════════════════════════════════════
+   MODAL
+═══════════════════════════════════════ */
+function openModal(id){g(id).classList.add('open')}
+function closeModal(id){g(id).classList.remove('open')}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+
+/* ═══════════════════════════════════════
+   NAV BADGES
+═══════════════════════════════════════ */
+function updateNavBadges(){
+  const bn=g('navBookCount');if(bn)bn.textContent=books.length;
+  const oc=g('navOrderCount');if(oc){const p=orders.filter(o=>o.status==='Hazırlanıyor').length;oc.textContent=p;oc.style.display=p>0?'':'none';}
+  const bl=g('navBlogCount');if(bl)bl.textContent=blogPosts.filter(p=>p.status==='Yayında').length;
+  const rc=g('navReviewCount');if(rc){const t=books.reduce((s,b)=>s+b.reviews.length,0);rc.textContent=t;}
+  const kb=g('kpiBooks');if(kb)kb.textContent=books.length;
+  const ku=g('kpiUsers');if(ku)ku.textContent=users.length+1;
+}
+
+/* ═══════════════════════════════════════
+   TOAST
+═══════════════════════════════════════ */
+function toast(msg,type='success'){
+  const wrap=g('toastWrap');
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`<i class="ti ${type==='warn'?'ti-alert-circle':'ti-check'}" style="font-size:13px"></i>${msg}`;
+  if(type==='warn')t.style.color='#FCA5A5';
+  wrap.appendChild(t);
+  setTimeout(()=>{t.style.animation='toastOut .2s ease forwards';setTimeout(()=>t.remove(),200)},2800);
+}
+
+/* ═══════════════════════════════════════
+   LIVE DATA (gerçek verilerden)
+═══════════════════════════════════════ */
+function updateAdminLive(){
+  const orders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
+  const todayStr=new Date().toDateString();
+  const todayOrders=orders.filter(o=>{try{return new Date(o.date).toDateString()===todayStr}catch(e){return false}});
+  const todaySales=todayOrders.length;
+  const todayRevenue=todayOrders.reduce((s,o)=>s+(parseFloat(String(o.total||o.price||'0').replace(/[^0-9.]/g,''))||0),0);
+
+  const vs=JSON.parse(localStorage.getItem('akgulVisitStats')||'null');
+  const today=new Date().toISOString().split('T')[0];
+  const todayVisits=vs&&vs.date===today?vs.count:0;
+
+  setTxt('liveVisitors',todayVisits);
+  setTxt('liveSales',todaySales);
+  const lr=g('liveRevenue');
+  if(lr)lr.textContent=todayRevenue>0?'₺'+todayRevenue.toLocaleString('tr-TR',{maximumFractionDigits:0}):'₺0';
+
+  const allRevenue=orders.reduce((s,o)=>s+(parseFloat(String(o.total||o.price||'0').replace(/[^0-9.]/g,''))||0),0);
+  const kr=g('kpiRevenue');
+  if(kr)kr.textContent=allRevenue>=1000?'₺'+(allRevenue/1000).toFixed(1)+'K':allRevenue>0?'₺'+allRevenue.toFixed(0):'₺0';
+
+  const booksData=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  const totalViews=booksData.reduce((s,b)=>s+(b.views||0),0);
+  const kv=g('kpiViews');
+  if(kv)kv.textContent=totalViews>0?totalViews.toLocaleString('tr-TR'):'0';
+}
+
+function renderVisitStats(){
+  const el=g('visitStatsChart');if(!el)return;
+  const vs=JSON.parse(localStorage.getItem('akgulVisitStats')||'null');
+  if(!vs||(!vs.history?.length&&!vs.count)){
+    el.innerHTML='<span style="color:var(--txt2);font-size:.8rem;padding:.5rem">Henüz ziyaret verisi yok. Site ilk ziyaret edildiğinde veriler burada görünür.</span>';
+    const tc=g('visitTodayCount');if(tc)tc.textContent='0';
+    const tt=g('visitTotal');if(tt)tt.textContent='0';
+    return;
+  }
+  const today=new Date().toISOString().split('T')[0];
+  const todayCount=vs.date===today?vs.count:0;
+  const tc=g('visitTodayCount');if(tc)tc.textContent=todayCount;
+  const tt=g('visitTotal');if(tt)tt.textContent=(vs.total||0).toLocaleString('tr-TR');
+
+  const hist=[...(vs.history||[]).slice(-13)];
+  if(vs.date)hist.push({date:vs.date,count:vs.count});
+  const max=Math.max(...hist.map(h=>h.count),1);
+  el.innerHTML=`<div style="display:flex;align-items:flex-end;gap:4px;height:60px;padding:0 4px">`+
+    hist.map(h=>{
+      const pct=Math.max(4,Math.round((h.count/max)*100));
+      const d=h.date.split('-').slice(1).join('/');
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;flex:1;min-width:0" title="${d}: ${h.count} ziyaret">
+        <div style="width:100%;background:var(--acc1);opacity:${(0.3+0.7*(h.count/max)).toFixed(2)};border-radius:3px 3px 0 0;height:${pct}%"></div>
+        <span style="font-size:.55rem;color:var(--txt2);white-space:nowrap;overflow:hidden;max-width:100%;text-align:center">${d}</span>
+      </div>`;
+    }).join('')+`</div>`;
+}
+
+/* ═══════════════════════════════════════
+   AI ASSISTANT
+═══════════════════════════════════════ */
+const AI_ENDPOINT = 'http://localhost:3000/api/admin-ai';
+let aiHistory = [];
+let aiPanelOpen = false;
+
+function toggleAI(){
+  aiPanelOpen = !aiPanelOpen;
+  g('aiPanel').classList.toggle('open', aiPanelOpen);
+  if(aiPanelOpen){
+    if(!g('aiMessages').children.length) renderAIWelcome();
+    setTimeout(()=>g('aiInput').focus(), 290);
+  }
+}
+
+function clearAIChat(){
+  aiHistory = [];
+  g('aiMessages').innerHTML = '';
+  renderAIWelcome();
+}
+
+function renderAIWelcome(){
+  g('aiMessages').innerHTML = `
+    <div class="ai-welcome">
+      <div class="ai-welcome-title"><i class="ti ti-sparkles"></i>Merhaba! Nasıl yardımcı olabilirim?</div>
+      <div class="ai-welcome-hint">Doğal Türkçe komutlarla paneli yönetin:</div>
+      <div class="ai-examples">
+        <div class="ai-example" onclick="aiQuick(this)">Kaç kitabımız var, özet ver</div>
+        <div class="ai-example" onclick="aiQuick(this)">Roman kategorisindeki kitapları listele</div>
+        <div class="ai-example" onclick="aiQuick(this)">Bekleyen siparişleri göster</div>
+        <div class="ai-example" onclick="aiQuick(this)">#002 siparişini kargoya ver</div>
+        <div class="ai-example" onclick="aiQuick(this)">Yeni kitap ekle: Kayıp Şehir, Zeynep Demir, 195 TL, roman, 320 sayfa</div>
+        <div class="ai-example" onclick="aiQuick(this)">Sipariş sayfasına git</div>
+      </div>
+    </div>`;
+}
+
+function aiQuick(el){ g('aiInput').value = el.textContent; sendAIMessage(); }
+
+function aiKeyDown(e){
+  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendAIMessage(); }
+}
+
+function aiAutoResize(el){
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 110) + 'px';
+}
+
+function aiScrollBottom(){
+  const m = g('aiMessages');
+  m.scrollTop = m.scrollHeight;
+}
+
+function aiAppendBubble(role, text){
+  const div = document.createElement('div');
+  div.className = 'ai-bubble ' + role;
+  div.innerHTML = `<div class="ai-bubble-inner">${esc(text).replace(/\n/g,'<br>')}</div>`;
+  g('aiMessages').appendChild(div);
+  aiScrollBottom();
+  return div;
+}
+
+function aiAppendThinking(){
+  const div = document.createElement('div');
+  div.className = 'ai-thinking';
+  div.innerHTML = `<div class="ai-dot-row"><span></span><span></span><span></span></div><span style="font-size:.71rem;color:var(--txt3)">Düşünüyor…</span>`;
+  g('aiMessages').appendChild(div);
+  aiScrollBottom();
+  return div;
+}
+
+function aiAppendAction(icon, text){
+  const div = document.createElement('div');
+  div.className = 'ai-action-chip';
+  div.innerHTML = `<i class="ti ${icon}"></i>${esc(text)}`;
+  g('aiMessages').appendChild(div);
+  aiScrollBottom();
+}
+
+function getAIData(){
+  return {
+    books: books.map(b=>({id:b.id,title:b.title,author:b.author,price:b.price,cat:b.cat,pages:b.pages,badge:b.badge,views:b.views})),
+    orders,
+    blogPosts: blogPosts.map(p=>({id:p.id,title:p.title,author:p.author,date:p.date,cat:p.cat,status:p.status})),
+    authors: authorsData,
+    users
+  };
+}
+
+function applyAIActions(actions){
+  for(const {tool, params} of actions){
+    if(tool === 'add_book'){
+      const newId = books.length ? Math.max(...books.map(b=>b.id))+1 : 1;
+      books.push({id:newId,title:params.title||'',author:params.author||'',price:params.price||0,
+        cat:params.cat||'roman',pages:params.pages||0,desc:params.desc||'',
+        badge:params.badge||null,cover:'',views:0,reviews:[]});
+      saveBooks();
+      aiAppendAction('ti-book-2', `"${params.title}" eklendi`);
+
+    } else if(tool === 'update_book'){
+      const b = books.find(x=>x.id===params.id);
+      if(b){
+        if(params.title  !==undefined) b.title  = params.title;
+        if(params.author !==undefined) b.author = params.author;
+        if(params.price  !==undefined) b.price  = params.price;
+        if(params.desc   !==undefined) b.desc   = params.desc;
+        if('badge' in params)          b.badge  = params.badge;
+        saveBooks();
+        aiAppendAction('ti-edit', `#${params.id} kitap güncellendi`);
+      }
+
+    } else if(tool === 'delete_book'){
+      const idx = books.findIndex(x=>x.id===params.id);
+      if(idx!==-1){
+        const name = books[idx].title;
+        books.splice(idx,1);
+        saveBooks();
+        aiAppendAction('ti-trash', `"${name}" silindi`);
+      }
+
+    } else if(tool === 'update_order_status'){
+      const o = orders.find(x=>x.id===params.id);
+      if(o){ o.status=params.status; saveOrders(); aiAppendAction('ti-package',`${params.id} → ${params.status}`); }
+
+    } else if(tool === 'bulk_update_orders'){
+      let cnt=0;
+      orders.forEach(o=>{ if(o.status===params.from_status){o.status=params.to_status;cnt++;} });
+      if(cnt){ saveOrders(); aiAppendAction('ti-packages',`${cnt} sipariş: ${params.from_status} → ${params.to_status}`); }
+
+    } else if(tool === 'add_blog_post'){
+      const newId = blogPosts.length ? Math.max(...blogPosts.map(p=>p.id))+1 : 1;
+      const today = new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+      blogPosts.push({id:newId,title:params.title||'',author:params.author||'',
+        date:today,cat:params.cat||'',status:params.status||'Taslak',content:params.content||''});
+      saveBlog();
+      aiAppendAction('ti-news',`"${params.title}" blog yazısı eklendi`);
+
+    } else if(tool === 'navigate_to'){
+      navTo(params.page);
+      const labels={'p-dash':'Genel Bakış','p-books':'Kitaplar','p-orders':'Siparişler',
+        'p-users':'Kullanıcılar','p-blog':'Blog','p-reviews':'Yorumlar',
+        'p-analytics':'Analizler','p-authors':'Yazarlar','p-content':'Site İçeriği','p-settings':'Ayarlar'};
+      aiAppendAction('ti-arrow-right', (labels[params.page]||params.page)+' sayfasına gidildi');
+    }
+  }
+  // Aktif sayfayı yenile
+  const pg = document.querySelector('.page.act')?.id;
+  if(pg==='p-books')  renderBooks();
+  else if(pg==='p-orders') renderOrders();
+  else if(pg==='p-blog')   renderBlog();
+  else if(pg==='p-dash'){  renderTopBooks(); renderDashOrders(); }
+  updateNavBadges();
+}
+
+async function sendAIMessage(){
+  const input = g('aiInput');
+  const text  = input.value.trim();
+  if(!text) return;
+  const btn = g('aiSendBtn');
+  input.value = ''; input.style.height='auto'; btn.disabled=true;
+
+  aiAppendBubble('user', text);
+  aiHistory.push({role:'user', content:text});
+  const thinking = aiAppendThinking();
+
+  try{
+    const res = await fetch(AI_ENDPOINT,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({messages:aiHistory, data:getAIData()})
+    });
+    thinking.remove();
+
+    if(!res.ok){
+      const e = await res.json().catch(()=>({}));
+      aiAppendBubble('ai','Hata: '+(e.error||'Sunucu hatası'));
+      aiHistory.pop(); return;
+    }
+
+    const {reply, actions} = await res.json();
+    if(actions && actions.length) applyAIActions(actions);
+    if(reply){ aiAppendBubble('ai', reply); aiHistory.push({role:'assistant',content:reply}); }
+
+  } catch(err){
+    thinking.remove();
+    aiAppendBubble('ai','Sunucuya bağlanılamadı. Proxy çalışıyor mu? (node server.js)');
+    aiHistory.pop();
+  } finally{
+    btn.disabled=false; input.focus();
+  }
+}
+
+;(function bootstrap(){
+  /* Siteden admin e-postasıyla giriş yapılmışsa oturumu otomatik aç */
+  try{
+    const siteUser=JSON.parse(localStorage.getItem('akgulUser')||'null');
+    if(siteUser&&siteUser.email==='akgulyayinevi@gmail.com'){
+      localStorage.setItem('akgul_auth','1');
+    }
+  }catch(e){}
+  if(localStorage.getItem('akgul_auth')==='1'){
+    g('loginOverlay').style.display='none';
+    g('appWrap').style.display='flex';
+    initApp();
+  }
+})();
+
+</script>
+</body>
+</html>
