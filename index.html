@@ -4472,7 +4472,13 @@ function go(page){
     sid('forgotForm').style.display='none';sid('loginForm').style.display='block';
   }
   if(page==='admin'){
-    window.location.href='admin.html';
+    adminLoggedIn=true;
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
+    const panel=sid('adminPanel');
+    if(panel){panel.style.display='block';}
+    window.scrollTo({top:0});
+    renderAdminDashboard();
+    aiAdminVisible(true);
     return;
   }
 }
@@ -6453,7 +6459,7 @@ function doAdminLoginInline(){
   else{err.style.display='block';sid('adminPassInline').value=''}
 }
 function adminQuickAccess(){
-  if(currentUser?.email==='akgulyayinevi@gmail.com'){window.location.href='admin.html'}
+  if(currentUser?.email==='akgulyayinevi@gmail.com'){go('admin')}
   else{toast('Bu bölüme erişim yetkiniz yok.')}
 }
 function adminLogout(){adminLoggedIn=false;sid('adminPanel').style.display='none';go('home')}
@@ -6916,6 +6922,12 @@ updateAuthNav();
 updateUserMenu();
 trackVisit();
 updateLiveBar();
+
+/* ── ADMIN OTO-AÇ ── */
+if(currentUser?.email==='akgulyayinevi@gmail.com'&&window.location.hash==='#admin'){
+  window.history.replaceState(null,'',window.location.pathname);
+  go('admin');
+}
 
 /* ── URL HASH YÖNLENDİRME ── */
 (function handleHashNav(){

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Remove-Item \"c:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\admin.html\")"
+    ]
+  }
+}
