@@ -2225,7 +2225,7 @@ function renderVisitStats(){
 /* ═══════════════════════════════════════
    AI ASSISTANT
 ═══════════════════════════════════════ */
-const AI_ENDPOINT = '/api/admin-ai';
+const AI_ENDPOINT = '/.netlify/functions/admin-ai';
 let aiHistory = [];
 let aiPanelOpen = false;
 
@@ -2408,7 +2408,7 @@ async function sendAIMessage(){
 
   } catch(err){
     thinking.remove();
-    aiAppendBubble('ai','Sunucuya bağlanılamadı. Proxy çalışıyor mu? (node server.js)');
+    aiAppendBubble('ai','Bağlantı hatası. Lütfen tekrar deneyin.');
     aiHistory.pop();
   } finally{
     btn.disabled=false; input.focus();
