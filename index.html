@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
@@ -2906,7 +2906,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="slide">
       <div class="slide-bg diag"></div>
       <div class="slide-content">
-        <div class="slide-badge">Sınırlı Süre · Yaz Kampanyası</div>
+        <div class="slide-badge" id="s5-badge">Sınırlı Süre · Yaz Kampanyası</div>
         <div class="slide-eyebrow" id="s5-ey">Özel İndirim</div>
         <h1 id="s5-h1">Tüm Kitaplarda <em>%20 İndirim</em></h1>
         <p id="s5-p">Haziran boyunca kataloğumuzdaki tüm eserlerde geçerli yaz kampanyamızdan yararlanın. Fırsatı kaçırmayın!</p>
@@ -6817,13 +6817,35 @@ function saveBookCovers(d){localStorage.setItem('akgulBookCovers',JSON.stringify
 function applySiteContent(){
   const c=siteContent;
   const el=id=>document.getElementById(id);
+  // SEO
+  if(c.seo){
+    if(c.seo.title)document.title=c.seo.title;
+    let dm=document.querySelector('meta[name="description"]');
+    if(!dm){dm=document.createElement('meta');dm.name='description';document.head.appendChild(dm);}
+    if(c.seo.description)dm.content=c.seo.description;
+    let km=document.querySelector('meta[name="keywords"]');
+    if(!km){km=document.createElement('meta');km.name='keywords';document.head.appendChild(km);}
+    if(c.seo.keywords)km.content=c.seo.keywords;
+  }
   // Hero Slider
   if(c.slides){
     c.slides.forEach((s,i)=>{
       if(s.eyebrow){const e=el('s'+i+'-ey');if(e)e.textContent=s.eyebrow;}
       if(s.title){const e=el('s'+i+'-h1');if(e)e.innerHTML=s.title;}
       if(s.desc){const e=el('s'+i+'-p');if(e)e.textContent=s.desc;}
+      if(i===5&&s.badge){const e=el('s5-badge');if(e)e.textContent=s.badge;}
     });
+  }
+  // Kargo & Ödeme
+  if(c.shipping){
+    if(c.shipping.freeShip)FREE_SHIP=parseInt(c.shipping.freeShip)||FREE_SHIP;
+    if(c.shipping.shipCost)SHIP_COST=parseInt(c.shipping.shipCost)||SHIP_COST;
+    if(c.shipping.whatsapp&&c.shipping.whatsapp.length>=10)WA_PHONE=c.shipping.whatsapp.replace(/\D/g,'');
+  }
+  // Okuma Kulübü
+  if(c.club){
+    if(c.club.book)siteSettings.clubBook=c.club.book;
+    if(c.club.date)siteSettings.clubDate=c.club.date;
   }
   // İletişim Kartları
   if(c.contact){
