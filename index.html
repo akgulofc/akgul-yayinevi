@@ -5022,11 +5022,12 @@ async function selAiMood(el,mood){
   _aiOffset=0;_aiMoodKey=mood;
   const catalog=books.map(b=>({id:b.id,title:b.title,author:b.author,cat:CATS[b.cat]||b.cat,desc:b.desc,rating:b.rating}));
   try{
-    const r=await fetch('http://localhost:3000/api/ai-recommend',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mood,books:catalog})});
+    const r=await fetch(GROQ_RECOMMEND_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mood,books:catalog})});
+    if(!r.ok)throw new Error('Sunucu hatası');
     const data=await r.json();
     if(data.error)throw new Error(data.error);
     const scores=[98,94,90,86];
-    _aiMatches=(data.recommendations||[]).map((rec,i)=>{const b=books.find(x=>x.id===rec.id);return b?{...b,_aiReason:rec.reason,_score:scores[i]??82}:null}).filter(Boolean);
+    _aiMatches=(data.recommendations||[]).map((rec,i)=>{const b=books.find(x=>x.id===rec.id||String(x.id)===String(rec.id));return b?{...b,_aiReason:rec.reason,_score:scores[i]??82}:null}).filter(Boolean);
   }catch(err){
     load.style.display='none';
     if(res)res.innerHTML='<p style="text-align:center;color:var(--muted);padding:2rem">Öneri alınırken bir hata oluştu. Lütfen tekrar deneyin.</p>';
@@ -6933,6 +6934,7 @@ updateLiveBar();
    SİTE KULLANICI AI
 ═══════════════════════════════════════ */
 const AI_SITE_EP = 'http://localhost:3000/api/site-ai';
+const GROQ_RECOMMEND_EP = '/.netlify/functions/ai-recommend';
 let aiSiteHistory = [];
 let aiSiteOpen = false;
 
