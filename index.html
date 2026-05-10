@@ -6933,7 +6933,7 @@ updateLiveBar();
 /* ═══════════════════════════════════════
    SİTE KULLANICI AI
 ═══════════════════════════════════════ */
-const AI_SITE_EP = 'http://localhost:3000/api/site-ai';
+const AI_SITE_EP = '/.netlify/functions/site-ai';
 const GROQ_RECOMMEND_EP = '/.netlify/functions/ai-recommend';
 let aiSiteHistory = [];
 let aiSiteOpen = false;
@@ -7086,7 +7086,7 @@ function updateLiveBar(){
 /* ═══════════════════════════════════════
    AI ADMIN ASSISTANT
 ═══════════════════════════════════════ */
-const AI_EP_W = 'http://localhost:3000/api/admin-ai';
+const AI_EP_W = '/.netlify/functions/admin-ai';
 let aiHistoryW = [];
 let aiOpenW = false;
 
