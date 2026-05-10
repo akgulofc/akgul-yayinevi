@@ -1,18 +1,27 @@
+const CORS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: CORS, body: '' };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'API key eksik' }) };
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'GROQ_API_KEY eksik' }) };
   }
 
   let body;
   try {
     body = JSON.parse(event.body);
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Geçersiz istek' }) };
+    return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Geçersiz istek' }) };
   }
 
   const { messages = [], data = {} } = body;
@@ -26,7 +35,7 @@ Kullanıcılar: ${JSON.stringify((data.users || []).slice(0, 20))}`;
 
   const systemPrompt = `Sen Akgül Yayınevi'nin admin asistanısın. Kitap, sipariş, blog ve yazar yönetimi konusunda yardım edersin.
 
-Eğer kullanıcı bir işlem yapmamı isterse (kitap ekle, güncelle, sil; sipariş durumu değiştir; blog yazısı ekle; sayfaya git), yanıtını MUTLAKA şu JSON formatında ver:
+Eğer kullanıcı bir işlem yapmamı isterse, yanıtını MUTLAKA şu JSON formatında ver:
 {"reply":"Kullanıcıya mesaj","actions":[{"tool":"araç_adı","params":{...}}]}
 
 Kullanılabilir araçlar:
@@ -44,16 +53,10 @@ Mevcut veriler:${storeContext}`;
 
   const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + apiKey,
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
     body: JSON.stringify({
       model: 'llama-3.3-70b-versatile',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        ...messages.slice(-10),
-      ],
+      messages: [{ role: 'system', content: systemPrompt }, ...messages.slice(-10)],
       temperature: 0.4,
       max_tokens: 1024,
     }),
@@ -62,14 +65,10 @@ Mevcut veriler:${storeContext}`;
   const raw = await groqRes.json();
 
   if (!groqRes.ok) {
-    return {
-      statusCode: 502,
-      body: JSON.stringify({ error: raw.error?.message || 'Groq hatası' }),
-    };
+    return { statusCode: 502, headers: CORS, body: JSON.stringify({ error: raw.error?.message || 'Groq hatası' }) };
   }
 
   const content = raw.choices[0].message.content.trim();
-
   let reply = content;
   let actions = [];
 
@@ -81,12 +80,8 @@ Mevcut veriler:${storeContext}`;
       if (Array.isArray(parsed.actions)) actions = parsed.actions;
     }
   } catch {
-    // düz metin yanıt, actions boş kalır
+    // düz metin yanıt
   }
 
-  return {
-    statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ reply, actions }),
-  };
+  return { statusCode: 200, headers: CORS, body: JSON.stringify({ reply, actions }) };
 };

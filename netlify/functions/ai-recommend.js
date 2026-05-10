@@ -1,18 +1,27 @@
+const CORS = {
+  'Content-Type': 'application/json',
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
+
 exports.handler = async (event) => {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: CORS, body: '' };
+  }
   if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+    return { statusCode: 405, headers: CORS, body: JSON.stringify({ error: 'Method Not Allowed' }) };
   }
 
   const apiKey = process.env.GROQ_API_KEY;
   if (!apiKey) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'API key eksik' }) };
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'GROQ_API_KEY eksik' }) };
   }
 
   let body;
   try {
     body = JSON.parse(event.body);
   } catch {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Geçersiz istek' }) };
+    return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Geçersiz istek' }) };
   }
 
   const { mood, books } = body;
@@ -21,10 +30,7 @@ exports.handler = async (event) => {
 
   const groqRes = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + apiKey,
-    },
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiKey },
     body: JSON.stringify({
       model: 'llama-3.3-70b-versatile',
       messages: [
@@ -40,15 +46,8 @@ exports.handler = async (event) => {
   const raw = await groqRes.json();
 
   if (!groqRes.ok) {
-    return {
-      statusCode: 502,
-      body: JSON.stringify({ error: raw.error?.message || 'Groq hatası' }),
-    };
+    return { statusCode: 502, headers: CORS, body: JSON.stringify({ error: raw.error?.message || 'Groq hatası' }) };
   }
 
-  return {
-    statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
-    body: raw.choices[0].message.content,
-  };
+  return { statusCode: 200, headers: CORS, body: raw.choices[0].message.content };
 };
