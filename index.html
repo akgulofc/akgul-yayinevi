@@ -5177,8 +5177,10 @@ const _webSvg=`<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1
 
 function renderAuthorFeatured(){
   const wrap=sid('authorFeatured');if(!wrap)return;
+  authors.forEach(a=>{if(!Array.isArray(a.books))a.books=[];if(!a.color)a.color='#2D4A3E';if(!a.initials)a.initials=(a.name||'').slice(0,2).toUpperCase();});
   const featured=authors.filter(x=>x.featured&&x.books.length>=0);
   const a=featured.length?featured[Math.floor(Date.now()/86400000)%featured.length]:authors.find(x=>x.books.length>0)||authors[0];
+  if(!a)return;
   const authorBooks=a.books.map(t=>books.find(b=>b.title===t)).filter(Boolean);
   const totalViews=authorBooks.reduce((s,b)=>s+b.views,0);
   const avgRating=authorBooks.length?(authorBooks.reduce((s,b)=>s+b.rating,0)/authorBooks.length).toFixed(1):null;
@@ -5232,6 +5234,9 @@ function renderAuthors(){
   const list=authorFilter==='all'?authors:authors.filter(a=>a.genre===authorFilter);
   const cnt=sid('authorCount');if(cnt)cnt.textContent=list.length+' yazar';
   el.innerHTML=list.map(a=>{
+    if(!Array.isArray(a.books))a.books=[];
+    if(!a.color)a.color='#2D4A3E';
+    if(!a.initials)a.initials=(a.name||'').slice(0,2).toUpperCase();
     const dot=_genreColors[a.genre]||'#C8A96E';
     const bc=a.books.length;
     const s=a.soc||{};
@@ -5267,14 +5272,19 @@ function renderAuthors(){
 }
 function renderHomeAuthors(){
   const el=sid('homeAuthorsGrid');if(!el)return;
-  el.innerHTML=authors.slice(0,4).map(a=>`
+  el.innerHTML=authors.slice(0,4).map(a=>{
+    if(!Array.isArray(a.books))a.books=[];
+    if(!a.color)a.color='#2D4A3E';
+    if(!a.initials)a.initials=(a.name||'').slice(0,2).toUpperCase();
+    return`
     <div class="home-author-card" onclick="openAuthorModal('${a.name}')">
       <div class="ha-initials" style="background:${a.color}">${a.initials}</div>
       <div class="ha-name">${a.name}</div>
       <div class="ha-genre">${a.genre}</div>
       <div class="ha-books">${a.books.join(', ')}</div>
       <div class="ha-arrow">→</div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function openAuthorModal(name){
   const a=authors.find(x=>x.name===name);if(!a)return;
@@ -8598,7 +8608,13 @@ async function admPushToGitHub(){
 }
 function admSaveOrders(){ admSave(ADM_STORE_ORDERS,adminOrders); }
 function admSaveBlog(){ admSave(ADM_STORE_BLOG,adminBlogPosts); admSave('akgulSiteBlog',adminBlogPosts); admUpdateNavBadges(); }
-function admSaveAuthors(){ admSave(ADM_STORE_AUTHORS,adminAuthorsData); admPushAuthorsToGitHub(); }
+function admSaveAuthors(){
+  admSave(ADM_STORE_AUTHORS,adminAuthorsData);
+  admPushAuthorsToGitHub();
+  if(typeof authors!=='undefined'){
+    authors=adminAuthorsData.map(a=>Object.assign({books:[],color:'#2D4A3E',initials:(a.name||'').slice(0,2).toUpperCase(),soc:{},featured:false,bio:'',quote:''},a));
+  }
+}
 async function admPushAuthorsToGitHub(){
   try{
     const creds=admGetCreds();
@@ -8713,10 +8729,13 @@ window.adminSiteLogout = function(){
 window.closeAdminSite = function(){
   document.getElementById('adminSite').style.display='none';
   document.body.style.overflow='';
-  const saved=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
-  if(saved.length>0){books=saved;}
+  const savedBooks=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  if(savedBooks.length>0){books=savedBooks;}
+  const savedAuthors=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
+  if(savedAuthors.length>0){authors=savedAuthors.map(a=>Object.assign({books:[],color:'#2D4A3E',initials:(a.name||'').slice(0,2).toUpperCase(),soc:{},featured:false,bio:'',quote:''},a));}
   renderBooks(currentFilter||'all');
   if(typeof renderEditors==='function')renderEditors();
+  if(typeof renderHomeAuthors==='function')renderHomeAuthors();
 };
 
 /* adminQuickAccess is defined in index.html main script — no duplicate here */
