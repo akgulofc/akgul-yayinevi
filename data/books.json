@@ -26,21 +26,6 @@
         "reviews": []
     },
     {
-        "id": 9,
-        "title": "Küçük Prens'in Dönüşü",
-        "author": "Ayşe Nur",
-        "price": 120,
-        "cat": "cocuk",
-        "bg": "linear-gradient(145deg,#4a3a1d,#6B5A2E)",
-        "badge": "Yeni",
-        "desc": "Küçük Prens'in yetişkinler dünyasına dönüşü.",
-        "cover": "",
-        "pages": 0,
-        "views": 95,
-        "rating": 4.7,
-        "reviews": []
-    },
-    {
         "id": 10,
         "title": "Güneşin Altında",
         "author": "Barış Tekin",
