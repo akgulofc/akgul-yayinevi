@@ -26,27 +26,6 @@
         "reviews": []
     },
     {
-        "id": 8,
-        "title": "Mavi Oda",
-        "author": "Deniz Kaya",
-        "price": 175,
-        "cat": "roman",
-        "bg": "linear-gradient(145deg,#1d2e2a,#2D3E3A)",
-        "badge": "Öne Çıkan",
-        "desc": "Mavi bir odada geçen gizemli hikâye.",
-        "cover": "",
-        "pages": 0,
-        "views": 316,
-        "rating": 4.9,
-        "reviews": [
-            {
-                "u": "Elif D.",
-                "s": 5,
-                "t": "Bu kadar çarpıcı bir roman okumamıştım."
-            }
-        ]
-    },
-    {
         "id": 9,
         "title": "Küçük Prens'in Dönüşü",
         "author": "Ayşe Nur",
