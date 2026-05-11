@@ -5300,7 +5300,7 @@ function openAuthorModal(name){
     const waMsg=encodeURIComponent(`Merhaba, "${b.title}" kitabını sipariş etmek istiyorum.`);
     const stars='★'.repeat(Math.round(b.rating))+'☆'.repeat(5-Math.round(b.rating));
     return`<div class="am-book">
-      <div class="am-book-cover" style="position:relative;overflow:hidden;cursor:pointer" onclick="closeMod();setTimeout(()=>openModal(${b.id}),220)">${bookCoverSvg(b)}</div>
+      <div class="am-book-cover" style="position:relative;overflow:hidden;cursor:pointer" onclick="closeMod();setTimeout(()=>openModal(${b.id}),220)">${b.cover?`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`:bookCoverSvg(b)}</div>
       <div class="am-book-info">
         <div class="am-book-title">${escHtml(b.title)}</div>
         <div style="font-size:.65rem;color:var(--gold);margin-bottom:.18rem">${stars} <span style="color:var(--muted);font-size:.6rem">${b.rating}</span></div>
