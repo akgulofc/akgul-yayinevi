@@ -3103,6 +3103,10 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
             Admin Paneli
           </button>
           <div style="height:1px;background:rgba(200,169,110,.15);margin:.25rem 0"></div>
+          <button class="nav-btn" id="authorLoginBtn" onclick="closeUserMenu();showAuthorLoginModal()" style="display:block;width:100%;text-align:left;padding:.5rem 1rem;border:none;background:none;color:var(--ink);font-size:.75rem;cursor:pointer;font-family:var(--font-sans);opacity:.7">
+            <svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Yazar Girişi
+          </button>
+          <div style="height:1px;background:rgba(200,169,110,.15);margin:.25rem 0"></div>
           <button class="nav-btn" onclick="logout();closeUserMenu()" style="display:block;width:100%;text-align:left;padding:.5rem 1rem;border:none;background:none;color:var(--gold);font-size:.75rem;cursor:pointer;font-family:var(--font-sans)">Çıkış Yap</button>
         </div>
       </div>
@@ -8056,10 +8060,11 @@ async function sendAIW(){
 
         <!-- ── YAZARLAR ────────────────────── -->
         <div class="page" id="adm-p-authors">
-          <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+          <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
             <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-users" style="color:#C8A96E"></i></div></div><div class="kpi-val" id="adm-authorKpiActive">0</div><div class="kpi-lbl">Toplam Yazar</div></div>
             <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-books" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="adm-authorKpiBooks">0</div><div class="kpi-lbl">Toplam Kitap</div></div>
             <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-eye" style="color:#8B3A2A"></i></div></div><div class="kpi-val" id="adm-authorKpiViews">0</div><div class="kpi-lbl">Toplam Görüntüleme</div></div>
+            <div class="kpi k4"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,110,74,.1)"><i class="ti ti-id-badge" style="color:#2D6E4A"></i></div></div><div class="kpi-val" id="adm-authorKpiMembers">0</div><div class="kpi-lbl">Aktif Üyelik</div></div>
           </div>
           <div class="card mb-1">
             <div class="card-head">
@@ -8813,12 +8818,14 @@ window.adminAddAuthorDirect = function(){
 window.adminRenderAuthorsTable = function(filter=''){
   const totalBooks=adminAuthorsData.reduce((s,a)=>(s+(a.books||[]).length),0);
   const totalViews=adminAuthorsData.reduce((s,a)=>s+adminBooks.filter(b=>b.author===a.name).reduce((ss,b)=>ss+b.views,0),0);
+  const memberCount=adminAuthorsData.filter(a=>a.membership&&a.membership.status==='active').length;
   admSetTxt('adm-authorKpiActive',adminAuthorsData.length);
   admSetTxt('adm-authorKpiBooks',totalBooks);
   admSetTxt('adm-authorKpiViews',totalViews);
+  admSetTxt('adm-authorKpiMembers',memberCount);
   const list=filter?adminAuthorsData.filter(a=>a.name.toLowerCase().includes(filter.toLowerCase())||a.genre.toLowerCase().includes(filter.toLowerCase())):adminAuthorsData;
   const t=ag('adm-authorsTable'); if(!t)return;
-  t.innerHTML=`<thead><tr><th>Yazar</th><th>Tür</th><th>Kitapları</th><th>Görüntüleme</th><th>Öne Çıkan</th><th style="text-align:center">İşlem</th></tr></thead><tbody>`+
+  t.innerHTML=`<thead><tr><th>Yazar</th><th>Tür</th><th>Kitapları</th><th>Görüntüleme</th><th>Öne Çıkan</th><th style="text-align:center">Üyelik</th><th style="text-align:center">İşlem</th></tr></thead><tbody>`+
     list.map((a)=>{
       const realIdx=adminAuthorsData.indexOf(a);
       const views=adminBooks.filter(b=>b.author===a.name).reduce((s,b)=>s+b.views,0);
@@ -8826,15 +8833,23 @@ window.adminRenderAuthorsTable = function(filter=''){
         ?`<img src="${admEsc(a.photo)}" style="width:30px;height:30px;border-radius:50%;object-fit:cover;flex-shrink:0;border:1px solid var(--brd2)">`
         :`<div style="width:30px;height:30px;border-radius:50%;background:${admAvColor(a.name)};display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:600;color:#fff;flex-shrink:0">${(a.initials||a.name.slice(0,2))}</div>`;
       const bookList=(a.books||[]);
+      const mem=a.membership||{};
+      const memBadge=mem.email
+        ?mem.status==='active'
+          ?`<span style="display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;padding:2px 7px;background:rgba(45,110,74,.1);color:#2D6E4A;border-radius:20px;border:1px solid rgba(45,110,74,.2)"><span style="width:6px;height:6px;border-radius:50%;background:#2D6E4A;flex-shrink:0"></span>Aktif</span>`
+          :`<span style="display:inline-flex;align-items:center;gap:.3rem;font-size:.65rem;padding:2px 7px;background:rgba(139,58,42,.08);color:#8B3A2A;border-radius:20px;border:1px solid rgba(139,58,42,.2)"><span style="width:6px;height:6px;border-radius:50%;background:#8B3A2A;flex-shrink:0"></span>Askıda</span>`
+        :`<span style="font-size:.65rem;color:var(--txt3)">—</span>`;
       return`<tr>
         <td><div style="display:flex;align-items:center;gap:.6rem">${av}<div><div style="font-weight:500">${admEsc(a.name)}</div>${a.bio?`<div style="font-size:.65rem;color:var(--txt3);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${admEsc(a.bio)}</div>`:''}</div></div></td>
         <td><span class="cat-pill">${admEsc(a.genre)}</span></td>
         <td style="font-size:.75rem;color:var(--txt2);max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${bookList.length?admEsc(bookList.join(', ')):'<span style="color:var(--txt3)">—</span>'}</td>
         <td style="font-weight:600;color:var(--gold)">${views}</td>
         <td style="text-align:center">${a.featured?'<i class="ti ti-star-filled" style="color:var(--gold);font-size:14px"></i>':'<span style="color:var(--txt3);font-size:.72rem">—</span>'}</td>
+        <td style="text-align:center">${memBadge}</td>
         <td style="text-align:center">
           <div style="display:flex;gap:.3rem;justify-content:center">
-            <button class="act-btn" onclick="adminEditAuthorFull(${realIdx})"><i class="ti ti-edit" style="font-size:12px"></i> Düzenle</button>
+            <button class="act-btn" onclick="adminEditAuthorFull(${realIdx})"><i class="ti ti-edit" style="font-size:12px"></i></button>
+            <button class="act-btn" style="background:rgba(45,110,74,.08);border-color:rgba(45,110,74,.25);color:#2D6E4A" onclick="adminManageAuthorMembership(${realIdx})"><i class="ti ti-id-badge" style="font-size:12px"></i> Üyelik</button>
             <button class="act-btn red" onclick="adminDeleteAuthor(${realIdx})"><i class="ti ti-trash" style="font-size:12px"></i></button>
           </div>
         </td>
@@ -8921,6 +8936,77 @@ window.adminDeleteAuthor = function(idx){
   admSaveAuthors();
   adminRenderAuthorsTable(ag('adm-authorSearch')?.value||'');
   adminToast(`"${a.name}" kaldırıldı.`,'warn');
+};
+
+/* ── YAZAR ÜYELİK YÖNETİMİ ── */
+window.adminManageAuthorMembership = function(idx){
+  const a=adminAuthorsData[idx]; if(!a)return;
+  const m=a.membership||{};
+  const isNew=!m.email;
+  const avBg=admAvColor(a.name);
+  ag('adm-editModalTitle').textContent=`Üyelik — ${a.name}`;
+  ag('adm-editModalBody').innerHTML=`
+    <div style="display:flex;align-items:center;gap:.85rem;margin-bottom:1.1rem;padding-bottom:1rem;border-bottom:1px solid var(--brd2)">
+      <div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--gold);background:${avBg};display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.9rem">
+        ${a.photo?`<img src="${admEsc(a.photo)}" style="width:100%;height:100%;object-fit:cover">`:(a.initials||a.name.slice(0,2))}
+      </div>
+      <div>
+        <div style="font-weight:600">${admEsc(a.name)}</div>
+        <div style="font-size:.72rem;color:var(--txt2)">${admEsc(a.genre)}</div>
+      </div>
+      ${!isNew?`<div style="margin-left:auto;font-size:.65rem;color:var(--txt3);text-align:right">Oluşturuldu: ${admEsc(m.createdAt||'—')}<br>Son giriş: ${admEsc(m.lastLogin||'Henüz giriş yapılmadı')}</div>`:''}
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>E-posta *</label><input id="adm-mem-email" value="${admEsc(m.email||'')}" type="email" placeholder="yazar@ornek.com"></div>
+      <div class="field"><label>Şifre *</label><input id="adm-mem-pass" value="${admEsc(m.password||'')}" type="text" placeholder="Şifre belirleyin"></div>
+      <div class="field"><label>Durum</label>
+        <select id="adm-mem-status" style="padding:.48rem .65rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.8rem;width:100%;outline:none">
+          <option value="active"${(m.status||'active')==='active'?' selected':''}>Aktif</option>
+          <option value="suspended"${m.status==='suspended'?' selected':''}>Askıya Alındı</option>
+        </select>
+      </div>
+      <div class="field field-full">
+        <label>Yayınevi Notu <span style="font-weight:400;font-size:.65rem;color:var(--txt3)">(yazar panelinde görünür)</span></label>
+        <textarea id="adm-mem-note" style="min-height:64px">${admEsc(m.note||'')}</textarea>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="tb-btn primary" onclick="adminSaveAuthorMembership(${idx})"><i class="ti ti-check"></i>${isNew?'Üyelik Oluştur':'Güncelle'}</button>
+      ${!isNew?`<button class="tb-btn" style="background:rgba(139,58,42,.07);border-color:rgba(139,58,42,.22);color:#8B3A2A" onclick="adminRevokeAuthorMembership(${idx})"><i class="ti ti-trash"></i>Üyeliği Sil</button>`:''}
+      <button class="tb-btn" onclick="adminCloseModal('adm-editModal')">İptal</button>
+    </div>`;
+  adminOpenModal('adm-editModal');
+};
+
+window.adminSaveAuthorMembership = function(idx){
+  const a=adminAuthorsData[idx]; if(!a)return;
+  const email=(ag('adm-mem-email')?.value||'').trim();
+  const pass=(ag('adm-mem-pass')?.value||'').trim();
+  const status=ag('adm-mem-status')?.value||'active';
+  const note=(ag('adm-mem-note')?.value||'').trim();
+  if(!email){adminToast('E-posta zorunlu!','warn');return;}
+  if(!pass){adminToast('Şifre zorunlu!','warn');return;}
+  const isNew=!a.membership?.email;
+  a.membership={
+    email,password:pass,status,
+    createdAt:isNew?new Date().toISOString().split('T')[0]:(a.membership.createdAt||new Date().toISOString().split('T')[0]),
+    lastLogin:isNew?null:(a.membership.lastLogin||null),
+    note
+  };
+  admSaveAuthors();
+  adminRenderAuthorsTable(ag('adm-authorSearch')?.value||'');
+  adminCloseModal('adm-editModal');
+  adminToast(`"${a.name}" üyeliği ${isNew?'oluşturuldu':'güncellendi'} ✓`);
+};
+
+window.adminRevokeAuthorMembership = function(idx){
+  const a=adminAuthorsData[idx]; if(!a)return;
+  if(!confirm(`"${a.name}" yazarının üyeliğini silmek istediğinizden emin misiniz?`))return;
+  delete a.membership;
+  admSaveAuthors();
+  adminRenderAuthorsTable(ag('adm-authorSearch')?.value||'');
+  adminCloseModal('adm-editModal');
+  adminToast(`"${a.name}" üyeliği silindi`,'warn');
 };
 
 /* ═══════════════════════════════════════
@@ -9606,7 +9692,152 @@ window.adminBootstrap = function(){
 };
 
 })(); /* end IIFE */
+
+/* ═══════════════════════════════════════
+   YAZAR PANELI JS
+═══════════════════════════════════════ */
+let authorSession=JSON.parse(sessionStorage.getItem('akgulAuthorSession')||'null');
+
+function showAuthorLoginModal(){
+  if(authorSession){renderAuthorPanel();return;}
+  const m=document.getElementById('authorLoginModal');if(!m)return;
+  m.style.display='flex';
+  document.getElementById('authorLoginEmail')?.focus();
+}
+function closeAuthorLoginModal(){
+  const m=document.getElementById('authorLoginModal');if(m)m.style.display='none';
+  const e=document.getElementById('authorLoginErr');if(e)e.textContent='';
+}
+function authorLogin(){
+  const email=(document.getElementById('authorLoginEmail')?.value||'').trim().toLowerCase();
+  const pass=document.getElementById('authorLoginPass')?.value||'';
+  const err=document.getElementById('authorLoginErr');
+  if(!email||!pass){if(err)err.textContent='E-posta ve şifre gerekli.';return;}
+  const authorsData=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
+  const found=authorsData.find(a=>a.membership&&(a.membership.email||'').toLowerCase()===email&&a.membership.password===pass);
+  if(!found){if(err)err.textContent='E-posta veya şifre hatalı.';return;}
+  if(found.membership.status==='suspended'){if(err)err.textContent='Üyeliğiniz askıya alınmıştır. Yayınevi ile iletişime geçin.';return;}
+  found.membership.lastLogin=new Date().toISOString().split('T')[0];
+  localStorage.setItem('akgul_authors_v2',JSON.stringify(authorsData));
+  authorSession={name:found.name,email};
+  sessionStorage.setItem('akgulAuthorSession',JSON.stringify(authorSession));
+  closeAuthorLoginModal();
+  const btn=document.getElementById('authorLoginBtn');
+  if(btn)btn.innerHTML='<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Yazar Panelim ✦';
+  renderAuthorPanel();
+}
+function authorLogout(){
+  authorSession=null;
+  sessionStorage.removeItem('akgulAuthorSession');
+  const ov=document.getElementById('authorPanelOverlay');if(ov)ov.style.display='none';
+  document.body.style.overflow='';
+  const btn=document.getElementById('authorLoginBtn');
+  if(btn)btn.innerHTML='<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Yazar Girişi';
+}
+function renderAuthorPanel(){
+  if(!authorSession)return;
+  const authorsData=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
+  const author=authorsData.find(a=>a.name===authorSession.name);
+  if(!author||!author.membership){authorLogout();return;}
+  const booksData=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  const myBooks=booksData.filter(b=>b.author===author.name);
+  const totalViews=myBooks.reduce((s,b)=>s+(b.views||0),0);
+  const totalReviews=myBooks.reduce((s,b)=>s+(b.reviews?.length||0),0);
+  const totalAvg=myBooks.length?(myBooks.reduce((s,b)=>{const r=b.reviews||[];const a=r.length?r.reduce((rs,rv)=>rs+rv.s,0)/r.length:(b.rating||0);return s+a;},0)/myBooks.length).toFixed(1):'—';
+  const avColor=author.color||'#2D4A3E';
+  const initials=author.initials||author.name.slice(0,2).toUpperCase();
+  const panel=document.getElementById('authorPanelContent');
+  if(!panel)return;
+  panel.innerHTML=`
+    <div style="background:linear-gradient(135deg,${avColor},${avColor}bb);padding:2rem 1.5rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
+      <div style="width:68px;height:68px;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.3);flex-shrink:0;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:#fff">
+        ${author.photo?`<img src="${escHtml(author.photo)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:initials}
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:#fff">${escHtml(author.name)}</div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.65);margin-top:.15rem">${escHtml(author.genre)}</div>
+        <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-top:.1rem">Üyelik: ${escHtml(author.membership.createdAt||'—')}</div>
+      </div>
+      <button onclick="authorLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;padding:.48rem 1rem;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--font-sans);white-space:nowrap">Çıkış Yap</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;padding:1.1rem;background:#fff;border-bottom:1px solid var(--border)">
+      <div style="text-align:center;padding:.7rem;background:var(--cream);border-radius:8px">
+        <div style="font-family:var(--font-serif);font-size:1.5rem;font-weight:700;color:var(--ink)">${myBooks.length}</div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Kitap</div>
+      </div>
+      <div style="text-align:center;padding:.7rem;background:var(--cream);border-radius:8px">
+        <div style="font-family:var(--font-serif);font-size:1.5rem;font-weight:700;color:var(--ink)">${totalViews}</div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Görüntüleme</div>
+      </div>
+      <div style="text-align:center;padding:.7rem;background:var(--cream);border-radius:8px">
+        <div style="font-family:var(--font-serif);font-size:1.5rem;font-weight:700;color:var(--ink)">${totalReviews}</div>
+        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Yorum · ★${totalAvg}</div>
+      </div>
+    </div>
+    ${author.membership.note?`<div style="margin:1.1rem 1.1rem 0;padding:.9rem 1rem;background:#fffbf0;border:1px solid #e8d8a0;border-radius:8px;border-left:3px solid #C8A96E">
+      <div style="font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#9A7A45;margin-bottom:.35rem">✦ Yayınevi Notu</div>
+      <div style="font-size:.82rem;color:var(--ink);line-height:1.65">${escHtml(author.membership.note)}</div>
+    </div>`:''}
+    <div style="padding:1.1rem">
+      <div style="font-family:var(--font-serif);font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:.85rem;padding-bottom:.55rem;border-bottom:1px solid var(--border)">Katalogdaki Kitaplarım</div>
+      ${myBooks.length?myBooks.map(b=>{
+        const revs=b.reviews||[];
+        const avg=revs.length?(revs.reduce((s,r)=>s+r.s,0)/revs.length).toFixed(1):(b.rating||'—');
+        return`<div style="display:flex;align-items:center;gap:.9rem;padding:.8rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.5rem;background:#fff">
+          <div style="width:40px;height:56px;border-radius:4px;background:${b.bg||'linear-gradient(145deg,#2D4A3E,#1a3a2e)'};flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center">
+            ${b.cover?`<img src="${escHtml(b.cover)}" style="width:100%;height:100%;object-fit:cover">`:`<div style="font-size:6px;color:rgba(255,255,255,.6);text-align:center;padding:2px;line-height:1.2">${escHtml(b.title)}</div>`}
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:.85rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(b.title)}</div>
+            <div style="font-size:.7rem;color:var(--muted);margin-top:.1rem">${b.badge?`<span style="background:rgba(200,169,110,.15);color:#9A7A45;padding:1px 6px;border-radius:4px;font-size:.62rem;margin-right:.35rem">${escHtml(b.badge)}</span>`:''}${b.cat||''}</div>
+          </div>
+          <div style="text-align:right;flex-shrink:0;font-size:.72rem;color:var(--muted)">
+            <div>${b.views||0} görüntüleme</div>
+            <div>${revs.length} yorum · ★${avg}</div>
+            <div style="font-size:.82rem;font-weight:600;color:var(--ink);margin-top:.15rem">₺${b.price}</div>
+          </div>
+        </div>`;
+      }).join(''):`<div style="text-align:center;padding:2rem;color:var(--muted);font-size:.82rem">Katalogda henüz kitabınız bulunmuyor.</div>`}
+    </div>
+    ${(author.bio||author.quote)?`<div style="padding:0 1.1rem 1.5rem">
+      ${author.bio?`<div style="padding:.9rem;background:var(--cream);border-radius:8px;font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:.6rem">${escHtml(author.bio)}</div>`:''}
+      ${author.quote?`<div style="padding:.9rem;border-left:3px solid var(--gold);font-family:var(--font-serif);font-style:italic;font-size:.88rem;color:var(--ink);line-height:1.65">"${escHtml(author.quote)}"</div>`:''}
+    </div>`:''}`;
+  document.getElementById('authorPanelOverlay').style.display='flex';
+  document.body.style.overflow='hidden';
+}
+if(authorSession){const btn=document.getElementById('authorLoginBtn');if(btn)btn.innerHTML='<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Yazar Panelim ✦';}
 </script>
+
+<!-- YAZAR GİRİŞ MODALI -->
+<div id="authorLoginModal" style="display:none;position:fixed;inset:0;z-index:11000;background:rgba(10,10,8,.72);backdrop-filter:blur(5px);align-items:center;justify-content:center">
+  <div style="background:var(--parchment,#FAF7F2);border-radius:12px;width:90%;max-width:370px;overflow:hidden;box-shadow:0 25px 60px rgba(0,0,0,.3)">
+    <div style="background:linear-gradient(135deg,#1a3a2e,#2D4A3E);padding:1.5rem;text-align:center">
+      <div style="font-family:serif;font-size:1.15rem;color:#fff;margin-bottom:.2rem">Yazar Girişi</div>
+      <div style="font-size:.7rem;color:rgba(255,255,255,.5)">Akgül Yayınevi · Yazar Portalı</div>
+    </div>
+    <div style="padding:1.4rem">
+      <div style="margin-bottom:.85rem">
+        <label style="display:block;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:.3rem">E-posta</label>
+        <input id="authorLoginEmail" type="email" placeholder="yazar@ornek.com" onkeydown="if(event.key==='Enter')document.getElementById('authorLoginPass').focus()" style="width:100%;padding:.62rem .8rem;border:1px solid #ddd;border-radius:6px;font-size:.84rem;background:#fff;color:#1a1a1a;outline:none;box-sizing:border-box">
+      </div>
+      <div style="margin-bottom:.9rem">
+        <label style="display:block;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#888;margin-bottom:.3rem">Şifre</label>
+        <input id="authorLoginPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')authorLogin()" style="width:100%;padding:.62rem .8rem;border:1px solid #ddd;border-radius:6px;font-size:.84rem;background:#fff;color:#1a1a1a;outline:none;box-sizing:border-box">
+      </div>
+      <div id="authorLoginErr" style="font-size:.73rem;color:#8B3A2A;min-height:.9rem;margin-bottom:.6rem"></div>
+      <button onclick="authorLogin()" style="width:100%;padding:.78rem;background:linear-gradient(135deg,#1a3a2e,#2D4A3E);color:#fff;border:none;border-radius:6px;font-size:.84rem;font-weight:600;cursor:pointer;letter-spacing:.03em">Giriş Yap</button>
+      <button onclick="closeAuthorLoginModal()" style="width:100%;padding:.55rem;background:none;color:#aaa;border:none;font-size:.75rem;cursor:pointer;margin-top:.4rem">İptal</button>
+    </div>
+  </div>
+</div>
+
+<!-- YAZAR PANELİ OVERLAY -->
+<div id="authorPanelOverlay" style="display:none;position:fixed;inset:0;z-index:11000;background:var(--parchment,#FAF7F2);overflow-y:auto">
+  <div style="max-width:640px;margin:0 auto;padding:1.5rem 1rem 3rem">
+    <div id="authorPanelContent" style="border:1px solid var(--border,#e0d8cc);border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08)"></div>
+  </div>
+</div>
 
 </body>
 </html>
