@@ -13,27 +13,6 @@
         "reviews": []
     },
     {
-        "id": 3,
-        "title": "Anadolu'nun Sesi",
-        "author": "Fatma Yıldız",
-        "price": 195,
-        "cat": "tarih",
-        "bg": "linear-gradient(145deg,#2e2a1d,#3E3A2D)",
-        "badge": "Bestseller",
-        "desc": "Anadolu'nun binlerce yıllık hikâyesi.",
-        "cover": "",
-        "pages": 0,
-        "views": 231,
-        "rating": 4.9,
-        "reviews": [
-            {
-                "u": "Murat K.",
-                "s": 5,
-                "t": "Tarih kitapları içinde en iyisi."
-            }
-        ]
-    },
-    {
         "id": 4,
         "title": "Kayıp Kelimeler",
         "author": "Can Öztürk",
