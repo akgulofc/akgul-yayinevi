@@ -3149,7 +3149,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <!-- ══════════════════════════════════════
      ARAMA — COMMAND PALETTE
 ══════════════════════════════════════ -->
-<div class="s-overlay" id="searchOverlay">
+<div class="s-overlay" id="searchOverlay" onclick="if(event.target===this)toggleSearch()">
   <div class="s-modal">
 
     <!-- Başlık: ikon + input + ESC -->
@@ -5629,6 +5629,7 @@ function openModal(id){
       <div class="review-list" id="reviewList">${revHtml}</div>
     </div>`;
   sid('moverlay').classList.add('on');document.body.style.overflow='hidden';
+  history.pushState({overlay:'modal'},'',location.href);
 }
 function closeMod(){sid('moverlay').classList.remove('on');document.body.style.overflow='';_setOgMeta();}
 function setStars(n){
@@ -6034,7 +6035,7 @@ function toggleCart(){
   const open=p.classList.contains('on');
   p.classList.toggle('on');o.classList.toggle('on');
   document.body.style.overflow=open?'':'hidden';
-  if(!open)renderCart();
+  if(!open){renderCart();history.pushState({overlay:'cart'},'',location.href);}
 }
 function checkout(){
   if(!cart.length){toast('Sepetiniz boş!');return;}
@@ -6129,6 +6130,7 @@ function toggleSearch(){
     inp.value='';searchFilter='all';
     document.querySelectorAll('.s-fbtn').forEach((b,i)=>b.classList.toggle('act',i===0));
     renderSearchDefault();
+    history.pushState({overlay:'search'},'',location.href);
   } else {
     document.body.style.overflow='';
   }
@@ -7359,6 +7361,9 @@ if(currentUser?.email==='akgulyayinevi@gmail.com'&&window.location.hash==='#admi
 })();
 if(!history.state)history.replaceState({page:'home'},'',location.href);
 window.addEventListener('popstate',function(e){
+  if(sid('searchOverlay')?.classList.contains('open')){toggleSearch();return;}
+  if(sid('moverlay')?.classList.contains('on')){closeMod();return;}
+  if(sid('cartPanel')?.classList.contains('on')){toggleCart();return;}
   _goFromHistory=true;
   go(e.state&&e.state.page?e.state.page:'home');
   _goFromHistory=false;
