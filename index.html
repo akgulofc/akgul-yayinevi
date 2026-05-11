@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -2979,6 +2980,11 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 #adminSite .sec-title{font-family:var(--fs);font-size:1.15rem;font-weight:600;color:var(--txt1)}
 /* Blog form */
 #adminSite .editor-area{min-height:120px}
+#adminSite .adm-ql-wrap .ql-toolbar{border:1px solid var(--brd2);border-radius:var(--rad-sm) var(--rad-sm) 0 0;background:var(--bg3);padding:.3rem .5rem}
+#adminSite .adm-ql-wrap .ql-container{border:1px solid var(--brd2);border-top:0;border-radius:0 0 var(--rad-sm) var(--rad-sm);font-family:var(--fss)}
+#adminSite .adm-ql-wrap .ql-editor{min-height:110px;font-size:.88rem;color:var(--txt1);padding:.65rem .75rem;line-height:1.7}
+#adminSite .adm-ql-wrap-lg .ql-editor{min-height:180px}
+#adminSite .adm-ql-wrap .ql-editor.ql-blank::before{color:var(--txt3);font-style:normal;font-size:.88rem}
 /* Chart toggle */
 #adminSite .chart-toggle{display:flex;gap:.2rem;background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--rad-sm);padding:2px}
 #adminSite .chart-toggle button{padding:.28rem .65rem;border:none;background:none;border-radius:calc(var(--rad-sm) - 2px);font-size:.7rem;cursor:pointer;color:var(--txt2);transition:all var(--trans)}
@@ -5377,7 +5383,7 @@ async function selAiMood(el,mood){
   const load=sid('aiLoadPage'),res=sid('aiResultPage');if(!load||!res)return;
   load.style.display='block';res.innerHTML='';
   _aiOffset=0;_aiMoodKey=mood;
-  const catalog=books.map(b=>({id:b.id,title:b.title,author:b.author,cat:CATS[b.cat]||b.cat,desc:b.desc,rating:b.rating}));
+  const catalog=books.map(b=>({id:b.id,title:b.title,author:b.author,cat:CATS[b.cat]||b.cat,desc:(b.desc||'').replace(/<[^>]*>/g,''),rating:b.rating}));
   try{
     const r=await fetch(GROQ_RECOMMEND_EP,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mood,books:catalog})});
     if(!r.ok)throw new Error('Sunucu hatası');
@@ -5554,7 +5560,7 @@ function openModal(id){
         <div class="modal-views"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${b.views} görüntüleme</div>
       </div>
     </div>
-    <div class="modal-desc">${escHtml(b.desc)}</div>
+    <div class="modal-desc">${b.desc||''}</div>
     <div class="modal-btns">
       <button class="mbn" onclick="addCart(${b.id});closeMod()">Sepete Ekle</button>
       <button class="bwish mbn-wish${_wishlisted?' wishlisted':''}" data-id="${b.id}" onclick="toggleWishlist(${b.id},event)">${_wishlisted?'♥ İstek Listesinde':'♡ İstek Listesine Ekle'}</button>
@@ -7795,7 +7801,7 @@ async function sendAIW(){
           <div class="field field-full"><label>Başlık</label><input id="adm-bm-title" placeholder="Yazı başlığı"></div>
           <div class="field"><label>Yazar</label><select id="adm-bm-author"></select></div>
           <div class="field"><label>Kategori</label><input id="adm-bm-cat" placeholder="Roman, Şiir, Tarih..."></div>
-          <div class="field field-full"><label>İçerik (özet)</label><textarea id="adm-bm-content" class="editor-area" placeholder="Yazı içeriği veya özeti..."></textarea></div>
+          <div class="field field-full"><label>İçerik (özet)</label><div class="adm-ql-wrap adm-ql-wrap-lg"><div id="adm-bm-content-quill"></div></div></div>
           <div class="field field-full"><label>Kapak Görseli</label>
             <div style="display:flex;gap:.5rem;align-items:center">
               <input type="file" id="adm-bm-cover-file" accept="image/*" onchange="admUploadImage(this,'adm-bm-cover-url','adm-blogCoverImg','adm-blogCoverPreview')" style="flex:1;font-size:.78rem">
@@ -8059,7 +8065,7 @@ async function sendAIW(){
                     <div class="cover-prev-info"><div id="adm-coverDims"></div></div>
                   </div>
                 </div>
-                <div class="field field-full"><label>Açıklama</label><textarea id="adm-nb-desc" placeholder="Kitabın kısa açıklaması..."></textarea></div>
+                <div class="field field-full"><label>Açıklama</label><div class="adm-ql-wrap"><div id="adm-nb-desc-quill"></div></div></div>
               </div>
               <div class="form-actions">
                 <button class="tb-btn primary" onclick="adminAddBook()"><i class="ti ti-check"></i>Kitabı Ekle</button>
@@ -8776,14 +8782,14 @@ window.adminPreviewCover = function(input){
 window.adminRemoveCover = function(){ const h=ag('adm-nb-cover');if(h)h.value=''; const f=ag('adm-nb-cover-file');if(f)f.value=''; ag('adm-coverPreview').style.display='none'; ag('adm-coverImg').src=''; admCurrentCoverData=null; };
 
 window.adminAddBook = function(){
-  const title=agv('adm-nb-title'),author=agv('adm-nb-author'),price=parseInt(agv('adm-nb-price'))||0,cat=agv('adm-nb-cat'),badge=agv('adm-nb-badge')||null,pages=parseInt(agv('adm-nb-pages'))||0,desc=agv('adm-nb-desc');
+  const title=agv('adm-nb-title'),author=agv('adm-nb-author'),price=parseInt(agv('adm-nb-price'))||0,cat=agv('adm-nb-cat'),badge=agv('adm-nb-badge')||null,pages=parseInt(agv('adm-nb-pages'))||0,desc=_quillDesc?(_quillDesc.getText().trim()?_quillDesc.root.innerHTML:''):'';
   if(!title){adminToast('Kitap adı zorunlu!','warn');return;}
   if(!author){adminToast('Yazar adı zorunlu!','warn');return;}
   if(price<1){adminToast('Geçerli bir fiyat girin!','warn');return;}
   const newBook={id:Date.now(),title,author,price,cat,badge,pages,desc,cover:admCurrentCoverData||'',views:0,reviews:[]};
   adminBooks.unshift(newBook);
   admSaveBooks(); adminRenderBooks(); adminRenderTopBooks();
-  ['adm-nb-title','adm-nb-author','adm-nb-price','adm-nb-badge','adm-nb-pages','adm-nb-desc'].forEach(id=>{const e=ag(id);if(e)e.value='';});
+  ['adm-nb-title','adm-nb-author','adm-nb-price','adm-nb-badge','adm-nb-pages'].forEach(id=>{const e=ag(id);if(e)e.value='';}); if(_quillDesc)_quillDesc.setText('');;
   adminRemoveCover(); ag('adm-nb-cat').value='roman';
   ag('adm-addBookCard').style.display='none';
   adminToast(`✦ "${title}" eklendi!`);
@@ -8835,12 +8841,14 @@ window.adminEditBook = function(id){
         <img id="adm-ebCoverImg" src="${admEsc(b.cover||'')}" alt="Kapak önizleme">
         <div class="cover-prev-info"><div id="adm-ebCoverDims"></div></div>
       </div>
-      <div class="field field-full"><label>Açıklama</label><textarea id="adm-eb-desc">${admEsc(b.desc||'')}</textarea></div>
+      <div class="field field-full"><label>Açıklama</label><div class="adm-ql-wrap"><div id="adm-eb-desc-quill"></div></div></div>
     </div>
     <div class="form-actions">
       <button class="tb-btn primary" onclick="adminSaveEditBook(${b.id})"><i class="ti ti-check"></i>Kaydet</button>
       <button class="tb-btn" onclick="adminCloseModal('adm-editModal')">İptal</button>
     </div>`;
+  _quillEditDesc=typeof Quill!=='undefined'?new Quill('#adm-eb-desc-quill',{theme:'snow',modules:{toolbar:ADM_QUILL_TOOLBAR},placeholder:'Kitabın kısa açıklaması...'}) :null;
+  if(_quillEditDesc&&b.desc)_quillEditDesc.clipboard.dangerouslyPasteHTML(b.desc);
   adminOpenModal('adm-editModal');
 };
 
@@ -8851,7 +8859,7 @@ window.adminSaveEditBook = function(id){
   if(price<1){adminToast('Geçerli fiyat girin!','warn');return;}
   b.title=agv('adm-eb-title'); b.author=agv('adm-eb-author'); b.price=price;
   b.cat=agv('adm-eb-cat'); b.badge=agv('adm-eb-badge')||null;
-  b.pages=parseInt(agv('adm-eb-pages'))||0; b.desc=agv('adm-eb-desc');
+  b.pages=parseInt(agv('adm-eb-pages'))||0; b.desc=_quillEditDesc?(_quillEditDesc.getText().trim()?_quillEditDesc.root.innerHTML:''):agv('adm-eb-desc');
   b.cover=(agv('adm-eb-cover')||'').trim();
   admSaveBooks(); adminRenderBooks(); adminRenderTopBooks();
   adminCloseModal('adm-editModal');
@@ -9306,9 +9314,9 @@ window.adminSaveBlogPost = function(){
   if(!title){adminToast('Başlık zorunlu!','warn');return;}
   const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
   const coverUrl=(ag('adm-bm-cover-url')?.value||'').trim();
-  adminBlogPosts.unshift({id:Date.now(),title,author:agv('adm-bm-author'),date:today,cat:agv('adm-bm-cat')||'Genel',status:agv('adm-bm-status'),content:agv('adm-bm-content'),cover:coverUrl});
+  adminBlogPosts.unshift({id:Date.now(),title,author:agv('adm-bm-author'),date:today,cat:agv('adm-bm-cat')||'Genel',status:agv('adm-bm-status'),content:_quillBlog?(_quillBlog.getText().trim()?_quillBlog.root.innerHTML:''):'',cover:coverUrl});
   admSaveBlog(); adminRenderBlog(); adminCloseModal('adm-blogModal');
-  ag('adm-bm-title').value=''; ag('adm-bm-content').value=''; ag('adm-bm-cat').value=''; adminRemoveBlogCover();
+  ag('adm-bm-title').value=''; if(_quillBlog)_quillBlog.setText(''); ag('adm-bm-cat').value=''; adminRemoveBlogCover();
   adminToast(`"${title}" yayınlandı`);
   admUpdateNavBadges();
 };
@@ -9981,6 +9989,18 @@ function renderAuthorPanel(){
   document.body.style.overflow='hidden';
 }
 if(authorSession){const btn=document.getElementById('authorLoginBtn');if(btn)btn.innerHTML='<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Yazar Panelim ✦';}
+</script>
+<script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+<script>
+var _quillBlog=null,_quillDesc=null,_quillEditDesc=null;
+var ADM_QUILL_TOOLBAR=[['bold','italic','underline'],[{'header':[2,3,false]}],[{'list':'ordered'},{'list':'bullet'}],['link','clean']];
+(function(){
+  if(typeof Quill==='undefined')return;
+  if(document.getElementById('adm-bm-content-quill'))
+    _quillBlog=new Quill('#adm-bm-content-quill',{theme:'snow',modules:{toolbar:ADM_QUILL_TOOLBAR},placeholder:'Yazı içeriği veya özeti...'});
+  if(document.getElementById('adm-nb-desc-quill'))
+    _quillDesc=new Quill('#adm-nb-desc-quill',{theme:'snow',modules:{toolbar:ADM_QUILL_TOOLBAR},placeholder:'Kitabın kısa açıklaması...'});
+})();
 </script>
 
 <!-- YAZAR GİRİŞ MODALI -->
