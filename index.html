@@ -3200,7 +3200,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-eyebrow" id="s0-ey">Akgül Yayınevi</div>
         <h1 id="s0-h1">Kelimelerin <em>Büyüsüne</em> Kapılın</h1>
         <p id="s0-p">Adana'dan Türkiye'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.</p>
-        <div class="slide-btns">
+        <div class="slide-btns" id="s0-btns">
           <button class="btn-gold" onclick="sid('books-sec').scrollIntoView({behavior:'smooth'})">Kitapları Keşfet</button>
           <button class="btn-outline" onclick="go('ai-oneri')">AI Öneri Al</button>
         </div>
@@ -3212,7 +3212,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-eyebrow" id="s1-ey">Yeni Çıktı</div>
         <h1 id="s1-h1"><em>Mavi Oda</em> — Deniz Kaya</h1>
         <p id="s1-p">Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026'nın en çarpıcı romanı.</p>
-        <div class="slide-btns">
+        <div class="slide-btns" id="s1-btns">
           <button class="btn-gold" onclick="openModal(8)">İncele</button>
           <button class="btn-outline" onclick="go('authors')">Yazara Git</button>
         </div>
@@ -3224,7 +3224,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-eyebrow" id="s2-ey">Yazar mısınız?</div>
         <h1 id="s2-h1">Eserinizi <em>Dünyayla</em> Buluşturun</h1>
         <p id="s2-p">Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.</p>
-        <div class="slide-btns">
+        <div class="slide-btns" id="s2-btns">
           <button class="btn-gold" onclick="go('eser-basvuru')">Başvuru Yap</button>
           <button class="btn-outline" onclick="go('about')">Hakkımızda</button>
         </div>
@@ -3236,7 +3236,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-eyebrow" id="s3-ey">Adana'dan Türkiye'ye</div>
         <h1 id="s3-h1">Güney'in <em>Edebiyat Kalesi</em></h1>
         <p id="s3-p">Akgül Yayınevi olarak Adana'nın derin kültür mirasını ve güney edebiyatının sesini tüm Türkiye'ye taşıyoruz. Her kitap bir köprüdür.</p>
-        <div class="slide-btns">
+        <div class="slide-btns" id="s3-btns">
           <button class="btn-gold" onclick="go('about')">Bizi Tanıyın</button>
           <button class="btn-outline" onclick="go('authors')">Yazarlarımız</button>
         </div>
@@ -3248,7 +3248,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-eyebrow" id="s4-ey">Zengin Katalog</div>
         <h1 id="s4-h1">Her Zevke Hitap Eden <em>Edebi Seçki</em></h1>
         <p id="s4-p">Roman, şiir, deneme, tarih, felsefe ve kişisel gelişim... 18'den fazla özgün eserle Türk okuyucusunun yanındayız.</p>
-        <div class="slide-btns">
+        <div class="slide-btns" id="s4-btns">
           <button class="btn-gold" onclick="sid('books-sec').scrollIntoView({behavior:'smooth'})">Kataloğu Keşfet</button>
           <button class="btn-outline" onclick="go('ai-oneri')">Bana Kitap Öner</button>
         </div>
@@ -3261,7 +3261,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-eyebrow" id="s5-ey">Özel İndirim</div>
         <h1 id="s5-h1">Tüm Kitaplarda <em>%20 İndirim</em></h1>
         <p id="s5-p">Haziran boyunca kataloğumuzdaki tüm eserlerde geçerli yaz kampanyamızdan yararlanın. Fırsatı kaçırmayın!</p>
-        <div class="slide-btns">
+        <div class="slide-btns" id="s5-btns">
           <button class="btn-gold" onclick="sid('books-sec').scrollIntoView({behavior:'smooth'})">Kampanyayı Gör</button>
           <button class="btn-outline" onclick="go('contact')">Sipariş Ver</button>
         </div>
@@ -3273,7 +3273,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-eyebrow" id="s6-ey">Birlikte Okuyalım</div>
         <h1 id="s6-h1">Akgül <em>Okuma Kulübü</em></h1>
         <p id="s6-p">Her ay yeni bir eser, yeni bir sohbet. Okuma kulübümüze katılın; yazarlarla buluşun, fikirlerinizi paylaşın, edebiyatı birlikte keşfedin.</p>
-        <div class="slide-btns">
+        <div class="slide-btns" id="s6-btns">
           <button class="btn-gold" onclick="go('okuma-kulubu')">Kulübe Katıl</button>
           <button class="btn-outline" onclick="go('blog')">Yazı Köşesi</button>
         </div>
@@ -7268,12 +7268,19 @@ function applySiteContent(){
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content',sDesc);
   }
   // Hero Slider
+  const _SACT={'books-scroll':"sid('books-sec')?.scrollIntoView({behavior:'smooth'})",'books':"go('books')",'authors':"go('authors')",'ai-oneri':"go('ai-oneri')",'about':"go('about')",'eser-basvuru':"go('eser-basvuru')",'contact':"go('contact')",'okuma-kulubu':"go('okuma-kulubu')",'blog':"go('blog')",'wishlist':"go('wishlist')"};
   if(c.slides){
     c.slides.forEach((s,i)=>{
       if(s.eyebrow){const e=el('s'+i+'-ey');if(e)e.textContent=s.eyebrow;}
       if(s.title){const e=el('s'+i+'-h1');if(e)e.innerHTML=s.title;}
       if(s.desc){const e=el('s'+i+'-p');if(e)e.textContent=s.desc;}
       if(i===5&&s.badge){const e=el('s5-badge');if(e)e.textContent=s.badge;}
+      if(s.btn1Text||s.btn1Act){
+        const btns=el('s'+i+'-btns'); if(!btns)return;
+        const a1=_SACT[s.btn1Act]||"sid('books-sec')?.scrollIntoView({behavior:'smooth'})";
+        const b2=s.btn2Text?`<button class="btn-outline" onclick="${_SACT[s.btn2Act]||''}">${escHtml(s.btn2Text)}</button>`:'';
+        btns.innerHTML=`<button class="btn-gold" onclick="${a1}">${escHtml(s.btn1Text||'Keşfet')}</button>${b2}`;
+      }
     });
   }
   // Kargo & Ödeme
@@ -9737,36 +9744,80 @@ window.adminSelSlideTab = function(i,btn){
   adminRenderSlideEditor(i);
 };
 
+const ADM_SLIDE_ACTS=[
+  {v:'books-scroll',l:'Kitaplara Kaydır'},
+  {v:'books',l:'Kitaplar Sayfası'},
+  {v:'authors',l:'Yazarlarımız'},
+  {v:'ai-oneri',l:'AI Öneri'},
+  {v:'about',l:'Hakkımızda'},
+  {v:'eser-basvuru',l:'Eser Başvuru'},
+  {v:'contact',l:'İletişim / Sipariş'},
+  {v:'okuma-kulubu',l:'Okuma Kulübü'},
+  {v:'blog',l:'Yazı Köşesi'},
+  {v:'wishlist',l:'İstek Listesi'},
+];
+const ADM_SLIDE_ACT_JS={
+  'books-scroll':"sid('books-sec')?.scrollIntoView({behavior:'smooth'})",
+  'books':"go('books')",
+  'authors':"go('authors')",
+  'ai-oneri':"go('ai-oneri')",
+  'about':"go('about')",
+  'eser-basvuru':"go('eser-basvuru')",
+  'contact':"go('contact')",
+  'okuma-kulubu':"go('okuma-kulubu')",
+  'blog':"go('blog')",
+  'wishlist':"go('wishlist')",
+};
+function admSlActOpts(sel){return ADM_SLIDE_ACTS.map(a=>`<option value="${a.v}"${sel===a.v?' selected':''}>${a.l}</option>`).join('');}
+
 function adminRenderSlideEditor(i){
   const slides=adminSiteContent.slides||[{},{},{},{},{},{},{}];
   const s=slides[i]||{};
   const defaults=[
-    {ey:'Akgül Yayınevi',h1:'Kelimelerin <em>Büyüsüne</em> Kapılın',p:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.'},
-    {ey:'Yeni Çıktı',h1:'<em>Mavi Oda</em> — Deniz Kaya',p:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.'},
-    {ey:'Yazar mısınız?',h1:'Eserinizi <em>Dünyayla</em> Buluşturun',p:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.'},
-    {ey:'Adana\'dan Türkiye\'ye',h1:'Güney\'in <em>Edebiyat Kalesi</em>',p:'Akgül Yayınevi olarak Adana\'nın derin kültür mirasını tüm Türkiye\'ye taşıyoruz.'},
-    {ey:'Zengin Katalog',h1:'Her Zevke Hitap Eden <em>Edebi Seçki</em>',p:'Roman, şiir, deneme, tarih, felsefe ve kişisel gelişim...'},
-    {ey:'Özel İndirim',h1:'Tüm Kitaplarda <em>%20 İndirim</em>',p:'Haziran boyunca tüm kitaplarda geçerli yaz kampanyamızdan yararlanın.',badge:'Sınırlı Süre · Yaz Kampanyası'},
-    {ey:'Birlikte Okuyalım',h1:'Akgül <em>Okuma Kulübü</em>',p:'Her ay yeni bir eser, yeni bir sohbet.'}
+    {ey:'Akgül Yayınevi',h1:'Kelimelerin <em>Büyüsüne</em> Kapılın',p:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.',b1t:'Kitapları Keşfet',b1a:'books-scroll',b2t:'AI Öneri Al',b2a:'ai-oneri'},
+    {ey:'Yeni Çıktı',h1:'<em>Mavi Oda</em> — Deniz Kaya',p:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.',b1t:'İncele',b1a:'books',b2t:'Yazara Git',b2a:'authors'},
+    {ey:'Yazar mısınız?',h1:'Eserinizi <em>Dünyayla</em> Buluşturun',p:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.',b1t:'Başvuru Yap',b1a:'eser-basvuru',b2t:'Hakkımızda',b2a:'about'},
+    {ey:'Adana\'dan Türkiye\'ye',h1:'Güney\'in <em>Edebiyat Kalesi</em>',p:'',b1t:'Bizi Tanıyın',b1a:'about',b2t:'Yazarlarımız',b2a:'authors'},
+    {ey:'Zengin Katalog',h1:'Her Zevke Hitap Eden <em>Edebi Seçki</em>',p:'',b1t:'Kataloğu Keşfet',b1a:'books-scroll',b2t:'Bana Kitap Öner',b2a:'ai-oneri'},
+    {ey:'Özel İndirim',h1:'Tüm Kitaplarda <em>%20 İndirim</em>',p:'',badge:'Sınırlı Süre · Yaz Kampanyası',b1t:'Kampanyayı Gör',b1a:'books-scroll',b2t:'Sipariş Ver',b2a:'contact'},
+    {ey:'Birlikte Okuyalım',h1:'Akgül <em>Okuma Kulübü</em>',p:'',b1t:'Kulübe Katıl',b1a:'okuma-kulubu',b2t:'Yazı Köşesi',b2a:'blog'}
   ];
   const d=defaults[i]||{};
   const wrap=ag('adm-slideEditorWrap'); if(!wrap)return;
+  const selStyle='padding:.42rem .55rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.78rem;width:100%;outline:none';
   const badgeRow=i===5?`<div class="field" style="margin-bottom:.75rem"><label>Kampanya Rozeti</label><input type="text" id="adm-sl-badge" placeholder="${d.badge||''}" value="${admEsc(s.badge||'')}"></div>`:'';
   wrap.innerHTML=`
     ${badgeRow}
     <div class="g2" style="margin-bottom:.75rem">
-      <div class="field"><label>Üst Etiket</label><input type="text" id="adm-sl-ey" placeholder="${d.ey||''}" value="${admEsc(s.eyebrow||'')}"></div>
-      <div class="field"><label>Açıklama</label><input type="text" id="adm-sl-p" value="${admEsc(s.desc||'')}"></div>
+      <div class="field"><label>Üst Etiket</label><input type="text" id="adm-sl-ey" placeholder="${admEsc(d.ey||'')}" value="${admEsc(s.eyebrow||'')}"></div>
+      <div class="field"><label>Açıklama</label><input type="text" id="adm-sl-p" placeholder="${admEsc(d.p||'')}" value="${admEsc(s.desc||'')}"></div>
     </div>
-    <div class="field"><label>Başlık</label><input type="text" id="adm-sl-h1" placeholder="${d.h1||'Slide başlığı...'}" value="${admEsc(s.title||'')}"></div>`;
+    <div class="field" style="margin-bottom:.75rem"><label>Başlık <span style="font-size:.65rem;color:var(--txt3);font-weight:400">(&lt;em&gt; ile italik)</span></label><input type="text" id="adm-sl-h1" placeholder="${admEsc(d.h1||'')}" value="${admEsc(s.title||'')}"></div>
+    <div style="border-top:1px solid var(--brd2);margin:.75rem 0 .75rem;padding-top:.75rem">
+      <div style="font-size:.72rem;font-weight:600;color:var(--txt2);margin-bottom:.55rem;text-transform:uppercase;letter-spacing:.06em">Butonlar</div>
+      <div class="g2" style="margin-bottom:.55rem">
+        <div class="field"><label>Buton 1 Metni</label><input type="text" id="adm-sl-b1t" placeholder="${admEsc(d.b1t||'Keşfet')}" value="${admEsc(s.btn1Text||'')}"></div>
+        <div class="field"><label>Buton 1 Hedef</label><select id="adm-sl-b1a" style="${selStyle}"><option value="">— seçin —</option>${admSlActOpts(s.btn1Act||d.b1a||'')}</select></div>
+      </div>
+      <div class="g2">
+        <div class="field"><label>Buton 2 Metni <span style="font-size:.62rem;color:var(--txt3)">(boş bırakılırsa gizlenir)</span></label><input type="text" id="adm-sl-b2t" placeholder="${admEsc(d.b2t||'')}" value="${admEsc(s.btn2Text||'')}"></div>
+        <div class="field"><label>Buton 2 Hedef</label><select id="adm-sl-b2a" style="${selStyle}"><option value="">— seçin —</option>${admSlActOpts(s.btn2Act||d.b2a||'')}</select></div>
+      </div>
+    </div>`;
 }
 
 window.adminSaveHeroContent = function(){
   if(!adminSiteContent.slides||adminSiteContent.slides.length<7) adminSiteContent.slides=[{},{},{},{},{},{},{}];
-  const s={eyebrow:agv('adm-sl-ey'),title:agv('adm-sl-h1'),desc:agv('adm-sl-p')};
+  const s={
+    eyebrow:agv('adm-sl-ey'),title:agv('adm-sl-h1'),desc:agv('adm-sl-p'),
+    btn1Text:agv('adm-sl-b1t'),btn1Act:ag('adm-sl-b1a')?.value||'',
+    btn2Text:agv('adm-sl-b2t'),btn2Act:ag('adm-sl-b2a')?.value||''
+  };
   if(_admCurSlideTab===5){const b=agv('adm-sl-badge');if(b)s.badge=b;}
   adminSiteContent.slides[_admCurSlideTab]=s;
-  admSaveContent(); adminToast('✦ Slide '+(+_admCurSlideTab+1)+' güncellendi!');
+  admSaveContent();
+  applySiteContent();
+  adminToast('✦ Slide '+(+_admCurSlideTab+1)+' güncellendi!');
 };
 window.adminSaveAboutContent = function(){
   adminSiteContent.about={
