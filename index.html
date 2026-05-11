@@ -4977,7 +4977,7 @@ function renderEditors(){
     {book:books[7],quote:'"Gerilim ve edebiyatın mükemmel uyumu." — Editör'},
     {book:books[2],quote:'"Anadolu\'nun kadim hikâyesini bugüne taşıyan başyapıt." — Editör'},
     {book:books[10],quote:'"Kendini keşfetme yolculuğunda eşsiz bir rehber." — Editör'},
-  ];
+  ].filter(p=>p.book);
   ep.innerHTML=picks.map(p=>`
     <div class="ep-card" onclick="openModal(${p.book.id})">
       <div class="ep-cover" style="position:relative;overflow:hidden">${p.book.cover?`<img src="${escHtml(p.book.cover)}" alt="${escHtml(p.book.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`:bookCoverSvg(p.book)}</div>
@@ -8506,6 +8506,10 @@ window.adminSiteLogout = function(){
 window.closeAdminSite = function(){
   document.getElementById('adminSite').style.display='none';
   document.body.style.overflow='';
+  const saved=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  if(saved.length>0){books=saved;}
+  renderBooks(currentFilter||'all');
+  if(typeof renderEditors==='function')renderEditors();
 };
 
 /* adminQuickAccess is defined in index.html main script — no duplicate here */
