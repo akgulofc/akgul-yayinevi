@@ -26,21 +26,6 @@
         "reviews": []
     },
     {
-        "id": 11,
-        "title": "Ruhun Aynası",
-        "author": "Dr. Zeynep Koç",
-        "price": 190,
-        "cat": "kisisel",
-        "bg": "linear-gradient(145deg,#1a2a3a,#2A4A5A)",
-        "badge": "Yeni",
-        "desc": "Kendini tanıma yolculuğunda bilimsel rehber.",
-        "cover": "",
-        "pages": 0,
-        "views": 147,
-        "rating": 4.8,
-        "reviews": []
-    },
-    {
         "id": 12,
         "title": "Varoluşun Eşiğinde",
         "author": "Mehmet Aksoy",
