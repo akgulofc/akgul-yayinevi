@@ -7,8 +7,24 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="description" content="Akgül Yayınevi - Adana'nın sesi, Türk edebiyatının kalbi.">
+<meta name="keywords" content="akgül yayınevi, türk edebiyatı, kitap, roman, adana, yayınevi">
 <meta name="theme-color" content="#0F0E0B">
+<link rel="canonical" href="https://akgulyayinevi.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Akgül Yayınevi">
+<meta property="og:title" content="Akgül Yayınevi — Adana'nın Edebiyat Evi">
+<meta property="og:description" content="Akgül Yayınevi - Adana'nın sesi, Türk edebiyatının kalbi.">
+<meta property="og:url" content="https://akgulyayinevi.com/">
+<meta property="og:image" content="https://akgulyayinevi.com/images/og-default.jpg">
+<meta property="og:locale" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Akgül Yayınevi — Adana'nın Edebiyat Evi">
+<meta name="twitter:description" content="Akgül Yayınevi - Adana'nın sesi, Türk edebiyatının kalbi.">
+<meta name="twitter:image" content="https://akgulyayinevi.com/images/og-default.jpg">
 <title>Akgül Yayınevi</title>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Akgül Yayınevi","url":"https://akgulyayinevi.com","logo":"https://akgulyayinevi.com/images/logo.png","sameAs":["https://www.instagram.com/akgulyayinevi"],"contactPoint":{"@type":"ContactPoint","telephone":"+90-536-648-30-96","contactType":"customer service","availableLanguage":"Turkish"},"address":{"@type":"PostalAddress","addressLocality":"Adana","addressCountry":"TR"}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -5541,9 +5557,29 @@ function pfCharCount(el){const c=sid('pfCharCount');if(c)c.textContent=el.value.
 function toggleSss(el){el.classList.toggle('open');}
 
 /* ── MODAL ── */
+function _setOgMeta(title,desc,img,url){
+  const base='https://akgulyayinevi.com';
+  const t=title||'Akgül Yayınevi — Adana\'nın Edebiyat Evi';
+  const d=desc||'Akgül Yayınevi - Adana\'nın sesi, Türk edebiyatının kalbi.';
+  const u=url||base+'/';
+  document.querySelector('meta[property="og:title"]')?.setAttribute('content',t);
+  document.querySelector('meta[property="og:description"]')?.setAttribute('content',d);
+  document.querySelector('meta[property="og:url"]')?.setAttribute('content',u);
+  if(img)document.querySelector('meta[property="og:image"]')?.setAttribute('content',img);
+  document.querySelector('meta[name="twitter:title"]')?.setAttribute('content',t);
+  document.querySelector('meta[name="twitter:description"]')?.setAttribute('content',d);
+  if(img)document.querySelector('meta[name="twitter:image"]')?.setAttribute('content',img);
+  document.querySelector('link[rel="canonical"]')?.setAttribute('href',u);
+  let ld=document.getElementById('_ld_book');
+  if(!ld){ld=document.createElement('script');ld.type='application/ld+json';ld.id='_ld_book';document.head.appendChild(ld);}
+  ld.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Book','name':t,'author':{'@type':'Person','name':img?'':t},'url':u,'description':d});
+}
 function openModal(id){
   const b=books.find(x=>x.id===id);if(!b)return;
   b.views++;saveBooks();
+  const descText=(b.desc||'').replace(/<[^>]*>/g,'').slice(0,160);
+  _setOgMeta(`${b.title} — Akgül Yayınevi`,descText||`${b.author} tarafından yazılan kitap`,b.cover||'','https://akgulyayinevi.com/');
+  const ldEl=document.getElementById('_ld_book'); if(ldEl)ldEl.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Book','name':b.title,'author':{'@type':'Person','name':b.author},'offers':{'@type':'Offer','price':b.price,'priceCurrency':'TRY','availability':'https://schema.org/InStock'},'description':descText});
   const _wl=getWishlist();const _wishlisted=_wl.includes(b.id);
   const waMsg=encodeURIComponent(`Merhaba, "${b.title}" kitabını sipariş etmek istiyorum.`);
   const stars='★'.repeat(Math.round(b.rating))+'☆'.repeat(5-Math.round(b.rating));
@@ -5598,7 +5634,7 @@ function openModal(id){
     </div>`;
   sid('moverlay').classList.add('on');document.body.style.overflow='hidden';
 }
-function closeMod(){sid('moverlay').classList.remove('on');document.body.style.overflow=''}
+function closeMod(){sid('moverlay').classList.remove('on');document.body.style.overflow='';_setOgMeta();}
 function setStars(n){
   reviewStars=n;
   document.querySelectorAll('#starPick span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=n));
@@ -7206,13 +7242,16 @@ function applySiteContent(){
   const el=id=>document.getElementById(id);
   // SEO
   if(c.seo){
-    if(c.seo.title)document.title=c.seo.title;
-    let dm=document.querySelector('meta[name="description"]');
-    if(!dm){dm=document.createElement('meta');dm.name='description';document.head.appendChild(dm);}
-    if(c.seo.description)dm.content=c.seo.description;
-    let km=document.querySelector('meta[name="keywords"]');
-    if(!km){km=document.createElement('meta');km.name='keywords';document.head.appendChild(km);}
-    if(c.seo.keywords)km.content=c.seo.keywords;
+    const sTitle=c.seo.title||'Akgül Yayınevi — Adana\'nın Edebiyat Evi';
+    const sDesc=c.seo.description||'Akgül Yayınevi - Adana\'nın sesi, Türk edebiyatının kalbi.';
+    if(c.seo.title)document.title=sTitle;
+    const setMeta=(sel,val)=>{let m=document.querySelector(sel);if(!m){m=document.createElement('meta');const a=sel.match(/\[(\w+)="([^"]+)"\]/);if(a)m.setAttribute(a[1],a[2]);document.head.appendChild(m);}if(val)m.content=val;};
+    setMeta('meta[name="description"]',sDesc);
+    if(c.seo.keywords)setMeta('meta[name="keywords"]',c.seo.keywords);
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content',sTitle);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content',sDesc);
+    document.querySelector('meta[name="twitter:title"]')?.setAttribute('content',sTitle);
+    document.querySelector('meta[name="twitter:description"]')?.setAttribute('content',sDesc);
   }
   // Hero Slider
   if(c.slides){

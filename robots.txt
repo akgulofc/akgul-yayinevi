@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /images/og-default.jpg
+
+Sitemap: https://akgulyayinevi.com/sitemap.xml
