@@ -13,21 +13,6 @@
         "reviews": []
     },
     {
-        "id": 2,
-        "title": "Sessiz Kıyılar",
-        "author": "Ahmet Demir",
-        "price": 160,
-        "cat": "siir",
-        "bg": "linear-gradient(145deg,#3a1d2e,#4A2D3E)",
-        "badge": null,
-        "desc": "Ege'nin sessiz kıyılarında fısıldanan dizeler.",
-        "cover": "",
-        "pages": 0,
-        "views": 87,
-        "rating": 4.6,
-        "reviews": []
-    },
-    {
         "id": 3,
         "title": "Anadolu'nun Sesi",
         "author": "Fatma Yıldız",
