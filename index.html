@@ -6293,9 +6293,21 @@ function doForgot(){
   sid('forgotSuccessMsg').textContent=`${email} adresine sıfırlama bağlantısı gönderildi.`;
   sid('forgotSuccess').style.display='block';
 }
-function doLogin(){
+async function doLogin(){
   const email=sid('loginEmail').value.trim(),pass=sid('loginPass').value,err=sid('loginError');err.style.display='none';
-  const u=users.find(x=>x.email===email&&x.pass===pass);
+  // Önce yerel cache'e bak (hızlı yol)
+  let u=users.find(x=>x.email===email&&x.pass===pass);
+  if(!u){
+    // Sunucudan doğrula (farklı cihazdan kayıt olmuş olabilir)
+    try{
+      const res=await fetch('/.netlify/functions/user-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email,pass})});
+      const data=await res.json();
+      if(res.ok&&data.user){
+        u={...data.user,pass};// pass'ı yerel cache için ekle
+        if(!users.find(x=>x.email===email)){users.push(u);saveUsers();}
+      }
+    }catch(e){}
+  }
   if(!u){err.textContent='E-posta veya şifre hatalı.';err.style.display='block';return}
   const rem=sid('rememberMe');
   if(rem?.checked)localStorage.setItem('akgulRemember',email);else localStorage.removeItem('akgulRemember');
@@ -6315,14 +6327,19 @@ function quickLogin(type){
   if(!users.find(u=>u.email===demo.email))users.push(demo);
   saveUsers();currentUser=demo;saveUser();updateAuthNav();go('profile');toast(`Hoş geldiniz, ${demo.name}!`);
 }
-function doRegister(){
+async function doRegister(){
   const name=sid('regName').value.trim(),email=sid('regEmail').value.trim(),pass=sid('regPass').value,confirm=sid('regPassConfirm').value,err=sid('regError');err.style.display='none';
   if(!name||!email||!pass||!confirm){err.textContent='Lütfen tüm alanları doldurun.';err.style.display='block';return}
   if(pass.length<6){err.textContent='Şifre en az 6 karakter olmalı.';err.style.display='block';return}
   if(pass!==confirm){err.textContent='Şifreler eşleşmiyor.';err.style.display='block';return}
   if(users.find(u=>u.email===email)){err.textContent='Bu e-posta zaten kayıtlı.';err.style.display='block';return}
-  const u={name,email,pass,role:'okur',joined:'Mayıs 2026'};
+  const joined=new Date().toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
+  const u={name,email,pass,role:'okur',joined};
   users.push(u);saveUsers();currentUser=u;saveUser();updateAuthNav();go('profile');toast(`Hoş geldiniz, ${name}!`);
+  // Sunucuya async kaydet (arka planda)
+  try{
+    fetch('/.netlify/functions/user-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name,email,pass,role:'okur',joined})});
+  }catch(e){}
 }
 function logout(){currentUser=null;localStorage.removeItem('akgulUser');localStorage.removeItem('akgul_auth');updateAuthNav();go('home');toast('Çıkış yapıldı.')}
 function updateAuthNav(){
@@ -8446,7 +8463,18 @@ async function admPushToGitHub(){
 }
 function admSaveOrders(){ admSave(ADM_STORE_ORDERS,adminOrders); }
 function admSaveBlog(){ admSave(ADM_STORE_BLOG,adminBlogPosts); admSave('akgulSiteBlog',adminBlogPosts); admUpdateNavBadges(); }
-function admSaveAuthors(){ admSave(ADM_STORE_AUTHORS,adminAuthorsData); }
+function admSaveAuthors(){ admSave(ADM_STORE_AUTHORS,adminAuthorsData); admPushAuthorsToGitHub(); }
+async function admPushAuthorsToGitHub(){
+  try{
+    const creds=admGetCreds();
+    const res=await fetch('/.netlify/functions/save-authors',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+      body:JSON.stringify({authors:adminAuthorsData})
+    });
+    if(!res.ok)adminToast('Yazarlar sunucuya kaydedilemedi','warn');
+  }catch(e){}
+}
 function admSaveUsers(){ admSave(ADM_STORE_USERS,adminUsers); }
 function admSaveNotifs(){ admSave(ADM_STORE_NOTIFS,adminNotifs); }
 
@@ -9708,23 +9736,40 @@ function closeAuthorLoginModal(){
   const m=document.getElementById('authorLoginModal');if(m)m.style.display='none';
   const e=document.getElementById('authorLoginErr');if(e)e.textContent='';
 }
-function authorLogin(){
+async function authorLogin(){
   const email=(document.getElementById('authorLoginEmail')?.value||'').trim().toLowerCase();
   const pass=document.getElementById('authorLoginPass')?.value||'';
   const err=document.getElementById('authorLoginErr');
+  const btn=document.getElementById('authorLoginModal')?.querySelector('button[onclick="authorLogin()"]');
   if(!email||!pass){if(err)err.textContent='E-posta ve şifre gerekli.';return;}
-  const authorsData=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
-  const found=authorsData.find(a=>a.membership&&(a.membership.email||'').toLowerCase()===email&&a.membership.password===pass);
-  if(!found){if(err)err.textContent='E-posta veya şifre hatalı.';return;}
-  if(found.membership.status==='suspended'){if(err)err.textContent='Üyeliğiniz askıya alınmıştır. Yayınevi ile iletişime geçin.';return;}
-  found.membership.lastLogin=new Date().toISOString().split('T')[0];
-  localStorage.setItem('akgul_authors_v2',JSON.stringify(authorsData));
-  authorSession={name:found.name,email};
-  sessionStorage.setItem('akgulAuthorSession',JSON.stringify(authorSession));
-  closeAuthorLoginModal();
-  const btn=document.getElementById('authorLoginBtn');
-  if(btn)btn.innerHTML='<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Yazar Panelim ✦';
-  renderAuthorPanel();
+  if(btn){btn.disabled=true;btn.textContent='Doğrulanıyor…';}
+  try{
+    const res=await fetch('/.netlify/functions/author-login',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,password:pass})
+    });
+    const data=await res.json();
+    if(!res.ok){
+      if(err)err.textContent=data.error||'Giriş başarısız.';
+      return;
+    }
+    const author=data.author;
+    authorSession={name:author.name,email};
+    sessionStorage.setItem('akgulAuthorSession',JSON.stringify(authorSession));
+    // Yerel cache güncelle
+    const authorsData=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
+    const idx=authorsData.findIndex(a=>a.name===author.name);
+    if(idx>-1)authorsData[idx]=author;
+    localStorage.setItem('akgul_authors_v2',JSON.stringify(authorsData));
+    closeAuthorLoginModal();
+    const navBtn=document.getElementById('authorLoginBtn');
+    if(navBtn)navBtn.innerHTML='<svg viewBox="0 0 24 24" style="width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;vertical-align:middle;margin-right:4px"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Yazar Panelim ✦';
+    renderAuthorPanel();
+  }catch(e){
+    if(err)err.textContent='Bağlantı hatası. Lütfen tekrar deneyin.';
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='Giriş Yap';}
+  }
 }
 function authorLogout(){
   authorSession=null;
