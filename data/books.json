@@ -13,21 +13,6 @@
         "reviews": []
     },
     {
-        "id": 6,
-        "title": "Bozkır Şiirleri",
-        "author": "Osman Çelik",
-        "price": 145,
-        "cat": "siir",
-        "bg": "linear-gradient(145deg,#1d3a3a,#2D4A4A)",
-        "badge": null,
-        "desc": "Bozkırın ufuklarında yankılanan şiirler.",
-        "cover": "",
-        "pages": 0,
-        "views": 64,
-        "rating": 4.3,
-        "reviews": []
-    },
-    {
         "id": 7,
         "title": "Osmanlı'dan Bugüne",
         "author": "Prof. M. Aydın",
