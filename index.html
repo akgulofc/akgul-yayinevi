@@ -8193,7 +8193,7 @@ async function sendAIW(){
                   </div>
                 </div>
                 <div class="form-actions">
-                  <button class="tb-btn primary" onclick="adminSaveAuthorMembership()"><i class="ti ti-device-floppy"></i>Kaydet</button>
+                  <button class="tb-btn primary" onclick="adminSaveMembershipForm()"><i class="ti ti-device-floppy"></i>Kaydet</button>
                   <button class="tb-btn red" onclick="adminRemoveAuthorMembership()" style="margin-left:.5rem"><i class="ti ti-trash"></i>Üyeliği Kaldır</button>
                   <button class="tb-btn" onclick="adminToggleMembershipForm()">İptal</button>
                 </div>
@@ -9092,7 +9092,7 @@ window.adminManageAuthorMembership = function(idx){
   wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
 };
 
-window.adminSaveAuthorMembership = function(){
+window.adminSaveMembershipForm = function(){
   const idxStr=ag('adm-mem-author')?.value;
   if(idxStr===''||idxStr===undefined){adminToast('Lütfen bir yazar seçin','warn');return;}
   const idx=parseInt(idxStr);
@@ -9101,7 +9101,10 @@ window.adminSaveAuthorMembership = function(){
   const password=ag('adm-mem-password')?.value.trim();
   const status=ag('adm-mem-status')?.value||'active';
   if(!email||!password){adminToast('E-posta ve şifre zorunlu!','warn');return;}
-  a.membership={email,password,status,lastLogin:a.membership?.lastLogin||''};
+  const isNew=!a.membership?.email;
+  a.membership={email,password,status,
+    createdAt:isNew?new Date().toISOString().split('T')[0]:(a.membership.createdAt||new Date().toISOString().split('T')[0]),
+    lastLogin:a.membership?.lastLogin||null};
   admSaveAuthors();
   adminRenderAuthorsTable(ag('adm-authorSearch')?.value||'');
   adminToast(`✦ "${a.name}" üyeliği kaydedildi!`);
