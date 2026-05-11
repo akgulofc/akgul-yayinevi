@@ -6369,6 +6369,17 @@ async function doLogin(){
       }
     }catch(e){}
   }
+  if(!u){
+    // Yazar üyelik kontrolü (admin panelinden oluşturulan hesaplar)
+    try{
+      const savedAuthors=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
+      const authorMatch=savedAuthors.find(a=>a.membership&&a.membership.email===email&&a.membership.password===pass&&a.membership.status!=='suspended');
+      if(authorMatch){
+        u={name:authorMatch.name,email:authorMatch.membership.email,pass,role:'yazar',joined:authorMatch.membership.createdAt||''};
+        if(!users.find(x=>x.email===email)){users.push(u);saveUsers();}
+      }
+    }catch(e){}
+  }
   if(!u){err.textContent='E-posta veya şifre hatalı.';err.style.display='block';return}
   const rem=sid('rememberMe');
   if(rem?.checked)localStorage.setItem('akgulRemember',email);else localStorage.removeItem('akgulRemember');
