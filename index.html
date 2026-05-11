@@ -7796,12 +7796,12 @@ async function sendAIW(){
           <div class="field"><label>Yazar</label><select id="adm-bm-author"></select></div>
           <div class="field"><label>Kategori</label><input id="adm-bm-cat" placeholder="Roman, Şiir, Tarih..."></div>
           <div class="field field-full"><label>İçerik (özet)</label><textarea id="adm-bm-content" class="editor-area" placeholder="Yazı içeriği veya özeti..."></textarea></div>
-          <div class="field field-full"><label>Kapak Görseli — Cloudinary URL</label>
+          <div class="field field-full"><label>Kapak Görseli</label>
             <div style="display:flex;gap:.5rem;align-items:center">
-              <input type="text" id="adm-bm-cover-url" placeholder="https://res.cloudinary.com/..." oninput="adminPreviewBlogCover(this)" style="flex:1">
+              <input type="file" id="adm-bm-cover-file" accept="image/*" onchange="admUploadImage(this,'adm-bm-cover-url','adm-blogCoverImg','adm-blogCoverPreview')" style="flex:1;font-size:.78rem">
               <button class="act-btn red" type="button" onclick="adminRemoveBlogCover()" title="Temizle"><i class="ti ti-x" style="font-size:12px"></i></button>
             </div>
-            <div style="margin-top:.35rem;font-size:.68rem;color:var(--txt3)"><i class="ti ti-cloud-upload" style="font-size:11px"></i> Cloudinary'e yükle → URL'yi kopyala → buraya yapıştır</div>
+            <input type="hidden" id="adm-bm-cover-url">
             <div class="cover-preview" id="adm-blogCoverPreview">
               <img id="adm-blogCoverImg" alt="Kapak önizleme">
             </div>
@@ -8048,17 +8048,15 @@ async function sendAIW(){
                 <div class="field"><label>Rozet</label><input id="adm-nb-badge" placeholder="Yeni · Bestseller · Öne Çıkan"></div>
                 <div class="field"><label>Sayfa Sayısı</label><input id="adm-nb-pages" type="number" placeholder="280" min="1"></div>
                 <div class="field field-full">
-                  <label>Kapak Görseli — Cloudinary URL <span style="font-weight:400;color:var(--txt3)">(510×794 önerilir)</span></label>
+                  <label>Kapak Görseli <span style="font-weight:400;color:var(--txt3)">(510×794 önerilir)</span></label>
                   <div style="display:flex;gap:.5rem;align-items:center">
-                    <input type="text" id="adm-nb-cover" placeholder="https://res.cloudinary.com/..." oninput="adminPreviewCover(this)" style="flex:1">
+                    <input type="file" id="adm-nb-cover-file" accept="image/*" onchange="admUploadImage(this,'adm-nb-cover','adm-coverImg','adm-coverPreview')" style="flex:1;font-size:.78rem">
                     <button class="act-btn red" type="button" onclick="adminRemoveCover()" title="Temizle"><i class="ti ti-x" style="font-size:12px"></i></button>
                   </div>
-                  <div style="margin-top:.35rem;font-size:.68rem;color:var(--txt3)"><i class="ti ti-cloud-upload" style="font-size:11px"></i> Cloudinary'e yükle → URL'yi kopyala → buraya yapıştır</div>
+                  <input type="hidden" id="adm-nb-cover">
                   <div class="cover-preview" id="adm-coverPreview">
                     <img id="adm-coverImg" alt="Kapak önizleme">
-                    <div class="cover-prev-info">
-                      <div id="adm-coverDims"></div>
-                    </div>
+                    <div class="cover-prev-info"><div id="adm-coverDims"></div></div>
                   </div>
                 </div>
                 <div class="field field-full"><label>Açıklama</label><textarea id="adm-nb-desc" placeholder="Kitabın kısa açıklaması..."></textarea></div>
@@ -8106,7 +8104,7 @@ async function sendAIW(){
                   <div class="field"><label>Tür / Uzmanlık *</label><input id="adm-na-genre" placeholder="Roman, Şiir, Tarih…"></div>
                   <div class="field field-full"><label>Biyografi</label><textarea id="adm-na-bio" placeholder="Yazar hakkında kısa bilgi…" style="min-height:60px"></textarea></div>
                   <div class="field field-full"><label>Alıntı / Motto</label><input id="adm-na-quote" placeholder="Yazara ait bir söz…"></div>
-                  <div class="field"><label>Fotoğraf URL</label><input id="adm-na-photo" placeholder="https://res.cloudinary.com/…"></div>
+                  <div class="field"><label>Fotoğraf</label><input type="file" id="adm-na-photo-file" accept="image/*" onchange="admUploadImage(this,'adm-na-photo','adm-na-photo-img','adm-na-photo-preview')" style="font-size:.78rem"><input type="hidden" id="adm-na-photo"><div id="adm-na-photo-preview" style="display:none;margin-top:.4rem"><img id="adm-na-photo-img" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--brd1)"></div></div>
                   <div class="field"><label>Instagram</label><input id="adm-na-ig" placeholder="@kullanici"></div>
                   <div class="field"><label>Twitter / X</label><input id="adm-na-tw" placeholder="@kullanici"></div>
                   <div class="field"><label>Web Sitesi</label><input id="adm-na-web" placeholder="https://…"></div>
@@ -8744,6 +8742,24 @@ function admCoverImg(b,w,h){
 window.adminOpenAddBook = function(){ adminNavTo('p-books'); setTimeout(()=>{ag('adm-addBookCard').style.display='block';ag('adm-addBookCard').scrollIntoView({behavior:'smooth',block:'start'})},50); };
 window.adminToggleAddBook = function(){ const c=ag('adm-addBookCard'); c.style.display=c.style.display==='none'?'block':'none'; };
 
+window.admUploadImage = async function(fileInput, hiddenId, imgId, previewId){
+  const file=fileInput.files[0]; if(!file)return;
+  const creds=admGetCreds();
+  const fd=new FormData(); fd.append('file',file);
+  adminToast('Görsel yükleniyor…');
+  try{
+    const res=await fetch('/api/upload-image.php',{method:'POST',headers:{'x-admin-secret':creds.pass},body:fd});
+    const data=await res.json();
+    if(data.url){
+      const h=ag(hiddenId); if(h)h.value=data.url;
+      const i=ag(imgId); if(i)i.src=data.url;
+      const p=ag(previewId); if(p)p.style.display='flex';
+      if(hiddenId==='adm-nb-cover')admCurrentCoverData=data.url;
+      adminToast('Görsel yüklendi ✓');
+    } else { adminToast('Yükleme hatası: '+(data.error||'Bilinmeyen hata'),'warn'); }
+  }catch(e){ adminToast('Yükleme başarısız','warn'); }
+};
+
 window.adminPreviewCover = function(input){
   const url=(input.value||'').trim();
   if(!url){ag('adm-coverPreview').style.display='none';admCurrentCoverData=null;return;}
@@ -8757,7 +8773,7 @@ window.adminPreviewCover = function(input){
   img.onerror=()=>{ag('adm-coverPreview').style.display='none';admCurrentCoverData=null;};
   img.src=url;
 };
-window.adminRemoveCover = function(){ ag('adm-nb-cover').value=''; ag('adm-coverPreview').style.display='none'; ag('adm-coverImg').src=''; admCurrentCoverData=null; };
+window.adminRemoveCover = function(){ const h=ag('adm-nb-cover');if(h)h.value=''; const f=ag('adm-nb-cover-file');if(f)f.value=''; ag('adm-coverPreview').style.display='none'; ag('adm-coverImg').src=''; admCurrentCoverData=null; };
 
 window.adminAddBook = function(){
   const title=agv('adm-nb-title'),author=agv('adm-nb-author'),price=parseInt(agv('adm-nb-price'))||0,cat=agv('adm-nb-cat'),badge=agv('adm-nb-badge')||null,pages=parseInt(agv('adm-nb-pages'))||0,desc=agv('adm-nb-desc');
@@ -9012,7 +9028,13 @@ window.adminEditAuthorFull = function(idx){
       <div class="field"><label>Tür</label><input id="adm-aep-genre" value="${admEsc(a.genre)}"></div>
       <div class="field field-full"><label>Biyografi</label><textarea id="adm-aep-bio" style="min-height:60px">${admEsc(a.bio||'')}</textarea></div>
       <div class="field field-full"><label>Alıntı</label><input id="adm-aep-quote" value="${admEsc(a.quote||'')}"></div>
-      <div class="field field-full"><label>Fotoğraf URL</label><input id="adm-aep-photo" value="${admEsc(a.photo||'')}" oninput="adminPreviewAep(this.value)"></div>
+      <div class="field field-full"><label>Fotoğraf</label>
+        <input type="file" accept="image/*" onchange="admUploadImage(this,'adm-aep-photo','adm-aep-av-img','adm-aep-photo-preview')" style="font-size:.78rem;margin-bottom:.3rem">
+        <input type="hidden" id="adm-aep-photo" value="${admEsc(a.photo||'')}">
+        <div id="adm-aep-photo-preview" style="display:${a.photo?'flex':'none'};margin-top:.3rem">
+          <img id="adm-aep-av-img" src="${admEsc(a.photo||'')}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--brd1)">
+        </div>
+      </div>
       <div class="field"><label>Instagram</label><input id="adm-aep-ig" value="${admEsc((a.soc||{}).ig||'')}"></div>
       <div class="field"><label>Twitter</label><input id="adm-aep-tw" value="${admEsc((a.soc||{}).tw||'')}"></div>
       <div class="field field-full"><label>Web</label><input id="adm-aep-web" value="${admEsc((a.soc||{}).web||'')}"></div>
@@ -9270,6 +9292,7 @@ window.adminPreviewBlogCover = function(input){
 };
 window.adminRemoveBlogCover = function(){
   const inp=ag('adm-bm-cover-url'); if(inp) inp.value='';
+  const f=ag('adm-bm-cover-file'); if(f) f.value='';
   ag('adm-blogCoverPreview').style.display='none'; ag('adm-blogCoverImg').src='';
 };
 window.adminOpenBlogModal = function(){
