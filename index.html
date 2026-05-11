@@ -7889,6 +7889,7 @@ async function sendAIW(){
 
         <div class="sb-section">Topluluk</div>
         <div class="nav-item" data-page="p-orders" onclick="adminNav(this)"><i class="ti ti-shopping-cart"></i>Siparişler<span class="nav-badge nb-red" id="adm-navOrderCount">2</span></div>
+        <div class="nav-item" data-page="p-sales" onclick="adminNav(this)"><i class="ti ti-chart-arrows-vertical"></i>Satışlar</div>
         <div class="nav-item" id="adm-nav-users" data-page="p-users" onclick="adminNav(this)"><i class="ti ti-users"></i>Kullanıcılar</div>
         <div class="nav-item" data-page="p-blog" onclick="adminNav(this)"><i class="ti ti-news"></i>Blog<span class="nav-badge nb-gold" id="adm-navBlogCount">6</span></div>
         <div class="nav-item" data-page="p-reviews" onclick="adminNav(this)"><i class="ti ti-star"></i>Yorumlar<span class="nav-badge nb-gold" id="adm-navReviewCount">0</span></div>
@@ -8232,6 +8233,23 @@ async function sendAIW(){
               </div>
             </div>
             <div class="table-wrap"><table id="adm-ordersTable"></table></div>
+          </div>
+        </div>
+
+        <!-- ── SATIŞLAR ──────────────────── -->
+        <div class="page" id="adm-p-sales">
+          <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
+            <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-device-desktop" style="color:#C8A96E"></i></div></div><div class="kpi-val" id="adm-salesKpiSite">0</div><div class="kpi-lbl">Site Satışı</div></div>
+            <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-world" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="adm-salesKpiExt">0</div><div class="kpi-lbl">Site Dışı Satış</div></div>
+            <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(74,45,62,.1)"><i class="ti ti-sum" style="color:#4A2D3E"></i></div></div><div class="kpi-val" id="adm-salesKpiTotal">0</div><div class="kpi-lbl">Toplam Satış</div></div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-chart-arrows-vertical"></i>Kitap Satış Tablosu</span>
+              <button class="card-btn primary" onclick="adminSaveSalesData()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+            </div>
+            <p style="font-size:.72rem;color:var(--txt2);padding:.5rem 1rem .25rem">Site satışları sipariş kayıtlarından otomatik hesaplanır. Site dışı satışları manuel olarak girebilirsiniz.</p>
+            <div class="table-wrap"><table id="adm-salesTable"></table></div>
           </div>
         </div>
 
@@ -8728,6 +8746,7 @@ const ADM_PAGE_META = {
   'p-books':   {title:'Kitap Yönetimi',bread:'Katalog'},
   'p-authors': {title:'Yazarlar',      bread:'Katalog'},
   'p-orders':  {title:'Siparişler',    bread:'Topluluk'},
+  'p-sales':   {title:'Satışlar',      bread:'Topluluk'},
   'p-users':   {title:'Kullanıcılar',  bread:'Topluluk'},
   'p-blog':    {title:'Blog',          bread:'Topluluk'},
   'p-reviews': {title:'Yorumlar',      bread:'Moderasyon'},
@@ -8751,6 +8770,7 @@ window.adminNav = function(el){
   if(pid==='p-analytics')adminRenderAnalytics();
   if(pid==='p-authors')  adminRenderAuthorsTable();
   if(pid==='p-orders')   adminRenderOrders();
+  if(pid==='p-sales')    adminRenderSales();
   if(pid==='p-users')    adminRenderUsers();
   if(pid==='p-blog')     adminRenderBlog();
   if(pid==='p-reviews')  adminRenderReviews();
@@ -9332,6 +9352,64 @@ window.adminDeleteOrder = function(id){
   if(!confirm(`"${o.id}" siparişi silinsin mi?`))return;
   adminOrders.splice(adminOrders.indexOf(o),1); admSaveOrders(); adminCloseModal('adm-editModal'); adminRenderOrders(); adminRenderDashOrders();
   adminToast(`Sipariş ${id} silindi`,'warn');
+};
+
+/* ═══════════════════════════════════════
+   SALES
+═══════════════════════════════════════ */
+function _calcSiteSales(bookTitle){
+  return adminOrders.filter(o=>o.status!=='İptal').reduce((sum,o)=>{
+    const item=(o.items||[]).find(i=>i.title===bookTitle);
+    return sum+(item?item.qty:1*(o.book===bookTitle?1:0));
+  },0);
+}
+
+window.adminRenderSales = function(){
+  adminBooks = admLoad(ADM_STORE_BOOKS, admDefaultBooks());
+  adminOrders = admLoad(ADM_STORE_ORDERS, admDefaultOrders());
+  let totalSite=0,totalExt=0;
+  adminBooks.forEach(b=>{totalSite+=_calcSiteSales(b.title);totalExt+=(b.externalSales||0);});
+  admSetTxt('adm-salesKpiSite',totalSite);
+  admSetTxt('adm-salesKpiExt',totalExt);
+  admSetTxt('adm-salesKpiTotal',totalSite+totalExt);
+  const t=ag('adm-salesTable'); if(!t)return;
+  t.innerHTML=`<thead><tr><th>Kitap</th><th>Yazar</th><th style="text-align:center">Site Satışı</th><th style="text-align:center">Site Dışı Satış</th><th style="text-align:center">Toplam</th></tr></thead><tbody>`+
+    adminBooks.map(b=>{
+      const site=_calcSiteSales(b.title);
+      const ext=b.externalSales||0;
+      return`<tr>
+        <td style="font-weight:500">${admEsc(b.title)}</td>
+        <td style="color:var(--txt2);font-size:.75rem">${admEsc(b.author)}</td>
+        <td style="text-align:center;color:var(--txt2)">${site}</td>
+        <td style="text-align:center">
+          <input type="number" min="0" value="${ext}" data-book-id="${b.id}"
+            style="width:80px;text-align:center;padding:.25rem .4rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.82rem;outline:none"
+            oninput="this.style.borderColor='var(--gold)'">
+        </td>
+        <td style="text-align:center;font-weight:600;color:var(--gold)" id="adm-sales-total-${b.id}">${site+ext}</td>
+      </tr>`;
+    }).join('')+'</tbody>';
+
+  t.querySelectorAll('input[data-book-id]').forEach(inp=>{
+    inp.addEventListener('input',()=>{
+      const id=parseInt(inp.dataset.bookId);
+      const site=_calcSiteSales(adminBooks.find(b=>b.id===id)?.title||'');
+      const ext=parseInt(inp.value)||0;
+      const cel=ag('adm-sales-total-'+id); if(cel)cel.textContent=site+ext;
+    });
+  });
+};
+
+window.adminSaveSalesData = function(){
+  const t=ag('adm-salesTable'); if(!t)return;
+  t.querySelectorAll('input[data-book-id]').forEach(inp=>{
+    const id=parseInt(inp.dataset.bookId);
+    const b=adminBooks.find(x=>x.id===id); if(!b)return;
+    b.externalSales=parseInt(inp.value)||0;
+    inp.style.borderColor='var(--brd2)';
+  });
+  admSaveBooks(); adminRenderSales();
+  adminToast('✦ Satış verileri kaydedildi!');
 };
 
 window.adminExportOrders = function(){
@@ -10069,10 +10147,14 @@ function renderAuthorPanel(){
   const author=authorsData.find(a=>a.name===authorSession.name);
   if(!author||!author.membership){authorLogout();return;}
   const booksData=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  const ordersData=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
   const myBooks=booksData.filter(b=>b.author===author.name);
   const totalViews=myBooks.reduce((s,b)=>s+(b.views||0),0);
   const totalReviews=myBooks.reduce((s,b)=>s+(b.reviews?.length||0),0);
   const totalAvg=myBooks.length?(myBooks.reduce((s,b)=>{const r=b.reviews||[];const a=r.length?r.reduce((rs,rv)=>rs+rv.s,0)/r.length:(b.rating||0);return s+a;},0)/myBooks.length).toFixed(1):'—';
+  function calcSiteSales(title){return ordersData.filter(o=>o.status!=='İptal').reduce((sum,o)=>{const it=(o.items||[]).find(i=>i.title===title);return sum+(it?it.qty:0);},0);}
+  const totalSiteSales=myBooks.reduce((s,b)=>s+calcSiteSales(b.title),0);
+  const totalExtSales=myBooks.reduce((s,b)=>s+(b.externalSales||0),0);
   const avColor=author.color||'#2D4A3E';
   const initials=author.initials||author.name.slice(0,2).toUpperCase();
   const panel=document.getElementById('authorPanelContent');
@@ -10103,6 +10185,20 @@ function renderAuthorPanel(){
         <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Yorum · ★${totalAvg}</div>
       </div>
     </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;padding:.85rem 1.1rem;background:#fff;border-bottom:1px solid var(--border)">
+      <div style="text-align:center;padding:.65rem;background:#f0f7f2;border-radius:8px;border:1px solid #d0e8d8">
+        <div style="font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:#2D4A3E">${totalSiteSales}</div>
+        <div style="font-size:.62rem;color:#2D4A3E;text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem;opacity:.75">Siteden Satış</div>
+      </div>
+      <div style="text-align:center;padding:.65rem;background:#f5f0e8;border-radius:8px;border:1px solid #e8d8c0">
+        <div style="font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:#9A7A45">${totalExtSales}</div>
+        <div style="font-size:.62rem;color:#9A7A45;text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem;opacity:.75">Site Dışı Satış</div>
+      </div>
+      <div style="text-align:center;padding:.65rem;background:#0D0C09;border-radius:8px">
+        <div style="font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:#C8A96E">${totalSiteSales+totalExtSales}</div>
+        <div style="font-size:.62rem;color:rgba(200,169,110,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Toplam Satış</div>
+      </div>
+    </div>
     ${author.membership.note?`<div style="margin:1.1rem 1.1rem 0;padding:.9rem 1rem;background:#fffbf0;border:1px solid #e8d8a0;border-radius:8px;border-left:3px solid #C8A96E">
       <div style="font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#9A7A45;margin-bottom:.35rem">✦ Yayınevi Notu</div>
       <div style="font-size:.82rem;color:var(--ink);line-height:1.65">${escHtml(author.membership.note)}</div>
@@ -10123,6 +10219,10 @@ function renderAuthorPanel(){
           <div style="text-align:right;flex-shrink:0;font-size:.72rem;color:var(--muted)">
             <div>${b.views||0} görüntüleme</div>
             <div>${revs.length} yorum · ★${avg}</div>
+            <div style="margin-top:.35rem;display:flex;gap:.3rem;justify-content:flex-end;flex-wrap:wrap">
+              <span style="background:#f0f7f2;color:#2D4A3E;padding:1px 6px;border-radius:4px;font-size:.62rem;border:1px solid #d0e8d8" title="Siteden satış">${calcSiteSales(b.title)} site</span>
+              <span style="background:#f5f0e8;color:#9A7A45;padding:1px 6px;border-radius:4px;font-size:.62rem;border:1px solid #e8d8c0" title="Site dışı satış">${b.externalSales||0} dışı</span>
+            </div>
             <div style="font-size:.82rem;font-weight:600;color:var(--ink);margin-top:.15rem">₺${b.price}</div>
           </div>
         </div>`;
