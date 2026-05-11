@@ -26,21 +26,6 @@
         "reviews": []
     },
     {
-        "id": 7,
-        "title": "Osmanlı'dan Bugüne",
-        "author": "Prof. M. Aydın",
-        "price": 220,
-        "cat": "tarih",
-        "bg": "linear-gradient(145deg,#2a1d3a,#3A2D4A)",
-        "badge": null,
-        "desc": "Osmanlı'dan modern Türkiye'ye uzanan köprü.",
-        "cover": "",
-        "pages": 0,
-        "views": 188,
-        "rating": 4.7,
-        "reviews": []
-    },
-    {
         "id": 8,
         "title": "Mavi Oda",
         "author": "Deniz Kaya",
