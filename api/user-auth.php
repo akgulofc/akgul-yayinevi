@@ -8,19 +8,16 @@ header('Access-Control-Allow-Methods: POST, OPTIONS');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo json_encode(['error' => 'Method Not Allowed']); exit; }
 
-$token = getenv('GITHUB_TOKEN');
-$repo  = getenv('PRIVATE_REPO_NAME') ?: 'akgul-data';
-$owner = 'akgulofc';
-
-if (!$token) { http_response_code(500); echo json_encode(['error' => 'Sunucu yapılandırma hatası']); exit; }
+if (!$GITHUB_TOKEN) { http_response_code(500); echo json_encode(['error' => 'Sunucu yapılandırma hatası']); exit; }
 
 $body = json_decode(file_get_contents('php://input'), true);
 if (!$body || !isset($body['action'])) { http_response_code(400); echo json_encode(['error' => 'Geçersiz istek']); exit; }
 
 $action = $body['action'];
-$apiUrl = "https://api.github.com/repos/{$owner}/{$repo}/contents/users.json";
+$owner  = 'akgulofc';
+$apiUrl = "https://api.github.com/repos/{$owner}/{$PRIVATE_REPO_NAME}/contents/users.json";
 $ghHeaders = [
-    "Authorization: token {$token}",
+    "Authorization: token {$GITHUB_TOKEN}",
     "Accept: application/vnd.github.v3+json",
     "Content-Type: application/json",
     "User-Agent: akgul-admin-bot",

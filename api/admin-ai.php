@@ -8,8 +8,7 @@ header('Access-Control-Allow-Methods: POST, OPTIONS');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo json_encode(['error' => 'Method Not Allowed']); exit; }
 
-$apiKey = getenv('GROQ_API_KEY');
-if (!$apiKey) { http_response_code(500); echo json_encode(['error' => 'GROQ_API_KEY eksik']); exit; }
+if (!$GROQ_API_KEY) { http_response_code(500); echo json_encode(['error' => 'GROQ_API_KEY eksik']); exit; }
 
 $body = json_decode(file_get_contents('php://input'), true);
 if (!$body) { http_response_code(400); echo json_encode(['error' => 'Geçersiz istek']); exit; }
@@ -53,7 +52,7 @@ curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_POST           => true,
     CURLOPT_POSTFIELDS     => $payload,
-    CURLOPT_HTTPHEADER     => ['Content-Type: application/json', "Authorization: Bearer {$apiKey}"],
+    CURLOPT_HTTPHEADER     => ['Content-Type: application/json', "Authorization: Bearer {$GROQ_API_KEY}"],
 ]);
 $res  = curl_exec($ch);
 $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
