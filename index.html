@@ -4970,6 +4970,21 @@ function filterAndScroll(cat){
 }
 renderBooks('all');
 
+/* ── GitHub'dan kitapları yükle (tüm kullanıcılara ortak veri) ── */
+(async function syncBooksFromGitHub(){
+  try{
+    const res=await fetch('https://raw.githubusercontent.com/akgulofc/akgul-yayinevi/main/data/books.json?t='+Date.now());
+    if(!res.ok)return;
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length)return;
+    books=data;
+    localStorage.setItem('akgul_books_v2',JSON.stringify(books));
+    localStorage.setItem('akgulAdminBooks',JSON.stringify(books));
+    renderBooks(currentFilter||'all');
+    if(typeof renderEditors==='function')renderEditors();
+  }catch(e){}
+})();
+
 /* ── EDİTÖRÜN SEÇİMİ ── */
 function renderEditors(){
   const ep=sid('epGrid');if(!ep)return;
@@ -8411,7 +8426,19 @@ let adminAuthorsData = admLoad(ADM_STORE_AUTHORS, admDefaultAuthors());
 let adminUsers     = admLoad(ADM_STORE_USERS,   []);
 let adminNotifs    = admLoad(ADM_STORE_NOTIFS,  admDefaultNotifs());
 
-function admSaveBooks(){ admSave(ADM_STORE_BOOKS,adminBooks); admSave('akgulAdminBooks',adminBooks); admUpdateNavBadges(); }
+function admSaveBooks(){ admSave(ADM_STORE_BOOKS,adminBooks); admSave('akgulAdminBooks',adminBooks); admUpdateNavBadges(); admPushToGitHub(); }
+async function admPushToGitHub(){
+  try{
+    const creds=admGetCreds();
+    const res=await fetch('/.netlify/functions/save-books',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+      body:JSON.stringify({books:adminBooks})
+    });
+    if(res.ok){adminToast('Tüm kullanıcılara kaydedildi ✓','success');}
+    else{adminToast('GitHub\'a kaydedilemedi (yerel kaydedildi)','warn');}
+  }catch(e){adminToast('Bağlantı hatası – yerel kaydedildi','warn');}
+}
 function admSaveOrders(){ admSave(ADM_STORE_ORDERS,adminOrders); }
 function admSaveBlog(){ admSave(ADM_STORE_BLOG,adminBlogPosts); admSave('akgulSiteBlog',adminBlogPosts); admUpdateNavBadges(); }
 function admSaveAuthors(){ admSave(ADM_STORE_AUTHORS,adminAuthorsData); }
