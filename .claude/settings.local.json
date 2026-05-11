@@ -1,7 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(Remove-Item \"c:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\admin.html\")"
+      "Bash(Remove-Item \"c:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\admin.html\")",
+      "Bash(powershell -Command \"\\(Get-Content 'C:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\index.html'\\).Count\")",
+      "Bash(powershell -Command \"Get-Content 'C:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\index.html' | Select-String -Pattern '</head>|</style>' | Select-Object LineNumber, Line | Select-Object -First 5\")",
+      "Bash(powershell -Command \"Select-String -Path 'C:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\index.html' -Pattern '</body>' | Select-Object -Last 1\")",
+      "Bash(powershell -Command \"Select-String -Path 'C:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\index.html' -Pattern '#adminSite' | Measure-Object | Select-Object -ExpandProperty Count\")",
+      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\" -Recurse -Force)",
+      "Bash(Select-Object FullName)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git rm *)",
+      "Bash(Get-Content index.html)",
+      "Bash(Measure-Object -Line)",
+      "PowerShell(\\(Get-Content \"c:\\\\Users\\\\omerf\\\\OneDrive\\\\Belgeler\\\\GitHub\\\\akgul-yayinevi\\\\index.html\"\\).Count)",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(git commit *)"
     ]
   }
 }
