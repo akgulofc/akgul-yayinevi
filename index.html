@@ -7888,23 +7888,23 @@ async function sendAIW(){
 
         <div class="sb-section">Topluluk</div>
         <div class="nav-item" data-page="p-orders" onclick="adminNav(this)"><i class="ti ti-shopping-cart"></i>Siparişler<span class="nav-badge nb-red" id="adm-navOrderCount">2</span></div>
-        <div class="nav-item" data-page="p-users" onclick="adminNav(this)"><i class="ti ti-users"></i>Kullanıcılar</div>
+        <div class="nav-item" id="adm-nav-users" data-page="p-users" onclick="adminNav(this)"><i class="ti ti-users"></i>Kullanıcılar</div>
         <div class="nav-item" data-page="p-blog" onclick="adminNav(this)"><i class="ti ti-news"></i>Blog<span class="nav-badge nb-gold" id="adm-navBlogCount">6</span></div>
         <div class="nav-item" data-page="p-reviews" onclick="adminNav(this)"><i class="ti ti-star"></i>Yorumlar<span class="nav-badge nb-gold" id="adm-navReviewCount">0</span></div>
 
         <div class="sb-section">İçerik</div>
         <div class="nav-item" data-page="p-content" onclick="adminNav(this)"><i class="ti ti-layout"></i>Site İçeriği</div>
 
-        <div class="sb-section">Sistem</div>
-        <div class="nav-item" data-page="p-settings" onclick="adminNav(this)"><i class="ti ti-settings"></i>Ayarlar</div>
+        <div class="sb-section" id="adm-nav-system-sec">Sistem</div>
+        <div class="nav-item" id="adm-nav-settings" data-page="p-settings" onclick="adminNav(this)"><i class="ti ti-settings"></i>Ayarlar</div>
 
       </div>
       <div class="sb-footer">
         <div class="sb-user">
           <div class="sb-user-mini">AD</div>
           <div class="sb-user-info">
-            <div class="sb-user-name">admin</div>
-            <div class="sb-user-email">akgulyayinevi.com</div>
+            <div class="sb-user-name" id="adm-sbName">admin</div>
+            <div class="sb-user-email" id="adm-sbRole">Admin · akgulyayinevi.com</div>
           </div>
           <i class="ti ti-logout" style="font-size:14px;color:rgba(200,169,110,.3)" onclick="adminSiteLogout()" title="Çıkış"></i>
         </div>
@@ -8470,6 +8470,30 @@ async function sendAIW(){
               <div class="kpi-row" id="adm-statsKpis"></div>
             </div>
           </div>
+          <div class="card" style="margin-top:1.25rem">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-user-cog"></i>Editör Hesapları</span>
+              <button class="card-btn primary" onclick="adminToggleEditorForm()"><i class="ti ti-plus" style="font-size:13px"></i>Yeni Editör</button>
+            </div>
+            <div class="card-body">
+              <p style="font-size:.73rem;color:var(--txt2);margin-bottom:.75rem">Editörler kitap, blog ve içerik yönetimi yapabilir; kullanıcı listesi ve sistem ayarlarına erişemez.</p>
+              <div id="adm-editorForm" style="display:none;background:var(--bg3);border:1px solid var(--brd2);border-radius:var(--rad-sm);padding:.85rem;margin-bottom:.75rem">
+                <div class="g2" style="margin-bottom:.5rem">
+                  <div class="field"><label>Ad Soyad</label><input id="adm-ef-name" placeholder="Editör Adı"></div>
+                  <div class="field"><label>Kullanıcı Adı</label><input id="adm-ef-user" placeholder="editör1"></div>
+                </div>
+                <div class="g2" style="margin-bottom:.65rem">
+                  <div class="field"><label>Şifre</label><input type="password" id="adm-ef-pass" placeholder="En az 6 karakter"></div>
+                  <div class="field"><label>Şifre Tekrar</label><input type="password" id="adm-ef-pass2" placeholder="Tekrar girin"></div>
+                </div>
+                <div class="form-actions">
+                  <button class="tb-btn primary" onclick="adminCreateEditor()"><i class="ti ti-check"></i>Oluştur</button>
+                  <button class="tb-btn" onclick="adminToggleEditorForm()">İptal</button>
+                </div>
+              </div>
+              <div id="adm-editorsList"></div>
+            </div>
+          </div>
         </div>
 
       </div><!-- /page-body -->
@@ -8628,8 +8652,18 @@ window.adminHandleLogin = function(){
   const user = ag('adm-loginUser').value.trim();
   const pass = ag('adm-loginPass').value;
   const c = admGetCreds();
-  if(user===c.user && pass===c.pass){
+  let role='admin', name='Admin';
+  let ok=false;
+  if(user===c.user && pass===c.pass){ ok=true; }
+  else {
+    const editors=admGetEditors();
+    const ed=editors.find(e=>e.user===user&&e.pass===pass);
+    if(ed){ ok=true; role='editor'; name=ed.name; }
+  }
+  if(ok){
     localStorage.setItem('akgul_auth','1');
+    localStorage.setItem('akgul_admin_role',role);
+    localStorage.setItem('akgul_admin_name',name);
     ag('adm-loginOverlay').style.display='none';
     ag('adm-appWrap').style.display='flex';
     adminInitApp();
@@ -8642,6 +8676,8 @@ window.adminHandleLogin = function(){
 
 window.adminSiteLogout = function(){
   localStorage.removeItem('akgul_auth');
+  localStorage.removeItem('akgul_admin_role');
+  localStorage.removeItem('akgul_admin_name');
   ag('adm-appWrap').style.display='none';
   ag('adm-loginOverlay').style.display='flex';
   ag('adm-loginUser').value=''; ag('adm-loginPass').value=''; ag('adm-loginErr').textContent='';
@@ -8666,6 +8702,13 @@ window.closeAdminSite = function(){
    INIT
 ═══════════════════════════════════════ */
 function adminInitApp(){
+  const role=adminGetRole(), name=adminGetDisplayName();
+  const isEditor=role==='editor';
+  admSetTxt('adm-sbName',name);
+  admSetTxt('adm-sbRole',isEditor?'Editör · akgulyayinevi.com':'Admin · akgulyayinevi.com');
+  if(ag('adm-nav-users')) ag('adm-nav-users').style.display=isEditor?'none':'';
+  if(ag('adm-nav-settings')) ag('adm-nav-settings').style.display=isEditor?'none':'';
+  if(ag('adm-nav-system-sec')) ag('adm-nav-system-sec').style.display=isEditor?'none':'';
   adminRenderDashChart();
   adminRenderTopBooks();
   adminRenderDashOrders();
@@ -8693,6 +8736,7 @@ const ADM_PAGE_META = {
 
 window.adminNav = function(el){
   const pid = el.dataset.page;
+  if(adminGetRole()==='editor' && (pid==='p-users'||pid==='p-settings')){adminToast('Bu alana erişim yetkiniz yok','warn');return;}
   document.querySelectorAll('#adminSite .nav-item').forEach(n=>n.classList.remove('act'));
   el.classList.add('act');
   document.querySelectorAll('#adminSite .page').forEach(p=>p.classList.remove('act'));
@@ -8710,7 +8754,7 @@ window.adminNav = function(el){
   if(pid==='p-blog')     adminRenderBlog();
   if(pid==='p-reviews')  adminRenderReviews();
   if(pid==='p-content')  adminRenderContent();
-  if(pid==='p-settings') adminRenderStatsKpis();
+  if(pid==='p-settings'){ adminRenderStatsKpis(); adminRenderEditorsList(); }
 };
 
 window.adminNavTo = function(pid){
@@ -9311,12 +9355,24 @@ window.adminRenderUsers = function(filter=''){
   const t=ag('adm-usersTable'); if(!t)return;
   t.innerHTML=`<thead><tr><th>Kullanıcı</th><th>E-posta</th><th>Rol</th><th>Üyelik</th><th>İşlem</th></tr></thead><tbody>`+
     list.map(u=>`<tr>
-      <td><div style="display:flex;align-items:center;gap:.5rem"><div style="width:26px;height:26px;border-radius:50%;background:${admAvColor(u.name)};display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:600;color:#fff">${u.name.slice(0,2).toUpperCase()}</div><span style="font-weight:500;font-size:.8rem">${u.name}</span></div></td>
-      <td style="color:var(--txt2);font-size:.75rem">${u.email}</td>
-      <td><span class="role-badge ${u.role==='admin'?'r-admin':u.role==='yazar'?'r-yazar':'r-okur'}">${u.role==='admin'?'Admin':u.role==='yazar'?'Yazar':'Okur'}</span></td>
+      <td><div style="display:flex;align-items:center;gap:.5rem"><div style="width:26px;height:26px;border-radius:50%;background:${admAvColor(u.name)};display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:600;color:#fff">${u.name.slice(0,2).toUpperCase()}</div><span style="font-weight:500;font-size:.8rem">${admEsc(u.name)}</span></div></td>
+      <td style="color:var(--txt2);font-size:.75rem">${admEsc(u.email)}</td>
+      <td>
+        ${u.role==='admin'?`<span class="role-badge r-admin">Admin</span>`:
+          `<select onchange="adminChangeUserRole('${admEsc(u.email)}',this.value)" style="font-size:.68rem;padding:.18rem .4rem;border:1px solid var(--brd2);border-radius:3px;background:var(--bg3);color:var(--txt1);outline:none;cursor:pointer">
+            <option value="okur"${u.role==='okur'?' selected':''}>Okur</option>
+            <option value="yazar"${u.role==='yazar'?' selected':''}>Yazar</option>
+          </select>`}
+      </td>
       <td style="color:var(--txt3);font-size:.72rem">${u.joined||'—'}</td>
-      <td>${u.role!=='admin'?`<button class="act-btn red" onclick="adminDeleteUser('${u.email}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:'<span style="color:var(--txt3);font-size:.7rem">—</span>'}</td>
+      <td>${u.role!=='admin'?`<button class="act-btn red" onclick="adminDeleteUser('${admEsc(u.email)}')"><i class="ti ti-trash" style="font-size:12px"></i></button>`:'<span style="color:var(--txt3);font-size:.7rem">—</span>'}</td>
     </tr>`).join('')+'</tbody>';
+};
+
+window.adminChangeUserRole = function(email,newRole){
+  const u=adminUsers.find(x=>x.email===email); if(!u)return;
+  u.role=newRole; admSaveUsers();
+  adminToast(`"${u.name}" → ${newRole==='yazar'?'Yazar':'Okur'} olarak güncellendi`);
 };
 
 window.adminDeleteUser = function(email){
@@ -9325,6 +9381,57 @@ window.adminDeleteUser = function(email){
   adminUsers.splice(adminUsers.indexOf(u),1); admSaveUsers(); adminRenderUsers();
   adminToast(`"${u.name}" silindi`,'warn');
 };
+
+/* ═══════════════════════════════════════
+   EDITOR ACCOUNTS
+═══════════════════════════════════════ */
+const ADM_EDITORS_KEY='akgul_editors';
+function admGetEditors(){return admLoad(ADM_EDITORS_KEY,[]);}
+function admSaveEditors(eds){admSave(ADM_EDITORS_KEY,eds);}
+function adminGetRole(){return localStorage.getItem('akgul_admin_role')||'admin';}
+function adminGetDisplayName(){return localStorage.getItem('akgul_admin_name')||'admin';}
+
+window.adminToggleEditorForm=function(){const f=ag('adm-editorForm');if(f)f.style.display=f.style.display==='none'?'block':'none';};
+window.adminCreateEditor=function(){
+  const name=agv('adm-ef-name'),user=agv('adm-ef-user'),pass=ag('adm-ef-pass')?.value||'',pass2=ag('adm-ef-pass2')?.value||'';
+  if(!name){adminToast('Ad gerekli!','warn');return;}
+  if(!user){adminToast('Kullanıcı adı gerekli!','warn');return;}
+  if(pass.length<6){adminToast('Şifre en az 6 karakter!','warn');return;}
+  if(pass!==pass2){adminToast('Şifreler eşleşmiyor!','warn');return;}
+  const editors=admGetEditors();
+  if(editors.find(e=>e.user===user)){adminToast('Bu kullanıcı adı zaten var!','warn');return;}
+  editors.push({id:Date.now(),name,user,pass,role:'editor',created:new Date().toLocaleDateString('tr-TR')});
+  admSaveEditors(editors);
+  ['adm-ef-name','adm-ef-user','adm-ef-pass','adm-ef-pass2'].forEach(id=>{const e=ag(id);if(e)e.value='';});
+  ag('adm-editorForm').style.display='none';
+  adminRenderEditorsList(); adminToast(`✦ "${name}" editör olarak eklendi!`);
+};
+window.adminDeleteEditor=function(id){
+  const editors=admGetEditors();
+  const e=editors.find(x=>x.id===id); if(!e)return;
+  if(!confirm(`"${e.name}" editör hesabı silinsin mi?`))return;
+  admSaveEditors(editors.filter(x=>x.id!==id));
+  adminRenderEditorsList(); adminToast(`"${e.name}" kaldırıldı`,'warn');
+};
+function adminRenderEditorsList(){
+  const el=ag('adm-editorsList'); if(!el)return;
+  const editors=admGetEditors();
+  if(!editors.length){el.innerHTML='<p style="font-size:.75rem;color:var(--txt3)">Henüz editör eklenmedi.</p>';return;}
+  el.innerHTML=`<table style="width:100%;border-collapse:collapse">
+    <thead><tr style="border-bottom:1px solid var(--brd2)">
+      <th style="text-align:left;font-size:.65rem;text-transform:uppercase;color:var(--txt2);padding:.35rem .5rem;font-weight:600">Ad</th>
+      <th style="text-align:left;font-size:.65rem;text-transform:uppercase;color:var(--txt2);padding:.35rem .5rem;font-weight:600">Kullanıcı Adı</th>
+      <th style="text-align:left;font-size:.65rem;text-transform:uppercase;color:var(--txt2);padding:.35rem .5rem;font-weight:600">Oluşturuldu</th>
+      <th></th>
+    </tr></thead>
+    <tbody>${editors.map(e=>`<tr style="border-bottom:1px solid var(--brd2)">
+      <td style="font-size:.8rem;font-weight:500;padding:.45rem .5rem">${admEsc(e.name)}</td>
+      <td style="font-size:.75rem;color:var(--txt2);padding:.45rem .5rem">${admEsc(e.user)}</td>
+      <td style="font-size:.72rem;color:var(--txt3);padding:.45rem .5rem">${e.created||'—'}</td>
+      <td style="padding:.45rem .5rem;text-align:right"><button class="act-btn red" onclick="adminDeleteEditor(${e.id})"><i class="ti ti-trash" style="font-size:12px"></i></button></td>
+    </tr>`).join('')}</tbody>
+  </table>`;
+}
 
 /* ═══════════════════════════════════════
    BLOG
