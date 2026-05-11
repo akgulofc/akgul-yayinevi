@@ -13,21 +13,6 @@
         "reviews": []
     },
     {
-        "id": 4,
-        "title": "Kayıp Kelimeler",
-        "author": "Can Öztürk",
-        "price": 170,
-        "cat": "roman",
-        "bg": "linear-gradient(145deg,#1d2a3a,#2D3A4A)",
-        "badge": null,
-        "desc": "Dilini kaybeden bir adamın hikâyesi.",
-        "cover": "",
-        "pages": 0,
-        "views": 119,
-        "rating": 4.5,
-        "reviews": []
-    },
-    {
         "id": 5,
         "title": "İz Bırakanlar",
         "author": "Selin Arslan",
