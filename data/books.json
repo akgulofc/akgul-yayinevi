@@ -24,20 +24,5 @@
         "cover": "https:\/\/akgulyayinevi.com\/images\/img_6a023539c58873.78501195.png",
         "views": 1,
         "reviews": []
-    },
-    {
-        "id": 14,
-        "title": "Dil ve Toplum",
-        "author": "Prof. H. Çetin",
-        "price": 240,
-        "cat": "akademik",
-        "bg": "linear-gradient(145deg,#1d2a3a,#2D4A6A)",
-        "badge": null,
-        "desc": "Türk dilinin toplumsal dönüşüm içindeki rolü.",
-        "cover": "",
-        "pages": 0,
-        "views": 61,
-        "rating": 4.4,
-        "reviews": []
     }
 ]
