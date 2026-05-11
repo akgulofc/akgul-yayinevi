@@ -26,21 +26,6 @@
         "reviews": []
     },
     {
-        "id": 10,
-        "title": "Güneşin Altında",
-        "author": "Barış Tekin",
-        "price": 135,
-        "cat": "cocuk",
-        "bg": "linear-gradient(145deg,#3a3a1d,#6A5A2D)",
-        "badge": null,
-        "desc": "Bir yaz tatilinde başlayan macera.",
-        "cover": "",
-        "pages": 0,
-        "views": 58,
-        "rating": 4.5,
-        "reviews": []
-    },
-    {
         "id": 11,
         "title": "Ruhun Aynası",
         "author": "Dr. Zeynep Koç",
