@@ -26,21 +26,6 @@
         "reviews": []
     },
     {
-        "id": 12,
-        "title": "Varoluşun Eşiğinde",
-        "author": "Mehmet Aksoy",
-        "price": 165,
-        "cat": "felsefe",
-        "bg": "linear-gradient(145deg,#2a1d2a,#4A2D4A)",
-        "badge": null,
-        "desc": "Varoluşçuluğun anlaşılır dille anlatımı.",
-        "cover": "",
-        "pages": 0,
-        "views": 104,
-        "rating": 4.6,
-        "reviews": []
-    },
-    {
         "id": 13,
         "title": "Son Hikâye",
         "author": "Neslihan Yılmaz",
