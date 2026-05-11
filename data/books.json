@@ -26,36 +26,6 @@
         "reviews": []
     },
     {
-        "id": 12,
-        "title": "Varoluşun Eşiğinde",
-        "author": "Mehmet Aksoy",
-        "price": 165,
-        "cat": "felsefe",
-        "bg": "linear-gradient(145deg,#2a1d2a,#4A2D4A)",
-        "badge": null,
-        "desc": "Varoluşçuluğun anlaşılır dille anlatımı.",
-        "cover": "",
-        "pages": 0,
-        "views": 104,
-        "rating": 4.6,
-        "reviews": []
-    },
-    {
-        "id": 13,
-        "title": "Son Hikâye",
-        "author": "Neslihan Yılmaz",
-        "price": 140,
-        "cat": "hikaye",
-        "bg": "linear-gradient(145deg,#1d3a2a,#2D5A4A)",
-        "badge": null,
-        "desc": "On iki kısa hikâyeden oluşan derleme.",
-        "cover": "",
-        "pages": 0,
-        "views": 82,
-        "rating": 4.5,
-        "reviews": []
-    },
-    {
         "id": 14,
         "title": "Dil ve Toplum",
         "author": "Prof. H. Çetin",
