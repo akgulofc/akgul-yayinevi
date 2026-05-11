@@ -8122,6 +8122,40 @@ async function sendAIW(){
               </div>
             </div>
           </div>
+          <!-- Üyelik Yönetimi -->
+          <div class="card mb-1">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-id-badge"></i>Üyelik Oluştur / Düzenle</span>
+              <button class="card-btn" onclick="adminToggleMembershipForm()" id="adm-membershipToggleBtn"><i class="ti ti-chevron-down"></i> Formu Aç</button>
+            </div>
+            <div id="adm-membershipFormWrap" style="display:none">
+              <div class="card-body">
+                <div class="form-grid">
+                  <div class="field field-full">
+                    <label>Yazar Seç *</label>
+                    <select id="adm-mem-author" style="padding:.45rem .65rem;font-size:.78rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none;width:100%">
+                      <option value="">— Yazar seçin —</option>
+                    </select>
+                  </div>
+                  <div class="field"><label>E-posta *</label><input id="adm-mem-email" type="email" placeholder="yazar@ornek.com"></div>
+                  <div class="field"><label>Şifre *</label><input id="adm-mem-password" type="text" placeholder="Giriş şifresi"></div>
+                  <div class="field field-full">
+                    <label>Durum</label>
+                    <select id="adm-mem-status" style="padding:.45rem .65rem;font-size:.78rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none;width:180px">
+                      <option value="active">Aktif</option>
+                      <option value="suspended">Askıya Alındı</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button class="tb-btn primary" onclick="adminSaveAuthorMembership()"><i class="ti ti-device-floppy"></i>Kaydet</button>
+                  <button class="tb-btn red" onclick="adminRemoveAuthorMembership()" style="margin-left:.5rem"><i class="ti ti-trash"></i>Üyeliği Kaldır</button>
+                  <button class="tb-btn" onclick="adminToggleMembershipForm()">İptal</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <div class="card">
             <div class="card-head">
               <span class="card-title"><i class="ti ti-users"></i>Yazar Listesi</span>
@@ -8894,6 +8928,67 @@ window.adminRenderAuthorsTable = function(filter=''){
         </td>
       </tr>`;
     }).join('')+'</tbody>';
+};
+
+window.adminToggleMembershipForm = function(){
+  const wrap=ag('adm-membershipFormWrap'), btn=ag('adm-membershipToggleBtn');
+  const open=wrap.style.display==='none';
+  wrap.style.display=open?'block':'none';
+  if(btn)btn.innerHTML=open?'<i class="ti ti-chevron-up"></i> Formu Kapat':'<i class="ti ti-chevron-down"></i> Formu Aç';
+  if(open){
+    const sel=ag('adm-mem-author');
+    if(sel){
+      sel.innerHTML='<option value="">— Yazar seçin —</option>'+
+        adminAuthorsData.map((a,i)=>`<option value="${i}">${admEsc(a.name)}</option>`).join('');
+    }
+  }
+};
+
+window.adminManageAuthorMembership = function(idx){
+  const a=adminAuthorsData[idx]; if(!a)return;
+  const wrap=ag('adm-membershipFormWrap');
+  wrap.style.display='block';
+  const btn=ag('adm-membershipToggleBtn');
+  if(btn)btn.innerHTML='<i class="ti ti-chevron-up"></i> Formu Kapat';
+  const sel=ag('adm-mem-author');
+  if(sel){
+    sel.innerHTML='<option value="">— Yazar seçin —</option>'+
+      adminAuthorsData.map((a2,i)=>`<option value="${i}">${admEsc(a2.name)}</option>`).join('');
+    sel.value=String(idx);
+  }
+  const mem=a.membership||{};
+  const emailEl=ag('adm-mem-email'), passEl=ag('adm-mem-password'), statusEl=ag('adm-mem-status');
+  if(emailEl)emailEl.value=mem.email||'';
+  if(passEl)passEl.value=mem.password||'';
+  if(statusEl)statusEl.value=mem.status||'active';
+  wrap.scrollIntoView({behavior:'smooth',block:'nearest'});
+};
+
+window.adminSaveAuthorMembership = function(){
+  const idxStr=ag('adm-mem-author')?.value;
+  if(idxStr===''||idxStr===undefined){adminToast('Lütfen bir yazar seçin','warn');return;}
+  const idx=parseInt(idxStr);
+  const a=adminAuthorsData[idx]; if(!a)return;
+  const email=ag('adm-mem-email')?.value.trim();
+  const password=ag('adm-mem-password')?.value.trim();
+  const status=ag('adm-mem-status')?.value||'active';
+  if(!email||!password){adminToast('E-posta ve şifre zorunlu!','warn');return;}
+  a.membership={email,password,status,lastLogin:a.membership?.lastLogin||''};
+  admSaveAuthors();
+  adminRenderAuthorsTable(ag('adm-authorSearch')?.value||'');
+  adminToast(`✦ "${a.name}" üyeliği kaydedildi!`);
+};
+
+window.adminRemoveAuthorMembership = function(){
+  const idxStr=ag('adm-mem-author')?.value;
+  if(idxStr===''||idxStr===undefined){adminToast('Lütfen bir yazar seçin','warn');return;}
+  const idx=parseInt(idxStr);
+  const a=adminAuthorsData[idx]; if(!a)return;
+  if(!confirm(`"${a.name}" yazarının üyeliğini kaldırmak istediğinizden emin misiniz?`))return;
+  delete a.membership;
+  admSaveAuthors();
+  adminRenderAuthorsTable(ag('adm-authorSearch')?.value||'');
+  adminToast(`"${a.name}" üyeliği kaldırıldı.`,'warn');
 };
 
 window.adminEditAuthorFull = function(idx){
