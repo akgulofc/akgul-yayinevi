@@ -4751,9 +4751,14 @@ function saveUser(){localStorage.setItem('akgulUser',JSON.stringify(currentUser)
 function escHtml(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
 /* ── NAV ── */
+let _goFromHistory=false;
 function go(page){
+  if(!_goFromHistory){
+    const _hp=page==='orders'?'profile':page==='books'||page==='contact'?'home':page;
+    if(page!=='admin')history.pushState({page:_hp},'','#'+_hp);
+  }
   if(page==='orders'){
-    go('profile');
+    _goFromHistory=true;go('profile');_goFromHistory=false;
     const _tabs=[...document.querySelectorAll('.ptab')];
     const _idx=_tabs.findIndex(t=>t.textContent.trim()==='Siparişlerim');
     if(_idx>=0){ptab(_tabs[_idx],_idx);_tabs[_idx].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
@@ -4768,8 +4773,8 @@ function go(page){
     renderWishlist();
     return;
   }
-  if(page==='books'){go('home');setTimeout(()=>sid('books-sec')?.scrollIntoView({behavior:'smooth'}),300);return}
-  if(page==='contact'){go('home');setTimeout(()=>sid('contact-sec')?.scrollIntoView({behavior:'smooth'}),300);return}
+  if(page==='books'){_goFromHistory=true;go('home');_goFromHistory=false;setTimeout(()=>sid('books-sec')?.scrollIntoView({behavior:'smooth'}),300);return}
+  if(page==='contact'){_goFromHistory=true;go('home');_goFromHistory=false;setTimeout(()=>sid('contact-sec')?.scrollIntoView({behavior:'smooth'}),300);return}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
   if(page==='home'){sid('page-home').classList.add('act');document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('act',a.dataset.p==='home'));renderBooks(currentFilter||'all');renderHomeSection();window.scrollTo({top:0});return}
   const target=sid('page-'+page);
@@ -6300,7 +6305,7 @@ async function doLogin(){
   if(!u){
     // Sunucudan doğrula (farklı cihazdan kayıt olmuş olabilir)
     try{
-      const res=await fetch('/.netlify/functions/user-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email,pass})});
+      const res=await fetch('/api/user-auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email,pass})});
       const data=await res.json();
       if(res.ok&&data.user){
         u={...data.user,pass};// pass'ı yerel cache için ekle
@@ -6338,7 +6343,7 @@ async function doRegister(){
   users.push(u);saveUsers();currentUser=u;saveUser();updateAuthNav();go('profile');toast(`Hoş geldiniz, ${name}!`);
   // Sunucuya async kaydet (arka planda)
   try{
-    fetch('/.netlify/functions/user-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name,email,pass,role:'okur',joined})});
+    fetch('/api/user-auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name,email,pass,role:'okur',joined})});
   }catch(e){}
 }
 function logout(){currentUser=null;localStorage.removeItem('akgulUser');localStorage.removeItem('akgul_auth');updateAuthNav();go('home');toast('Çıkış yapıldı.')}
@@ -7311,11 +7316,17 @@ if(currentUser?.email==='akgulyayinevi@gmail.com'&&window.location.hash==='#admi
     setTimeout(()=>openAuthorModal('Ömer Faruk Akgül'),320);
   }
 })();
+if(!history.state)history.replaceState({page:'home'},'',location.href);
+window.addEventListener('popstate',function(e){
+  _goFromHistory=true;
+  go(e.state&&e.state.page?e.state.page:'home');
+  _goFromHistory=false;
+});
 /* ═══════════════════════════════════════
    SİTE KULLANICI AI
 ═══════════════════════════════════════ */
-const AI_SITE_EP = '/.netlify/functions/site-ai';
-const GROQ_RECOMMEND_EP = '/.netlify/functions/ai-recommend';
+const AI_SITE_EP = '/api/site-ai.php';
+const GROQ_RECOMMEND_EP = '/api/ai-recommend.php';
 let aiSiteHistory = [];
 let aiSiteOpen = false;
 
@@ -7467,7 +7478,7 @@ function updateLiveBar(){
 /* ═══════════════════════════════════════
    AI ADMIN ASSISTANT
 ═══════════════════════════════════════ */
-const AI_EP_W = '/.netlify/functions/admin-ai';
+const AI_EP_W = '/api/admin-ai.php';
 let aiHistoryW = [];
 let aiOpenW = false;
 
@@ -8452,7 +8463,7 @@ function admSaveBooks(){ admSave(ADM_STORE_BOOKS,adminBooks); admSave('akgulAdmi
 async function admPushToGitHub(){
   try{
     const creds=admGetCreds();
-    const res=await fetch('/.netlify/functions/save-books',{
+    const res=await fetch('/api/save-books.php',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
       body:JSON.stringify({books:adminBooks})
@@ -8467,7 +8478,7 @@ function admSaveAuthors(){ admSave(ADM_STORE_AUTHORS,adminAuthorsData); admPushA
 async function admPushAuthorsToGitHub(){
   try{
     const creds=admGetCreds();
-    const res=await fetch('/.netlify/functions/save-authors',{
+    const res=await fetch('/api/save-authors.php',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
       body:JSON.stringify({authors:adminAuthorsData})
@@ -9565,7 +9576,7 @@ function adminRenderVisitStats(){
 /* ═══════════════════════════════════════
    AI ASSISTANT
 ═══════════════════════════════════════ */
-const ADM_AI_ENDPOINT = '/.netlify/functions/admin-ai';
+const ADM_AI_ENDPOINT = '/api/admin-ai.php';
 let admAiHistory = [];
 let admAiPanelOpen = false;
 
@@ -9744,7 +9755,7 @@ async function authorLogin(){
   if(!email||!pass){if(err)err.textContent='E-posta ve şifre gerekli.';return;}
   if(btn){btn.disabled=true;btn.textContent='Doğrulanıyor…';}
   try{
-    const res=await fetch('/.netlify/functions/author-login',{
+    const res=await fetch('/api/author-login.php',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({email,password:pass})
     });
