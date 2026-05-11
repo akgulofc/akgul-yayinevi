@@ -13,21 +13,6 @@
         "reviews": []
     },
     {
-        "id": 5,
-        "title": "İz Bırakanlar",
-        "author": "Selin Arslan",
-        "price": 155,
-        "cat": "deneme",
-        "bg": "linear-gradient(145deg,#3a2a1d,#4A3A2D)",
-        "badge": "Yeni",
-        "desc": "Hayatta iz bırakan anlara dair denemeler.",
-        "cover": "",
-        "pages": 0,
-        "views": 73,
-        "rating": 4.4,
-        "reviews": []
-    },
-    {
         "id": 6,
         "title": "Bozkır Şiirleri",
         "author": "Osman Çelik",
