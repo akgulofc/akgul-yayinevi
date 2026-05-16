@@ -3067,6 +3067,26 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 #adminSite .p-pub{background:var(--success-bg);color:var(--success-txt)}
 #adminSite .p-draft{background:var(--warn-bg);color:var(--warn-txt)}
 #adminSite .cat-pill{font-size:.62rem;padding:2px 8px;background:var(--bg3);border:1px solid var(--brd2);border-radius:20px;color:var(--txt2)}
+/* Gazete admin */
+#adminSite .gz-adm-banner{background:linear-gradient(135deg,#0D0C09 0%,#1a1408 100%);border:1px solid rgba(200,169,110,.2);border-radius:var(--rad);padding:1.1rem 1.5rem;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+#adminSite .gz-adm-banner-name{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;font-weight:700;color:var(--gold);letter-spacing:.04em;line-height:1}
+#adminSite .gz-adm-banner-meta{font-size:.68rem;color:rgba(200,169,110,.55);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+#adminSite .gz-adm-sep{opacity:.4}
+#adminSite .gz-adm-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem}
+#adminSite .gz-adm-kpi{background:var(--bg2);border:1px solid var(--brd2);border-radius:var(--rad);padding:.9rem 1rem}
+#adminSite .gz-adm-kpi-val{font-size:1.5rem;font-weight:700;color:var(--txt1);line-height:1;margin-bottom:.2rem}
+#adminSite .gz-adm-kpi-lbl{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3);font-weight:500}
+#adminSite .gz-adm-kpi.manset .gz-adm-kpi-val{color:var(--gold)}
+#adminSite .gz-adm-kpi.sd .gz-adm-kpi-val{color:#e74c3c}
+#adminSite .gz-type-pill{font-size:.58rem;padding:2px 8px;border-radius:20px;font-weight:600;letter-spacing:.04em;display:inline-block}
+#adminSite .gz-type-article{background:rgba(45,74,62,.15);color:#3aaf87}
+#adminSite .gz-type-tanitim{background:rgba(200,169,110,.15);color:var(--gold)}
+#adminSite .gz-type-ilan{background:rgba(139,58,42,.15);color:#e07060}
+#adminSite .gz-type-cekilis{background:rgba(90,64,8,.2);color:#c9a030}
+#adminSite .gz-flag{display:inline-flex;align-items:center;gap:.2rem;font-size:.6rem;padding:1px 7px;border-radius:10px;font-weight:600}
+#adminSite .gz-flag-manset{background:rgba(200,169,110,.15);color:var(--gold)}
+#adminSite .gz-flag-sd{background:rgba(231,76,60,.12);color:#e74c3c}
+@media(max-width:700px){#adminSite .gz-adm-kpi-row{grid-template-columns:repeat(2,1fr)}}
 #adminSite .role-badge{font-size:.6rem;padding:2px 8px;border-radius:20px;font-weight:600}
 #adminSite .r-okur{background:var(--info-bg);color:var(--info-txt)}
 #adminSite .r-yazar{background:#F3E5F5;color:#6A1B9A}
@@ -8430,29 +8450,44 @@ async function sendAIW(){
 
   <!-- BLOG YAZISI MODAL -->
   <div class="modal-overlay" id="adm-blogModal">
-    <div class="modal">
+    <div class="modal" style="max-width:560px">
       <div class="modal-head">
-        <span class="modal-title">Yeni Blog Yazısı</span>
+        <span class="modal-title"><i class="ti ti-news" style="margin-right:.4rem;color:var(--gold)"></i>Yeni Gazete İçeriği</span>
         <button class="modal-close" onclick="adminCloseModal('adm-blogModal')"><i class="ti ti-x"></i></button>
       </div>
       <div class="modal-body">
         <div class="form-grid">
-          <div class="field field-full"><label>Başlık</label><input id="adm-bm-title" placeholder="Yazı başlığı"></div>
-          <div class="field"><label>Yazar</label><select id="adm-bm-author"></select></div>
-          <div class="field"><label>Kategori</label><input id="adm-bm-cat" placeholder="Roman, Şiir, Tarih..."></div>
-          <div class="field field-full"><label>İçerik (özet)</label><div class="adm-ql-wrap adm-ql-wrap-lg"><div id="adm-bm-content-quill"></div></div></div>
+          <div class="field"><label>İçerik Türü</label>
+            <select id="adm-bm-type" onchange="admToggleBlogTypeModal()">
+              <option value="article">📝 Makale / Yazı</option>
+              <option value="tanitim">✨ Tanıtım</option>
+              <option value="ilan">📢 İlan</option>
+            </select>
+          </div>
+          <div class="field adm-bm-cat-wrap"><label>Kategori / Bölüm</label><input id="adm-bm-cat" placeholder="Yazarlık, Şiir & Dil, Felsefe..."></div>
+          <div class="field field-full"><label>Başlık</label><input id="adm-bm-title" placeholder="Başlık..."></div>
+          <div class="field adm-bm-author-wrap"><label>Yazar</label><select id="adm-bm-author"></select></div>
+          <div class="field adm-bm-ilan-wrap" style="display:none"><label>İlan Etiketi</label><input id="adm-bm-ilan-badge" placeholder="FUAR, İMZA GÜNÜ, KAMPANYA..."></div>
+          <div class="field field-full"><label>Özet / İçerik</label><div class="adm-ql-wrap adm-ql-wrap-lg"><div id="adm-bm-content-quill"></div></div></div>
           <div class="field field-full"><label>Kapak Görseli</label>
             <div style="display:flex;gap:.5rem;align-items:center">
               <input type="file" id="adm-bm-cover-file" accept="image/*" onchange="admUploadImage(this,'adm-bm-cover-url','adm-blogCoverImg','adm-blogCoverPreview')" style="flex:1;font-size:.78rem">
               <button class="act-btn red" type="button" onclick="adminRemoveBlogCover()" title="Temizle"><i class="ti ti-x" style="font-size:12px"></i></button>
             </div>
             <input type="hidden" id="adm-bm-cover-url">
-            <div class="cover-preview" id="adm-blogCoverPreview">
-              <img id="adm-blogCoverImg" alt="Kapak önizleme">
-            </div>
+            <div class="cover-preview" id="adm-blogCoverPreview"><img id="adm-blogCoverImg" alt="Kapak önizleme"></div>
           </div>
-          <div class="field"><label>Durum</label>
-            <select id="adm-bm-status"><option value="Yayında">Yayında</option><option value="Taslak">Taslak</option></select>
+          <div class="field" style="display:flex;align-items:center;gap:.5rem">
+            <label style="margin-bottom:0;cursor:pointer;display:flex;align-items:center;gap:.4rem">
+              <input type="checkbox" id="adm-bm-manset" style="width:15px;height:15px;accent-color:var(--gold)">
+              <span style="font-size:.78rem">⭐ Manşet Yap</span>
+            </label>
+          </div>
+          <div class="field" style="display:flex;align-items:center;gap:.5rem">
+            <label style="margin-bottom:0;cursor:pointer;display:flex;align-items:center;gap:.4rem">
+              <input type="checkbox" id="adm-bm-sondakika" style="width:15px;height:15px;accent-color:#e74c3c">
+              <span style="font-size:.78rem">🔴 Son Dakika</span>
+            </label>
           </div>
         </div>
         <div class="form-actions">
@@ -8490,10 +8525,10 @@ async function sendAIW(){
         <div class="nav-item" data-page="p-orders" onclick="adminNav(this)"><i class="ti ti-shopping-cart"></i>Siparişler<span class="nav-badge nb-red" id="adm-navOrderCount">2</span></div>
         <div class="nav-item" data-page="p-sales" onclick="adminNav(this)"><i class="ti ti-chart-arrows-vertical"></i>Satışlar</div>
         <div class="nav-item" id="adm-nav-users" data-page="p-users" onclick="adminNav(this)"><i class="ti ti-users"></i>Kullanıcılar</div>
-        <div class="nav-item" data-page="p-blog" onclick="adminNav(this)"><i class="ti ti-news"></i>Blog<span class="nav-badge nb-gold" id="adm-navBlogCount">6</span></div>
         <div class="nav-item" data-page="p-reviews" onclick="adminNav(this)"><i class="ti ti-star"></i>Yorumlar<span class="nav-badge nb-gold" id="adm-navReviewCount">0</span></div>
 
         <div class="sb-section">İçerik</div>
+        <div class="nav-item" data-page="p-blog" onclick="adminNav(this)"><i class="ti ti-news"></i>Akgül Gazetesi<span class="nav-badge nb-gold" id="adm-navBlogCount">6</span></div>
         <div class="nav-item" data-page="p-cekilis" onclick="adminNav(this)"><i class="ti ti-trophy"></i>Çekiliş Robotu</div>
         <div class="nav-item" data-page="p-content" onclick="adminNav(this)"><i class="ti ti-layout"></i>Site İçeriği</div>
 
@@ -8871,18 +8906,41 @@ async function sendAIW(){
 
         <!-- ── BLOG ──────────────────────── -->
         <div class="page" id="adm-p-blog">
-          <div class="sec-head">
-            <span class="sec-title">Blog Yazıları</span>
-            <button class="tb-btn primary" onclick="adminOpenBlogModal()"><i class="ti ti-plus"></i>Yeni Yazı</button>
+          <!-- Özet bantı -->
+          <div class="gz-adm-banner">
+            <div class="gz-adm-banner-name">Akgül Gazetesi</div>
+            <div class="gz-adm-banner-meta">
+              <span id="adm-gz-baski-info">Baskı No: —</span>
+              <span class="gz-adm-sep">·</span>
+              <span id="adm-gz-manset-info">Manşet: —</span>
+              <span class="gz-adm-sep">·</span>
+              <span id="adm-gz-sd-info">Son Dakika: kapalı</span>
+            </div>
           </div>
+          <!-- KPI satırı -->
+          <div class="gz-adm-kpi-row" id="adm-gz-kpis"></div>
+          <!-- Araçlar -->
+          <div class="sec-head" style="margin-bottom:.75rem">
+            <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+              <button class="tb-btn primary" onclick="adminOpenBlogModal('article')"><i class="ti ti-pencil"></i>Makale Ekle</button>
+              <button class="tb-btn" style="background:rgba(139,58,42,.12);color:#e07060;border-color:rgba(139,58,42,.3)" onclick="adminOpenBlogModal('ilan')"><i class="ti ti-speakerphone"></i>İlan Ekle</button>
+              <button class="tb-btn" style="background:rgba(45,74,62,.12);color:var(--gold);border-color:rgba(45,74,62,.3)" onclick="adminOpenBlogModal('tanitim')"><i class="ti ti-star"></i>Tanıtım Ekle</button>
+            </div>
+            <div style="display:flex;gap:.4rem;align-items:center">
+              <span style="font-size:.68rem;color:var(--txt3)">Filtre:</span>
+              <select id="adm-blogTypeFilter" onchange="adminRenderBlog()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+                <option value="">Tümü</option>
+                <option value="article">Makale</option>
+                <option value="tanitim">Tanıtım</option>
+                <option value="ilan">İlan</option>
+                <option value="cekilis-sonuc">Çekiliş</option>
+              </select>
+            </div>
+          </div>
+          <!-- İçerik tablosu -->
           <div class="card">
             <div class="card-head">
-              <span class="card-title"><i class="ti ti-news"></i>Yazılar <span id="adm-blogCountLabel" style="color:var(--txt3);font-weight:400;font-size:.73rem"></span></span>
-              <select id="adm-blogStatusFilter" onchange="adminRenderBlog()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
-                <option value="">Tüm Durumlar</option>
-                <option value="Yayında">Yayında</option>
-                <option value="Taslak">Taslak</option>
-              </select>
+              <span class="card-title"><i class="ti ti-news"></i>Yayınlanan İçerikler <span id="adm-blogCountLabel" style="color:var(--txt3);font-weight:400;font-size:.73rem"></span></span>
             </div>
             <div class="table-wrap"><table id="adm-blogTable"></table></div>
           </div>
@@ -9397,7 +9455,7 @@ const ADM_PAGE_META = {
   'p-orders':  {title:'Siparişler',    bread:'Topluluk'},
   'p-sales':   {title:'Satışlar',      bread:'Topluluk'},
   'p-users':   {title:'Kullanıcılar',  bread:'Topluluk'},
-  'p-blog':    {title:'Blog',          bread:'Topluluk'},
+  'p-blog':    {title:'Akgül Gazetesi', bread:'İçerik'},
   'p-reviews': {title:'Yorumlar',      bread:'Moderasyon'},
   'p-cekilis': {title:'Çekiliş Robotu',  bread:'İçerik'},
   'p-content': {title:'Site İçeriği',  bread:'İçerik Yönetimi'},
@@ -10182,52 +10240,129 @@ window.adminRemoveBlogCover = function(){
   const f=ag('adm-bm-cover-file'); if(f) f.value='';
   ag('adm-blogCoverPreview').style.display='none'; ag('adm-blogCoverImg').src='';
 };
-window.adminOpenBlogModal = function(){
+function admToggleBlogTypeModal(){
+  const t=ag('adm-bm-type')?.value||'article';
+  const isIlan=t==='ilan';
+  const ilanWrap=document.querySelector('.adm-bm-ilan-wrap');
+  const catWrap=document.querySelector('.adm-bm-cat-wrap');
+  const authWrap=document.querySelector('.adm-bm-author-wrap');
+  if(ilanWrap)ilanWrap.style.display=isIlan?'':'none';
+  if(catWrap)catWrap.style.display=isIlan?'none':'';
+  if(authWrap)authWrap.style.display=isIlan?'none':'';
+}
+window.adminOpenBlogModal = function(preType){
   adminRemoveBlogCover();
   const sel=ag('adm-bm-author');
-  if(sel){ sel.innerHTML=adminAuthorsData.map(a=>`<option value="${admEsc(a.name)}">${admEsc(a.name)}</option>`).join(''); }
+  const allAuthors=[...new Set([...adminAuthorsData.map(a=>a.name),'Akgül Yayınevi'])];
+  if(sel){ sel.innerHTML=allAuthors.map(n=>`<option value="${admEsc(n)}">${admEsc(n)}</option>`).join(''); }
+  if(preType){const ts=ag('adm-bm-type');if(ts)ts.value=preType;}
+  admToggleBlogTypeModal();
+  const mc=ag('adm-bm-manset');if(mc)mc.checked=false;
+  const sc=ag('adm-bm-sondakika');if(sc)sc.checked=false;
+  const bi=ag('adm-bm-ilan-badge');if(bi)bi.value='';
   adminOpenModal('adm-blogModal');
 };
 window.adminSaveBlogPost = function(){
   const title=agv('adm-bm-title');
   if(!title){adminToast('Başlık zorunlu!','warn');return;}
-  const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+  const type=ag('adm-bm-type')?.value||'article';
+  const isIlan=type==='ilan';
+  const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
   const coverUrl=(ag('adm-bm-cover-url')?.value||'').trim();
-  adminBlogPosts.unshift({id:Date.now(),title,author:agv('adm-bm-author'),date:today,cat:agv('adm-bm-cat')||'Genel',status:agv('adm-bm-status'),content:_quillBlog?(_quillBlog.getText().trim()?_quillBlog.root.innerHTML:''):'',cover:coverUrl});
-  admSaveBlog(); adminRenderBlog(); adminCloseModal('adm-blogModal');
-  ag('adm-bm-title').value=''; if(_quillBlog)_quillBlog.setText(''); ag('adm-bm-cat').value=''; adminRemoveBlogCover();
-  adminToast(`"${title}" yayınlandı`);
-  admUpdateNavBadges();
+  const bodyHtml=_quillBlog?(_quillBlog.getText().trim()?_quillBlog.root.innerHTML:''):'';
+  const plainText=_quillBlog?_quillBlog.getText().trim():'';
+  const excerpt=plainText.slice(0,180)||(title);
+  const isManset=ag('adm-bm-manset')?.checked||false;
+  const isSonDakika=ag('adm-bm-sondakika')?.checked||false;
+  const ilanBadge=(ag('adm-bm-ilan-badge')?.value||'').trim();
+  const cat=isIlan?'İlan':(agv('adm-bm-cat')||'Genel');
+  const author=isIlan?'Akgül Yayınevi':(agv('adm-bm-author')||'Akgül Yayınevi');
+  const inits=author.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  const colors=['#2D4A3E','#8B3A2A','#2A3545','#4A2D4A','#6B5A2E'];
+  const color=colors[blogData.length%colors.length];
+  // Manşet: mevcut manşeti kaldır
+  if(isManset)blogData.forEach(p=>{p.isManset=false;});
+  const newPost={
+    id:Date.now(),title,author,initials:inits,color,type,cat,
+    excerpt,body:bodyHtml||`<p>${excerpt}</p>`,
+    bg:'linear-gradient(135deg,#1a1a18,#2a2a22)',
+    images:coverUrl?[coverUrl]:[],
+    date:today,isManset,sonDakika:isSonDakika,
+    ilanBadge:ilanBadge||undefined
+  };
+  blogData.unshift(newPost);saveBlogData(blogData);
+  adminRenderBlog();renderGazete();renderBlogPreview();adminCloseModal('adm-blogModal');
+  ag('adm-bm-title').value='';if(_quillBlog)_quillBlog.setText('');ag('adm-bm-cat').value='';adminRemoveBlogCover();
+  adminToast(`"${title}" yayınlandı`);admUpdateNavBadges();
 };
 window.adminRenderBlog = function(){
-  const sf=ag('adm-blogStatusFilter')?.value||'';
-  let list=sf?adminBlogPosts.filter(p=>p.status===sf):adminBlogPosts;
-  const lbl=ag('adm-blogCountLabel'); if(lbl) lbl.textContent=`(${list.length} yazı)`;
-  const t=ag('adm-blogTable'); if(!t)return;
-  t.innerHTML=`<thead><tr><th>Başlık</th><th>Yazar</th><th>Kategori</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>`+
-    list.map(p=>`<tr>
-      <td style="font-weight:500;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.title}</td>
-      <td style="color:var(--txt2);font-size:.75rem">${p.author}</td>
-      <td><span class="cat-pill">${p.cat}</span></td>
-      <td style="color:var(--txt3);font-size:.72rem">${p.date}</td>
-      <td><span class="pill ${p.status==='Yayında'?'p-pub':'p-draft'}">${p.status}</span></td>
-      <td style="display:flex;gap:.3rem">
-        <button class="act-btn" onclick="adminToggleBlogStatus(${p.id})"><i class="ti ti-refresh" style="font-size:12px"></i></button>
-        <button class="act-btn red" onclick="adminDeletePost(${p.id})"><i class="ti ti-trash" style="font-size:12px"></i></button>
-      </td>
-    </tr>`).join('')+'</tbody>';
+  // Banner info
+  const bEl=ag('adm-gz-baski-info');if(bEl)bEl.textContent=`Baskı No: ${gazeteBaskiNo()}`;
+  const mansetPost=blogData.find(p=>p.isManset);
+  const mEl=ag('adm-gz-manset-info');if(mEl)mEl.textContent=`Manşet: ${mansetPost?mansetPost.title.slice(0,28)+'…':'—'}`;
+  const sdPost=blogData.find(p=>p.sonDakika);
+  const sdEl=ag('adm-gz-sd-info');if(sdEl)sdEl.innerHTML=sdPost?`<span style="color:#e74c3c">● Son Dakika: ${admEsc(sdPost.title.slice(0,25))}…</span>`:`Son Dakika: kapalı`;
+  // KPIs
+  const kRow=ag('adm-gz-kpis');
+  if(kRow){
+    const total=blogData.length;
+    const makaleCnt=blogData.filter(p=>!p.type||p.type==='article').length;
+    const ilanCnt=blogData.filter(p=>p.type==='ilan').length;
+    const tanitimCnt=blogData.filter(p=>p.type==='tanitim').length;
+    kRow.innerHTML=`
+      <div class="gz-adm-kpi"><div class="gz-adm-kpi-val">${total}</div><div class="gz-adm-kpi-lbl">Toplam İçerik</div></div>
+      <div class="gz-adm-kpi"><div class="gz-adm-kpi-val">${makaleCnt}</div><div class="gz-adm-kpi-lbl">Makale</div></div>
+      <div class="gz-adm-kpi"><div class="gz-adm-kpi-val">${ilanCnt}</div><div class="gz-adm-kpi-lbl">İlan</div></div>
+      <div class="gz-adm-kpi"><div class="gz-adm-kpi-val">${tanitimCnt}</div><div class="gz-adm-kpi-lbl">Tanıtım</div></div>`;
+  }
+  // Tablo
+  const tf=ag('adm-blogTypeFilter')?.value||'';
+  let list=tf?blogData.filter(p=>(p.type||'article')===tf):blogData;
+  const lbl=ag('adm-blogCountLabel');if(lbl)lbl.textContent=`(${list.length} içerik)`;
+  const t=ag('adm-blogTable');if(!t)return;
+  const typePill=tp=>{
+    const m={article:'gz-type-article',tanitim:'gz-type-tanitim',ilan:'gz-type-ilan','cekilis-sonuc':'gz-type-cekilis'};
+    const l={article:'Makale',tanitim:'Tanıtım',ilan:'İlan','cekilis-sonuc':'Çekiliş'};
+    return`<span class="gz-type-pill ${m[tp]||'gz-type-article'}">${l[tp]||'Makale'}</span>`;
+  };
+  t.innerHTML=`<thead><tr><th>Tür</th><th>Başlık</th><th>Kategori</th><th>Yazar</th><th>Tarih</th><th>Bayraklar</th><th>İşlem</th></tr></thead><tbody>`+
+    list.map(p=>{
+      const tp=p.type||'article';
+      const flags=(p.isManset?`<span class="gz-flag gz-flag-manset">⭐ Manşet</span> `:'')+(p.sonDakika?`<span class="gz-flag gz-flag-sd">🔴 SD</span>`:'');
+      return`<tr>
+        <td>${typePill(tp)}</td>
+        <td style="font-weight:500;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${admEsc(p.title)}</td>
+        <td><span class="cat-pill">${admEsc(p.cat||'—')}</span></td>
+        <td style="color:var(--txt2);font-size:.75rem">${admEsc(p.author||'—')}</td>
+        <td style="color:var(--txt3);font-size:.72rem;white-space:nowrap">${p.date||'—'}</td>
+        <td style="min-width:90px">${flags||'<span style="color:var(--txt3);font-size:.65rem">—</span>'}</td>
+        <td style="display:flex;gap:.3rem;flex-wrap:wrap">
+          ${!p.isManset?`<button class="act-btn" title="Manşet Yap" onclick="adminGzSetManset(${p.id})"><i class="ti ti-pin" style="font-size:11px"></i></button>`:''}
+          <button class="act-btn ${p.sonDakika?'red':''}" title="${p.sonDakika?'Son Dakikayı Kaldır':'Son Dakika Yap'}" onclick="adminGzToggleSonDakika(${p.id})"><i class="ti ti-bolt" style="font-size:11px"></i></button>
+          <button class="act-btn red" onclick="adminGzDeletePost(${p.id})"><i class="ti ti-trash" style="font-size:12px"></i></button>
+        </td>
+      </tr>`;
+    }).join('')+'</tbody>';
 };
-window.adminToggleBlogStatus = function(id){
-  const p=adminBlogPosts.find(x=>x.id===id); if(!p)return;
-  p.status=p.status==='Yayında'?'Taslak':'Yayında';
-  admSaveBlog(); adminRenderBlog(); adminToast(`"${p.title.slice(0,30)}…" → ${p.status}`);
+window.adminGzSetManset = function(id){
+  blogData.forEach(p=>{p.isManset=(p.id===id);});
+  saveBlogData(blogData);adminRenderBlog();renderGazete();adminToast('Manşet güncellendi.');
 };
-window.adminDeletePost = function(id){
-  const p=adminBlogPosts.find(x=>x.id===id); if(!p)return;
+window.adminGzToggleSonDakika = function(id){
+  const p=blogData.find(x=>x.id===id);if(!p)return;
+  blogData.forEach(x=>{x.sonDakika=false;});
+  p.sonDakika=!p.sonDakika;
+  saveBlogData(blogData);adminRenderBlog();renderGazete();
+  adminToast(p.sonDakika?`"${p.title.slice(0,25)}…" Son Dakika yapıldı.`:'Son Dakika kaldırıldı.');
+};
+window.adminGzDeletePost = function(id){
+  const p=blogData.find(x=>x.id===id);if(!p)return;
   if(!confirm(`"${p.title}" silinsin mi?`))return;
-  adminBlogPosts.splice(adminBlogPosts.indexOf(p),1); admSaveBlog(); adminRenderBlog();
-  adminToast('Yazı silindi','warn'); admUpdateNavBadges();
+  blogData.splice(blogData.indexOf(p),1);saveBlogData(blogData);
+  adminRenderBlog();renderGazete();renderBlogPreview();adminToast('İçerik silindi','warn');admUpdateNavBadges();
 };
+window.adminToggleBlogStatus=function(){};
+window.adminDeletePost=function(id){adminGzDeletePost(id);};
 
 /* ═══════════════════════════════════════
    REVIEWS
@@ -10287,7 +10422,7 @@ function adminRenderStatsKpis(){
   el.innerHTML=[
     {cls:'k1',val:adminBooks.length,lbl:'Katalog Kitap'},
     {cls:'k2',val:adminUsers.length+1,lbl:'Kayıtlı Üye'},
-    {cls:'k3',val:adminBlogPosts.length,lbl:'Blog Yazısı'},
+    {cls:'k3',val:blogData.length,lbl:'Gazete İçeriği'},
     {cls:'k4',val:totalRevs,lbl:'Toplam Yorum'},
   ].map(k=>`<div class="kpi ${k.cls}"><div class="kpi-val">${k.val}</div><div class="kpi-lbl">${k.lbl}</div></div>`).join('');
 }
@@ -10672,7 +10807,7 @@ document.querySelectorAll('#adminSite .modal-overlay').forEach(m=>m.addEventList
 function admUpdateNavBadges(){
   const bn=ag('adm-navBookCount'); if(bn) bn.textContent=adminBooks.length;
   const oc=ag('adm-navOrderCount'); if(oc){const p=adminOrders.filter(o=>o.status==='Hazırlanıyor').length;oc.textContent=p;oc.style.display=p>0?'':'none';}
-  const bl=ag('adm-navBlogCount'); if(bl) bl.textContent=adminBlogPosts.filter(p=>p.status==='Yayında').length;
+  const bl=ag('adm-navBlogCount'); if(bl) bl.textContent=blogData.length;
   const rc=ag('adm-navReviewCount'); if(rc){const t=adminBooks.reduce((s,b)=>s+b.reviews.length,0);rc.textContent=t;}
   const kb=ag('adm-kpiBooks'); if(kb) kb.textContent=adminBooks.length;
   const ku=ag('adm-kpiUsers'); if(ku) ku.textContent=adminUsers.length+1;
