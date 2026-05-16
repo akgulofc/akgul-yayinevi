@@ -206,6 +206,22 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .ask-code-box{background:rgba(200,169,110,.07);border:1px dashed rgba(200,169,110,.38);border-radius:8px;padding:1rem 1.25rem;text-align:center;margin:1rem 0}
 .ask-code-val{font-family:monospace;font-size:1.5rem;color:var(--gold);font-weight:700;letter-spacing:.1em}
 .ask-code-note{font-size:.7rem;color:rgba(245,239,229,.38);margin-top:.35rem}
+/* Ask Hero */
+.ask-hero-wrap{position:relative;overflow:hidden;padding:5rem 2rem 3rem;text-align:center}
+.ask-hero-bg-deco{position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 50% -10%,rgba(45,160,100,.18) 0%,transparent 70%),radial-gradient(ellipse 40% 50% at 80% 50%,rgba(200,169,110,.08) 0%,transparent 60%);pointer-events:none}
+.ask-hero-inner{position:relative;max-width:600px;margin:0 auto}
+.ask-hero-title{font-family:var(--font-serif);font-size:clamp(2.4rem,6vw,3.8rem);color:var(--cream);line-height:1.1;margin:.3rem 0 1rem;font-weight:700}
+.ask-hero-title em{color:var(--gold);font-style:normal}
+.ask-hero-sub{font-size:1rem;color:rgba(245,239,229,.55);line-height:1.75;margin-bottom:1.5rem}
+/* Ask How it works */
+.ask-how{display:flex;align-items:flex-start;justify-content:center;gap:1rem;padding:2rem 2rem 2.5rem;max-width:860px;margin:0 auto}
+.ask-how-step{flex:1;max-width:220px;text-align:center}
+.ask-how-num{width:32px;height:32px;border-radius:50%;background:rgba(200,169,110,.1);border:1px solid rgba(200,169,110,.28);color:var(--gold);font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto .75rem}
+.ask-how-icon{font-size:1.8rem;margin-bottom:.6rem;line-height:1}
+.ask-how-lbl{font-family:var(--font-serif);font-size:.95rem;color:var(--cream);font-weight:600;margin-bottom:.35rem}
+.ask-how-desc{font-size:.73rem;color:rgba(245,239,229,.4);line-height:1.6}
+.ask-how-arrow{font-size:1.2rem;color:rgba(200,169,110,.3);padding-top:1.6rem;flex-shrink:0;align-self:flex-start}
+@media(max-width:600px){.ask-how{flex-direction:column;align-items:center;gap:.75rem}.ask-how-arrow{transform:rotate(90deg);padding-top:0;align-self:center}}
 /* ── ÇEKİLİŞ SAYFASI ── */
 .ck-bg{background:linear-gradient(160deg,#0F0E0B 0%,#1a0e1a 55%,#1a1508 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem}
 .ck-inner{max-width:1100px;margin:0 auto}
@@ -3924,30 +3940,65 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 
 <!-- ═══════════ ASKIDA KİTAP ═══════════ -->
 <div class="page ask-page" id="page-askida-kitap">
-  <div style="text-align:center;padding:4rem 2rem 2rem">
-    <span style="font-size:2.5rem;display:block;margin-bottom:.75rem">📚</span>
-    <p class="sec-label" style="color:var(--gold)">Topluluk Kitaplığı</p>
-    <h2 class="sec-title" style="color:var(--cream)">Askıda <em>Kitap</em></h2>
-    <p style="font-size:.92rem;color:rgba(245,239,229,.5);max-width:540px;margin:.75rem auto 0;line-height:1.8">
-      Bir kitabı askıya bırak, onu alamayacak birine ulaşsın.<br>
-      Bırakana <span id="ask-disc-pct" style="color:var(--gold);font-weight:700">%10</span> indirim hediyemiz.
-    </p>
+
+  <!-- Hero -->
+  <div class="ask-hero-wrap">
+    <div class="ask-hero-bg-deco"></div>
+    <div class="ask-hero-inner">
+      <p class="sec-label" style="color:var(--gold);margin-bottom:.6rem">Topluluk Kitaplığı</p>
+      <h1 class="ask-hero-title">Askıda <em>Kitap</em></h1>
+      <p class="ask-hero-sub">Bir kitabı askıya bırak — onu alamayacak birine ulaşsın.<br>Paylaşmanın en güzel hali.</p>
+      <div class="ask-disc-pill" id="ask-donate-pill">🎁 Kitap bırakana <strong id="ask-disc-pct">%10</strong> indirim</div>
+    </div>
   </div>
+
+  <!-- İstatistikler -->
   <div class="ask-stats" id="ask-stats"></div>
+
+  <!-- Nasıl Çalışır -->
+  <div class="ask-how">
+    <div class="ask-how-step">
+      <div class="ask-how-num">1</div>
+      <div class="ask-how-icon">📖</div>
+      <div class="ask-how-lbl">Kitap Seç</div>
+      <div class="ask-how-desc">Kataloğumuzdan bırakmak istediğin kitabı seç</div>
+    </div>
+    <div class="ask-how-arrow">→</div>
+    <div class="ask-how-step">
+      <div class="ask-how-num">2</div>
+      <div class="ask-how-icon">💫</div>
+      <div class="ask-how-lbl">Askıya Bırak</div>
+      <div class="ask-how-desc">WhatsApp'tan sipariş ver, indirim kodunu kullan</div>
+    </div>
+    <div class="ask-how-arrow">→</div>
+    <div class="ask-how-step">
+      <div class="ask-how-num">3</div>
+      <div class="ask-how-icon">🤝</div>
+      <div class="ask-how-lbl">Birine Ulaşır</div>
+      <div class="ask-how-desc">Kitap, onu alamayacak okuyucuya kavuşur</div>
+    </div>
+  </div>
+
+  <!-- Mevcut askıda kitaplar -->
   <div class="ask-main">
     <div class="ask-section-hd">
-      <span>📖 Şu An Askıda</span>
+      <span>📚 Şu An Askıda</span>
       <span id="ask-avail-count" style="font-size:.7rem;color:rgba(245,239,229,.35)"></span>
     </div>
     <div id="ask-available-grid" class="ask-books-grid"></div>
+
+    <!-- CTA -->
     <div class="ask-cta">
-      <div class="ask-disc-pill" id="ask-donate-pill">🎁 Bırakana %10 İndirim</div>
-      <div style="font-family:var(--font-serif);font-size:1.2rem;color:var(--cream);margin-bottom:.5rem">Sen de bir kitap bırak</div>
-      <p style="font-size:.85rem;color:rgba(245,239,229,.42);margin-bottom:1.25rem;line-height:1.65">Kataloğumuzdan istediğin kitabı seç, askıya bırak. WhatsApp siparişinde indirim kodunu paylaş.</p>
-      <button class="ask-btn ask-btn-gold" onclick="askidaOpenBirak()">
-        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
-        Kitap Bırak
-      </button>
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <div style="font-family:var(--font-serif);font-size:1.25rem;color:var(--cream);margin-bottom:.45rem">Sen de bir kitap bırak</div>
+          <p style="font-size:.83rem;color:rgba(245,239,229,.42);line-height:1.7;margin:0">Sipariş verirken indirim kodunu paylaş,<br>kalan bedelini anında kazan.</p>
+        </div>
+        <button class="ask-btn ask-btn-gold" style="font-size:.85rem;padding:.7rem 1.6rem;gap:.5rem" onclick="askidaOpenBirak()">
+          <svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
+          Kitap Bırak
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -10964,21 +11015,26 @@ function renderAskida(){
 }
 
 let _askSelBook=null;
+let _askCatalog=[];
+
 function askidaOpenBirak(){
-  const catalog=(JSON.parse(localStorage.getItem('akgul_books_v2')||'[]').length>0?JSON.parse(localStorage.getItem('akgul_books_v2')||'[]'):books);
+  _askCatalog=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  if(_askCatalog.length===0)_askCatalog=books;
+  _askSelBook=null;
+
   const over=document.createElement('div');
   over.className='ask-modal-over'; over.id='ask-birak-over';
   over.innerHTML=`<div class="ask-modal">
     <div class="ask-modal-hd">
-      <span class="ask-modal-title">Askıya Kitap Bırak</span>
+      <span class="ask-modal-title">📚 Askıya Kitap Bırak</span>
       <button class="ask-modal-x" onclick="document.getElementById('ask-birak-over').remove()">✕</button>
     </div>
     <div class="ask-modal-body">
-      <p style="font-size:.78rem;color:rgba(245,239,229,.4);margin-bottom:1rem">Askıya bırakmak istediğin kitabı seç. Sipariş WhatsApp üzerinden tamamlanır.</p>
-      <div class="ask-sel-grid">${catalog.map(b=>`
-        <div class="ask-sel-card" onclick="askidaSelBook(this,${b.id},'${escHtml(b.title).replace(/'/g,"\\'")}','${escHtml(b.author||'').replace(/'/g,"\\'")}',${b.price||0},'${escHtml(b.bg||'#1a1a1a').replace(/'/g,"\\'")}')">
+      <p style="font-size:.78rem;color:rgba(245,239,229,.38);margin-bottom:1.1rem;line-height:1.6">Bırakmak istediğin kitabı seç. Sipariş WhatsApp üzerinden tamamlanır, indirim kodu anında oluşturulur.</p>
+      <div class="ask-sel-grid" id="ask-sel-grid">${_askCatalog.map((b,i)=>`
+        <div class="ask-sel-card" data-idx="${i}" onclick="askidaSelBook(this,${i})">
           <div class="ask-sel-check">✓</div>
-          <div style="height:55px;border-radius:5px;margin-bottom:.45rem;background:${escHtml(b.bg||'#1a1a1a')};display:flex;align-items:center;justify-content:center;font-size:.58rem;color:rgba(255,255,255,.6);text-align:center;padding:.25rem">${escHtml(b.title)}</div>
+          <div style="height:60px;border-radius:6px;margin-bottom:.5rem;background:${escHtml(b.bg||'#1a1a1a')};display:flex;align-items:center;justify-content:center;font-size:.58rem;color:rgba(255,255,255,.65);text-align:center;padding:.3rem;line-height:1.3">${escHtml(b.title)}</div>
           <div class="ask-sel-title">${escHtml(b.title)}</div>
           <div class="ask-sel-price">₺${b.price||0}</div>
         </div>`).join('')}
@@ -10986,18 +11042,19 @@ function askidaOpenBirak(){
     </div>
     <div class="ask-modal-foot">
       <button class="ask-btn ask-btn-outline" onclick="document.getElementById('ask-birak-over').remove()">İptal</button>
-      <button class="ask-btn ask-btn-gold" id="ask-birak-btn" onclick="askidaConfirmBirak()" disabled style="opacity:.5">Askıya Bırak</button>
+      <button class="ask-btn ask-btn-gold" id="ask-birak-btn" onclick="askidaConfirmBirak()" disabled style="opacity:.45;cursor:not-allowed">Askıya Bırak</button>
     </div>
   </div>`;
   document.body.appendChild(over);
 }
 
-function askidaSelBook(el,id,title,author,price,bg){
-  _askSelBook={id,title,author,price,bg};
+function askidaSelBook(el,idx){
+  const b=_askCatalog[idx]; if(!b)return;
+  _askSelBook={id:b.id,title:b.title,author:b.author||'',price:b.price||0,bg:b.bg||'#1a1a1a'};
   document.querySelectorAll('.ask-sel-card').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
   const btn=document.getElementById('ask-birak-btn');
-  if(btn){btn.disabled=false;btn.style.opacity='1';}
+  if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
 }
 
 function askidaConfirmBirak(){
