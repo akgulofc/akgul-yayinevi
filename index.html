@@ -2290,6 +2290,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 @media(max-width:900px){.admin-sidebar{position:static;height:auto;display:flex;flex-wrap:wrap;padding:.75rem;gap:.25rem}}
 .admin-sidebar-title{font-family:var(--font-serif);color:var(--gold);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1.5rem 1rem;opacity:.7}
 @media(max-width:900px){.admin-sidebar-title{display:none}}
+@media(max-width:900px){.admin-sidebar .sb-section{display:none}}
 .admin-nav-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1.5rem;color:#B0A898;font-size:.8rem;cursor:pointer;transition:all .2s;border-left:3px solid transparent;white-space:nowrap}
 .admin-nav-item:hover{color:var(--gold);background:rgba(200,169,110,.06)}
 .admin-nav-item.act{color:var(--gold);border-left-color:var(--gold);background:rgba(200,169,110,.08)}
@@ -2565,6 +2566,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .binfo-title { font-size: .8rem }
   .binfo-author { font-size: .68rem }
   .bprice { font-size: .82rem }
+  .binfo-stars { font-size: .56rem }
+  .bov-add { font-size: .65rem; padding: 6px 0; margin-bottom: .3rem }
+  .bov-icon { height: 24px; font-size: .75rem }
   .badd { font-size: .62rem; padding: 5px 8px; border-radius: 4px }
   .bwish-bar { width: 26px; height: 26px; font-size: .82rem }
 
@@ -2882,6 +2886,10 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .books-grid { gap: .65rem }
   .bcov-title { font-size: .78rem }
   .binfo-title { font-size: .76rem }
+  .bov-add { font-size: .62rem; padding: 5px 0; margin-bottom: .25rem }
+  .bov-acts { gap: .25rem }
+  .bov-icon { height: 22px; font-size: .7rem }
+  .bcover-ov { padding: .68rem .6rem }
   .badd { font-size: .6rem; padding: 5px 7px }
   .bwish-bar { width: 24px; height: 24px; font-size: .78rem }
 
@@ -2975,6 +2983,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   /* Kitap grid */
   .books-grid { grid-template-columns: repeat(2,1fr); gap: .5rem }
   .bcov-title { font-size: .7rem }
+  .bov-add { font-size: .6rem; padding: 4px 0; margin-bottom: .2rem }
+  .bov-icon { height: 20px; font-size: .66rem }
+  .bcover-ov { padding: .58rem .5rem }
   .badd { font-size: .58rem; padding: 4px 6px }
   .bwish-bar { width: 22px; height: 22px; font-size: .72rem }
 
