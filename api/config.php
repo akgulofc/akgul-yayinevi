@@ -1,12 +1,17 @@
 <?php
-// Gerçek config dosyasını public_html'nin bir üst dizininde ara
-// Örnek yol: /domains/akgulyayinevi.com/akgul_config.php
-$_cfg = dirname(__DIR__, 2) . '/akgul_config.php';
-if (is_file($_cfg)) {
-    require_once $_cfg;
-    return;
+// akgul_config.php'yi olası konumlarda ara
+$_candidates = [
+    dirname(__DIR__, 2) . '/akgul_config.php', // public_html'nin üstü
+    dirname(__DIR__, 3) . '/akgul_config.php', // 2 üst
+    dirname(__DIR__)    . '/akgul_config.php', // public_html içi
+];
+foreach ($_candidates as $_p) {
+    if (is_file($_p)) {
+        require_once $_p;
+        return;
+    }
 }
-// Yedek (local geliştirme / config bulunamazsa)
+// Hiçbiri bulunamazsa boş default
 $GROQ_API_KEY      = '';
 $GITHUB_TOKEN      = '';
 $ADMIN_SECRET      = 'akgul2026';
