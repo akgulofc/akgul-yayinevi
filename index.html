@@ -5245,6 +5245,7 @@ function escHtml(str){return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt
 /* ── NAV ── */
 let _goFromHistory=false;
 function go(page){
+  closeNav();
   if(!_goFromHistory){
     const _hp=page==='orders'?'profile':page==='books'||page==='contact'?'home':page;
     if(page!=='admin')history.pushState({page:_hp},'','#'+_hp);
