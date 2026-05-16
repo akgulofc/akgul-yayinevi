@@ -6840,6 +6840,10 @@ function submitGiftOrder(){
   }).join('\n');
   const shipLine=shipping===0?'Kargo: Ücretsiz ✓':`Kargo: ₺${shipping}`;
   const waMsg=`Merhaba, hediye sepeti siparişi vermek istiyorum.\n\nSipariş No: ${ordId}\n\n${itemLines}\n\n${shipLine}\nGenel Toplam: ₺${total}\n\n— Gönderen Bilgileri —\nAd: ${name}\nTelefon: ${phone}\nŞehir: ${city}\nAdres: ${address}${note?'\nNot: '+note:''}`;
+  /* Hediye siparişini sisteme kaydet */
+  const _giftItems=giftCart.map(g=>{const b=books.find(x=>x.id===g.id);if(!b)return null;const p=b.price+(g.signed?GIFT_FEE:0);return{id:b.id,title:b.title+(g.signed?' (İmzalı)':''),author:b.author,qty:1,price:p,lineTotal:p};}).filter(Boolean);
+  const _giftOrder={id:ordId,customer:name,phone,email:'',city,address,note,book:_giftItems.map(i=>i.title).join(', '),items:_giftItems,subtotal,shipping,total,date:today,status:'Hazırlanıyor',orderType:'hediye'};
+  const _giftExisting=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');_giftExisting.unshift(_giftOrder);localStorage.setItem('akgul_orders_v2',JSON.stringify(_giftExisting));
   const conf=sid('gchkConfirm');
   if(conf){
     conf.innerHTML=`<div class="chk-confirm">
@@ -6984,7 +6988,7 @@ function submitOrder(){
   const items=cart.map(c=>{const b=books.find(x=>x.id===c.id);return{id:b.id,title:b.title,author:b.author,qty:c.qty,price:b.price,lineTotal:b.price*c.qty}});
   const bookNames=items.map(i=>`${i.title} ×${i.qty}`).join(', ');
   const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
-  const order={id:ordId,customer:name,phone,email,city,address,note,book:bookNames,items,subtotal,shipping,total,date:today,status:'Hazırlanıyor'};
+  const order={id:ordId,customer:name,phone,email,city,address,note,book:bookNames,items,subtotal,shipping,total,date:today,status:'Hazırlanıyor',orderType:'normal'};
   const existing=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
   existing.unshift(order);
   localStorage.setItem('akgul_orders_v2',JSON.stringify(existing));
@@ -8845,13 +8849,13 @@ async function sendAIW(){
         <div class="nav-item" data-page="p-askida" onclick="adminNav(this)"><i class="ti ti-books"></i>Askıda Kitap<span class="nav-badge nb-gold" id="adm-navAskidaCount">0</span></div>
         <div class="nav-item" data-page="p-cekilis" onclick="adminNav(this)"><i class="ti ti-trophy"></i>Çekiliş Robotu</div>
         <div class="nav-item" data-page="p-content" onclick="adminNav(this)"><i class="ti ti-home"></i>Anasayfa İçeriği</div>
+        <div class="nav-item" data-page="p-surpriz" onclick="adminNav(this)"><i class="ti ti-gift"></i>Sürpriz Kutu</div>
+        <div class="nav-item" data-page="p-hediye" onclick="adminNav(this)"><i class="ti ti-shopping-bag"></i>Hediye Sepeti</div>
+        <div class="nav-item" data-page="p-ai-content" onclick="adminNav(this)"><i class="ti ti-brain"></i>AI Öneri</div>
 
         <div class="sb-section">Sayfalar</div>
         <div class="nav-item" data-page="p-about" onclick="adminNav(this)"><i class="ti ti-info-circle"></i>Hakkımızda</div>
         <div class="nav-item" data-page="p-iletisim" onclick="adminNav(this)"><i class="ti ti-phone"></i>İletişim & Footer</div>
-        <div class="nav-item" data-page="p-surpriz" onclick="adminNav(this)"><i class="ti ti-gift"></i>Sürpriz Kutu</div>
-        <div class="nav-item" data-page="p-hediye" onclick="adminNav(this)"><i class="ti ti-shopping-bag"></i>Hediye Sepeti</div>
-        <div class="nav-item" data-page="p-ai-content" onclick="adminNav(this)"><i class="ti ti-brain"></i>AI Öneri</div>
 
         <div class="sb-section" id="adm-nav-system-sec">Sistem</div>
         <div class="nav-item" id="adm-nav-settings" data-page="p-settings" onclick="adminNav(this)"><i class="ti ti-settings"></i>Ayarlar</div>
@@ -9178,6 +9182,13 @@ async function sendAIW(){
             <div class="card-head">
               <span class="card-title"><i class="ti ti-receipt"></i>Sipariş Listesi</span>
               <div class="card-acts">
+                <select id="adm-orderTypeFilter" onchange="adminRenderOrders()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+                  <option value="">Tüm Türler</option>
+                  <option value="normal">Normal Sipariş</option>
+                  <option value="surpriz">Sürpriz Kutu</option>
+                  <option value="hediye">Hediye Kitap</option>
+                  <option value="askida">Askıda Kitap</option>
+                </select>
                 <select id="adm-orderStatusFilter" onchange="adminRenderOrders()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
                   <option value="">Tüm Durumlar</option>
                   <option value="Hazırlanıyor">Hazırlanıyor</option>
@@ -9816,12 +9827,12 @@ function admDefaultAuthors(){return[
   {name:"Selin Arslan",genre:"Deneme",books:["İz Bırakanlar"],photo:""},
 ];}
 function admDefaultOrders(){return[
-  {id:'#001',customer:'Zeynep Arslan',book:'Mavi Oda',total:175,date:'5 May 2026',status:'Tamamlandı',city:'Adana'},
-  {id:'#002',customer:'Murat Demir',book:"Anadolu'nun Sesi + Gece Sesleri",total:380,date:'4 May 2026',status:'Hazırlanıyor',city:'Mersin'},
-  {id:'#003',customer:'Elif Çelik',book:'Sürpriz Kutu',total:390,date:'3 May 2026',status:'Tamamlandı',city:'İstanbul'},
-  {id:'#004',customer:'Ahmet Yılmaz',book:'Ruhun Aynası',total:190,date:'3 May 2026',status:'Kargoda',city:'Ankara'},
-  {id:'#005',customer:'Selin Kara',book:'Varoluşun Eşiğinde',total:165,date:'2 May 2026',status:'Tamamlandı',city:'İzmir'},
-  {id:'#006',customer:'Can Öz',book:"Osmanlı'dan Bugüne",total:220,date:'1 May 2026',status:'İptal',city:'Adana'},
+  {id:'#001',customer:'Zeynep Arslan',book:'Mavi Oda',total:175,date:'5 May 2026',status:'Tamamlandı',city:'Adana',orderType:'normal'},
+  {id:'#002',customer:'Murat Demir',book:"Anadolu'nun Sesi + Gece Sesleri",total:380,date:'4 May 2026',status:'Hazırlanıyor',city:'Mersin',orderType:'normal'},
+  {id:'#003',customer:'Elif Çelik',book:'Sürpriz Kutu (Hüzünlü · Standart)',total:390,date:'3 May 2026',status:'Tamamlandı',city:'İstanbul',orderType:'surpriz'},
+  {id:'#004',customer:'Ahmet Yılmaz',book:'Ruhun Aynası',total:190,date:'3 May 2026',status:'Kargoda',city:'Ankara',orderType:'normal'},
+  {id:'#005',customer:'Selin Kara',book:'Varoluşun Eşiğinde',total:165,date:'2 May 2026',status:'Tamamlandı',city:'İzmir',orderType:'normal'},
+  {id:'#006',customer:'Can Öz',book:"Osmanlı'dan Bugüne",total:220,date:'1 May 2026',status:'İptal',city:'Adana',orderType:'normal'},
 ];}
 function admDefaultBlog(){return[
   {id:1,title:"Roman Yazarken Yaşadığım En Büyük Kriz",author:"Deniz Kaya",date:"2 May 2026",cat:"Yazarlık",status:"Yayında",content:""},
@@ -9933,9 +9944,9 @@ const ADM_PAGE_META = {
   'p-content':    {title:'Anasayfa İçeriği',  bread:'İçerik'},
   'p-about':      {title:'Hakkımızda',        bread:'Sayfalar'},
   'p-iletisim':   {title:'İletişim & Footer', bread:'Sayfalar'},
-  'p-surpriz':    {title:'Sürpriz Kutu',      bread:'Sayfalar'},
-  'p-hediye':     {title:'Hediye Sepeti',     bread:'Sayfalar'},
-  'p-ai-content': {title:'AI Öneri Sayfası',  bread:'Sayfalar'},
+  'p-surpriz':    {title:'Sürpriz Kutu',      bread:'İçerik'},
+  'p-hediye':     {title:'Hediye Sepeti',     bread:'İçerik'},
+  'p-ai-content': {title:'AI Öneri Sayfası',  bread:'İçerik'},
   'p-settings':   {title:'Ayarlar',           bread:'Sistem'},
 };
 
@@ -10475,25 +10486,40 @@ window.adminRevokeAuthorMembership = function(idx){
 /* ═══════════════════════════════════════
    ORDERS
 ═══════════════════════════════════════ */
+function admOrderTypeBadge(type){
+  const map={
+    'normal':  {label:'Normal Sipariş', bg:'rgba(45,74,62,.12)',    color:'#2D6A4F'},
+    'surpriz': {label:'Sürpriz Kutu',   bg:'rgba(200,169,110,.18)', color:'#A07830'},
+    'hediye':  {label:'Hediye Kitap',   bg:'rgba(185,92,141,.15)',  color:'#9B3B7A'},
+    'askida':  {label:'Askıda Kitap',   bg:'rgba(124,58,187,.15)',  color:'#6B35B5'},
+  };
+  const t=map[type||'normal']||map['normal'];
+  return`<span style="display:inline-block;font-size:.6rem;font-weight:700;padding:.18rem .5rem;border-radius:4px;white-space:nowrap;background:${t.bg};color:${t.color};letter-spacing:.03em">${t.label}</span>`;
+}
 window.adminRenderOrders = function(){
   adminOrders = admLoad(ADM_STORE_ORDERS, admDefaultOrders());
   const sf=ag('adm-orderStatusFilter')?.value||'';
-  let list=sf?adminOrders.filter(o=>o.status===sf):adminOrders;
+  const tf=ag('adm-orderTypeFilter')?.value||'';
+  let list=adminOrders;
+  if(sf) list=list.filter(o=>o.status===sf);
+  if(tf) list=list.filter(o=>(o.orderType||'normal')===tf);
   const done=adminOrders.filter(o=>o.status==='Tamamlandı').length;
   const ship=adminOrders.filter(o=>o.status==='Kargoda').length;
   const proc=adminOrders.filter(o=>o.status==='Hazırlanıyor').length;
   const rev=adminOrders.filter(o=>o.status!=='İptal').reduce((s,o)=>s+o.total,0);
   admSetTxt('adm-ordKpiDone',done); admSetTxt('adm-ordKpiShip',ship); admSetTxt('adm-ordKpiProc',proc); admSetTxt('adm-ordKpiRev','₺'+rev.toLocaleString('tr-TR'));
   const t=ag('adm-ordersTable'); if(!t)return;
-  t.innerHTML=`<thead><tr><th>No</th><th>Müşteri</th><th>Telefon</th><th>Ürün</th><th>Şehir</th><th>Toplam</th><th>Tarih</th><th>Durum</th><th style="text-align:center">İşlem</th></tr></thead><tbody>`+
+  if(!list.length){t.innerHTML=`<tbody><tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--txt3);font-size:.82rem">Eşleşen sipariş bulunamadı</td></tr></tbody>`;return;}
+  t.innerHTML=`<thead><tr><th>No</th><th>Tür</th><th>Müşteri</th><th>Telefon</th><th>Ürün</th><th>Şehir</th><th>Toplam</th><th>Tarih</th><th>Durum</th><th style="text-align:center">İşlem</th></tr></thead><tbody>`+
     list.map(o=>`<tr style="cursor:pointer" onclick="adminOpenOrderDetail('${o.id}')">
-      <td style="font-weight:600;color:var(--gold)">${o.id}</td>
-      <td style="font-weight:500">${o.customer}</td>
+      <td style="font-weight:600;color:var(--gold);white-space:nowrap">${o.id}</td>
+      <td>${admOrderTypeBadge(o.orderType)}</td>
+      <td style="font-weight:500">${admEsc(o.customer)}</td>
       <td style="color:var(--txt2);font-size:.75rem">${o.phone||'—'}</td>
-      <td style="max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt2);font-size:.75rem">${o.book}</td>
-      <td style="color:var(--txt2);font-size:.75rem">${o.city}</td>
+      <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt2);font-size:.75rem">${admEsc(o.book)}</td>
+      <td style="color:var(--txt2);font-size:.75rem">${admEsc(o.city||'—')}</td>
       <td style="font-weight:600">₺${o.total}</td>
-      <td style="color:var(--txt3);font-size:.72rem">${o.date}</td>
+      <td style="color:var(--txt3);font-size:.72rem;white-space:nowrap">${o.date}</td>
       <td><span class="pill ${admSPill(o.status)}">${o.status}</span></td>
       <td style="text-align:center" onclick="event.stopPropagation()">
         <button class="act-btn red" onclick="adminDeleteOrder('${o.id}')"><i class="ti ti-trash" style="font-size:12px"></i></button>
@@ -10512,7 +10538,12 @@ window.adminOpenOrderDetail = function(id){
   const waPhone=(o.phone||'').replace(/\D/g,'');
   const itemRows=(o.items||[]).map(i=>`<tr><td style="padding:.25rem .2rem">${admEsc(i.title)}</td><td style="text-align:center;padding:.25rem .2rem">${i.qty}</td><td style="text-align:right;padding:.25rem .2rem">₺${i.price}</td><td style="text-align:right;padding:.25rem .2rem;font-weight:600">₺${i.lineTotal}</td></tr>`).join('');
   ag('adm-editModalTitle').textContent=`Sipariş Detayı — ${o.id}`;
-  ag('adm-editModalBody').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem 1.2rem;margin-bottom:1rem">
+  ag('adm-editModalBody').innerHTML=`<div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.9rem;padding-bottom:.75rem;border-bottom:1px solid var(--brd2)">
+    ${admOrderTypeBadge(o.orderType)}
+    <span style="font-size:.68rem;color:var(--txt3)">Sipariş No: <strong style="color:var(--gold)">${o.id}</strong></span>
+    <span style="font-size:.68rem;color:var(--txt3);margin-left:auto">${o.date}</span>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:.7rem 1.2rem;margin-bottom:1rem">
     <div><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">Müşteri</div><div style="font-weight:600">${admEsc(o.customer)}</div></div>
     <div><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">Telefon</div><div>${admEsc(o.phone||'—')}</div></div>
     <div><div style="font-size:.68rem;color:var(--txt3);margin-bottom:.15rem">E-posta</div><div style="font-size:.82rem">${admEsc(o.email||'—')}</div></div>
@@ -10525,9 +10556,13 @@ window.adminOpenOrderDetail = function(id){
     <tbody>${itemRows||`<tr><td colspan="4" style="color:var(--txt3);padding:.4rem .2rem">${admEsc(o.book)}</td></tr>`}</tbody>
     <tfoot><tr style="border-top:2px solid var(--brd2)"><td colspan="3" style="padding:.3rem .2rem;font-weight:700">Genel Toplam</td><td style="text-align:right;padding:.3rem .2rem;font-weight:700;color:var(--gold)">₺${o.total}</td></tr></tfoot>
   </table>
-  <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap">
-    <label style="font-size:.78rem;color:var(--txt2)">Durum:</label>
-    <select id="adm-odStatusSel" style="font-size:.78rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+  <div style="display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding-top:.75rem;border-top:1px solid var(--brd2)">
+    <label style="font-size:.75rem;color:var(--txt3)">Tür:</label>
+    <select id="adm-odTypeSel" style="font-size:.75rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
+      ${[['normal','Normal Sipariş'],['surpriz','Sürpriz Kutu'],['hediye','Hediye Kitap'],['askida','Askıda Kitap']].map(([v,l])=>`<option value="${v}"${(o.orderType||'normal')===v?' selected':''}>${l}</option>`).join('')}
+    </select>
+    <label style="font-size:.75rem;color:var(--txt3);margin-left:.5rem">Durum:</label>
+    <select id="adm-odStatusSel" style="font-size:.75rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
       ${['Hazırlanıyor','Kargoda','Tamamlandı','İptal'].map(s=>`<option${o.status===s?' selected':''}>${s}</option>`).join('')}
     </select>
     <button class="card-btn" onclick="adminUpdateOrderFromDetail('${o.id}')">Güncelle</button>
@@ -10539,6 +10574,9 @@ window.adminOpenOrderDetail = function(id){
 
 window.adminUpdateOrderFromDetail = function(id){
   const status=agv('adm-odStatusSel'); if(!status)return;
+  const orderType=ag('adm-odTypeSel')?.value;
+  const o=adminOrders.find(x=>x.id===id); if(!o)return;
+  if(orderType) o.orderType=orderType;
   adminUpdateOrder(id,status); adminCloseModal('adm-editModal');
 };
 
