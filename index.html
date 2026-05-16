@@ -213,6 +213,26 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .ask-code-box{background:rgba(200,169,110,.07);border:1px dashed rgba(200,169,110,.38);border-radius:8px;padding:1rem 1.25rem;text-align:center;margin:1rem 0}
 .ask-code-val{font-family:monospace;font-size:1.5rem;color:var(--gold);font-weight:700;letter-spacing:.1em}
 .ask-code-note{font-size:.7rem;color:rgba(245,239,229,.38);margin-top:.35rem}
+/* Ask Category Filter */
+.ask-cat-filter{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.2rem;overflow-x:auto;scrollbar-width:none;padding-bottom:.15rem}
+.ask-cat-filter::-webkit-scrollbar{display:none}
+.ask-cat-btn{padding:.3rem .9rem;border:1px solid rgba(200,169,110,.18);border-radius:20px;background:transparent;color:rgba(245,239,229,.4);font-size:.68rem;cursor:pointer;transition:all .18s;font-family:var(--font-sans);white-space:nowrap;flex-shrink:0}
+.ask-cat-btn.act,.ask-cat-btn:hover{background:rgba(200,169,110,.1);border-color:rgba(200,169,110,.38);color:var(--gold)}
+/* Ask Donor Note on shelf card */
+.ask-shelf-note{font-size:.57rem;color:rgba(245,239,229,.32);font-style:italic;line-height:1.4;margin-top:.28rem;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* Ask Donor Note textarea in modal */
+.ask-donor-textarea{width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(200,169,110,.18);border-radius:6px;color:var(--cream);font-size:.8rem;padding:.6rem .75rem;resize:none;font-family:var(--font-sans);height:70px;outline:none;box-sizing:border-box;margin-top:.75rem;display:block;transition:border-color .2s}
+.ask-donor-textarea:focus{border-color:rgba(200,169,110,.45)}
+.ask-donor-textarea::placeholder{color:rgba(245,239,229,.22)}
+/* Ask Share Badge */
+.ask-share-badge{background:linear-gradient(135deg,rgba(45,74,62,.5),rgba(200,169,110,.08));border:1px solid rgba(200,169,110,.18);border-radius:10px;padding:.9rem 1rem;text-align:center;margin:.75rem 0}
+/* Ask Waitlist */
+.ask-waitlist-row{display:flex;gap:.5rem;margin-top:.85rem}
+.ask-waitlist-inp{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(200,169,110,.2);border-radius:6px;padding:.55rem .75rem;color:var(--cream);font-size:.82rem;font-family:var(--font-sans);outline:none;min-width:0;transition:border-color .2s}
+.ask-waitlist-inp:focus{border-color:rgba(200,169,110,.5)}
+.ask-waitlist-inp::placeholder{color:rgba(245,239,229,.25)}
+.ask-waitlist-sub{padding:.55rem 1rem;background:rgba(200,169,110,.1);border:1px solid rgba(200,169,110,.28);border-radius:6px;color:var(--gold);font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;font-family:var(--font-sans);transition:all .18s;flex-shrink:0}
+.ask-waitlist-sub:hover{background:rgba(200,169,110,.22)}
 /* Ask Impact Counter */
 .ask-impact{display:flex;align-items:stretch;justify-content:center;padding:2rem 2rem 1.75rem;max-width:640px;margin:0 auto}
 .ask-impact-item{flex:1;text-align:center;padding:.75rem .5rem}
@@ -4108,6 +4128,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <span>📚 Şu An Askıda</span>
       <span id="ask-avail-count" style="font-size:.7rem;color:rgba(245,239,229,.35)"></span>
     </div>
+    <div id="ask-cat-filter" class="ask-cat-filter" style="display:none"></div>
     <div class="ask-shelf-wrap">
       <div id="ask-available-grid" class="ask-shelf"></div>
       <div class="ask-shelf-plank"></div>
@@ -11181,6 +11202,53 @@ function askidaGenCode(){
   return 'ASKIDA-'+s;
 }
 
+function _askShelfCards(items){
+  return items.map(item=>`
+    <div class="ask-shelf-book">
+      <div class="ask-shelf-cover" style="background:${escHtml(item.bookCover||'linear-gradient(135deg,#1a3028,#2D4A3E)')}">
+        <span class="ask-shelf-badge">Müsait</span>
+        <div class="ask-shelf-title">${escHtml(item.bookTitle)}</div>
+      </div>
+      <div class="ask-shelf-info">
+        <div class="ask-shelf-name">${escHtml(item.bookTitle)}</div>
+        <div class="ask-shelf-author">${escHtml(item.bookAuthor||'')}</div>
+        ${item.donorNote?`<div class="ask-shelf-note">"${escHtml(item.donorNote)}"</div>`:''}
+        <button class="ask-shelf-get-btn" onclick="askidaAl('${escHtml(item.id)}')">Al →</button>
+      </div>
+    </div>`).join('');
+}
+
+function askidaFilterCat(cat,btn){
+  document.querySelectorAll('.ask-cat-btn').forEach(b=>b.classList.remove('act'));
+  if(btn)btn.classList.add('act');
+  const d=loadAskidaData();
+  const available=d.items.filter(i=>i.status==='available');
+  const filtered=cat?available.filter(i=>i.bookCat===cat):available;
+  const grid=document.getElementById('ask-available-grid');
+  if(grid)grid.innerHTML=filtered.length?_askShelfCards(filtered):'<div class="ask-empty-shelf">Bu kategoride askıda kitap yok.</div>';
+}
+
+function askidaWaitlistJoin(){
+  const inp=document.getElementById('ask-wl-inp');
+  const email=(inp?.value||'').trim();
+  if(!email||!email.includes('@')){toast('Geçerli bir e-posta girin');return;}
+  const wl=JSON.parse(localStorage.getItem('akgulAskidaWaitlist')||'[]');
+  if(wl.includes(email)){toast('Zaten listedesiniz!');return;}
+  wl.push(email);
+  localStorage.setItem('akgulAskidaWaitlist',JSON.stringify(wl));
+  const row=document.getElementById('ask-wl-row');
+  if(row)row.innerHTML='<div style="color:#4ecb87;font-size:.82rem;margin-top:.85rem">✓ Kitap geldiğinde bilgilendireceğiz!</div>';
+}
+
+function askidaShareBadge(title){
+  const text=`📚 Akgül Yayınevi Topluluk Kitaplığı'na bir kitap bıraktım: "${title}"\n\nSen de katılabilirsin → akgulyayinevi.com`;
+  if(navigator.share){
+    navigator.share({title:'Askıda Kitap',text,url:window.location.href}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(text).then(()=>toast('✓ Metin kopyalandı!')).catch(()=>toast('Kopyalanamadı'));
+  }
+}
+
 function renderAskida(){
   const d=loadAskidaData();
   const available=d.items.filter(i=>i.status==='available');
@@ -11200,24 +11268,40 @@ function renderAskida(){
   const ac=document.getElementById('ask-avail-count');
   if(ac)ac.textContent=available.length+' kitap';
 
+  // Kategori filtresi
+  const catFilter=document.getElementById('ask-cat-filter');
+  const cats=[...new Set(available.map(i=>i.bookCat).filter(Boolean))];
+  if(catFilter){
+    if(cats.length>1){
+      catFilter.style.display='flex';
+      catFilter.innerHTML=`<button class="ask-cat-btn act" onclick="askidaFilterCat(null,this)">Tümü (${available.length})</button>`
+        +cats.map(c=>`<button class="ask-cat-btn" onclick="askidaFilterCat('${escHtml(c)}',this)">${escHtml(c)}</button>`).join('');
+    } else {
+      catFilter.style.display='none';
+    }
+  }
+
   const grid=document.getElementById('ask-available-grid');
   if(!grid)return;
   if(available.length===0){
-    grid.innerHTML='<div class="ask-empty-shelf">Şu an askıda kitap yok — ilk bırakan sen ol!<br><br><button class="ask-btn ask-btn-gold" onclick="askidaOpenBirak()" style="margin-top:.5rem">Kitap Bırak →</button></div>';
+    const wl=JSON.parse(localStorage.getItem('akgulAskidaWaitlist')||'[]');
+    const alreadyIn=wl.some(e=>e&&e.length>3);
+    grid.innerHTML=`<div class="ask-empty-shelf" style="flex:1">
+      <div style="font-size:1.8rem;margin-bottom:.6rem">📭</div>
+      <div style="font-family:var(--font-serif);font-size:1.05rem;color:var(--cream);margin-bottom:.35rem">Şu an askıda kitap yok</div>
+      <p style="font-size:.8rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:.75rem">Yeni kitap eklendiğinde seni haberdar edelim:</p>
+      <div id="ask-wl-row">${alreadyIn
+        ?'<div style="color:#4ecb87;font-size:.82rem">✓ Bildirim listemizdesiniz</div>'
+        :`<div class="ask-waitlist-row"><input id="ask-wl-inp" type="email" class="ask-waitlist-inp" placeholder="E-posta adresin">
+           <button class="ask-waitlist-sub" onclick="askidaWaitlistJoin()">Bildir</button></div>`}
+      </div>
+      <div style="margin-top:1.1rem;padding-top:1rem;border-top:1px solid rgba(200,169,110,.1)">
+        <button class="ask-btn ask-btn-gold" onclick="askidaOpenBirak()">İlk kitabı sen bırak →</button>
+      </div>
+    </div>`;
     return;
   }
-  grid.innerHTML=available.map(item=>`
-    <div class="ask-shelf-book">
-      <div class="ask-shelf-cover" style="background:${escHtml(item.bookCover||'linear-gradient(135deg,#1a3028,#2D4A3E)')}">
-        <span class="ask-shelf-badge">Müsait</span>
-        <div class="ask-shelf-title">${escHtml(item.bookTitle)}</div>
-      </div>
-      <div class="ask-shelf-info">
-        <div class="ask-shelf-name">${escHtml(item.bookTitle)}</div>
-        <div class="ask-shelf-author">${escHtml(item.bookAuthor||'')}</div>
-        <button class="ask-shelf-get-btn" onclick="askidaAl('${escHtml(item.id)}')">Al →</button>
-      </div>
-    </div>`).join('');
+  grid.innerHTML=_askShelfCards(available);
 
   const nb=document.getElementById('adm-navAskidaCount');
   if(nb)nb.textContent=available.length;
@@ -11230,11 +11314,13 @@ function _askCloseModal(id){const el=document.getElementById(id);if(el)el.remove
 
 window.askidaSelBook=function(el,idx){
   const b=_askCatalog[idx]; if(!b)return;
-  _askSelBook={id:b.id,title:b.title,author:b.author||'',price:b.price||0,bg:b.bg||'#1a1a1a'};
+  _askSelBook={id:b.id,title:b.title,author:b.author||'',price:b.price||0,bg:b.bg||'#1a1a1a',cat:b.cat||''};
   document.querySelectorAll('.ask-sel-card').forEach(c=>c.classList.remove('sel'));
   el.classList.add('sel');
   const btn=document.getElementById('ask-birak-btn');
   if(btn){btn.disabled=false;btn.style.opacity='1';btn.style.cursor='pointer';}
+  const noteWrap=document.getElementById('ask-note-wrap');
+  if(noteWrap)noteWrap.style.display='block';
 };
 
 function askidaOpenBirak(){
@@ -11262,6 +11348,11 @@ function askidaOpenBirak(){
     <div class="ask-modal-body">
       <p style="font-size:.78rem;color:rgba(245,239,229,.38);margin-bottom:1.1rem;line-height:1.6">Bırakmak istediğin kitabı seç. Onayladıktan sonra indirim kodu oluşturulur, WhatsApp'tan sipariş verirken kullanırsın.</p>
       <div class="ask-sel-grid">${cards}</div>
+      <div id="ask-note-wrap" style="display:none;margin-top:.9rem">
+        <label style="font-size:.68rem;color:rgba(245,239,229,.4);display:block;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.08em">Okuyucuya not bırak <span style="opacity:.5">(isteğe bağlı)</span></label>
+        <textarea id="ask-donor-note" class="ask-donor-textarea" maxlength="180" placeholder="Bu kitap bana çok şey kattı, umarım sana da ilham verir..."></textarea>
+        <div style="text-align:right;font-size:.62rem;color:rgba(245,239,229,.25);margin-top:.2rem" id="ask-note-count">0/180</div>
+      </div>
     </div>
     <div class="ask-modal-foot">
       <button class="ask-btn ask-btn-outline" onclick="_askCloseModal('ask-birak-over')">İptal</button>
@@ -11269,6 +11360,10 @@ function askidaOpenBirak(){
     </div>
   </div>`;
   document.body.appendChild(over);
+  // Karakter sayacı
+  over.querySelector('#ask-donor-note')?.addEventListener('input',function(){
+    const c=document.getElementById('ask-note-count');if(c)c.textContent=this.value.length+'/180';
+  });
 }
 
 /* Katalog kartından doğrudan bırak (kitap önceden seçili) */
@@ -11301,7 +11396,11 @@ function askidaBirakKitap(bookId){
         <div style="font-family:var(--font-serif);font-size:2.2rem;color:var(--gold);font-weight:700;line-height:1">%${pct}</div>
         <div style="font-size:.68rem;color:rgba(245,239,229,.35);margin-top:.2rem">Bir sonraki siparişinde</div>
       </div>
-      <p style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65">Onayladıktan sonra indirim kodun oluşturulacak. Sipariş sırasında WhatsApp'ta paylaş.</p>
+      <p style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:.75rem">Onayladıktan sonra indirim kodun oluşturulacak. Sipariş sırasında WhatsApp'ta paylaş.</p>
+      <div>
+        <label style="font-size:.68rem;color:rgba(245,239,229,.38);display:block;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.08em">Okuyucuya not bırak <span style="opacity:.55">(isteğe bağlı)</span></label>
+        <textarea id="ask-donor-note" class="ask-donor-textarea" maxlength="180" placeholder="Bu kitap bana çok şey kattı, umarım sana da ilham verir..."></textarea>
+      </div>
     </div>
     <div class="ask-modal-foot">
       <button class="ask-btn ask-btn-outline" onclick="_askCloseModal('ask-birak-over')">İptal</button>
@@ -11315,9 +11414,11 @@ function askidaConfirmBirak(){
   if(!_askSelBook)return;
   const d=loadAskidaData();
   const code=askidaGenCode();
+  const donorNote=(document.getElementById('ask-donor-note')?.value||'').trim();
   const item={
     id:'ASK-'+Date.now(),bookId:_askSelBook.id,bookTitle:_askSelBook.title,
     bookAuthor:_askSelBook.author,bookPrice:_askSelBook.price,bookCover:_askSelBook.bg,
+    bookCat:_askSelBook.cat||'',donorNote,
     discountCode:code,discountRate:d.discountRate,status:'available',
     addedAt:new Date().toLocaleDateString('tr-TR'),claimedAt:null
   };
@@ -11325,15 +11426,22 @@ function askidaConfirmBirak(){
 
   const body=document.querySelector('#ask-birak-over .ask-modal-body');
   const foot=document.querySelector('#ask-birak-over .ask-modal-foot');
+  const shareTitle=item.bookTitle;
   if(body) body.innerHTML=`<div style="text-align:center;padding:.75rem 0">
-    <div style="font-size:2rem;margin-bottom:.75rem">🎉</div>
-    <div style="font-family:var(--font-serif);font-size:1.15rem;color:var(--cream);margin-bottom:.4rem">"${escHtml(item.bookTitle)}" askıya bırakıldı!</div>
-    <p style="font-size:.8rem;color:rgba(245,239,229,.42);margin-bottom:1.1rem">WhatsApp siparişinde bu kodu paylaş, %${d.discountRate} indirim kazanırsın:</p>
+    <div style="font-size:2.2rem;margin-bottom:.6rem">🎉</div>
+    <div style="font-family:var(--font-serif);font-size:1.1rem;color:var(--cream);margin-bottom:.3rem">"${escHtml(item.bookTitle)}" askıya bırakıldı!</div>
+    <p style="font-size:.78rem;color:rgba(245,239,229,.42);margin-bottom:1rem">WhatsApp siparişinde bu kodu paylaş, %${d.discountRate} indirim kazanırsın:</p>
     <div class="ask-code-box">
       <div class="ask-code-val">${code}</div>
       <div class="ask-code-note">%${d.discountRate} indirim · Tek kullanımlık</div>
     </div>
-    <button class="ask-btn ask-btn-outline" style="margin-top:.5rem" onclick="navigator.clipboard.writeText('${code}').then(()=>this.textContent='✓ Kopyalandı')">Kodu Kopyala</button>
+    <button class="ask-btn ask-btn-outline" style="margin-top:.5rem;width:100%" onclick="navigator.clipboard.writeText('${code}').then(()=>this.textContent='✓ Kopyalandı')">Kodu Kopyala</button>
+    <div class="ask-share-badge" style="margin-top:.85rem">
+      <div style="font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(200,169,110,.55);margin-bottom:.3rem">Topluluk Kitaplığı</div>
+      <div style="font-family:var(--font-serif);font-size:.95rem;color:var(--cream)">📚 Bir kitap askıya bıraktım</div>
+      <div style="font-size:.7rem;color:rgba(245,239,229,.38);margin-top:.18rem">"${escHtml(item.bookTitle)}" — Akgül Yayınevi</div>
+    </div>
+    <button class="ask-btn ask-btn-outline" style="margin-top:.5rem;width:100%" onclick="askidaShareBadge('${escHtml(shareTitle).replace(/'/g,"\\'")}')">Rozeti Paylaş</button>
   </div>`;
   if(foot){
     const waMsg=encodeURIComponent(`Merhaba! "${item.bookTitle}" kitabını askıya bırakmak istiyorum. İndirim kodum: ${code}`);
@@ -11360,7 +11468,11 @@ function askidaAl(itemId){
     <div class="ask-modal-body"><div style="text-align:center;padding:.5rem 0">
       <div style="height:80px;border-radius:8px;margin-bottom:.9rem;background:${escHtml(item.bookCover||'#1a1a1a')};display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);color:rgba(255,255,255,.65);font-size:.78rem;padding:.5rem;text-align:center">${escHtml(item.bookTitle)}</div>
       <div style="font-family:var(--font-serif);font-size:1.1rem;color:var(--cream);margin-bottom:.3rem">${escHtml(item.bookTitle)}</div>
-      <div style="font-size:.75rem;color:rgba(245,239,229,.38);margin-bottom:1rem">${escHtml(item.bookAuthor||'')}</div>
+      <div style="font-size:.75rem;color:rgba(245,239,229,.38);margin-bottom:.85rem">${escHtml(item.bookAuthor||'')}</div>
+      ${item.donorNote?`<div style="background:rgba(200,169,110,.07);border-left:3px solid rgba(200,169,110,.35);border-radius:0 6px 6px 0;padding:.6rem .85rem;margin-bottom:.85rem;text-align:left">
+        <div style="font-size:.6rem;color:rgba(200,169,110,.55);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem">Kitabı bırakan kişiden</div>
+        <div style="font-size:.8rem;color:rgba(245,239,229,.7);font-style:italic;line-height:1.55">"${escHtml(item.donorNote)}"</div>
+      </div>`:''}
       <p style="font-size:.8rem;color:rgba(245,239,229,.45);line-height:1.65">WhatsApp üzerinden iletişime geçip kitabı talep edebilirsin. Her kullanıcı yalnızca bir kez alabilir.</p>
     </div></div>
     <div class="ask-modal-foot">
@@ -11396,12 +11508,14 @@ function adminRenderAskida(){
 
   const avail=d.items.filter(i=>i.status==='available').length;
   const claimed=d.items.filter(i=>i.status==='claimed').length;
+  const wlCount=JSON.parse(localStorage.getItem('akgulAskidaWaitlist')||'[]').length;
   const kpis=ag('adm-ask-kpis');
   if(kpis) kpis.innerHTML=`
     <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(200,169,110,.1);color:var(--gold)"><i class="ti ti-books"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">${d.items.length}</div><div class="gz-adm-kpi-lbl">Toplam</div></div></div>
     <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(45,160,100,.1);color:#4ecb87"><i class="ti ti-book"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">${avail}</div><div class="gz-adm-kpi-lbl">Müsait</div></div></div>
     <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(107,63,160,.1);color:#9B59B6"><i class="ti ti-check"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">${claimed}</div><div class="gz-adm-kpi-lbl">Alındı</div></div></div>
-    <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(200,169,110,.1);color:var(--gold)"><i class="ti ti-percent"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">%${d.discountRate}</div><div class="gz-adm-kpi-lbl">İndirim</div></div></div>`;
+    <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(200,169,110,.1);color:var(--gold)"><i class="ti ti-percent"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">%${d.discountRate}</div><div class="gz-adm-kpi-lbl">İndirim</div></div></div>
+    <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(78,203,135,.1);color:#4ecb87"><i class="ti ti-bell"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">${wlCount}</div><div class="gz-adm-kpi-lbl">Bekleme Listesi</div></div></div>`;
 
   const filter=ag('adm-ask-filter')?.value||'all';
   const items=filter==='all'?d.items:d.items.filter(i=>i.status===filter);
@@ -11419,7 +11533,7 @@ function adminRenderAskida(){
       ?'<span style="font-size:.65rem;padding:2px 8px;border-radius:10px;background:rgba(45,160,100,.15);color:#4ecb87;font-weight:600">Müsait</span>'
       :'<span style="font-size:.65rem;padding:2px 8px;border-radius:10px;background:rgba(107,63,160,.15);color:#9B59B6;font-weight:600">Alındı</span>';
     return `<tr style="border-bottom:1px solid var(--brd2)">
-      <td style="padding:.75rem 1rem;font-size:.82rem;color:var(--txt1);font-weight:500">${admEsc(it.bookTitle)}</td>
+      <td style="padding:.75rem 1rem;font-size:.82rem;color:var(--txt1);font-weight:500">${admEsc(it.bookTitle)}${it.donorNote?`<div style="font-size:.68rem;color:var(--txt3);font-style:italic;margin-top:.2rem">"${admEsc(it.donorNote.substring(0,60))}${it.donorNote.length>60?'…':''}"</div>`:''}</td>
       <td style="padding:.75rem 1rem;font-family:monospace;font-size:.8rem;color:var(--gold)">${admEsc(it.discountCode||'-')}</td>
       <td style="padding:.75rem 1rem;font-size:.78rem;color:var(--txt2)">${admEsc(it.addedAt||'-')}</td>
       <td style="padding:.75rem 1rem">${pill}</td>
