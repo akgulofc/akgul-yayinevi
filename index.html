@@ -5464,7 +5464,11 @@ const _HERO_SACT={
   'eser-basvuru':"go('eser-basvuru')",
   'contact':"go('contact')",
   'blog':"go('blog')",
+  'askida-kitap':"go('askida-kitap')",
+  'surpriz-kutu':"go('surpriz-kutu')",
+  'hediye-sepeti':"go('hediye-sepeti')",
   'wishlist':"go('wishlist')",
+  'profile':"go('profile')",
 };
 const _HERO_BGS=['lines','dots','diag'];
 function _safeTitleHtml(t){
@@ -11442,11 +11446,19 @@ window.adminImportData = function(){
    SITE CONTENT
 ═══════════════════════════════════════ */
 const ADM_SLIDE_ACTS=[
-  {v:'books-scroll',l:'Kitaplara Kaydır'},{v:'books',l:'Kitaplar Sayfası'},
-  {v:'authors',l:'Yazarlarımız'},{v:'ai-oneri',l:'AI Öneri'},
-  {v:'about',l:'Hakkımızda'},{v:'eser-basvuru',l:'Eser Başvuru'},
-  {v:'contact',l:'İletişim / Sipariş'},{v:'blog',l:'Akgül Gazetesi'},
-  {v:'askida-kitap',l:'Askıda Kitap'},{v:'wishlist',l:'İstek Listesi'},
+  {v:'books-scroll',l:'Kitaplara Kaydır'},
+  {v:'books',l:'Kitaplar Sayfası'},
+  {v:'authors',l:'Yazarlarımız'},
+  {v:'ai-oneri',l:'AI Öneri'},
+  {v:'about',l:'Hakkımızda'},
+  {v:'eser-basvuru',l:'Eser Başvuru'},
+  {v:'contact',l:'İletişim / Sipariş'},
+  {v:'blog',l:'Akgül Gazetesi'},
+  {v:'askida-kitap',l:'Askıda Kitap'},
+  {v:'surpriz-kutu',l:'Sürpriz Kutu'},
+  {v:'hediye-sepeti',l:'Hediye Sepeti'},
+  {v:'wishlist',l:'İstek Listesi'},
+  {v:'profile',l:'Hesabım'},
 ];
 function admSlActOpts(sel){return ADM_SLIDE_ACTS.map(a=>`<option value="${a.v}"${sel===a.v?' selected':''}>${a.l}</option>`).join('');}
 
