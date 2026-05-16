@@ -4787,7 +4787,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         </div>
         <div class="admin-section" id="as-orders">
           <div class="admin-page-title">Sipariş Yönetimi</div>
-          <div class="admin-page-sub">Demo siparişler — WhatsApp üzerinden gelen siparişleri buradan takip edin</div>
+          <div class="admin-page-sub">WhatsApp üzerinden gelen siparişleri buradan takip edin</div>
           <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Sipariş Listesi</div></div><div class="admin-card-body" style="padding:0"><table class="admin-table" id="adminOrdersTable"></table></div></div>
         </div>
         <div class="admin-section" id="as-blog">
@@ -7755,14 +7755,19 @@ function adminTab(el,sec){
 function renderAdminDashboard(){
   const totalRev=books.reduce((s,b)=>s+b.price*Math.floor(b.views/8),0),totalViews=books.reduce((s,b)=>s+b.views,0);
   const pendingApps=JSON.parse(localStorage.getItem('akgulApplications')||'[]').filter(a=>!a.status||a.status==='bekliyor').length;
-  const kpis=[{val:books.length,lbl:'Toplam Kitap',delta:'+2 bu ay'},{val:users.filter(u=>u.role!=='admin').length+2,lbl:'Kayıtlı Üye',delta:'+5 bu hafta'},{val:'₺'+totalRev.toLocaleString('tr-TR'),lbl:'Tahmini Gelir',delta:'+%12'},{val:totalViews,lbl:'Toplam Görüntüleme',delta:'+%8'},{val:demoOrders.filter(o=>o.status==='Tamamlandı').length,lbl:'Tamamlanan Sipariş',delta:''},{val:pendingApps,lbl:'Bekleyen Başvuru',delta:pendingApps>0?'⚠ İnceleme bekliyor':''},{val:books.reduce((s,b)=>s+b.reviews.length,0),lbl:'Toplam Yorum',delta:''}];
-  sid('adminKpis').innerHTML=kpis.map(k=>`<div class="admin-kpi"><div class="admin-kpi-val">${k.val}</div><div class="admin-kpi-lbl">${k.lbl}</div>${k.delta?`<div class="admin-kpi-delta">${k.delta}</div>`:''}</div>`).join('');
-  const salesData=[12,8,15,22,18,29,34,28,38,41,35,44],months=['Haz','Tem','Ağu','Eyl','Eki','Kas','Ara','Oca','Şub','Mar','Nis','May'],maxS=Math.max(...salesData);
-  sid('adminChart').innerHTML=salesData.map(v=>`<div class="admin-bar" style="height:${Math.round(v/maxS*100)}%" title="${v} satış"></div>`).join('');
-  sid('adminChartLabels').innerHTML=months.map(m=>`<span>${m}</span>`).join('');
+  const _allOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
+  const kpis=[{val:books.length,lbl:'Toplam Kitap'},{val:users.filter(u=>u.role!=='admin').length,lbl:'Kayıtlı Üye'},{val:'₺'+totalRev.toLocaleString('tr-TR'),lbl:'Tahmini Gelir'},{val:totalViews,lbl:'Toplam Görüntüleme'},{val:_allOrders.filter(o=>o.status==='Tamamlandı').length,lbl:'Tamamlanan Sipariş'},{val:pendingApps,lbl:'Bekleyen Başvuru'},{val:books.reduce((s,b)=>s+b.reviews.length,0),lbl:'Toplam Yorum'}];
+  sid('adminKpis').innerHTML=kpis.map(k=>`<div class="admin-kpi"><div class="admin-kpi-val">${k.val}</div><div class="admin-kpi-lbl">${k.lbl}</div></div>`).join('');
+  const mNames=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],_now=new Date();
+  const monthlyData=Array.from({length:12},(_,i)=>{const d=new Date(_now.getFullYear(),_now.getMonth()-11+i,1);const y=d.getFullYear(),m=d.getMonth();return _allOrders.filter(o=>{try{const od=new Date(o.date);return od.getFullYear()===y&&od.getMonth()===m&&o.status!=='İptal'}catch(e){return false}}).length;});
+  const maxS=Math.max(...monthlyData,1);
+  const chartMonths=Array.from({length:12},(_,i)=>{const d=new Date(_now.getFullYear(),_now.getMonth()-11+i,1);return mNames[d.getMonth()];});
+  sid('adminChart').innerHTML=monthlyData.map(v=>`<div class="admin-bar" style="height:${Math.round(v/maxS*100)}%" title="${v} sipariş"></div>`).join('');
+  sid('adminChartLabels').innerHTML=chartMonths.map(m=>`<span>${m}</span>`).join('');
   const top=[...books].sort((a,b)=>b.views-a.views).slice(0,5);
   sid('adminTopBooks').innerHTML=top.map(b=>`<div class="admin-top-book"><div class="admin-top-cover" style="${b.cover?'background:var(--cream)':'background:'+b.bg}">${b.cover?`<img src="${b.cover}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`:''}</div><div class="admin-top-info"><div class="admin-top-title">${b.title}</div><div class="admin-top-author">${b.author}</div></div><div class="admin-top-views">${b.views}</div></div>`).join('');
-  sid('adminRecentOrders').innerHTML=demoOrders.slice(0,4).map(o=>`<div class="admin-order-row"><div class="admin-order-info"><div class="admin-order-name">${o.customer} <span style="font-size:.7rem;color:var(--muted)">${o.id}</span></div><div class="admin-order-detail">${o.book} · ${o.date}</div></div><span class="admin-badge ${o.status==='Tamamlandı'?'ab-aktif':o.status==='İptal'?'ab-admin':'ab-yeni'}">${o.status}</span><div class="admin-order-price">₺${o.total}</div></div>`).join('');
+  const _recent=_allOrders.slice(0,4);
+  sid('adminRecentOrders').innerHTML=_recent.length?_recent.map(o=>`<div class="admin-order-row"><div class="admin-order-info"><div class="admin-order-name">${o.customer} <span style="font-size:.7rem;color:var(--muted)">${o.id}</span></div><div class="admin-order-detail">${o.book} · ${o.date}</div></div><span class="admin-badge ${o.status==='Tamamlandı'?'ab-aktif':o.status==='İptal'?'ab-admin':'ab-yeni'}">${o.status}</span><div class="admin-order-price">₺${o.total}</div></div>`).join(''):'<div style="padding:1rem;color:var(--muted);font-size:.82rem;text-align:center">Henüz sipariş yok</div>';
 }
 function renderAdminBooks(filter=''){
   const list=filter?books.filter(b=>b.title.toLowerCase().includes(filter)||b.author.toLowerCase().includes(filter)):books;
@@ -7934,7 +7939,7 @@ function adminRemoveAuthor(idx){
 }
 function renderAdminOrders(){
   const liveOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
-  const ordersToShow=liveOrders.length?liveOrders:demoOrders;
+  const ordersToShow=liveOrders;
   const statusColor={'Tamamlandı':'ab-aktif','Kargoda':'ab-okur','Hazırlanıyor':'ab-yeni','İptal':'ab-admin'};
   sid('adminOrdersTable').innerHTML=`<thead><tr><th>Sipariş No</th><th>Müşteri</th><th>Ürün</th><th>Toplam</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>${ordersToShow.map(o=>`<tr><td style="font-weight:600;color:var(--gold)">${o.id}</td><td>${o.customer}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.book}</td><td style="font-weight:700">₺${o.total}</td><td style="color:var(--muted);font-size:.78rem">${o.date}</td><td><span class="admin-badge ${statusColor[o.status]||'ab-yeni'}">${o.status}</span></td><td><select style="padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:.7rem;font-family:var(--font-sans);outline:none;cursor:pointer" onchange="adminUpdateOrder('${o.id}',this.value)"><option ${o.status==='Hazırlanıyor'?'selected':''}>Hazırlanıyor</option><option ${o.status==='Kargoda'?'selected':''}>Kargoda</option><option ${o.status==='Tamamlandı'?'selected':''}>Tamamlandı</option><option ${o.status==='İptal'?'selected':''}>İptal</option></select></td></tr>`).join('')}</tbody>`;
 }
@@ -8556,7 +8561,7 @@ function aiAppendChipW(icon, text){
 function getAIDataW(){
   return {
     books: books.map(b=>({id:b.id,title:b.title,author:b.author,price:b.price,cat:b.cat,pages:b.pages||0,badge:b.badge,views:b.views})),
-    orders: demoOrders,
+    orders: JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]'),
     blogPosts: blogData.map(p=>({id:p.id,title:p.title,author:p.author,date:p.date,cat:p.cat,status:p.status||'Yayında'})),
     authors: authors.map(a=>({name:a.name,genre:a.genre})),
     users
@@ -8607,13 +8612,15 @@ function applyAIActionsW(actions){
       }
 
     } else if(tool==='update_order_status'){
-      const o=demoOrders.find(x=>x.id===params.id);
-      if(o){ o.status=params.status; renderAdminOrders(); renderAdminDashboard(); aiAppendChipW('ti-package',`${params.id} → ${params.status}`); }
+      const _lo=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
+      const _li=_lo.findIndex(x=>x.id===params.id);
+      if(_li>=0){_lo[_li].status=params.status;localStorage.setItem('akgul_orders_v2',JSON.stringify(_lo));renderAdminOrders();renderAdminDashboard();aiAppendChipW('ti-package',`${params.id} → ${params.status}`);}
 
     } else if(tool==='bulk_update_orders'){
+      const _lo2=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
       let cnt=0;
-      demoOrders.forEach(o=>{ if(o.status===params.from_status){o.status=params.to_status;cnt++;} });
-      if(cnt){ renderAdminOrders(); renderAdminDashboard(); aiAppendChipW('ti-packages',`${cnt} sipariş: ${params.from_status} → ${params.to_status}`); }
+      _lo2.forEach(o=>{if(o.status===params.from_status){o.status=params.to_status;cnt++;}});
+      if(cnt){localStorage.setItem('akgul_orders_v2',JSON.stringify(_lo2));renderAdminOrders();renderAdminDashboard();aiAppendChipW('ti-packages',`${cnt} sipariş: ${params.from_status} → ${params.to_status}`);}
 
     } else if(tool==='add_blog_post'){
       const newId=blogData.length?Math.max(...blogData.map(p=>p.id))+1:1;
@@ -9004,11 +9011,10 @@ async function sendAIW(){
 
         <!-- ── ANALİTİK ──────────────────── -->
         <div class="page" id="adm-p-analytics">
-          <div class="notice"><i class="ti ti-info-circle"></i>Veriler demo amaçlıdır; gerçek analitik entegrasyonu ile canlıya alınabilir.</div>
           <div class="kpi-row" style="grid-template-columns:repeat(3,1fr)">
-            <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-trending-up" style="color:#C8A96E"></i></div><span class="kpi-badge kb-up">+34%</span></div><div class="kpi-val">138</div><div class="kpi-lbl">Toplam Satış</div></div>
-            <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-calendar" style="color:#2D4A3E"></i></div><span class="kpi-badge kb-up">+12%</span></div><div class="kpi-val">34</div><div class="kpi-lbl">Bu Ayki Satış</div></div>
-            <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-cash" style="color:#8B3A2A"></i></div><span class="kpi-badge kb-up">+18%</span></div><div class="kpi-val">₺185</div><div class="kpi-lbl">Ort. Sipariş</div></div>
+            <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-trending-up" style="color:#C8A96E"></i></div></div><div class="kpi-val" id="adm-ana-total">—</div><div class="kpi-lbl">Toplam Satış</div></div>
+            <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-calendar" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="adm-ana-month">—</div><div class="kpi-lbl">Bu Ayki Satış</div></div>
+            <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-cash" style="color:#8B3A2A"></i></div></div><div class="kpi-val" id="adm-ana-avg">—</div><div class="kpi-lbl">Ort. Sipariş Değeri</div></div>
           </div>
           <div class="g2">
             <div class="card">
@@ -10919,19 +10925,52 @@ window.adminDeleteReview = function(bookId,idx){
 /* ═══════════════════════════════════════
    ANALYTICS
 ═══════════════════════════════════════ */
+function _catLabel(cat){return{roman:'Roman',siir:'Şiir',tarih:'Tarih',deneme:'Deneme',felsefe:'Felsefe',kisisel:'Kişisel Gelişim',cocuk:'Çocuk',hikaye:'Hikâye',akademik:'Akademik'}[cat]||cat;}
 function adminRenderAnalytics(){
-  admRenderChart('adm-analyticsChart','adm-analyticsLabels',ADM_DATA12.d,ADM_DATA12.l);
-  const cities=[{city:'Adana',sales:52,pct:38},{city:'İstanbul',sales:34,pct:25},{city:'Ankara',sales:22,pct:16},{city:'Mersin',sales:16,pct:12},{city:'Diğer',sales:14,pct:10}];
-  const cs=ag('adm-cityStats'); if(cs) cs.innerHTML=cities.map(c=>`<div class="stat-row"><div class="stat-lbl">${c.city}</div><div class="stat-bar-wrap"><div class="stat-bar" style="width:${c.pct}%"></div></div><div class="stat-val">${c.sales}</div></div>`).join('');
-  const cp=ag('adm-catPerf'); if(!cp)return;
-  const cats=[{cat:'Roman',pct:40,n:56},{cat:'Tarih',pct:22,n:31},{cat:'Şiir',pct:15,n:21},{cat:'Diğer',pct:23,n:30}];
-  cp.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:.78rem">
-    <thead><tr>${['Kategori','Pay','Satış'].map(h=>`<th style="text-align:left;padding:.5rem .75rem;font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3);border-bottom:1px solid var(--brd2);font-weight:600;background:var(--bg3)">${h}</th>`).join('')}</tr></thead>
-    <tbody>${cats.map(c=>`<tr>
-      <td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2)">${c.cat}</td>
-      <td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2)"><div style="display:flex;align-items:center;gap:.5rem"><div style="flex:1;height:5px;background:var(--bg3);border-radius:3px"><div style="height:100%;border-radius:3px;background:var(--gold);width:${c.pct}%"></div></div><span style="font-size:.7rem;color:var(--txt2)">%${c.pct}</span></div></td>
-      <td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2);font-weight:600">${c.n}</td>
-    </tr>`).join('')}</tbody></table>`;
+  adminOrders=admLoad(ADM_STORE_ORDERS,admDefaultOrders());
+  adminBooks=admLoad(ADM_STORE_BOOKS,admDefaultBooks());
+  const valid=adminOrders.filter(o=>o.status!=='İptal');
+  /* ── KPI ── */
+  const now=new Date();
+  const thisMonth=valid.filter(o=>{try{const d=new Date(o.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}catch(e){return false;}});
+  const avgVal=valid.length?Math.round(valid.reduce((s,o)=>s+o.total,0)/valid.length):0;
+  admSetTxt('adm-ana-total',valid.length);
+  admSetTxt('adm-ana-month',thisMonth.length);
+  admSetTxt('adm-ana-avg','₺'+avgVal.toLocaleString('tr-TR'));
+  /* ── 12 AYLIK GRAFİK ── */
+  const mNames=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+  const chartD=[],chartL=[];
+  for(let i=11;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    const y=d.getFullYear(),m=d.getMonth();
+    chartD.push(valid.filter(o=>{try{const od=new Date(o.date);return od.getFullYear()===y&&od.getMonth()===m;}catch(e){return false;}}).length);
+    chartL.push(mNames[m]);
+  }
+  admRenderChart('adm-analyticsChart','adm-analyticsLabels',chartD,chartL);
+  /* ── ŞEHİR DAĞILIMI ── */
+  const cityMap={};
+  valid.forEach(o=>{if(o.city){const c=o.city.trim();cityMap[c]=(cityMap[c]||0)+1;}});
+  const totalC=Object.values(cityMap).reduce((s,v)=>s+v,0)||1;
+  const sortedC=Object.entries(cityMap).sort((a,b)=>b[1]-a[1]);
+  const topC=sortedC.slice(0,4);
+  const otherSum=sortedC.slice(4).reduce((s,[,v])=>s+v,0);
+  if(otherSum>0)topC.push(['Diğer',otherSum]);
+  const cs=ag('adm-cityStats');
+  if(cs)cs.innerHTML=topC.length
+    ?topC.map(([c,n])=>`<div class="stat-row"><div class="stat-lbl">${admEsc(c)}</div><div class="stat-bar-wrap"><div class="stat-bar" style="width:${Math.round(n/totalC*100)}%"></div></div><div class="stat-val">${n}</div></div>`).join('')
+    :'<p style="color:var(--txt3);font-size:.78rem;padding:.5rem 0">Henüz sipariş yok.</p>';
+  /* ── KATEGORİ PERFORMANSI ── */
+  const catMap={};
+  valid.forEach(o=>{
+    if((o.items||[]).length){
+      o.items.forEach(i=>{const b=adminBooks.find(x=>x.id===i.id||x.title===i.title);const cat=b?.cat?_catLabel(b.cat):'Diğer';catMap[cat]=(catMap[cat]||0)+(i.qty||1);});
+    }else{const b=adminBooks.find(x=>o.book&&o.book.includes(x.title));const cat=b?.cat?_catLabel(b.cat):'Diğer';catMap[cat]=(catMap[cat]||0)+1;}
+  });
+  const totalCat=Object.values(catMap).reduce((s,v)=>s+v,0)||1;
+  const sortedCat=Object.entries(catMap).sort((a,b)=>b[1]-a[1]);
+  const cp=ag('adm-catPerf');if(!cp)return;
+  if(!sortedCat.length){cp.innerHTML='<p style="color:var(--txt3);font-size:.78rem;padding:.75rem">Henüz veri yok.</p>';return;}
+  cp.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:.78rem"><thead><tr>${['Kategori','Pay','Adet'].map(h=>`<th style="text-align:left;padding:.5rem .75rem;font-size:.63rem;text-transform:uppercase;letter-spacing:.08em;color:var(--txt3);border-bottom:1px solid var(--brd2);font-weight:600;background:var(--bg3)">${h}</th>`).join('')}</tr></thead><tbody>${sortedCat.map(([cat,n])=>{const pct=Math.round(n/totalCat*100);return`<tr><td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2)">${cat}</td><td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2)"><div style="display:flex;align-items:center;gap:.5rem"><div style="flex:1;height:5px;background:var(--bg3);border-radius:3px"><div style="height:100%;border-radius:3px;background:var(--gold);width:${pct}%"></div></div><span style="font-size:.7rem;color:var(--txt2)">%${pct}</span></div></td><td style="padding:.6rem .75rem;border-bottom:1px solid var(--brd2);font-weight:600">${n}</td></tr>`;}).join('')}</tbody></table>`;
 }
 
 /* ═══════════════════════════════════════
