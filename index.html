@@ -983,6 +983,87 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .blog-grid.list-view .blog-img-overlay{display:none}
 .blog-grid.list-view .blog-body{display:flex;flex-direction:column;justify-content:center}
 
+/* ── AKGÜL GAZETESİ ── */
+.gz-page{background:#F7F3EC;min-height:100vh}
+.gz-masthead{background:var(--ink);border-bottom:3px double var(--gold);padding:1.5rem 2rem .8rem;text-align:center;position:relative}
+.gz-masthead-top{display:flex;align-items:center;justify-content:space-between;font-size:.6rem;color:rgba(200,169,110,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
+.gz-masthead-name{font-family:var(--font-serif);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:700;color:var(--gold);line-height:1;letter-spacing:.04em;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.gz-masthead-slogan{font-size:.65rem;color:rgba(200,169,110,.55);letter-spacing:.18em;text-transform:uppercase;margin-top:.3rem;font-style:italic}
+.gz-masthead-rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:.7rem 0}
+.gz-son-dakika{background:var(--rust);padding:.45rem 2rem;display:flex;align-items:center;gap:.85rem;overflow:hidden}
+.gz-sd-label{background:#fff;color:var(--rust);font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 9px;border-radius:2px;white-space:nowrap;flex-shrink:0}
+.gz-sd-text{color:#fff;font-size:.78rem;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gz-filter-bar{background:#F7F3EC;border-bottom:2px solid var(--ink);padding:.4rem 2rem;display:flex;align-items:center;gap:.4rem;overflow-x:auto;scrollbar-width:none;position:sticky;top:84px;z-index:100}
+.gz-filter-bar::-webkit-scrollbar{display:none}
+.gz-fbtn{background:none;border:none;font-size:.68rem;font-family:var(--font-serif);font-style:italic;color:var(--muted);padding:.25rem .7rem;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
+.gz-fbtn:hover{color:var(--ink)}
+.gz-fbtn.act{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
+.gz-inner{max-width:1200px;margin:0 auto;padding:2rem 2rem 5rem}
+/* Manşet */
+.gz-manset{display:grid;grid-template-columns:1fr 340px;gap:0;border:2px solid var(--ink);margin-bottom:1.5rem;background:#fff}
+.gz-manset-main{cursor:pointer;position:relative;overflow:hidden;min-height:320px;display:flex;flex-direction:column;justify-content:flex-end}
+.gz-manset-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s}
+.gz-manset-main:hover .gz-manset-img{transform:scale(1.03)}
+.gz-manset-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,4,3,.9) 40%,rgba(5,4,3,.15) 100%)}
+.gz-manset-body{position:relative;z-index:1;padding:1.75rem}
+.gz-manset-tag{display:inline-block;background:var(--gold);color:var(--ink);font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 9px;margin-bottom:.6rem}
+.gz-manset-title{font-family:var(--font-serif);color:#fff;font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:700;line-height:1.2;margin-bottom:.5rem}
+.gz-manset-excerpt{font-size:.78rem;color:rgba(230,220,200,.75);line-height:1.6;margin-bottom:.75rem;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.gz-manset-byline{font-size:.65rem;color:rgba(230,220,200,.55);font-style:italic}
+/* Sidebar manşet */
+.gz-manset-side{border-left:2px solid var(--ink);display:flex;flex-direction:column}
+.gz-manset-side-item{padding:1rem 1.2rem;border-bottom:1px solid rgba(13,12,9,.12);cursor:pointer;flex:1;transition:background .15s}
+.gz-manset-side-item:last-child{border-bottom:none}
+.gz-manset-side-item:hover{background:rgba(200,169,110,.08)}
+.gz-manset-side-cat{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.gz-manset-side-title{font-family:var(--font-serif);font-size:.92rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:.3rem}
+.gz-manset-side-by{font-size:.62rem;color:var(--muted);font-style:italic}
+/* Grid */
+.gz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(13,12,9,.15);background:rgba(13,12,9,.15)}
+.gz-grid-item{background:#fff;padding:1.25rem;border:1px solid rgba(13,12,9,.12);position:relative}
+.gz-grid-item.span2{grid-column:span 2}
+.gz-grid-item.gz-ilan-item{background:linear-gradient(145deg,#FDF9F0,#FAF4E4);display:flex;align-items:center;justify-content:center}
+/* Article card in grid */
+.gz-art{cursor:pointer;height:100%}
+.gz-art:hover .gz-art-title{color:var(--rust)}
+.gz-art-type{font-size:.52rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin-bottom:.4rem}
+.gz-art-type.article{color:var(--muted)}
+.gz-art-type.tanitim{color:var(--sage)}
+.gz-art-type.cekilis-sonuc{color:var(--gold-d)}
+.gz-art-type.ilan{color:var(--rust)}
+.gz-art-img{width:100%;aspect-ratio:16/8;object-fit:cover;display:block;margin-bottom:.7rem}
+.gz-art-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:.4rem;transition:color .15s}
+.gz-art-excerpt{font-size:.75rem;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.gz-art-rule{border:none;border-top:1px solid rgba(13,12,9,.12);margin:.7rem 0}
+.gz-art-byline{font-size:.62rem;color:var(--muted);font-style:italic}
+.gz-art-byline strong{font-style:normal;font-weight:600;color:var(--ink)}
+/* İlan kutusu */
+.gz-ilan-box{text-align:center;padding:.5rem;width:100%}
+.gz-ilan-header{font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:.4rem;margin-bottom:.75rem}
+.gz-ilan-badge{display:inline-block;background:var(--rust);color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:.6rem}
+.gz-ilan-title{font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:.5rem}
+.gz-ilan-text{font-size:.75rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem}
+.gz-ilan-cta{display:inline-block;background:var(--ink);color:var(--gold);font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 18px;cursor:pointer;border:none;font-family:var(--font-sans);transition:background .15s}
+.gz-ilan-cta:hover{background:var(--gold);color:var(--ink)}
+/* Empty */
+.gz-empty{text-align:center;padding:4rem 2rem;color:var(--muted);font-size:.88rem;grid-column:1/-1}
+/* Responsive */
+@media(max-width:900px){
+  .gz-manset{grid-template-columns:1fr}
+  .gz-manset-side{border-left:none;border-top:2px solid var(--ink);flex-direction:row;overflow-x:auto}
+  .gz-manset-side-item{min-width:200px;border-bottom:none;border-right:1px solid rgba(13,12,9,.12)}
+  .gz-grid{grid-template-columns:repeat(2,1fr)}
+  .gz-grid-item.span2{grid-column:span 2}
+}
+@media(max-width:600px){
+  .gz-masthead-top{flex-direction:column;gap:.2rem;text-align:center}
+  .gz-manset-side{flex-direction:column}
+  .gz-manset-side-item{min-width:unset}
+  .gz-grid{grid-template-columns:1fr}
+  .gz-grid-item.span2{grid-column:span 1}
+  .gz-inner{padding:1rem 1rem 4rem}
+}
+
 /* ── HOW IT WORKS ── */
 .how-bg{background:var(--white)}
 .how-inner{max-width:940px;margin:0 auto;padding:5.5rem 2rem;text-align:center}
@@ -3142,7 +3223,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <li class="mob-only-li"><a onclick="go('home');closeNav()" data-p="home">Ana Sayfa</a></li>
     <li><a onclick="go('home');closeNav();setTimeout(()=>sid('books-sec')?.scrollIntoView({behavior:'smooth'}),300)" data-p="home">Kitaplarımız</a></li>
     <li><a onclick="go('authors');closeNav()" data-p="authors">Yazarlarımız</a></li>
-    <li><a onclick="go('blog');closeNav()" data-p="blog">Yazı Köşesi</a></li>
+    <li><a onclick="go('blog');closeNav()" data-p="blog">Akgül Gazetesi</a></li>
     <!-- Mobil: özel sayfalar ayrı ayrı -->
     <li class="mob-only-li"><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu">Sürpriz Kutu</a></li>
     <li class="mob-only-li"><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti">Hediye Sepeti</a></li>
@@ -3483,7 +3564,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="blog-inner">
       <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem">
         <div>
-          <p class="sec-label" style="margin-bottom:.5rem">Yazarlarımızdan</p>
+          <p class="sec-label" style="margin-bottom:.5rem">Akgül Gazetesi'nden</p>
           <h2 class="sec-title" style="margin-bottom:0">Son <em>Yazılar</em></h2>
         </div>
         <button class="btn-gold" onclick="go('blog')">Tüm Yazıları Gör</button>
@@ -3985,37 +4066,39 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
 </div>
 
-<!-- ═══════════ BLOG PAGE ═══════════ -->
-<div class="page" id="page-blog">
-  <div style="background:var(--ink);padding:5rem 2rem;text-align:center;position:relative;overflow:hidden">
-    <div style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(200,169,110,.03) 80px,rgba(200,169,110,.03) 81px)"></div>
-    <p class="sec-label" style="position:relative;z-index:1">Yazarlarımızdan</p>
-    <h1 style="font-family:var(--font-serif);color:var(--white);font-size:clamp(2rem,4vw,3rem);font-weight:700;margin-bottom:1rem;position:relative;z-index:1">Yazı <em style="color:var(--gold)">Köşesi</em></h1>
-    <p style="color:#A09882;max-width:480px;margin:0 auto;font-size:.9rem;position:relative;z-index:1">Yazarlarımızın gözünden kitaplar, ilham ve edebiyat dünyası.</p>
-  </div>
-  <div class="blog-bar-wrap">
-    <div class="blog-bar" id="blogBar">
-      <button class="blog-fbtn act" onclick="setBlogFilter(this,'all')">Tümü</button>
-      <button class="blog-fbtn" onclick="setBlogFilter(this,'Yazarlık')">Yazarlık</button>
-      <button class="blog-fbtn" onclick="setBlogFilter(this,'Şiir & Dil')">Şiir & Dil</button>
-      <button class="blog-fbtn" onclick="setBlogFilter(this,'Tarih & Araştırma')">Tarih</button>
-      <button class="blog-fbtn" onclick="setBlogFilter(this,'Felsefe')">Felsefe</button>
-      <button class="blog-fbtn" onclick="setBlogFilter(this,'Çocuk Edebiyatı')">Çocuk</button>
-      <button class="blog-fbtn" onclick="setBlogFilter(this,'Psikoloji & Okuma')">Psikoloji</button>
-      <div class="blog-view-btns">
-        <button class="blog-vbtn act" id="blogGridBtn" onclick="setBlogView(this,'grid')" title="Grid görünüm">
-          <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-        </button>
-        <button class="blog-vbtn" id="blogListBtn" onclick="setBlogView(this,'list')" title="Liste görünüm">
-          <svg viewBox="0 0 16 16"><line x1="1" y1="4" x2="15" y2="4"/><line x1="1" y1="8" x2="15" y2="8"/><line x1="1" y1="12" x2="15" y2="12"/></svg>
-        </button>
-      </div>
+<!-- ═══════════ BLOG PAGE (AKGÜL GAZETESİ) ═══════════ -->
+<div class="page gz-page" id="page-blog">
+  <!-- Masthead -->
+  <div class="gz-masthead">
+    <div class="gz-masthead-top">
+      <span id="gz-date"></span>
+      <span>Adana · Türkiye</span>
+      <span id="gz-baski">Baskı No: 1</span>
     </div>
+    <div class="gz-masthead-rule"></div>
+    <div class="gz-masthead-name">Akgül Gazetesi</div>
+    <div class="gz-masthead-slogan">Akgül Yayınevi'nin Edebiyat Gazetesi</div>
+    <div class="gz-masthead-rule"></div>
   </div>
-  <div style="max-width:1140px;margin:0 auto;padding:2rem 2rem 4rem">
-    <div id="blogFeaturedWrap"></div>
-    <div class="blog-grid" id="blogAll"></div>
+  <!-- Son Dakika -->
+  <div class="gz-son-dakika" id="gz-son-dakika" style="display:none">
+    <span class="gz-sd-label">Son Dakika</span>
+    <span class="gz-sd-text" id="gz-sd-text"></span>
   </div>
+  <!-- Filtre -->
+  <div class="gz-filter-bar">
+    <button class="gz-fbtn act" onclick="setGazeteCat(this,'all')">Tümü</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'Yazarlık')">Yazarlık</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'Şiir & Dil')">Şiir & Dil</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'Tarih & Araştırma')">Tarih</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'Felsefe')">Felsefe</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'Çocuk Edebiyatı')">Çocuk</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'Psikoloji & Okuma')">Psikoloji</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'İlan')">İlanlar</button>
+    <button class="gz-fbtn" onclick="setGazeteCat(this,'tanitim')">Tanıtım</button>
+  </div>
+  <!-- İçerik -->
+  <div class="gz-inner" id="gz-inner"></div>
 </div>
 
 <div class="page" id="page-blogdetail">
@@ -4347,22 +4430,24 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Sipariş Listesi</div></div><div class="admin-card-body" style="padding:0"><table class="admin-table" id="adminOrdersTable"></table></div></div>
         </div>
         <div class="admin-section" id="as-blog">
-          <div class="admin-page-title">Blog Yönetimi</div>
-          <div class="admin-page-sub">Yeni yazı ekleyin, mevcut yazıları yönetin</div>
+          <div class="admin-page-title">Akgül Gazetesi Yönetimi</div>
+          <div class="admin-page-sub">Yeni yazı, ilan veya tanıtım ekleyin; manşet belirleyin</div>
           <div class="admin-card" style="margin-bottom:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">✦ Yeni Blog Yazısı Ekle</div></div>
+            <div class="admin-card-head"><div class="admin-card-title">✦ Yeni İçerik Ekle</div></div>
             <div class="admin-card-body">
               <div class="admin-form-grid">
-                <div class="admin-field"><label>Başlık</label><input type="text" id="nb-blog-title" placeholder="Yazı başlığı"></div>
-                <div class="admin-field"><label>Yazar</label><input type="text" id="nb-blog-author" placeholder="Yazar adı"></div>
-                <div class="admin-field"><label>Kategori</label><select id="nb-blog-cat"><option value="edebiyat">Edebiyat</option><option value="tavsiye">Kitap Tavsiyesi</option><option value="haber">Haber</option><option value="soylesi">Söyleşi</option><option value="deneme">Deneme</option></select></div>
-                <div class="admin-field"><label>Etiketler (virgülle)</label><input type="text" id="nb-blog-tags" placeholder="Şiir, Roman, Tavsiye"></div>
-                <div class="admin-field admin-field-full"><label>Kısa Özet</label><textarea id="nb-blog-summary" placeholder="Yazının kısa özeti..."></textarea></div>
+                <div class="admin-field"><label>Tür</label><select id="nb-blog-type" onchange="adminToggleBlogTypeFields()"><option value="article">Makale / Yazı</option><option value="tanitim">Tanıtım</option><option value="ilan">İlan</option></select></div>
+                <div class="admin-field"><label>Başlık</label><input type="text" id="nb-blog-title" placeholder="Yazı veya ilan başlığı"></div>
+                <div class="admin-field nb-blog-author-field"><label>Yazar</label><input type="text" id="nb-blog-author" placeholder="Yazar adı" value="Akgül Yayınevi"></div>
+                <div class="admin-field nb-blog-cat-field"><label>Kategori</label><select id="nb-blog-cat"><option value="Yazarlık">Yazarlık</option><option value="Şiir & Dil">Şiir & Dil</option><option value="Tarih & Araştırma">Tarih & Araştırma</option><option value="Felsefe">Felsefe</option><option value="Çocuk Edebiyatı">Çocuk Edebiyatı</option><option value="Psikoloji & Okuma">Psikoloji & Okuma</option></select></div>
+                <div class="admin-field nb-blog-ilan-field" style="display:none"><label>İlan Etiketi</label><input type="text" id="nb-blog-ilan-badge" placeholder="FUAR, İMZA GÜNÜ, KAMPANYA..."></div>
+                <div class="admin-field" style="display:flex;align-items:center;gap:.5rem;padding-top:1.5rem"><label style="margin-bottom:0"><input type="checkbox" id="nb-blog-manset" style="margin-right:.35rem">Bu yazıyı Manşet yap</label></div>
+                <div class="admin-field admin-field-full"><label>Kısa Özet / İlan Metni</label><textarea id="nb-blog-summary" placeholder="Yazının kısa özeti veya ilan açıklaması..."></textarea></div>
               </div>
               <button class="admin-submit" onclick="adminAddBlogPost()">Yayınla</button>
             </div>
           </div>
-          <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Yayınlanan Yazılar</div><span style="font-size:.78rem;color:var(--muted)" id="blogCount"></span></div><div class="admin-card-body" style="padding:0"><table class="admin-table" id="adminBlogTable"></table></div></div>
+          <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Yayınlanan İçerikler</div><span style="font-size:.78rem;color:var(--muted)" id="blogCount"></span></div><div class="admin-card-body" style="padding:0"><table class="admin-table" id="adminBlogTable"></table></div></div>
         </div>
         <div class="admin-section" id="as-applications">
           <div class="admin-page-title">Eser Başvuruları</div>
@@ -4447,7 +4532,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div class="ft-col-title">Hızlı Linkler</div>
       <ul class="ft-links">
         <li><a onclick="go('home')">Ana Sayfa</a></li>
-        <li><a onclick="go('blog')">Yazı Köşesi</a></li>
+        <li><a onclick="go('blog')">Akgül Gazetesi</a></li>
         <li><a onclick="go('authors')">Yazarlarımız</a></li>
         <li><a onclick="go('surpriz-kutu')">Sürpriz Kutu</a></li>
         <li><a onclick="go('hediye-sepeti')">Hediye Sepeti</a></li>
@@ -4719,12 +4804,15 @@ let authors=[
 const CATS={roman:"Roman",siir:"Şiir",tarih:"Tarih",deneme:"Deneme",felsefe:"Felsefe",kisisel:"Kişisel Gelişim",cocuk:"Çocuk",hikaye:"Hikâye",akademik:"Akademik"};
 
 const blogPosts=[
-  {id:1,title:"Roman Yazarken Yaşadığım En Büyük Kriz",author:"Deniz Kaya",initials:"DK",color:"#2D3E3A",date:"2 Mayıs 2026",cat:"Yazarlık",excerpt:"Mavi Oda'yı yazarken 4. bölümde tamamen tıkandım...",body:"<p>Roman yazarken her yazar bir noktada tıkanır.</p><h2>Çözüm Beklenmedik Geldi</h2><p>Bir sabah şehir dışına çıkıp deniz kenarında yürürken fark ettim.</p>",bg:"linear-gradient(135deg,#2D3E3A,#1d2e2a)",images:[],featured:true},
-  {id:2,title:"Şiir: Dili Seviyor musunuz?",author:"Ahmet Demir",initials:"AD",color:"#4A2D3E",date:"28 Nisan 2026",cat:"Şiir & Dil",excerpt:"Türkçe, dünyanın en zengin dillerinden biri...",body:"<p>Türkçe'nin yüzyıllar boyunca biriktirdiği bir sözcük hazinesi var.</p>",bg:"linear-gradient(135deg,#4A2D3E,#3a1d2e)",images:[]},
-  {id:3,title:"Anadolu'da Araştırma Yapmak",author:"Fatma Yıldız",initials:"FY",color:"#3E3A2D",date:"20 Nisan 2026",cat:"Tarih & Araştırma",excerpt:"5 yıl boyunca Anadolu'nun dört bir yanında yaptığım saha çalışmaları...",body:"<p>Bir tarihin gün yüzüne çıkması için bazen sadece dinlemek yeterlidir.</p>",bg:"linear-gradient(135deg,#3E3A2D,#2e2a1d)",images:[]},
-  {id:4,title:"Felsefe Neden 'Zor' Gelir?",author:"Mehmet Aksoy",initials:"MA",color:"#4A2D4A",date:"15 Nisan 2026",cat:"Felsefe",excerpt:"'Varoluşun Eşiğinde' kitabını yazarken kendime sorduğum soru buydu.",body:"<p>Felsefe aslında her sabah aynaya baktığınızda sorduğunuz sorulardır.</p>",bg:"linear-gradient(135deg,#4A2D4A,#2a1d2a)",images:[]},
-  {id:5,title:"Çocuk Kitabı Yazmak Neden En Zor İştir?",author:"Ayşe Nur",initials:"AN",color:"#6B5A2E",date:"10 Nisan 2026",cat:"Çocuk Edebiyatı",excerpt:"Bir çocuğun hayal gücünü küçümsemek en büyük yazar hatasıdır.",body:"<p>Çocuk kitabı yazmaya başlamadan önce 'bu kolay olmalı' diye düşünmüştüm.</p>",bg:"linear-gradient(135deg,#6B5A2E,#4a3a1d)",images:[]},
-  {id:6,title:"Kendi Kendine Şifacı Olmak",author:"Dr. Zeynep Koç",initials:"ZK",color:"#2A4A5A",date:"5 Nisan 2026",cat:"Psikoloji & Okuma",excerpt:"Araştırmalar okumayı terapi kadar etkili buluyor.",body:"<p>Bibliyoterapi — kitapla tedavi. Bu kavram 100 yılı aşkın süredir literatürde var.</p>",bg:"linear-gradient(135deg,#2A4A5A,#1a2a3a)",images:[]},
+  {id:1,title:"Roman Yazarken Yaşadığım En Büyük Kriz",author:"Deniz Kaya",initials:"DK",color:"#2D3E3A",date:"2 Mayıs 2026",cat:"Yazarlık",type:"article",excerpt:"Mavi Oda'yı yazarken 4. bölümde tamamen tıkandım...",body:"<p>Roman yazarken her yazar bir noktada tıkanır. Ben de tıkandım. Günlerce ekrana baktım, tek bir kelime yazamadım.</p><h2>Çözüm Beklenmedik Geldi</h2><p>Bir sabah şehir dışına çıkıp deniz kenarında yürürken fark ettim: hikayemi kafamda bitirmeye çalışıyordum. Oysa hikayeler yaşanarak biter, düşünülerek değil. O gün geri döndüm ve tek bir sahneyi yazdım. Geri kalanı aktı.</p>",bg:"linear-gradient(135deg,#2D3E3A,#1d2e2a)",images:[],isManset:true},
+  {id:2,title:"Şiir: Dili Seviyor musunuz?",author:"Ahmet Demir",initials:"AD",color:"#4A2D3E",date:"28 Nisan 2026",cat:"Şiir & Dil",type:"article",excerpt:"Türkçe, dünyanın en zengin dillerinden biri. Peki onu ne kadar iyi kullanıyoruz?",body:"<p>Türkçe'nin yüzyıllar boyunca biriktirdiği bir sözcük hazinesi var. Şiir, bu hazinenin en rafine halidir.</p><p>Bir dili sevmek; onun seslerini, ritmini, tarihin derinliklerinden taşıdığı anlamı sevmektir.</p>",bg:"linear-gradient(135deg,#4A2D3E,#3a1d2e)",images:[]},
+  {id:3,title:"Anadolu'da Araştırma Yapmak",author:"Fatma Yıldız",initials:"FY",color:"#3E3A2D",date:"20 Nisan 2026",cat:"Tarih & Araştırma",type:"article",excerpt:"5 yıl boyunca Anadolu'nun dört bir yanında yaptığım saha çalışmaları bana çok şey öğretti.",body:"<p>Bir tarihin gün yüzüne çıkması için bazen sadece dinlemek yeterlidir. Yaşlı bir köylünün anlattığı hikaye, kitaplarda olmayan gerçekleri taşır.</p>",bg:"linear-gradient(135deg,#3E3A2D,#2e2a1d)",images:[]},
+  {id:4,title:"Felsefe Neden 'Zor' Gelir?",author:"Mehmet Aksoy",initials:"MA",color:"#4A2D4A",date:"15 Nisan 2026",cat:"Felsefe",type:"article",excerpt:"'Varoluşun Eşiğinde' kitabını yazarken kendime sorduğum soru buydu.",body:"<p>Felsefe aslında her sabah aynaya baktığınızda sorduğunuz sorulardır. Zor gelen, soruların kendisi değil, cevabı bilmeden yaşamaya devam etmektir.</p>",bg:"linear-gradient(135deg,#4A2D4A,#2a1d2a)",images:[]},
+  {id:5,title:"Çocuk Kitabı Yazmak Neden En Zor İştir?",author:"Ayşe Nur",initials:"AN",color:"#6B5A2E",date:"10 Nisan 2026",cat:"Çocuk Edebiyatı",type:"article",excerpt:"Bir çocuğun hayal gücünü küçümsemek en büyük yazar hatasıdır.",body:"<p>Çocuk kitabı yazmaya başlamadan önce 'bu kolay olmalı' diye düşünmüştüm. Yanılmışım. Bir çocuğu gerçekten dinlemek, onun dünyasına tam anlamıyla girmek gerekiyor.</p>",bg:"linear-gradient(135deg,#6B5A2E,#4a3a1d)",images:[]},
+  {id:6,title:"Kendi Kendine Şifacı Olmak",author:"Dr. Zeynep Koç",initials:"ZK",color:"#2A4A5A",date:"5 Nisan 2026",cat:"Psikoloji & Okuma",type:"article",excerpt:"Araştırmalar okumayı terapi kadar etkili buluyor.",body:"<p>Bibliyoterapi — kitapla tedavi. Bu kavram 100 yılı aşkın süredir literatürde var. Her kitap bir dünya açar; doğru kitap, doğru anda, bir mucize yaratabilir.</p>",bg:"linear-gradient(135deg,#2A4A5A,#1a2a3a)",images:[]},
+  {id:101,title:"Sürpriz Kutu: Her Ay Yeni Bir Keşif",author:"Akgül Yayınevi",initials:"AY",color:"#8B3A2A",date:"1 Mayıs 2026",cat:"Yazarlık",type:"tanitim",excerpt:"Hangi kitabın sizi beklediğini bilmeden sipariş vermek... Sürpriz Kutu tam da bu heyecanı yaşatıyor.",body:"<p>Kitap okumak zaten bir keşif yolculuğu. Peki ya ilk sayfayı açmadan önce, kapağını bile görmeden bir kitabın sizi beklediğini bilseydiniz?</p><h2>Sürpriz Kutu Nedir?</h2><p>Her ay ruh halinize ve okuma tercihlerinize göre editörlerimiz tarafından özenle seçilen bir veya daha fazla kitabı kapınıza getiriyoruz. Standart, Seçkin ve Prestij olmak üç ayrı paket seçeneğimiz var.</p><p>Kutunun içinde kitap(lar)ın yanı sıra yazarın özel notu, kitap ayracı ve küçük bir sürpriz hediye de bulunuyor.</p><h2>Neden Sürpriz Kutu?</h2><p>Çünkü bazen en güzel kitapları, hiç planlamadan keşfederiz. Sürpriz Kutu bu sihri her ay yaşatıyor.</p>",bg:"linear-gradient(135deg,#8B3A2A,#5a2018)",images:[]},
+  {id:102,title:"Yapay Zeka ile Kitap Bulmanın Yeni Yolu",author:"Akgül Yayınevi",initials:"AY",color:"#2D4A3E",date:"1 Mayıs 2026",cat:"Felsefe",type:"tanitim",excerpt:"Ruh halinizi anlatın, yapay zeka size özel kitap önerin hazır olsun. Akgül Yayınevi'nin AI Öneri özelliğini keşfedin.",body:"<p>Bazen kitaplığa girip saatlerce dolaşır, hangisini alacağınıza karar veremezsiniz. Bazen de tam tersi olur: aklınızda net bir his var ama hangi kitabın o hissi vereceğini bilmiyorsunuzdur.</p><h2>AI Öneri Tam Bunun İçin Var</h2><p>Akgül Yayınevi'nin yapay zeka destekli öneri sistemi, ruh halinizi anladıktan sonra kataloğumuzdan size en uygun 4-6 kitabı belirliyor. Sadece nasıl hissettiğinizi yazın — gerisini AI halleder.</p><p>Hüzünlü mü hissediyorsunuz? Motivasyon mu lazım? Tarihe mi dalmak istiyorsunuz? Ya da sadece iyi bir roman mı arıyorsunuz? Her ruh hali için doğru kitap var.</p><h2>Nasıl Kullanılır?</h2><p>Siteye girin, AI Öneri sayfasına gidin ve ruh halinizi birkaç kelimeyle anlatın. Sistem saniyeler içinde size özel önerilerini sunacak.</p>",bg:"linear-gradient(135deg,#2D4A3E,#1a3028)",images:[]},
+  {id:103,title:"Hediye Sepeti: Kitap Sevgisini Paylaşın",author:"Akgül Yayınevi",initials:"AY",color:"#2A3545",date:"1 Mayıs 2026",cat:"Psikoloji & Okuma",type:"tanitim",excerpt:"Sevdiklerinize kitap hediye etmek hiç bu kadar kolay ve özel olmamıştı. Kişiselleştirilmiş hediye paketleri kapınızda.",body:"<p>En güzel hediye nedir? Sevdiklerinizi tanıdığınızı hissettiren bir hediye. Kitap, bu anlamda en kişisel hediyelerden biridir.</p><h2>Hediye Sepeti ile Fark Yaratın</h2><p>Akgül Yayınevi'nin Hediye Sepeti özelliği ile kataloğumuzdan dilediğiniz kitapları seçiyor, özel ambalaj ve kişisel mesaj ekliyorsunuz. Hediyeniz özenle paketlenip sevdiğinize teslim ediliyor.</p><p>Doğum günü, mezuniyet, yıl dönümü veya sürpriz bir jest... Kitap her zaman doğru hediyedir.</p><h2>Nasıl Sipariş Verilir?</h2><p>Hediye Sepeti sayfasına gidin, kitaplarınızı seçin ve kişisel notunuzu ekleyin. WhatsApp üzerinden sipariş alıyoruz; teslimat bilgileri için sizinle iletişime geçiyoruz.</p>",bg:"linear-gradient(135deg,#2A3545,#1a2535)",images:[]},
 ];
 
 /* ── STATE ── */
@@ -4819,11 +4907,9 @@ function go(page){
     renderAuthorFeatured();renderAuthors();
   }
   if(page==='blog'){
-    blogFilter='all';blogView='grid';
-    document.querySelectorAll('.blog-fbtn').forEach((b,i)=>b.classList.toggle('act',i===0));
-    const gBtn=document.getElementById('blogGridBtn'),lBtn=document.getElementById('blogListBtn');
-    if(gBtn)gBtn.classList.add('act');if(lBtn)lBtn.classList.remove('act');
-    renderBlogFeatured();renderBlogAll();
+    gazeteCat='all';
+    document.querySelectorAll('.gz-fbtn').forEach((b,i)=>b.classList.toggle('act',i===0));
+    renderGazete();
   }
   if(page==='profile')renderProfile();
   if(page==='surpriz-kutu'){
@@ -5056,71 +5142,162 @@ renderEditors();
 let blogFilter='all';
 let blogView='grid';
 function readingTime(body){const t=(body||'').replace(/<[^>]+>/g,'').trim().split(/\s+/).length;return Math.max(1,Math.round(t/200))}
-function renderBlogPreview(){const el=sid('blogPreview');if(el)el.innerHTML=blogData.slice(0,3).map(p=>blogCard(p)).join('')}
-function renderBlogFeatured(){
-  const wrap=sid('blogFeaturedWrap');if(!wrap)return;
-  const fp=blogData.find(p=>p.featured)||blogData[0];if(!fp){wrap.innerHTML='';return}
-  const rt=readingTime(fp.body);
-  wrap.innerHTML=`<div class="blog-featured" onclick="openBlog(${fp.id})">
-    <div class="blog-featured-bg" style="background:${fp.bg}"></div>
-    <div class="blog-featured-overlay"></div>
-    <div class="blog-featured-body">
-      <div class="blog-featured-badge">⭐ Öne Çıkan</div>
-      <div class="blog-featured-cat">${fp.cat}</div>
-      <div class="blog-featured-title">${fp.title}</div>
-      <div class="blog-featured-excerpt">${fp.excerpt}</div>
-      <div class="blog-featured-footer">
-        <div class="blog-featured-av" style="background:${fp.color}">${fp.initials}</div>
-        <span class="blog-featured-author">${fp.author}</span>
-        <span class="blog-featured-sep">·</span>
-        <span class="blog-featured-date">${fp.date}</span>
-        <span class="blog-featured-rt">~${rt} dk okuma</span>
+function renderBlogPreview(){
+  const el=sid('blogPreview');if(!el)return;
+  const items=blogData.filter(p=>p.type!=='ilan').slice(0,3);
+  el.innerHTML=items.map(p=>{
+    const rt=readingTime(p.body||'');
+    const imgHtml=p.images&&p.images[0]?`<img src="${p.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`:'';
+    return`<div class="blog-card" onclick="openBlog(${p.id})">
+      <div class="blog-img" style="background:${p.bg||'linear-gradient(135deg,#2D4A3E,#1a3028)'}">${imgHtml}<div class="blog-img-overlay"><div class="blog-img-overlay-text">${escHtml(p.excerpt||'')}</div></div></div>
+      <div class="blog-body">
+        <div class="blog-meta">
+          <div class="blog-author-av" style="background:${p.color||'#2D4A3E'}">${p.initials||'A'}</div>
+          <div class="blog-author-name">${escHtml(p.author)}</div>
+          <div class="blog-date" style="margin-left:.3rem">${escHtml(p.date)}</div>
+          <div class="blog-rt">~${rt} dk</div>
+        </div>
+        <div class="blog-title">${escHtml(p.title)}</div>
+        <div class="blog-excerpt">${escHtml(p.excerpt||'')}</div>
+        <div class="blog-cats-row"><span class="blog-cat-tag">${escHtml(p.cat||'')}</span></div>
       </div>
-    </div>
-  </div>`;
+    </div>`;
+  }).join('');
 }
-function renderBlogAll(){
-  const el=sid('blogAll');if(!el)return;
-  const fp=blogData.find(p=>p.featured)||blogData[0];
-  const filtered=blogData.filter(p=>{
-    if(p.id===fp.id)return false;
-    return blogFilter==='all'||p.cat===blogFilter;
+/* ── AKGÜL GAZETESİ RENDER ── */
+let gazeteCat='all';
+
+function gazeteBaskiNo(){
+  const launch=new Date(2026,4,1); // May 2026
+  const now=new Date();
+  const diff=Math.max(1,(now.getFullYear()-launch.getFullYear())*12+(now.getMonth()-launch.getMonth())+1);
+  return diff;
+}
+
+function renderGazeteMasthead(){
+  const dateEl=sid('gz-date');
+  if(dateEl)dateEl.textContent=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  const baskiEl=sid('gz-baski');
+  if(baskiEl)baskiEl.textContent=`Baskı No: ${gazeteBaskiNo()}`;
+  // Son dakika: en son cekilis-sonuc veya ilk manset olmayan breaking
+  const sd=blogData.find(p=>p.type==='cekilis-sonuc')||blogData.find(p=>p.sonDakika);
+  const sdBar=sid('gz-son-dakika');const sdTxt=sid('gz-sd-text');
+  if(sd&&sdBar&&sdTxt){sdBar.style.display='flex';sdTxt.textContent=sd.title;sdTxt.onclick=()=>openBlog(sd.id);sdTxt.style.cursor='pointer';}
+  else if(sdBar){sdBar.style.display='none';}
+}
+
+function renderGazete(){
+  renderGazeteMasthead();
+  const inner=sid('gz-inner');if(!inner)return;
+  // Filter
+  const all=gazeteCat==='all'?[...blogData]:blogData.filter(p=>{
+    if(gazeteCat==='İlan')return p.type==='ilan';
+    if(gazeteCat==='tanitim')return p.type==='tanitim';
+    return p.cat===gazeteCat;
   });
-  el.classList.toggle('list-view',blogView==='list');
-  el.classList.remove('fading');
-  el.innerHTML=filtered.length?filtered.map(p=>blogCard(p)).join(''):'<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted);font-size:.88rem">Bu kategoride henüz yazı yok.</div>';
-}
-function blogCard(p){
-  const imgHtml=p.images&&p.images.length?`<img src="${p.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`:'';
-  const rt=readingTime(p.body);
-  return`<div class="blog-card" onclick="openBlog(${p.id})">
-    <div class="blog-img" style="background:${p.bg}">${imgHtml}<div class="blog-img-overlay"><div class="blog-img-overlay-text">${p.excerpt}</div></div></div>
-    <div class="blog-body">
-      <div class="blog-meta">
-        <div class="blog-author-av" style="background:${p.color}">${p.initials}</div>
-        <div class="blog-author-name">${p.author}</div>
-        <div class="blog-date" style="margin-left:.3rem">${p.date}</div>
-        <div class="blog-rt">~${rt} dk</div>
+  if(!all.length){inner.innerHTML='<div class="gz-empty">Bu kategoride henüz yazı yok.</div>';return;}
+
+  // Manşet: isManset flag, or first article
+  const manset=all.find(p=>p.isManset)||(all.find(p=>p.type==='article'||!p.type)||all[0]);
+  const rest=all.filter(p=>p.id!==manset.id);
+  // İlanlar
+  const ilanlar=blogData.filter(p=>p.type==='ilan');
+  // Sidebar items (next 2 after manset, non-ilan)
+  const sideItems=rest.filter(p=>p.type!=='ilan').slice(0,2);
+  const gridItems=rest.filter(p=>!sideItems.find(s=>s.id===p.id));
+
+  // Build HTML
+  let html='';
+
+  // Manşet block
+  html+=`<div class="gz-manset">
+    <div class="gz-manset-main" onclick="openBlog(${manset.id})">
+      <div class="gz-manset-img" style="background:${manset.bg}${manset.images&&manset.images[0]?`;background-image:url('${manset.images[0]}')`:''};background-size:cover;background-position:center"></div>
+      <div class="gz-manset-overlay"></div>
+      <div class="gz-manset-body">
+        <div class="gz-manset-tag">${gzTypeLabel(manset)}</div>
+        <div class="gz-manset-title">${escHtml(manset.title)}</div>
+        <div class="gz-manset-excerpt">${escHtml(manset.excerpt||'')}</div>
+        <div class="gz-manset-byline">Yazan: ${escHtml(manset.author)} &nbsp;·&nbsp; ${escHtml(manset.date)}</div>
       </div>
-      <div class="blog-title">${p.title}</div>
-      <div class="blog-excerpt">${p.excerpt}</div>
-      <div class="blog-cats-row"><span class="blog-cat-tag">${p.cat}</span></div>
+    </div>
+    <div class="gz-manset-side">${sideItems.map(p=>`
+      <div class="gz-manset-side-item" onclick="openBlog(${p.id})">
+        <div class="gz-manset-side-cat">${escHtml(p.cat)}</div>
+        <div class="gz-manset-side-title">${escHtml(p.title)}</div>
+        <div class="gz-manset-side-by">— ${escHtml(p.author)}</div>
+      </div>`).join('')}
+    </div>
+  </div>`;
+
+  // Grid
+  if(gridItems.length){
+    html+='<div class="gz-grid">';
+    let ilanIdx=0;
+    gridItems.forEach((p,i)=>{
+      // Insert ilan every 5 articles
+      if(i>0&&i%5===0&&ilanIdx<ilanlar.length){
+        html+=gzIlanItem(ilanlar[ilanIdx++]);
+      }
+      html+=gzGridArticle(p);
+    });
+    // Append remaining ilans at end if any
+    while(ilanIdx<ilanlar.length)html+=gzIlanItem(ilanlar[ilanIdx++]);
+    html+='</div>';
+  }
+
+  inner.innerHTML=html;
+}
+
+function gzTypeLabel(p){
+  const t=p.type||'article';
+  if(t==='ilan')return 'İlan';
+  if(t==='tanitim')return 'Tanıtım';
+  if(t==='cekilis-sonuc')return '🏆 Çekiliş Sonucu';
+  return escHtml(p.cat||'Yazı');
+}
+
+function gzGridArticle(p){
+  const t=p.type||'article';
+  const typeLabel=gzTypeLabel(p);
+  const imgHtml=p.images&&p.images[0]?`<img class="gz-art-img" src="${escHtml(p.images[0])}" alt="">`:'';
+  return`<div class="gz-grid-item">
+    <div class="gz-art" onclick="openBlog(${p.id})">
+      <div class="gz-art-type ${t}">${typeLabel}</div>
+      ${imgHtml}
+      <div class="gz-art-title">${escHtml(p.title)}</div>
+      <div class="gz-art-excerpt">${escHtml(p.excerpt||'')}</div>
+      <hr class="gz-art-rule">
+      <div class="gz-art-byline"><strong>${escHtml(p.author)}</strong> · ${escHtml(p.date)}</div>
     </div>
   </div>`;
 }
-function setBlogFilter(btn,cat){
-  blogFilter=cat;
-  document.querySelectorAll('.blog-fbtn').forEach(b=>b.classList.remove('act'));
+
+function gzIlanItem(p){
+  return`<div class="gz-grid-item gz-ilan-item">
+    <div class="gz-ilan-box">
+      <div class="gz-ilan-header">İlan</div>
+      ${p.ilanBadge?`<div class="gz-ilan-badge">${escHtml(p.ilanBadge)}</div>`:''}
+      <div class="gz-ilan-title">${escHtml(p.title)}</div>
+      <div class="gz-ilan-text">${escHtml(p.excerpt||'')}</div>
+      <button class="gz-ilan-cta" onclick="openBlog(${p.id})">Daha Fazla</button>
+    </div>
+  </div>`;
+}
+
+function setGazeteCat(btn,cat){
+  gazeteCat=cat;
+  document.querySelectorAll('.gz-fbtn').forEach(b=>b.classList.remove('act'));
   btn.classList.add('act');
-  const el=sid('blogAll');if(el){el.classList.add('fading');setTimeout(()=>renderBlogAll(),200)}
+  renderGazete();
 }
-function setBlogView(btn,view){
-  blogView=view;
-  const g=document.getElementById('blogGridBtn'),l=document.getElementById('blogListBtn');
-  if(g)g.classList.toggle('act',view==='grid');
-  if(l)l.classList.toggle('act',view==='list');
-  renderBlogAll();
-}
+
+/* Legacy compat stubs (called by go('blog') and other spots) */
+function renderBlogFeatured(){renderGazete();}
+function renderBlogAll(){/* merged into renderGazete */}
+function blogCard(p){return'';}
+function setBlogFilter(btn,cat){setGazeteCat(btn,cat);}
+function setBlogView(btn,view){}
 function openBlog(id){
   const p=blogData.find(x=>x.id===id);if(!p)return;
   const rt=readingTime(p.body);
@@ -5133,7 +5310,7 @@ function openBlog(id){
     </div>`).join(''):'<div class="review-empty">Henüz yorum yok. İlk yorumu sen yap!</div>';
   const el=sid('blogDetailContent');if(!el)return;
   el.innerHTML=`
-    <div style="margin-bottom:1.5rem"><a href="#" onclick="go('blog');return false" style="font-size:.8rem;color:var(--gold);text-decoration:none">← Yazı Köşesi</a></div>
+    <div style="margin-bottom:1.5rem"><a href="#" onclick="go('blog');return false" style="font-size:.8rem;color:var(--gold);text-decoration:none">← Akgül Gazetesi</a></div>
     <div class="bd-eyebrow">${p.cat}</div>
     <h1 class="bd-title">${p.title}</h1>
     <div class="bd-meta">
@@ -7091,7 +7268,7 @@ function publishPost(){
   const safeTitle=esc(title);
   const safeBody=esc(body);
   const formattedBody=safeBody.replace(/\n\n/g,'</p><p>').replace(/## (.*)/g,'<h2>$1</h2>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/_(.*?)_/g,'<em>$1</em>');
-  const newPost={id:blogData.length+1,title:safeTitle,author:currentUser.name,initials:currentUser.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),color:colors[currentUser.name]||'#2D4A3E',date:'Bugün',cat,excerpt:safeBody.slice(0,120)+'...',body:`<p>${formattedBody}</p>`,images:_pendingBlogImages.length?_pendingBlogImages.slice():[],bg:'linear-gradient(135deg,#2D4A3E,#1a3a2e)'};
+  const newPost={id:blogData.length+1,title:safeTitle,author:currentUser.name,initials:currentUser.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),color:colors[currentUser.name]||'#2D4A3E',date:'Bugün',cat,type:'article',excerpt:safeBody.slice(0,120)+'...',body:`<p>${formattedBody}</p>`,images:_pendingBlogImages.length?_pendingBlogImages.slice():[],bg:'linear-gradient(135deg,#2D4A3E,#1a3a2e)'};
   blogData.unshift(newPost);saveBlogData(blogData);toast('✦ Yazınız yayınlandı!');sid('beTitle').value='';sid('beBody').value='';_pendingBlogImages=[];renderBlogImagePreviews();renderBlogPreview();renderProfile();
 }
 
@@ -7353,12 +7530,29 @@ function adminUpdateOrder(id,status){
   toast(`Sipariş ${id} → ${status}`);renderAdminOrders();renderAdminDashboard();
 }
 function renderAdminBlog(){
-  sid('adminBlogTable').innerHTML=`<thead><tr><th>Başlık</th><th>Yazar</th><th>Kategori</th><th>Tarih</th><th>İşlem</th></tr></thead><tbody>${blogData.map(p=>`<tr><td style="font-weight:600">${p.title}</td><td>${p.author}</td><td><span class="admin-badge ab-okur">${p.cat}</span></td><td style="color:var(--muted);font-size:.78rem">${p.date}</td><td><button class="admin-action-btn danger" onclick="adminDeletePost(${p.id})">Sil</button></td></tr>`).join('')}</tbody>`;
+  const typeBadge={article:'ab-okur',tanitim:'ab-aktif',ilan:'ab-admin','cekilis-sonuc':'ab-yeni'};
+  const typeLbl={article:'Yazı',tanitim:'Tanıtım',ilan:'İlan','cekilis-sonuc':'Çekiliş'};
+  sid('adminBlogTable').innerHTML=`<thead><tr><th>Başlık</th><th>Tür</th><th>Yazar</th><th>Tarih</th><th>Manşet</th><th>İşlem</th></tr></thead><tbody>${blogData.map(p=>{
+    const t=p.type||'article';
+    return`<tr>
+      <td style="font-weight:600">${escHtml(p.title)}</td>
+      <td><span class="admin-badge ${typeBadge[t]||'ab-okur'}">${typeLbl[t]||t}</span></td>
+      <td>${escHtml(p.author||'')}</td>
+      <td style="color:var(--muted);font-size:.78rem">${p.date||''}</td>
+      <td>${p.isManset?'<span class="admin-badge ab-yeni">✦ Manşet</span>':'<button class="admin-action-btn" onclick="adminSetManset('+p.id+')">Manşet Yap</button>'}</td>
+      <td><button class="admin-action-btn danger" onclick="adminDeletePost(${p.id})">Sil</button></td>
+    </tr>`;
+  }).join('')}</tbody>`;
+  const bc=sid('blogCount');if(bc)bc.textContent=`${blogData.length} içerik`;
+}
+function adminSetManset(id){
+  blogData.forEach(p=>{p.isManset=(p.id===id);});
+  saveBlogData(blogData);renderAdminBlog();renderGazete();toast('Manşet güncellendi.');
 }
 function adminDeletePost(id){
   const p=blogData.find(x=>x.id===id);if(!p)return;
-  if(!confirm(`"${p.title}" yazısını silmek istediğinizden emin misiniz?`))return;
-  blogData.splice(blogData.indexOf(p),1);renderAdminBlog();renderBlogAll();renderBlogPreview();toast('Yazı silindi.');
+  if(!confirm(`"${p.title}" içeriği silmek istediğinizden emin misiniz?`))return;
+  blogData.splice(blogData.indexOf(p),1);saveBlogData(blogData);renderAdminBlog();renderGazete();renderBlogPreview();toast('İçerik silindi.');
 }
 function renderAdminReviews(){
   const allRevs=[];
@@ -7425,18 +7619,41 @@ function adminDeleteApplication(id){
 function filterAdminApps(f){renderAdminApplications(f)}
 
 /* ── BLOG EKLE ── */
+function adminToggleBlogTypeFields(){
+  const type=sid('nb-blog-type')?.value||'article';
+  const isIlan=type==='ilan';
+  const authorField=document.querySelector('.nb-blog-author-field');
+  const catField=document.querySelector('.nb-blog-cat-field');
+  const ilanField=document.querySelector('.nb-blog-ilan-field');
+  if(authorField)authorField.style.display=isIlan?'none':'';
+  if(catField)catField.style.display=isIlan?'none':'';
+  if(ilanField)ilanField.style.display=isIlan?'':'none';
+}
 function adminAddBlogPost(){
   const title=(sid('nb-blog-title')?.value||'').trim();
-  const author=(sid('nb-blog-author')?.value||'').trim();
-  const cat=sid('nb-blog-cat')?.value||'edebiyat';
+  const author=(sid('nb-blog-author')?.value||'').trim()||'Akgül Yayınevi';
+  const type=sid('nb-blog-type')?.value||'article';
+  const cat=type==='ilan'?'İlan':(sid('nb-blog-cat')?.value||'Yazarlık');
   const summary=(sid('nb-blog-summary')?.value||'').trim();
-  const tagStr=(sid('nb-blog-tags')?.value||'').trim();
-  const tags=tagStr?tagStr.split(',').map(t=>t.trim()).filter(Boolean):['Genel'];
-  if(!title||!author){toast('Başlık ve yazar zorunlu!');return}
-  const newPost={id:Date.now(),title,author,cat,summary:summary||title,date:new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}),tags,views:0,featured:false,readTime:'5 dk'};
+  const ilanBadge=(sid('nb-blog-ilan-badge')?.value||'').trim();
+  const isManset=sid('nb-blog-manset')?.checked||false;
+  if(!title){toast('Başlık zorunlu!');return}
+  // Clear existing manşet if setting new one
+  if(isManset)blogData.forEach(p=>{p.isManset=false;});
+  const inits=author.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  const colors=['#2D4A3E','#8B3A2A','#2A3545','#4A2D4A','#6B5A2E','#3E3A2D'];
+  const color=colors[blogData.length%colors.length];
+  const newPost={
+    id:Date.now(),title,author,initials:inits,color,
+    cat,type,excerpt:summary||title,body:`<p>${summary||title}</p>`,
+    bg:'linear-gradient(135deg,#1a1a1a,#2d2d2d)',images:[],
+    date:new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}),
+    isManset,ilanBadge:ilanBadge||undefined
+  };
   blogData.unshift(newPost);saveBlogData(blogData);
-  ['nb-blog-title','nb-blog-author','nb-blog-summary','nb-blog-tags'].forEach(id=>{const el=sid(id);if(el)el.value=''});
-  renderAdminBlog();
+  ['nb-blog-title','nb-blog-summary','nb-blog-ilan-badge'].forEach(id=>{const el=sid(id);if(el)el.value='';});
+  const mc=sid('nb-blog-manset');if(mc)mc.checked=false;
+  renderAdminBlog();renderGazete();renderBlogPreview();
   const bc=sid('blogCount');if(bc)bc.textContent=`${blogData.length} yazı`;
   toast(`✦ "${title}" yayınlandı!`);
 }
@@ -10046,7 +10263,7 @@ const ADM_SLIDE_ACTS=[
   {v:'about',l:'Hakkımızda'},
   {v:'eser-basvuru',l:'Eser Başvuru'},
   {v:'contact',l:'İletişim / Sipariş'},
-  {v:'blog',l:'Yazı Köşesi'},
+  {v:'blog',l:'Akgül Gazetesi'},
   {v:'wishlist',l:'İstek Listesi'},
 ];
 const ADM_SLIDE_ACT_JS={
@@ -10235,7 +10452,22 @@ window.adminRunDraw = async function(){
   const ann=ag('adm-ck-announce');
   if(ann&&ck.announceText){ann.textContent=ck.announceText;ann.style.display='';}
   if(btn){btn.disabled=false;btn.innerHTML='<i class="ti ti-refresh"></i>Tekrar Çek';}
-  adminToast('🏆 Çekiliş tamamlandı! Kazananlar seçildi.');
+  // Otomatik gazete yazısı oluştur
+  const winnerNames=winners.map(w=>w.name).join(', ');
+  const ckBook=books.find(b=>b.id===ck.bookId);
+  const ckTitle=`Çekiliş Sonucu: ${ckBook?ckBook.title+' Kazananları':'Kazananlar Açıklandı'}`;
+  const ckExcerpt=ck.announceText||`Aylık kitap çekilişimizin kazananları belli oldu! Kazananlar: ${winnerNames}. Tebrikler!`;
+  blogData=blogData.filter(p=>p.type!=='cekilis-sonuc');
+  blogData.unshift({
+    id:Date.now(),title:ckTitle,author:'Akgül Yayınevi',initials:'AY',
+    color:'#C9A96E',type:'cekilis-sonuc',cat:'Haber',sonDakika:true,
+    excerpt:ckExcerpt.slice(0,200),body:`<p>${ckExcerpt}</p><h2>Kazananlar</h2><ul>${winners.map(w=>`<li>${escHtml(w.name)} (@${escHtml(w.igUser)})</li>`).join('')}</ul>`,
+    bg:'linear-gradient(135deg,#8B6914,#5a4008)',images:[],
+    date:new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}),
+    isManset:false
+  });
+  saveBlogData(blogData);renderAdminBlog();renderGazete();renderBlogPreview();
+  adminToast('🏆 Çekiliş tamamlandı! Gazete yazısı otomatik oluşturuldu.');
 };
 
 window.adminExportCekilis = function(){
