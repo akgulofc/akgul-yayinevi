@@ -9268,10 +9268,17 @@ window.adminEditBook = function(id){
       </div>
       <div class="field"><label>Rozet</label><input id="adm-eb-badge" value="${admEsc(b.badge||'')}"></div>
       <div class="field"><label>Sayfa Sayısı</label><input id="adm-eb-pages" type="number" value="${b.pages||''}"></div>
-      <div class="field field-full"><label>Kapak URL</label><input id="adm-eb-cover" value="${admEsc(b.cover||'')}" placeholder="https://res.cloudinary.com/..." oninput="adminPreviewEditCover(this)"></div>
-      <div class="cover-preview" id="adm-ebCoverPreview" style="${b.cover?'display:flex':'display:none'}">
-        <img id="adm-ebCoverImg" src="${admEsc(b.cover||'')}" alt="Kapak önizleme">
-        <div class="cover-prev-info"><div id="adm-ebCoverDims"></div></div>
+      <div class="field field-full">
+        <label>Kapak Görseli <span style="font-weight:400;color:var(--txt3)">(510×794 önerilir)</span></label>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <input type="file" id="adm-eb-cover-file" accept="image/*" onchange="admUploadImage(this,'adm-eb-cover','adm-ebCoverImg','adm-ebCoverPreview')" style="flex:1;font-size:.78rem">
+          <button class="act-btn red" type="button" onclick="adminRemoveEditCover()" title="Temizle"><i class="ti ti-x" style="font-size:12px"></i></button>
+        </div>
+        <input type="hidden" id="adm-eb-cover" value="${admEsc(b.cover||'')}">
+        <div class="cover-preview" id="adm-ebCoverPreview" style="${b.cover?'display:flex':'display:none'}">
+          <img id="adm-ebCoverImg" src="${admEsc(b.cover||'')}" alt="Kapak önizleme">
+          <div class="cover-prev-info"><div id="adm-ebCoverDims"></div></div>
+        </div>
       </div>
       <div class="field field-full"><label>Açıklama</label><div class="adm-ql-wrap"><div id="adm-eb-desc-quill"></div></div></div>
     </div>
@@ -9292,20 +9299,13 @@ window.adminSaveEditBook = function(id){
   b.title=agv('adm-eb-title'); b.author=agv('adm-eb-author'); b.price=price;
   b.cat=agv('adm-eb-cat'); b.badge=agv('adm-eb-badge')||null;
   b.pages=parseInt(agv('adm-eb-pages'))||0; b.desc=_quillEditDesc?(_quillEditDesc.getText().trim()?_quillEditDesc.root.innerHTML:''):agv('adm-eb-desc');
-  b.cover=(agv('adm-eb-cover')||'').trim();
+  b.cover=(ag('adm-eb-cover')?.value||'').trim();
   admSaveBooks(); adminRenderBooks(); adminRenderTopBooks();
   adminCloseModal('adm-editModal');
   adminToast(`"${b.title}" güncellendi`);
 };
 
-window.adminPreviewEditCover = function(input){
-  const url=(input.value||'').trim();
-  if(!url){ag('adm-ebCoverPreview').style.display='none';return;}
-  const img=new Image();
-  img.onload=()=>{ag('adm-ebCoverImg').src=url; ag('adm-ebCoverPreview').style.display='flex';};
-  img.onerror=()=>{ag('adm-ebCoverPreview').style.display='none';};
-  img.src=url;
-};
+window.adminRemoveEditCover = function(){ const h=ag('adm-eb-cover');if(h)h.value=''; const f=ag('adm-eb-cover-file');if(f)f.value=''; const p=ag('adm-ebCoverPreview');if(p)p.style.display='none'; const i=ag('adm-ebCoverImg');if(i)i.src=''; };
 
 window.adminDeleteBook = function(id){
   const b=adminBooks.find(x=>x.id===id); if(!b)return;
