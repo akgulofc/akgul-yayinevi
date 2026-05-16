@@ -984,84 +984,120 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .blog-grid.list-view .blog-body{display:flex;flex-direction:column;justify-content:center}
 
 /* ── AKGÜL GAZETESİ ── */
-.gz-page{background:#F7F3EC;min-height:100vh}
-.gz-masthead{background:var(--ink);border-bottom:3px double var(--gold);padding:1.5rem 2rem .8rem;text-align:center;position:relative}
-.gz-masthead-top{display:flex;align-items:center;justify-content:space-between;font-size:.6rem;color:rgba(200,169,110,.6);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem}
-.gz-masthead-name{font-family:var(--font-serif);font-size:clamp(2.4rem,6vw,4.5rem);font-weight:700;color:var(--gold);line-height:1;letter-spacing:.04em;text-shadow:0 2px 12px rgba(0,0,0,.4)}
-.gz-masthead-slogan{font-size:.65rem;color:rgba(200,169,110,.55);letter-spacing:.18em;text-transform:uppercase;margin-top:.3rem;font-style:italic}
-.gz-masthead-rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:.7rem 0}
-.gz-son-dakika{background:var(--rust);padding:.45rem 2rem;display:flex;align-items:center;gap:.85rem;overflow:hidden}
-.gz-sd-label{background:#fff;color:var(--rust);font-size:.6rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 9px;border-radius:2px;white-space:nowrap;flex-shrink:0}
-.gz-sd-text{color:#fff;font-size:.78rem;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gz-filter-bar{background:#F7F3EC;border-bottom:2px solid var(--ink);padding:.4rem 2rem;display:flex;align-items:center;gap:.4rem;overflow-x:auto;scrollbar-width:none;position:sticky;top:84px;z-index:100}
+:root{--paper-bg:#EDE8DC;--paper-dark:#D9D2C0;--ink-rule:rgba(13,12,9,.18);--ink-rule-strong:#0D0C09}
+.gz-page{background:var(--paper-bg);min-height:100vh;font-family:var(--font-serif)}
+
+/* MASTHEAD */
+.gz-masthead{background:var(--paper-bg);padding:0 2rem;position:relative}
+.gz-mast-border{height:4px;background:var(--ink-rule-strong)}
+.gz-mast-border.thin{height:1px;margin:.25rem 0}
+.gz-mast-border.double{height:0;border-top:3px solid var(--ink-rule-strong);border-bottom:1px solid var(--ink-rule-strong);padding-top:3px}
+.gz-masthead-meta{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.45rem 0;gap:1rem}
+.gz-mast-left{font-family:var(--font-sans);font-size:.6rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;line-height:1.5}
+.gz-mast-center{text-align:center}
+.gz-mast-right{font-family:var(--font-sans);font-size:.6rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;line-height:1.5;text-align:right}
+.gz-masthead-name{font-family:var(--font-serif);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:700;color:var(--ink);line-height:.95;letter-spacing:.02em;text-align:center;padding:.3rem 0}
+.gz-masthead-tagline{display:flex;align-items:center;justify-content:center;gap:.75rem;padding:.5rem 0;font-family:var(--font-sans);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.gz-mast-tag-rule{flex:1;height:1px;background:var(--ink-rule-strong)}
+
+/* SON DAKİKA */
+.gz-son-dakika{background:var(--ink);padding:.4rem 1.5rem;display:flex;align-items:center;gap:.85rem;overflow:hidden;border-bottom:2px solid var(--gold)}
+.gz-sd-label{background:var(--rust);color:#fff;font-family:var(--font-sans);font-size:.55rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;white-space:nowrap;flex-shrink:0}
+.gz-sd-text{color:rgba(255,255,255,.85);font-family:var(--font-serif);font-size:.82rem;font-style:italic;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.gz-sd-text:hover{color:#fff}
+
+/* BÖLÜM ÇUBUĞU */
+.gz-filter-bar{background:var(--ink);padding:.3rem 1.5rem;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;position:sticky;top:84px;z-index:100;border-bottom:3px double rgba(200,169,110,.4)}
 .gz-filter-bar::-webkit-scrollbar{display:none}
-.gz-fbtn{background:none;border:none;font-size:.68rem;font-family:var(--font-serif);font-style:italic;color:var(--muted);padding:.25rem .7rem;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap}
-.gz-fbtn:hover{color:var(--ink)}
-.gz-fbtn.act{color:var(--ink);font-weight:700;border-bottom-color:var(--ink)}
-.gz-inner{max-width:1200px;margin:0 auto;padding:2rem 2rem 5rem}
-/* Manşet */
-.gz-manset{display:grid;grid-template-columns:1fr 340px;gap:0;border:2px solid var(--ink);margin-bottom:1.5rem;background:#fff}
-.gz-manset-main{cursor:pointer;position:relative;overflow:hidden;min-height:320px;display:flex;flex-direction:column;justify-content:flex-end}
-.gz-manset-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s}
-.gz-manset-main:hover .gz-manset-img{transform:scale(1.03)}
-.gz-manset-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(5,4,3,.9) 40%,rgba(5,4,3,.15) 100%)}
-.gz-manset-body{position:relative;z-index:1;padding:1.75rem}
-.gz-manset-tag{display:inline-block;background:var(--gold);color:var(--ink);font-size:.58rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:2px 9px;margin-bottom:.6rem}
-.gz-manset-title{font-family:var(--font-serif);color:#fff;font-size:clamp(1.4rem,2.8vw,2.2rem);font-weight:700;line-height:1.2;margin-bottom:.5rem}
-.gz-manset-excerpt{font-size:.78rem;color:rgba(230,220,200,.75);line-height:1.6;margin-bottom:.75rem;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.gz-manset-byline{font-size:.65rem;color:rgba(230,220,200,.55);font-style:italic}
-/* Sidebar manşet */
-.gz-manset-side{border-left:2px solid var(--ink);display:flex;flex-direction:column}
-.gz-manset-side-item{padding:1rem 1.2rem;border-bottom:1px solid rgba(13,12,9,.12);cursor:pointer;flex:1;transition:background .15s}
+.gz-fbar-label{font-family:var(--font-sans);font-size:.55rem;color:rgba(200,169,110,.5);letter-spacing:.15em;text-transform:uppercase;padding-right:.9rem;border-right:1px solid rgba(200,169,110,.2);margin-right:.5rem;white-space:nowrap;flex-shrink:0}
+.gz-fbtn{background:none;border:none;font-family:var(--font-serif);font-style:italic;font-size:.75rem;color:rgba(200,169,110,.55);padding:.3rem .7rem;cursor:pointer;border-right:1px solid rgba(200,169,110,.1);transition:color .15s;white-space:nowrap}
+.gz-fbtn:last-child{border-right:none}
+.gz-fbtn:hover{color:var(--gold)}
+.gz-fbtn.act{color:var(--gold);font-weight:700}
+
+/* İÇ ALAN */
+.gz-inner{max-width:1240px;margin:0 auto;padding:1.75rem 1.5rem 5rem}
+
+/* MANŞET */
+.gz-manset{display:grid;grid-template-columns:1fr 300px;border-top:3px solid var(--ink-rule-strong);border-bottom:1px solid var(--ink-rule-strong);margin-bottom:0}
+.gz-manset-main{cursor:pointer;position:relative;overflow:hidden;min-height:380px;display:flex;flex-direction:column;justify-content:flex-end;border-right:1px solid var(--ink-rule-strong)}
+.gz-manset-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s var(--ease);filter:brightness(.92) saturate(.85)}
+.gz-manset-main:hover .gz-manset-img{transform:scale(1.02);filter:brightness(.85) saturate(.8)}
+.gz-manset-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(3,3,2,.94) 45%,rgba(3,3,2,.1) 100%)}
+.gz-manset-body{position:relative;z-index:1;padding:1.5rem 1.75rem}
+.gz-manset-konu{font-family:var(--font-sans);font-size:.52rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.gz-manset-konu::before{content:'';display:inline-block;width:18px;height:2px;background:var(--gold)}
+.gz-manset-title{font-family:var(--font-serif);color:#fff;font-size:clamp(1.6rem,3vw,2.6rem);font-weight:700;line-height:1.12;margin-bottom:.6rem;letter-spacing:-.01em}
+.gz-manset-excerpt{font-family:var(--font-serif);font-size:.82rem;color:rgba(230,220,200,.72);line-height:1.7;margin-bottom:.85rem;font-style:italic;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.gz-manset-byline{font-family:var(--font-sans);font-size:.58rem;color:rgba(200,169,110,.6);letter-spacing:.06em;text-transform:uppercase}
+/* Manşet kenar sütun */
+.gz-manset-side{display:flex;flex-direction:column}
+.gz-manset-side-item{padding:.9rem 1rem;border-bottom:1px solid var(--ink-rule);cursor:pointer;flex:1;transition:background .15s;position:relative}
+.gz-manset-side-item::before{content:'';position:absolute;left:0;top:.9rem;bottom:.9rem;width:2px;background:transparent;transition:background .15s}
+.gz-manset-side-item:hover::before{background:var(--gold)}
 .gz-manset-side-item:last-child{border-bottom:none}
-.gz-manset-side-item:hover{background:rgba(200,169,110,.08)}
-.gz-manset-side-cat{font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
-.gz-manset-side-title{font-family:var(--font-serif);font-size:.92rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:.3rem}
-.gz-manset-side-by{font-size:.62rem;color:var(--muted);font-style:italic}
-/* Grid */
-.gz-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid rgba(13,12,9,.15);background:rgba(13,12,9,.15)}
-.gz-grid-item{background:#fff;padding:1.25rem;border:1px solid rgba(13,12,9,.12);position:relative}
-.gz-grid-item.span2{grid-column:span 2}
-.gz-grid-item.gz-ilan-item{background:linear-gradient(145deg,#FDF9F0,#FAF4E4);display:flex;align-items:center;justify-content:center}
-/* Article card in grid */
-.gz-art{cursor:pointer;height:100%}
+.gz-manset-side-item:hover{background:rgba(200,169,110,.05)}
+.gz-manset-side-cat{font-family:var(--font-sans);font-size:.5rem;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem}
+.gz-manset-side-title{font-family:var(--font-serif);font-size:.9rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:.35rem}
+.gz-manset-side-by{font-family:var(--font-serif);font-size:.62rem;color:var(--muted);font-style:italic}
+
+/* SÜTUN BAŞLIĞI */
+.gz-section-head{display:flex;align-items:center;gap:0;margin:1.25rem 0 0;border-top:3px solid var(--ink-rule-strong);border-bottom:1px solid var(--ink-rule-strong)}
+.gz-section-head-lbl{font-family:var(--font-sans);font-size:.55rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:var(--paper-bg);padding:.3rem .8rem;margin-right:.6rem}
+.gz-section-head-rule{flex:1;height:1px}
+
+/* KÖŞELERİ OLAN GAZETE SÜTUN GRİDİ */
+.gz-grid{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--ink-rule-strong);border-bottom:1px solid var(--ink-rule-strong)}
+.gz-grid-item{padding:1.1rem 1.15rem;border-right:1px solid var(--ink-rule-strong);border-top:1px solid var(--ink-rule-strong);position:relative;background:var(--paper-bg)}
+.gz-grid-item.gz-ilan-item{background:linear-gradient(160deg,#F5EDD8,#EDE5CC);display:flex;align-items:center;justify-content:center}
+
+/* MAKALE */
+.gz-art{cursor:pointer;height:100%;display:flex;flex-direction:column}
+.gz-art-konu{font-family:var(--font-sans);font-size:.5rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.45rem;display:flex;align-items:center;gap:.35rem}
+.gz-art-konu::before{content:'';display:inline-block;width:12px;height:1.5px;background:currentColor}
+.gz-art-konu.article{color:var(--muted)}
+.gz-art-konu.tanitim{color:var(--sage)}
+.gz-art-konu.cekilis-sonuc{color:var(--gold-d)}
+.gz-art-konu.ilan{color:var(--rust)}
+.gz-art-img{width:calc(100% + 2.3rem);margin:-1.1rem -1.15rem 1rem;aspect-ratio:16/7;object-fit:cover;display:block;filter:grayscale(25%) contrast(1.05)}
+.gz-art-title{font-family:var(--font-serif);font-size:1.12rem;font-weight:700;color:var(--ink);line-height:1.25;margin-bottom:.5rem;letter-spacing:-.01em;transition:color .15s}
 .gz-art:hover .gz-art-title{color:var(--rust)}
-.gz-art-type{font-size:.52rem;font-weight:800;letter-spacing:.13em;text-transform:uppercase;margin-bottom:.4rem}
-.gz-art-type.article{color:var(--muted)}
-.gz-art-type.tanitim{color:var(--sage)}
-.gz-art-type.cekilis-sonuc{color:var(--gold-d)}
-.gz-art-type.ilan{color:var(--rust)}
-.gz-art-img{width:100%;aspect-ratio:16/8;object-fit:cover;display:block;margin-bottom:.7rem}
-.gz-art-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:.4rem;transition:color .15s}
-.gz-art-excerpt{font-size:.75rem;color:var(--muted);line-height:1.65;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.gz-art-rule{border:none;border-top:1px solid rgba(13,12,9,.12);margin:.7rem 0}
-.gz-art-byline{font-size:.62rem;color:var(--muted);font-style:italic}
-.gz-art-byline strong{font-style:normal;font-weight:600;color:var(--ink)}
-/* İlan kutusu */
-.gz-ilan-box{text-align:center;padding:.5rem;width:100%}
-.gz-ilan-header{font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);padding-bottom:.4rem;margin-bottom:.75rem}
-.gz-ilan-badge{display:inline-block;background:var(--rust);color:#fff;font-size:.55rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-bottom:.6rem}
-.gz-ilan-title{font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:.5rem}
-.gz-ilan-text{font-size:.75rem;color:var(--muted);line-height:1.6;margin-bottom:.75rem}
-.gz-ilan-cta{display:inline-block;background:var(--ink);color:var(--gold);font-size:.63rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:6px 18px;cursor:pointer;border:none;font-family:var(--font-sans);transition:background .15s}
+.gz-art-rule{border:none;border-top:1px solid var(--ink-rule);margin:.55rem 0}
+.gz-art-excerpt{font-family:var(--font-serif);font-size:.76rem;color:#4A4540;line-height:1.7;text-align:justify;hyphens:auto;flex:1;display:-webkit-box;-webkit-line-clamp:4;line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.gz-art-byline{margin-top:.55rem;font-family:var(--font-sans);font-size:.58rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.gz-art-byline strong{color:var(--ink);font-weight:600}
+
+/* İLAN KUTUSU */
+.gz-ilan-box{text-align:center;padding:.75rem .5rem;width:100%;border:1.5px solid var(--ink-rule-strong);position:relative}
+.gz-ilan-box::before{content:'✦ İLAN ✦';position:absolute;top:-.5em;left:50%;transform:translateX(-50%);background:linear-gradient(160deg,#F5EDD8,#EDE5CC);padding:0 .6rem;font-family:var(--font-sans);font-size:.45rem;font-weight:700;letter-spacing:.18em;color:var(--muted)}
+.gz-ilan-badge{display:inline-block;background:var(--rust);color:#fff;font-family:var(--font-sans);font-size:.52rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 12px;margin:0 0 .65rem}
+.gz-ilan-title{font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:.5rem}
+.gz-ilan-text{font-family:var(--font-serif);font-size:.75rem;color:#4A4540;line-height:1.65;margin-bottom:.85rem;font-style:italic}
+.gz-ilan-rule{border:none;border-top:2px solid var(--ink-rule-strong);margin:.75rem 0}
+.gz-ilan-cta{display:inline-block;background:var(--ink);color:var(--gold);font-family:var(--font-sans);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:7px 20px;cursor:pointer;border:none;transition:all .15s}
 .gz-ilan-cta:hover{background:var(--gold);color:var(--ink)}
-/* Empty */
-.gz-empty{text-align:center;padding:4rem 2rem;color:var(--muted);font-size:.88rem;grid-column:1/-1}
-/* Responsive */
-@media(max-width:900px){
+
+/* BOŞ */
+.gz-empty{text-align:center;padding:4rem 2rem;color:var(--muted);font-family:var(--font-serif);font-style:italic;font-size:.95rem}
+
+/* RESPONSIVE */
+@media(max-width:960px){
   .gz-manset{grid-template-columns:1fr}
-  .gz-manset-side{border-left:none;border-top:2px solid var(--ink);flex-direction:row;overflow-x:auto}
-  .gz-manset-side-item{min-width:200px;border-bottom:none;border-right:1px solid rgba(13,12,9,.12)}
+  .gz-manset-main{min-height:280px;border-right:none;border-bottom:1px solid var(--ink-rule-strong)}
+  .gz-manset-side{flex-direction:row;overflow-x:auto;border-top:none}
+  .gz-manset-side-item{min-width:200px;flex:0 0 200px;border-bottom:none;border-right:1px solid var(--ink-rule)}
   .gz-grid{grid-template-columns:repeat(2,1fr)}
-  .gz-grid-item.span2{grid-column:span 2}
 }
 @media(max-width:600px){
-  .gz-masthead-top{flex-direction:column;gap:.2rem;text-align:center}
+  .gz-masthead-meta{grid-template-columns:1fr;text-align:center;gap:.2rem}
+  .gz-mast-right{text-align:center}
+  .gz-masthead-name{font-size:clamp(2rem,10vw,3.2rem)}
   .gz-manset-side{flex-direction:column}
-  .gz-manset-side-item{min-width:unset}
+  .gz-manset-side-item{min-width:unset;flex:unset}
   .gz-grid{grid-template-columns:1fr}
-  .gz-grid-item.span2{grid-column:span 1}
   .gz-inner{padding:1rem 1rem 4rem}
+  .gz-filter-bar{padding:.3rem 1rem}
+  .gz-fbar-label{display:none}
 }
 
 /* ── HOW IT WORKS ── */
@@ -4070,15 +4106,21 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <div class="page gz-page" id="page-blog">
   <!-- Masthead -->
   <div class="gz-masthead">
-    <div class="gz-masthead-top">
-      <span id="gz-date"></span>
-      <span>Adana · Türkiye</span>
-      <span id="gz-baski">Baskı No: 1</span>
+    <div class="gz-mast-border"></div>
+    <div class="gz-masthead-meta">
+      <div class="gz-mast-left" id="gz-date"></div>
+      <div class="gz-mast-center">
+        <div class="gz-masthead-name">Akgül Gazetesi</div>
+      </div>
+      <div class="gz-mast-right" id="gz-baski">Baskı No: 1</div>
     </div>
-    <div class="gz-masthead-rule"></div>
-    <div class="gz-masthead-name">Akgül Gazetesi</div>
-    <div class="gz-masthead-slogan">Akgül Yayınevi'nin Edebiyat Gazetesi</div>
-    <div class="gz-masthead-rule"></div>
+    <div class="gz-mast-border thin"></div>
+    <div class="gz-masthead-tagline">
+      <span class="gz-mast-tag-rule"></span>
+      <span>Akgül Yayınevi'nin Edebiyat Gazetesi · Adana</span>
+      <span class="gz-mast-tag-rule"></span>
+    </div>
+    <div class="gz-mast-border double"></div>
   </div>
   <!-- Son Dakika -->
   <div class="gz-son-dakika" id="gz-son-dakika" style="display:none">
@@ -4087,6 +4129,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
   <!-- Filtre -->
   <div class="gz-filter-bar">
+    <span class="gz-fbar-label">Bölümler</span>
     <button class="gz-fbtn act" onclick="setGazeteCat(this,'all')">Tümü</button>
     <button class="gz-fbtn" onclick="setGazeteCat(this,'Yazarlık')">Yazarlık</button>
     <button class="gz-fbtn" onclick="setGazeteCat(this,'Şiir & Dil')">Şiir & Dil</button>
@@ -5176,9 +5219,13 @@ function gazeteBaskiNo(){
 
 function renderGazeteMasthead(){
   const dateEl=sid('gz-date');
-  if(dateEl)dateEl.textContent=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  if(dateEl){
+    const d=new Date();
+    const days=['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
+    dateEl.innerHTML=days[d.getDay()]+'<br>'+d.toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  }
   const baskiEl=sid('gz-baski');
-  if(baskiEl)baskiEl.textContent=`Baskı No: ${gazeteBaskiNo()}`;
+  if(baskiEl)baskiEl.innerHTML=`Sayı: ${gazeteBaskiNo()}<br>Ücretsiz`;
   // Son dakika: en son cekilis-sonuc veya ilk manset olmayan breaking
   const sd=blogData.find(p=>p.type==='cekilis-sonuc')||blogData.find(p=>p.sonDakika);
   const sdBar=sid('gz-son-dakika');const sdTxt=sid('gz-sd-text');
@@ -5210,15 +5257,18 @@ function renderGazete(){
   let html='';
 
   // Manşet block
+  const mBg=manset.images&&manset.images[0]
+    ?`background:${manset.bg};background-image:url('${manset.images[0]}');background-size:cover;background-position:center`
+    :`background:${manset.bg}`;
   html+=`<div class="gz-manset">
     <div class="gz-manset-main" onclick="openBlog(${manset.id})">
-      <div class="gz-manset-img" style="background:${manset.bg}${manset.images&&manset.images[0]?`;background-image:url('${manset.images[0]}')`:''};background-size:cover;background-position:center"></div>
+      <div class="gz-manset-img" style="${mBg}"></div>
       <div class="gz-manset-overlay"></div>
       <div class="gz-manset-body">
-        <div class="gz-manset-tag">${gzTypeLabel(manset)}</div>
+        <div class="gz-manset-konu">${gzTypeLabel(manset)}</div>
         <div class="gz-manset-title">${escHtml(manset.title)}</div>
         <div class="gz-manset-excerpt">${escHtml(manset.excerpt||'')}</div>
-        <div class="gz-manset-byline">Yazan: ${escHtml(manset.author)} &nbsp;·&nbsp; ${escHtml(manset.date)}</div>
+        <div class="gz-manset-byline">— ${escHtml(manset.author)} &nbsp;·&nbsp; ${escHtml(manset.date)}</div>
       </div>
     </div>
     <div class="gz-manset-side">${sideItems.map(p=>`
@@ -5232,6 +5282,7 @@ function renderGazete(){
 
   // Grid
   if(gridItems.length){
+    html+=`<div class="gz-section-head"><span class="gz-section-head-lbl">Diğer Yazılar</span></div>`;
     html+='<div class="gz-grid">';
     let ilanIdx=0;
     gridItems.forEach((p,i)=>{
@@ -5253,7 +5304,7 @@ function gzTypeLabel(p){
   const t=p.type||'article';
   if(t==='ilan')return 'İlan';
   if(t==='tanitim')return 'Tanıtım';
-  if(t==='cekilis-sonuc')return '🏆 Çekiliş Sonucu';
+  if(t==='cekilis-sonuc')return 'Çekiliş Sonucu';
   return escHtml(p.cat||'Yazı');
 }
 
@@ -5263,12 +5314,12 @@ function gzGridArticle(p){
   const imgHtml=p.images&&p.images[0]?`<img class="gz-art-img" src="${escHtml(p.images[0])}" alt="">`:'';
   return`<div class="gz-grid-item">
     <div class="gz-art" onclick="openBlog(${p.id})">
-      <div class="gz-art-type ${t}">${typeLabel}</div>
       ${imgHtml}
+      <div class="gz-art-konu ${t}">${typeLabel}</div>
       <div class="gz-art-title">${escHtml(p.title)}</div>
-      <div class="gz-art-excerpt">${escHtml(p.excerpt||'')}</div>
       <hr class="gz-art-rule">
-      <div class="gz-art-byline"><strong>${escHtml(p.author)}</strong> · ${escHtml(p.date)}</div>
+      <div class="gz-art-excerpt">${escHtml(p.excerpt||'')}</div>
+      <div class="gz-art-byline" style="margin-top:.55rem"><strong>${escHtml(p.author)}</strong> &nbsp;·&nbsp; ${escHtml(p.date)}</div>
     </div>
   </div>`;
 }
@@ -5276,9 +5327,9 @@ function gzGridArticle(p){
 function gzIlanItem(p){
   return`<div class="gz-grid-item gz-ilan-item">
     <div class="gz-ilan-box">
-      <div class="gz-ilan-header">İlan</div>
       ${p.ilanBadge?`<div class="gz-ilan-badge">${escHtml(p.ilanBadge)}</div>`:''}
       <div class="gz-ilan-title">${escHtml(p.title)}</div>
+      <div class="gz-ilan-rule"></div>
       <div class="gz-ilan-text">${escHtml(p.excerpt||'')}</div>
       <button class="gz-ilan-cta" onclick="openBlog(${p.id})">Daha Fazla</button>
     </div>
