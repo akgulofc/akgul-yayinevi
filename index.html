@@ -164,8 +164,22 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .gp-order-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
 /* ── ÇEKİLİŞ SAYFASI ── */
 .ck-bg{background:linear-gradient(160deg,#0F0E0B 0%,#1a0e1a 55%,#1a1508 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem}
-.ck-inner{max-width:860px;margin:0 auto}
+.ck-inner{max-width:1100px;margin:0 auto}
 .ck-hero{text-align:center;margin-bottom:3rem}
+.ck-layout{display:grid;grid-template-columns:260px 1fr;gap:3rem;align-items:start}
+.ck-book-panel{position:sticky;top:100px;text-align:center}
+.ck-book-wrap{position:relative;width:180px;margin:0 auto 1.25rem;filter:drop-shadow(0 20px 40px rgba(0,0,0,.5))}
+.ck-book-cover{width:180px;aspect-ratio:2/3;border-radius:6px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.4),0 2px 8px rgba(0,0,0,.2)}
+.ck-book-cover::after{content:'';position:absolute;right:0;top:0;bottom:0;width:14px;background:linear-gradient(to left,rgba(0,0,0,.3),transparent);z-index:5}
+.ck-book-cover::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12) 0%,transparent 45%);z-index:5}
+.ck-book-spine{position:absolute;left:0;top:0;bottom:0;width:8px;background:linear-gradient(180deg,rgba(200,169,110,.6),rgba(200,169,110,.25));z-index:6}
+.ck-book-img{width:100%;height:100%;object-fit:cover}
+.ck-book-badge{display:inline-block;background:linear-gradient(90deg,var(--gold),#e8c97a);color:var(--ink);font-size:.6rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;padding:.3rem .9rem;border-radius:20px;margin-bottom:.75rem}
+.ck-book-title{font-family:var(--font-serif);font-size:1.1rem;color:#fff;font-weight:700;margin-bottom:.25rem;line-height:1.3}
+.ck-book-author{font-size:.78rem;color:rgba(255,255,255,.5)}
+@keyframes ckFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.ck-book-wrap{animation:ckFloat 3.5s ease-in-out infinite}
+@media(max-width:800px){.ck-layout{grid-template-columns:1fr}.ck-book-panel{position:static;margin-bottom:2rem}}
 .ck-label{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
 .ck-title{font-family:var(--font-serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:#fff;line-height:1.15;margin-bottom:1rem}
 .ck-title em{color:var(--gold);font-style:italic}
@@ -433,6 +447,26 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
   .nav-links a:hover::after,.nav-links a.act::after{width:100%}
 }
 
+/* ── DROPDOWN NAV ── */
+.desk-only-li{display:none}
+@media(min-width:1281px){
+  .desk-only-li{display:list-item}
+  .nav-has-drop{position:relative}
+  .nav-has-drop>a{display:inline-flex;align-items:center;gap:.28rem;cursor:pointer}
+  .nav-drop-arrow{font-size:.6rem;opacity:.7;transition:transform .2s;display:inline-block}
+  .nav-has-drop:hover .nav-drop-arrow{transform:rotate(180deg)}
+  .nav-has-drop>a::after{display:none!important}
+  .nav-drop{position:absolute;top:calc(100% + .9rem);left:50%;transform:translateX(-50%) translateY(-6px);background:#0F0E0B;border:1px solid rgba(200,169,110,.2);border-radius:10px;padding:.5rem 0;min-width:200px;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:300;list-style:none;white-space:nowrap;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+  .nav-has-drop:hover .nav-drop{opacity:1;pointer-events:all;transform:translateX(-50%) translateY(0)}
+  .nav-drop::before{content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);border:6px solid transparent;border-bottom-color:rgba(200,169,110,.2);border-top:none}
+  .nav-drop::after{content:'';position:absolute;top:-5px;left:50%;transform:translateX(-50%);border:5px solid transparent;border-bottom-color:#0F0E0B;border-top:none}
+  .nav-drop li{border-bottom:1px solid rgba(200,169,110,.07);list-style:none}
+  .nav-drop li:last-child{border-bottom:none}
+  .nav-drop a{padding:.6rem 1.2rem!important;font-size:.7rem!important;display:flex!important;align-items:center;gap:.55rem;color:rgba(196,186,176,.85)!important;letter-spacing:.06em;text-transform:uppercase;transition:color .15s,background .15s,padding-left .15s!important}
+  .nav-drop a:hover{color:var(--gold)!important;background:rgba(200,169,110,.06)!important;padding-left:1.5rem!important}
+  .nav-drop a::after{display:none!important}
+  .nav-drop-icon{font-size:.85rem}
+}
 /* ── ORTA MASAÜSTÜ (1281–1500px): Nav sıkıştır ── */
 @media(min-width:1281px) and (max-width:1500px){
   .nav-brand-slogan{display:none}
@@ -3105,13 +3139,23 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <span class="mob-nav-brand">Akgül Yayınevi</span>
       <button class="mob-nav-close" onclick="closeNav()" aria-label="Kapat">✕</button>
     </li>
-    <li><a onclick="go('home');closeNav()" data-p="home">Ana Sayfa</a></li>
+    <li class="mob-only-li"><a onclick="go('home');closeNav()" data-p="home">Ana Sayfa</a></li>
     <li><a onclick="go('home');closeNav();setTimeout(()=>sid('books-sec')?.scrollIntoView({behavior:'smooth'}),300)" data-p="home">Kitaplarımız</a></li>
     <li><a onclick="go('authors');closeNav()" data-p="authors">Yazarlarımız</a></li>
     <li><a onclick="go('blog');closeNav()" data-p="blog">Yazı Köşesi</a></li>
-    <li><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu">Sürpriz Kutu</a></li>
-    <li><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti">Hediye Sepeti</a></li>
-    <li><a onclick="go('cekilis');closeNav()" data-p="cekilis">Çekiliş</a></li>
+    <!-- Mobil: özel sayfalar ayrı ayrı -->
+    <li class="mob-only-li"><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu">Sürpriz Kutu</a></li>
+    <li class="mob-only-li"><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti">Hediye Sepeti</a></li>
+    <li class="mob-only-li"><a onclick="go('cekilis');closeNav()" data-p="cekilis">Çekiliş Robotu</a></li>
+    <!-- Masaüstü: dropdown -->
+    <li class="desk-only-li nav-has-drop">
+      <a>Özel <span class="nav-drop-arrow">▾</span></a>
+      <ul class="nav-drop">
+        <li><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu"><span class="nav-drop-icon">🎲</span>Sürpriz Kutu</a></li>
+        <li><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti"><span class="nav-drop-icon">🎁</span>Hediye Sepeti</a></li>
+        <li><a onclick="go('cekilis');closeNav()" data-p="cekilis"><span class="nav-drop-icon">🤖</span>Çekiliş Robotu</a></li>
+      </ul>
+    </li>
     <li><a onclick="go('ai-oneri');closeNav()" data-p="ai-oneri">AI Öneri</a></li>
     <li><a onclick="go('eser-basvuru');closeNav()" data-p="eser-basvuru">Eser Başvuru</a></li>
     <li><a onclick="go('about');closeNav()" data-p="about">Hakkımızda</a></li>
@@ -4407,7 +4451,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a onclick="go('authors')">Yazarlarımız</a></li>
         <li><a onclick="go('surpriz-kutu')">Sürpriz Kutu</a></li>
         <li><a onclick="go('hediye-sepeti')">Hediye Sepeti</a></li>
-        <li><a onclick="go('cekilis')">Çekiliş</a></li>
+        <li><a onclick="go('cekilis')">Çekiliş Robotu</a></li>
         <li><a onclick="go('ai-oneri')">AI Kitap Öneri</a></li>
         <li><a onclick="go('eser-basvuru')">Eser Başvuru</a></li>
         <li><a onclick="go('about')">Hakkımızda</a></li>
@@ -5879,82 +5923,124 @@ function renderCekilisPage(){
   const el=sid('ckContent');if(!el)return;
   const ck=loadCekilis();
   if(!ck||!ck.bookCount){
-    el.innerHTML=`<div class="ck-no-active"><p style="font-size:2rem;margin-bottom:1rem">🎁</p><p>Şu an aktif bir çekiliş bulunmuyor.<br>Yakında yeni bir çekiliş gelecek!</p></div>`;
+    el.innerHTML=`<div class="ck-no-active"><p style="font-size:2.5rem;margin-bottom:1rem">🤖</p><p>Şu an aktif bir çekiliş bulunmuyor.<br>Yakında yeni bir çekiliş gelecek, takipte kalın!</p></div>`;
     return;
   }
+  const ckBook=books.find(b=>b.id===ck.bookId)||null;
   const isJoined=currentUser&&(ck.participants||[]).some(p=>p.email===currentUser.email);
   const isEnded=ck.status==='ended';
   const endDateStr=ck.endDate?new Date(ck.endDate).toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'}):'';
   const partCount=(ck.participants||[]).length;
 
-  let contentHtml='';
+  // Kitap görsel paneli
+  const bookCoverHtml=ckBook?`
+    <div class="ck-book-panel">
+      <div class="ck-book-badge">Bu Ay'ın Ödülü</div>
+      <div class="ck-book-wrap">
+        <div class="ck-book-cover" style="background:${ckBook.bg||'linear-gradient(135deg,#1d2e2a,#2D3E3A)'}">
+          <div class="ck-book-spine"></div>
+          ${ckBook.cover?`<img src="${ckBook.cover}" alt="${escHtml(ckBook.title)}" class="ck-book-img">`:''}
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:.75rem;z-index:3">
+            <div style="font-family:var(--font-serif);font-size:.85rem;color:#fff;font-weight:700;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.6)">${escHtml(ckBook.title)}</div>
+            <div style="font-size:.62rem;color:rgba(255,255,255,.6);margin-top:.2rem">${escHtml(ckBook.author)}</div>
+          </div>
+        </div>
+      </div>
+      <div class="ck-book-title">${escHtml(ckBook.title)}</div>
+      <div class="ck-book-author">${escHtml(ckBook.author)}</div>
+      ${!isEnded?`<div style="margin-top:1rem"><span style="font-family:var(--font-serif);font-size:1.6rem;color:var(--gold);font-weight:700">${ck.bookCount}</span><div style="font-size:.65rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase;margin-top:.2rem">adet kazanacak</div></div>`:''}
+    </div>`:'';
+
+  let rightHtml='';
   if(isEnded){
     const winners=ck.winners||[];
-    contentHtml=`
-      <div class="ck-card ck-ended-info">
-        <p style="font-size:1.5rem;margin-bottom:.5rem">🏆</p>
-        <div class="ck-ended-title">Çekiliş Sona Erdi</div>
-        <p style="font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:1.25rem">${partCount} kişi arasından ${ck.bookCount} kazanan seçildi.</p>
-        ${winners.length?`<div class="ck-winners">${winners.map((w,i)=>`
-          <div class="ck-winner-row">
-            <div class="ck-winner-num">${i+1}</div>
-            <div>
-              <div class="ck-winner-name">${escHtml(w.name)}</div>
-              <div class="ck-winner-ig">@${escHtml(w.igUser)}</div>
-            </div>
-          </div>`).join('')}</div>`:'<p style="color:rgba(255,255,255,.4);font-size:.85rem">Kazananlar henüz açıklanmadı.</p>'}
-        ${ck.announceText?`<div style="margin-top:1.25rem;text-align:left;background:rgba(255,255,255,.04);border-radius:8px;padding:1rem;font-size:.82rem;color:rgba(255,255,255,.7);white-space:pre-wrap">${escHtml(ck.announceText)}</div>`:''}
+    rightHtml=`
+      <div>
+        <div class="ck-card" style="margin-bottom:1.5rem">
+          <div class="ck-info-grid">
+            <div class="ck-info-item"><div class="ck-info-num">${ck.bookCount}</div><div class="ck-info-lbl">Ödül</div></div>
+            <div class="ck-info-item"><div class="ck-info-num">${partCount}</div><div class="ck-info-lbl">Katılımcı</div></div>
+            <div class="ck-info-item"><div class="ck-info-num" style="font-size:1rem">${endDateStr}</div><div class="ck-info-lbl">Bitiş</div></div>
+          </div>
+        </div>
+        <div class="ck-card ck-ended-info">
+          <p style="font-size:2rem;margin-bottom:.75rem">🏆</p>
+          <div class="ck-ended-title">Çekiliş Sona Erdi</div>
+          <p style="font-size:.85rem;color:rgba(255,255,255,.5);margin-bottom:1.5rem">${partCount} kişi arasından ${ck.bookCount} kazanan seçildi. Tebrikler!</p>
+          ${winners.length?`<div class="ck-winners">${winners.map((w,i)=>`
+            <div class="ck-winner-row">
+              <div class="ck-winner-num">${i+1}</div>
+              <div style="flex:1">
+                <div class="ck-winner-name">${escHtml(w.name)}</div>
+                <div class="ck-winner-ig">@${escHtml(w.igUser)}</div>
+              </div>
+            </div>`).join('')}</div>`:'<p style="color:rgba(255,255,255,.4);font-size:.85rem">Kazananlar yakında açıklanacak.</p>'}
+          ${ck.announceText?`<div style="margin-top:1.5rem;text-align:left;background:rgba(200,169,110,.06);border:1px solid rgba(200,169,110,.15);border-radius:8px;padding:1rem;font-size:.82rem;color:rgba(255,255,255,.7);white-space:pre-wrap;line-height:1.65">${escHtml(ck.announceText)}</div>`:''}
+        </div>
       </div>`;
   } else if(!currentUser){
-    contentHtml=`
-      <div class="ck-card">
-        <div class="ck-info-grid">
-          <div class="ck-info-item"><div class="ck-info-num">${ck.bookCount}</div><div class="ck-info-lbl">Kitap Ödül</div></div>
-          <div class="ck-info-item"><div class="ck-info-num">${partCount}</div><div class="ck-info-lbl">Katılımcı</div></div>
-          <div class="ck-info-item"><div class="ck-info-num" style="font-size:1.1rem">${endDateStr}</div><div class="ck-info-lbl">Bitiş</div></div>
+    rightHtml=`
+      <div>
+        <div class="ck-card" style="margin-bottom:1.25rem">
+          <div class="ck-info-grid">
+            <div class="ck-info-item"><div class="ck-info-num">${ck.bookCount}</div><div class="ck-info-lbl">Kitap Ödül</div></div>
+            <div class="ck-info-item"><div class="ck-info-num">${partCount}</div><div class="ck-info-lbl">Katılımcı</div></div>
+            <div class="ck-info-item"><div class="ck-info-num" style="font-size:1rem">${endDateStr}</div><div class="ck-info-lbl">Bitiş</div></div>
+          </div>
         </div>
-        <div style="text-align:center;padding:1.5rem 0">
-          <p style="color:rgba(255,255,255,.6);font-size:.9rem;margin-bottom:1rem">Çekilişe katılmak için üye girişi yapmalısınız.</p>
-          <button class="ck-join-btn" style="max-width:260px;margin:0 auto" onclick="go('auth')">Giriş Yap / Üye Ol</button>
+        <div class="ck-card">
+          <p style="color:rgba(255,255,255,.65);font-size:.9rem;margin-bottom:1.25rem;line-height:1.6">Çekilişe katılmak için Akgül Yayınevi'ne üye olmanız gerekiyor. Üyelik tamamen ücretsiz!</p>
+          <button class="ck-join-btn" onclick="go('auth')">Giriş Yap / Üye Ol</button>
         </div>
       </div>`;
   } else if(isJoined){
-    contentHtml=`
-      <div class="ck-card">
-        <div class="ck-info-grid">
-          <div class="ck-info-item"><div class="ck-info-num">${ck.bookCount}</div><div class="ck-info-lbl">Kitap Ödül</div></div>
-          <div class="ck-info-item"><div class="ck-info-num">${partCount}</div><div class="ck-info-lbl">Katılımcı</div></div>
-          <div class="ck-info-item"><div class="ck-info-num" style="font-size:1.1rem">${endDateStr}</div><div class="ck-info-lbl">Bitiş</div></div>
+    rightHtml=`
+      <div>
+        <div class="ck-card" style="margin-bottom:1.25rem">
+          <div class="ck-info-grid">
+            <div class="ck-info-item"><div class="ck-info-num">${ck.bookCount}</div><div class="ck-info-lbl">Kitap Ödül</div></div>
+            <div class="ck-info-item"><div class="ck-info-num">${partCount}</div><div class="ck-info-lbl">Katılımcı</div></div>
+            <div class="ck-info-item"><div class="ck-info-num" style="font-size:1rem">${endDateStr}</div><div class="ck-info-lbl">Bitiş</div></div>
+          </div>
         </div>
-        <div class="ck-joined-badge">✦ Çekilişe katıldınız! Sonuçları bekliyoruz 🎉</div>
+        <div class="ck-joined-badge" style="padding:1.5rem">
+          <div style="font-size:2rem;margin-bottom:.5rem">🎉</div>
+          <div style="font-size:1rem;font-weight:600;margin-bottom:.35rem">Çekilişe katıldınız!</div>
+          <div style="font-size:.82rem;opacity:.7">Sonuçlar ${endDateStr} tarihinde açıklanacak. Başarılar!</div>
+        </div>
       </div>`;
   } else {
-    const taggingNote=ck.requireTagging&&ck.igPost?`<div class="ck-rule"><div class="ck-rule-icon">3</div><span>Bu ayki çekiliş postunu paylaştık — yorumlara 3 arkadaşını etiketle!</span></div>`:'';
-    const igPostBtn=ck.igPost?`<a class="ck-ig-link" href="${ck.igPost}" target="_blank">📷 Instagram Çekiliş Postunu Gör</a>`:'';
-    contentHtml=`
-      <div class="ck-card">
-        <div class="ck-info-grid">
-          <div class="ck-info-item"><div class="ck-info-num">${ck.bookCount}</div><div class="ck-info-lbl">Kitap Ödül</div></div>
-          <div class="ck-info-item"><div class="ck-info-num">${partCount}</div><div class="ck-info-lbl">Katılımcı</div></div>
-          <div class="ck-info-item"><div class="ck-info-num" style="font-size:1.1rem">${endDateStr}</div><div class="ck-info-lbl">Bitiş</div></div>
-        </div>
-        <div class="ck-rules">
-          <div class="ck-rules-title">Katılım Şartları</div>
-          <div class="ck-rule"><div class="ck-rule-icon">1</div><span>Akgül Yayınevi sitesine üye ol (✓ Giriş yaptınız)</span></div>
-          <div class="ck-rule"><div class="ck-rule-icon">2</div><span>Instagram'da <strong style="color:var(--gold)">@akgulyayinevi</strong>'ni takip et</span></div>
-          ${taggingNote}
-        </div>
-        ${igPostBtn}
-        <div class="ck-form">
-          <div class="ck-field">
-            <label>Instagram Kullanıcı Adınız</label>
-            <input type="text" id="ck-ig-input" placeholder="@kullaniciadi">
+    const taggingNote=ck.requireTagging&&ck.igPost?`<div class="ck-rule"><div class="ck-rule-icon">3</div><span>Çekiliş postuna git, yorumlara 3 arkadaşını etiketle</span></div>`:'';
+    const igPostBtn=ck.igPost?`<a class="ck-ig-link" href="${ck.igPost}" target="_blank" rel="noopener">📷 Instagram Çekiliş Postunu Gör</a><br>`:'';
+    rightHtml=`
+      <div>
+        <div class="ck-card" style="margin-bottom:1.25rem">
+          <div class="ck-info-grid">
+            <div class="ck-info-item"><div class="ck-info-num">${ck.bookCount}</div><div class="ck-info-lbl">Kitap Ödül</div></div>
+            <div class="ck-info-item"><div class="ck-info-num">${partCount}</div><div class="ck-info-lbl">Katılımcı</div></div>
+            <div class="ck-info-item"><div class="ck-info-num" style="font-size:1rem">${endDateStr}</div><div class="ck-info-lbl">Bitiş</div></div>
           </div>
-          <button class="ck-join-btn" onclick="joinCekilis()">Çekilişe Katıl</button>
+        </div>
+        <div class="ck-card">
+          <div class="ck-rules">
+            <div class="ck-rules-title">Katılım Şartları</div>
+            <div class="ck-rule"><div class="ck-rule-icon">1</div><span>Akgül Yayınevi sitesine üye ol <span style="color:var(--gold)">✓ Giriş yaptınız</span></span></div>
+            <div class="ck-rule"><div class="ck-rule-icon">2</div><span>Instagram'da <strong style="color:var(--gold)">@akgulyayinevi</strong>'ni takip et</span></div>
+            ${taggingNote}
+          </div>
+          ${igPostBtn}
+          <div class="ck-form">
+            <div class="ck-field">
+              <label>Instagram Kullanıcı Adınız</label>
+              <input type="text" id="ck-ig-input" placeholder="@kullaniciadi">
+            </div>
+            <button class="ck-join-btn" onclick="joinCekilis()">🤖 Çekilişe Katıl</button>
+          </div>
         </div>
       </div>`;
   }
-  el.innerHTML=contentHtml;
+
+  el.innerHTML=ckBook?`<div class="ck-layout">${bookCoverHtml}${rightHtml}</div>`:rightHtml;
 }
 
 function joinCekilis(){
@@ -8085,7 +8171,7 @@ async function sendAIW(){
         <div class="nav-item" data-page="p-reviews" onclick="adminNav(this)"><i class="ti ti-star"></i>Yorumlar<span class="nav-badge nb-gold" id="adm-navReviewCount">0</span></div>
 
         <div class="sb-section">İçerik</div>
-        <div class="nav-item" data-page="p-cekilis" onclick="adminNav(this)"><i class="ti ti-trophy"></i>Çekiliş</div>
+        <div class="nav-item" data-page="p-cekilis" onclick="adminNav(this)"><i class="ti ti-trophy"></i>Çekiliş Robotu</div>
         <div class="nav-item" data-page="p-content" onclick="adminNav(this)"><i class="ti ti-layout"></i>Site İçeriği</div>
 
         <div class="sb-section" id="adm-nav-system-sec">Sistem</div>
@@ -8501,12 +8587,18 @@ async function sendAIW(){
         <div class="page" id="adm-p-cekilis">
           <div class="card" style="margin-bottom:1.25rem">
             <div class="card-head">
-              <span class="card-title"><i class="ti ti-trophy"></i>Çekiliş Yönetimi</span>
+              <span class="card-title"><i class="ti ti-trophy"></i>Çekiliş Robotu</span>
               <div class="card-acts">
+                <button class="card-btn danger" onclick="adminDeleteCekilis()" style="background:rgba(139,58,42,.15);color:#e74c3c;border-color:rgba(231,76,60,.3)"><i class="ti ti-trash" style="font-size:13px"></i>Çekilişi Sil</button>
                 <button class="card-btn primary" onclick="adminSaveCekilis()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
               </div>
             </div>
             <div class="card-body">
+              <div class="field" style="margin-bottom:.75rem"><label>Çekiliş Kitabı</label>
+                <select id="adm-ck-book" style="width:100%;padding:.5rem .75rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.82rem">
+                  <option value="">-- Kitap seçin --</option>
+                </select>
+              </div>
               <div class="g2" style="margin-bottom:.75rem">
                 <div class="field"><label>Kitap Adedi (Ödül)</label><input type="number" id="adm-ck-count" min="1" placeholder="3"></div>
                 <div class="field"><label>Bitiş Tarihi</label><input type="date" id="adm-ck-end"></div>
@@ -8984,7 +9076,7 @@ const ADM_PAGE_META = {
   'p-users':   {title:'Kullanıcılar',  bread:'Topluluk'},
   'p-blog':    {title:'Blog',          bread:'Topluluk'},
   'p-reviews': {title:'Yorumlar',      bread:'Moderasyon'},
-  'p-cekilis': {title:'Çekiliş',        bread:'İçerik'},
+  'p-cekilis': {title:'Çekiliş Robotu',  bread:'İçerik'},
   'p-content': {title:'Site İçeriği',  bread:'İçerik Yönetimi'},
   'p-settings':{title:'Ayarlar',       bread:'Sistem'},
 };
@@ -10051,6 +10143,12 @@ window.adminSaveShippingContent = function(){
 function adminRenderCekilis(){
   const ck=loadCekilis()||{};
   const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
+  // Kitap seçici doldur
+  const bookSel=ag('adm-ck-book');
+  if(bookSel){
+    bookSel.innerHTML='<option value="">-- Kitap seçin --</option>'+
+      books.map(b=>`<option value="${b.id}"${ck.bookId===b.id?' selected':''}>${admEsc(b.title)} — ${admEsc(b.author)}</option>`).join('');
+  }
   fv('adm-ck-count',ck.bookCount||'');
   fv('adm-ck-end',ck.endDate||'');
   fv('adm-ck-igpost',ck.igPost||'');
@@ -10088,7 +10186,10 @@ function adminRenderCekilisWinners(ck){
 window.adminSaveCekilis = function(){
   const count=parseInt(agv('adm-ck-count'))||0;
   if(!count){adminToast('Kitap adedi giriniz!','warn');return;}
+  const bookId=parseInt(ag('adm-ck-book')?.value)||null;
+  if(!bookId){adminToast('Lütfen bir kitap seçin!','warn');return;}
   const ck=loadCekilis()||{participants:[],winners:[]};
+  ck.bookId=bookId;
   ck.bookCount=count;
   ck.endDate=agv('adm-ck-end');
   ck.igPost=agv('adm-ck-igpost');
@@ -10097,6 +10198,14 @@ window.adminSaveCekilis = function(){
   saveCekilisData(ck);
   updateCekilisSlide();
   adminToast('✦ Çekiliş kaydedildi!');
+};
+
+window.adminDeleteCekilis = function(){
+  if(!confirm('Bu çekilişi silmek istediğinize emin misiniz? Tüm katılımcı ve kazanan bilgileri silinecek.'))return;
+  localStorage.removeItem(ADM_STORE_CEKILIS);
+  updateCekilisSlide();
+  adminRenderCekilis();
+  adminToast('Çekiliş silindi.');
 };
 
 window.adminRunDraw = async function(){
