@@ -3310,7 +3310,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <span class="mob-nav-brand">Akgül Yayınevi</span>
       <button class="mob-nav-close" onclick="closeNav()" aria-label="Kapat">✕</button>
     </li>
-    <li class="mob-only-li"><a onclick="go('home');closeNav()" data-p="home">Ana Sayfa</a></li>
+    <li><a onclick="go('home');closeNav()" data-p="home">Ana Sayfa</a></li>
     <li><a onclick="go('home');closeNav();setTimeout(()=>sid('books-sec')?.scrollIntoView({behavior:'smooth'}),300)" data-p="home">Kitaplarımız</a></li>
     <li><a onclick="go('authors');closeNav()" data-p="authors">Yazarlarımız</a></li>
     <li><a onclick="go('blog');closeNav()" data-p="blog">Akgül Gazetesi</a></li>
@@ -3752,8 +3752,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div class="box-hero">
         <div>
           <p class="sec-label">Sürpriz Kitap Kutusu</p>
-          <h2 class="sec-title">Ruh Haline Göre<br><em>Özel Kutu</em></h2>
-          <p style="color:var(--muted);font-size:.92rem;line-height:1.75;margin-bottom:1.1rem">Okuma zevkinize ve ruh halinize özel hazırlanan, özenle seçilmiş kitaplar, kraft ambalaj ve el yazısı not kartıyla kapınızda.</p>
+          <h2 class="sec-title" id="sk-hero-title">Ruh Haline Göre<br><em>Özel Kutu</em></h2>
+          <p id="sk-hero-desc" style="color:var(--muted);font-size:.92rem;line-height:1.75;margin-bottom:1.1rem">Okuma zevkinize ve ruh halinize özel hazırlanan, özenle seçilmiş kitaplar, kraft ambalaj ve el yazısı not kartıyla kapınızda.</p>
           <!-- Sosyal kanıt sayacı -->
           <div class="box-social-proof">
             <div class="box-proof-dot"></div>
@@ -3782,22 +3782,22 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           <div class="box-packages" id="boxPackages">
             <div class="box-pkg" onclick="selBoxPkg(this,'kucuk')">
               <div class="box-pkg-name">Küçük</div>
-              <div class="box-pkg-books">2 kitap</div>
-              <div class="box-pkg-price">₺290</div>
-              <div class="box-pkg-desc">Hafif keşif</div>
+              <div class="box-pkg-books" id="sk-p1-books">2 kitap</div>
+              <div class="box-pkg-price" id="sk-p1-price">₺290</div>
+              <div class="box-pkg-desc" id="sk-p1-desc">Hafif keşif</div>
             </div>
             <div class="box-pkg sel" onclick="selBoxPkg(this,'standart')">
               <div class="box-pkg-popular">En Popüler</div>
               <div class="box-pkg-name">Standart</div>
-              <div class="box-pkg-books">3 kitap</div>
-              <div class="box-pkg-price">₺390</div>
-              <div class="box-pkg-desc">En çok tercih</div>
+              <div class="box-pkg-books" id="sk-p2-books">3 kitap</div>
+              <div class="box-pkg-price" id="sk-p2-price">₺390</div>
+              <div class="box-pkg-desc" id="sk-p2-desc">En çok tercih</div>
             </div>
             <div class="box-pkg" onclick="selBoxPkg(this,'buyuk')">
               <div class="box-pkg-name">Büyük</div>
-              <div class="box-pkg-books">5 kitap</div>
-              <div class="box-pkg-price">₺590</div>
-              <div class="box-pkg-desc">Derin okuma</div>
+              <div class="box-pkg-books" id="sk-p3-books">5 kitap</div>
+              <div class="box-pkg-price" id="sk-p3-price">₺590</div>
+              <div class="box-pkg-desc" id="sk-p3-desc">Derin okuma</div>
             </div>
           </div>
           <!-- Hediye modu -->
@@ -3865,9 +3865,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="gp-bg">
     <div class="gp-inner">
       <div class="gp-hero fade">
-        <p class="gp-hero-label">🎁 Kişiye Özel Hediye</p>
-        <h2 class="gp-hero-title">Hediye <em>Sepetim</em></h2>
-        <p class="gp-hero-sub">Sevdiklerinize istediğiniz kitabı seçin — imzalı kopya ve kişisel notunuzla özel bir hediyeye dönüştürün.</p>
+        <p class="gp-hero-label" id="hs-label">🎁 Kişiye Özel Hediye</p>
+        <h2 class="gp-hero-title" id="hs-title">Hediye <em>Sepetim</em></h2>
+        <p class="gp-hero-sub" id="hs-sub">Sevdiklerinize istediğiniz kitabı seçin — imzalı kopya ve kişisel notunuzla özel bir hediyeye dönüştürün.</p>
       </div>
       <div id="gpContent">
         <!-- JS tarafından doldurulur -->
@@ -4052,9 +4052,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <div class="page ai-page" id="page-ai-oneri">
   <div class="ai-hero">
     <div class="ai-hero-decoration">✦</div>
-    <p class="sec-label">Yapay Zeka Öneri Sistemi</p>
-    <h2 class="sec-title">Size Özel Kitap <em>Önerisi</em></h2>
-    <p class="ai-hero-desc">Ruh halinizi seçin, gelişmiş yapay zeka algoritmamız kataloğumuzdan tam size uygun kitabı bulsun. Her öneri editörlerimiz tarafından onaylanır.</p>
+    <p class="sec-label" id="ai-page-label">Yapay Zeka Öneri Sistemi</p>
+    <h2 class="sec-title" id="ai-page-title">Size Özel Kitap <em>Önerisi</em></h2>
+    <p class="ai-hero-desc" id="ai-page-desc">Ruh halinizi seçin, gelişmiş yapay zeka algoritmamız kataloğumuzdan tam size uygun kitabı bulsun. Her öneri editörlerimiz tarafından onaylanır.</p>
     <div class="ai-moods" id="aiMoods">
       <button class="ai-mood-btn" onclick="selAiMood(this,'Hüzünlü ve düşünceli')"><span class="ai-mood-icon">🌙</span>Hüzünlü & Düşünceli</button>
       <button class="ai-mood-btn" onclick="selAiMood(this,'Heyecanlı ve maceracı')"><span class="ai-mood-icon">⚡</span>Heyecanlı & Maceracı</button>
@@ -7941,6 +7941,32 @@ function applySiteContent(){
   }
 }
 
+/* ── ÖZEL SAYFA İÇERİĞİ UYGULA ── */
+function applySpecialPagesContent(){
+  const d=admLoad('akgulSpecialPages',{});
+  const el=id=>document.getElementById(id);
+  // Sürpriz Kutu
+  const sk=d.surpriz||{};
+  if(sk.title&&el('sk-hero-title'))el('sk-hero-title').innerHTML=sk.title.replace(/\n/g,'<br>');
+  if(sk.desc&&el('sk-hero-desc'))el('sk-hero-desc').textContent=sk.desc;
+  if(sk.packages){
+    const p=sk.packages;
+    if(p[0]){if(el('sk-p1-books'))el('sk-p1-books').textContent=p[0].books+' kitap';if(el('sk-p1-price'))el('sk-p1-price').textContent='₺'+p[0].price;if(el('sk-p1-desc'))el('sk-p1-desc').textContent=p[0].desc;}
+    if(p[1]){if(el('sk-p2-books'))el('sk-p2-books').textContent=p[1].books+' kitap';if(el('sk-p2-price'))el('sk-p2-price').textContent='₺'+p[1].price;if(el('sk-p2-desc'))el('sk-p2-desc').textContent=p[1].desc;}
+    if(p[2]){if(el('sk-p3-books'))el('sk-p3-books').textContent=p[2].books+' kitap';if(el('sk-p3-price'))el('sk-p3-price').textContent='₺'+p[2].price;if(el('sk-p3-desc'))el('sk-p3-desc').textContent=p[2].desc;}
+  }
+  // Hediye Sepeti
+  const hs=d.hediye||{};
+  if(hs.label&&el('hs-label'))el('hs-label').textContent=hs.label;
+  if(hs.title&&el('hs-title'))el('hs-title').innerHTML=escHtml(hs.title);
+  if(hs.sub&&el('hs-sub'))el('hs-sub').textContent=hs.sub;
+  // AI Öneri
+  const ai=d.ai||{};
+  if(ai.label&&el('ai-page-label'))el('ai-page-label').textContent=ai.label;
+  if(ai.title&&el('ai-page-title'))el('ai-page-title').innerHTML=ai.title;
+  if(ai.desc&&el('ai-page-desc'))el('ai-page-desc').textContent=ai.desc;
+}
+
 /* ── ADMIN USER SEED ── */
 if(!users.find(u=>u.email==='akgulyayinevi@gmail.com')){
   users.push({name:'Ömer Faruk Akgül',email:'akgulyayinevi@gmail.com',pass:'814135',role:'yazar',joined:'Mayıs 2026'});
@@ -7949,6 +7975,7 @@ if(!users.find(u=>u.email==='akgulyayinevi@gmail.com')){
 
 /* ── BAŞLANGIC ── */
 applySiteContent();
+applySpecialPagesContent();
 renderHomeAuthors();
 renderBoxSection();
 renderAISection();
@@ -8530,7 +8557,14 @@ async function sendAIW(){
         <div class="sb-section">İçerik</div>
         <div class="nav-item" data-page="p-blog" onclick="adminNav(this)"><i class="ti ti-news"></i>Akgül Gazetesi<span class="nav-badge nb-gold" id="adm-navBlogCount">6</span></div>
         <div class="nav-item" data-page="p-cekilis" onclick="adminNav(this)"><i class="ti ti-trophy"></i>Çekiliş Robotu</div>
-        <div class="nav-item" data-page="p-content" onclick="adminNav(this)"><i class="ti ti-layout"></i>Site İçeriği</div>
+        <div class="nav-item" data-page="p-content" onclick="adminNav(this)"><i class="ti ti-home"></i>Anasayfa İçeriği</div>
+
+        <div class="sb-section">Sayfalar</div>
+        <div class="nav-item" data-page="p-about" onclick="adminNav(this)"><i class="ti ti-info-circle"></i>Hakkımızda</div>
+        <div class="nav-item" data-page="p-iletisim" onclick="adminNav(this)"><i class="ti ti-phone"></i>İletişim & Footer</div>
+        <div class="nav-item" data-page="p-surpriz" onclick="adminNav(this)"><i class="ti ti-gift"></i>Sürpriz Kutu</div>
+        <div class="nav-item" data-page="p-hediye" onclick="adminNav(this)"><i class="ti ti-shopping-bag"></i>Hediye Sepeti</div>
+        <div class="nav-item" data-page="p-ai-content" onclick="adminNav(this)"><i class="ti ti-brain"></i>AI Öneri</div>
 
         <div class="sb-section" id="adm-nav-system-sec">Sistem</div>
         <div class="nav-item" id="adm-nav-settings" data-page="p-settings" onclick="adminNav(this)"><i class="ti ti-settings"></i>Ayarlar</div>
@@ -9091,49 +9125,72 @@ async function sendAIW(){
               <div class="field"><label>WhatsApp Numarası</label><input type="text" id="adm-ship-wa-inp" placeholder="905366483096" maxlength="12"></div>
             </div>
           </div>
+        </div>
+
+        <!-- ── HAKKIMIZDA SAYFASI ────────────── -->
+        <div class="page" id="adm-p-about">
+          <div class="card" style="margin-bottom:1.25rem">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-info-circle"></i>Hero Bölümü</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="adminSaveAboutContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="field"><label>Alt Başlık</label><input type="text" id="adm-ab-sub-inp" placeholder="Edebiyatın Kalbi Adana'da Atıyor"></div>
+              <div class="field"><label>Ana Alıntı</label><input type="text" id="adm-ab-quote-inp" placeholder="Kitap, insanlığın en büyük mirası..."></div>
+              <div class="field"><label>Meta Satırı</label><input type="text" id="adm-ab-meta-inp" placeholder="Est. 2024 · Adana, Türkiye"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-user"></i>Kurucu Bölümü</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="adminSaveAboutContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="g2">
+                <div class="field"><label>Kurucu Adı</label><input type="text" id="adm-ab-fname-inp"></div>
+                <div class="field"><label>Ünvan</label><input type="text" id="adm-ab-frole-inp"></div>
+              </div>
+              <div class="field"><label>Kurucu Alıntısı</label><textarea id="adm-ab-fquote-inp" rows="2" style="width:100%;resize:vertical"></textarea></div>
+              <div class="field"><label>Kurucu Biyografisi</label><textarea id="adm-ab-fbio-inp" rows="3" style="width:100%;resize:vertical"></textarea></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── İLETİŞİM & FOOTER ──────────────── -->
+        <div class="page" id="adm-p-iletisim">
           <div class="g2">
             <div class="card">
               <div class="card-head">
-                <span class="card-title"><i class="ti ti-info-circle"></i>Hakkımızda Sayfası</span>
+                <span class="card-title"><i class="ti ti-map-pin"></i>İletişim Bilgileri</span>
                 <div class="card-acts">
-                  <button class="card-btn primary" onclick="adminSaveAboutContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+                  <button class="card-btn primary" onclick="adminSaveContactContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
                 </div>
               </div>
               <div class="card-body">
-                <div class="settings-section">
-                  <h4>Hero Bölümü</h4>
-                  <div class="field"><label>Alt Başlık</label><input type="text" id="adm-ab-sub-inp"></div>
-                  <div class="field"><label>Ana Alıntı</label><input type="text" id="adm-ab-quote-inp"></div>
-                  <div class="field"><label>Meta Satırı</label><input type="text" id="adm-ab-meta-inp"></div>
+                <div class="field"><label>Adres</label><textarea id="adm-ct-addr-inp" rows="2" style="width:100%;resize:vertical"></textarea></div>
+                <div class="field"><label>Google Maps URL</label><input type="text" id="adm-ct-maps-inp"></div>
+                <div class="g2">
+                  <div class="field"><label>Telefon</label><input type="text" id="adm-ct-phone-inp"></div>
+                  <div class="field"><label>WhatsApp</label><input type="text" id="adm-ct-wa-inp" maxlength="12"></div>
                 </div>
-                <div class="settings-section">
-                  <h4>Kurucu Bölümü</h4>
-                  <div class="field"><label>Kurucu Adı</label><input type="text" id="adm-ab-fname-inp"></div>
-                  <div class="field"><label>Ünvan</label><input type="text" id="adm-ab-frole-inp"></div>
-                  <div class="field"><label>Kurucu Alıntısı</label><textarea id="adm-ab-fquote-inp" rows="2" style="width:100%;resize:vertical"></textarea></div>
-                  <div class="field"><label>Kurucu Biyografisi</label><textarea id="adm-ab-fbio-inp" rows="3" style="width:100%;resize:vertical"></textarea></div>
-                </div>
+                <div class="field"><label>E-posta</label><input type="email" id="adm-ct-email-inp"></div>
               </div>
             </div>
             <div class="card">
               <div class="card-head">
-                <span class="card-title"><i class="ti ti-phone"></i>İletişim & Footer</span>
+                <span class="card-title"><i class="ti ti-brand-instagram"></i>Sosyal Medya & Footer</span>
                 <div class="card-acts">
                   <button class="card-btn primary" onclick="adminSaveContactContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
                 </div>
               </div>
               <div class="card-body">
                 <div class="settings-section">
-                  <h4>İletişim Bilgileri</h4>
-                  <div class="field"><label>Adres</label><textarea id="adm-ct-addr-inp" rows="2" style="width:100%;resize:vertical"></textarea></div>
-                  <div class="field"><label>Google Maps URL</label><input type="text" id="adm-ct-maps-inp"></div>
-                  <div class="field"><label>Telefon</label><input type="text" id="adm-ct-phone-inp"></div>
-                  <div class="field"><label>WhatsApp</label><input type="text" id="adm-ct-wa-inp" maxlength="12"></div>
-                  <div class="field"><label>E-posta</label><input type="email" id="adm-ct-email-inp"></div>
-                </div>
-                <div class="settings-section">
                   <h4>Sosyal Medya</h4>
-                  <div class="field"><label>Instagram</label><input type="text" id="adm-ct-ig-inp"></div>
+                  <div class="field"><label>Instagram Kullanıcı Adı</label><input type="text" id="adm-ct-ig-inp" placeholder="akgulyayinevi"></div>
                   <div class="field"><label>Facebook URL</label><input type="text" id="adm-ct-fb-inp"></div>
                   <div class="field"><label>X / Twitter URL</label><input type="text" id="adm-ct-tw-inp"></div>
                 </div>
@@ -9143,6 +9200,87 @@ async function sendAIW(){
                   <div class="field"><label>Kısa Hakkında</label><textarea id="adm-ft-about-inp" rows="2" style="width:100%;resize:vertical"></textarea></div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── SÜRPRİZ KUTU ───────────────────── -->
+        <div class="page" id="adm-p-surpriz">
+          <div class="card" style="margin-bottom:1.25rem">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-gift"></i>Hero İçeriği</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="adminSaveSurzipContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="field"><label>Sayfa Başlığı</label><input type="text" id="adm-sk-title-inp" placeholder="Ruh Haline Göre Özel Kutu"></div>
+              <div class="field"><label>Açıklama</label><textarea id="adm-sk-desc-inp" rows="3" style="width:100%;resize:vertical" placeholder="Okuma zevkinize ve ruh halinize özel hazırlanan..."></textarea></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-package"></i>Paket Fiyatları</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="adminSaveSurzipContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem">
+                <div style="border:1px solid var(--brd2);border-radius:8px;padding:1rem">
+                  <div style="font-size:.72rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Küçük Paket</div>
+                  <div class="field"><label>Kitap Sayısı</label><input type="number" id="adm-sk-p1-books" placeholder="2" min="1"></div>
+                  <div class="field"><label>Fiyat (₺)</label><input type="number" id="adm-sk-p1-price" placeholder="290" min="0"></div>
+                  <div class="field"><label>Açıklama</label><input type="text" id="adm-sk-p1-desc" placeholder="Hafif keşif"></div>
+                </div>
+                <div style="border:2px solid var(--gold);border-radius:8px;padding:1rem;position:relative">
+                  <div style="position:absolute;top:-.6rem;left:50%;transform:translateX(-50%);background:var(--gold);color:#fff;font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap">En Popüler</div>
+                  <div style="font-size:.72rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Standart Paket</div>
+                  <div class="field"><label>Kitap Sayısı</label><input type="number" id="adm-sk-p2-books" placeholder="3" min="1"></div>
+                  <div class="field"><label>Fiyat (₺)</label><input type="number" id="adm-sk-p2-price" placeholder="390" min="0"></div>
+                  <div class="field"><label>Açıklama</label><input type="text" id="adm-sk-p2-desc" placeholder="En çok tercih"></div>
+                </div>
+                <div style="border:1px solid var(--brd2);border-radius:8px;padding:1rem">
+                  <div style="font-size:.72rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">Büyük Paket</div>
+                  <div class="field"><label>Kitap Sayısı</label><input type="number" id="adm-sk-p3-books" placeholder="5" min="1"></div>
+                  <div class="field"><label>Fiyat (₺)</label><input type="number" id="adm-sk-p3-price" placeholder="590" min="0"></div>
+                  <div class="field"><label>Açıklama</label><input type="text" id="adm-sk-p3-desc" placeholder="Derin okuma"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── HEDİYE SEPETİ ──────────────────── -->
+        <div class="page" id="adm-p-hediye">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-shopping-bag"></i>Hero İçeriği</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="adminSaveHediyeContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="field"><label>Sayfa Etiketi</label><input type="text" id="adm-hs-label-inp" placeholder="🎁 Kişiye Özel Hediye"></div>
+              <div class="field"><label>Sayfa Başlığı</label><input type="text" id="adm-hs-title-inp" placeholder="Hediye Sepetim"></div>
+              <div class="field"><label>Alt Başlık</label><textarea id="adm-hs-sub-inp" rows="2" style="width:100%;resize:vertical" placeholder="Sevdiklerinize istediğiniz kitabı seçin..."></textarea></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── AI ÖNERİ SAYFASI ───────────────── -->
+        <div class="page" id="adm-p-ai-content">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-brain"></i>Hero İçeriği</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="adminSaveAiContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="field"><label>Üst Etiket</label><input type="text" id="adm-ai-label-inp" placeholder="Yapay Zeka Öneri Sistemi"></div>
+              <div class="field"><label>Ana Başlık <span style="font-size:.65rem;color:var(--txt3)">(&lt;em&gt; ile italik)</span></label><input type="text" id="adm-ai-title-inp" placeholder="Size Özel Kitap &lt;em&gt;Önerisi&lt;/em&gt;"></div>
+              <div class="field"><label>Açıklama</label><textarea id="adm-ai-desc-inp" rows="3" style="width:100%;resize:vertical" placeholder="Ruh halinizi seçin, gelişmiş yapay zeka algoritmamız..."></textarea></div>
             </div>
           </div>
         </div>
@@ -9455,11 +9593,16 @@ const ADM_PAGE_META = {
   'p-orders':  {title:'Siparişler',    bread:'Topluluk'},
   'p-sales':   {title:'Satışlar',      bread:'Topluluk'},
   'p-users':   {title:'Kullanıcılar',  bread:'Topluluk'},
-  'p-blog':    {title:'Akgül Gazetesi', bread:'İçerik'},
-  'p-reviews': {title:'Yorumlar',      bread:'Moderasyon'},
-  'p-cekilis': {title:'Çekiliş Robotu',  bread:'İçerik'},
-  'p-content': {title:'Site İçeriği',  bread:'İçerik Yönetimi'},
-  'p-settings':{title:'Ayarlar',       bread:'Sistem'},
+  'p-blog':       {title:'Akgül Gazetesi',    bread:'İçerik'},
+  'p-reviews':    {title:'Yorumlar',          bread:'Moderasyon'},
+  'p-cekilis':    {title:'Çekiliş Robotu',    bread:'İçerik'},
+  'p-content':    {title:'Anasayfa İçeriği',  bread:'İçerik'},
+  'p-about':      {title:'Hakkımızda',        bread:'Sayfalar'},
+  'p-iletisim':   {title:'İletişim & Footer', bread:'Sayfalar'},
+  'p-surpriz':    {title:'Sürpriz Kutu',      bread:'Sayfalar'},
+  'p-hediye':     {title:'Hediye Sepeti',     bread:'Sayfalar'},
+  'p-ai-content': {title:'AI Öneri Sayfası',  bread:'Sayfalar'},
+  'p-settings':   {title:'Ayarlar',           bread:'Sistem'},
 };
 
 window.adminNav = function(el){
@@ -9483,7 +9626,12 @@ window.adminNav = function(el){
   if(pid==='p-blog')     adminRenderBlog();
   if(pid==='p-reviews')  adminRenderReviews();
   if(pid==='p-cekilis')  adminRenderCekilis();
-  if(pid==='p-content')  adminRenderContent();
+  if(pid==='p-content')    adminRenderContent();
+  if(pid==='p-about')      adminRenderAboutContent();
+  if(pid==='p-iletisim')   adminRenderIletisimContent();
+  if(pid==='p-surpriz')    adminRenderSurzipContent();
+  if(pid==='p-hediye')     adminRenderHediyeContent();
+  if(pid==='p-ai-content') adminRenderAiPageContent();
   if(pid==='p-settings'){ adminRenderStatsKpis(); adminRenderEditorsList(); }
 };
 
@@ -10479,15 +10627,48 @@ function adminRenderContent(){
   fv('adm-camp-badge-inp',camp.badge); fv('adm-camp-ey-inp',camp.eyebrow); fv('adm-camp-h1-inp',camp.title); fv('adm-camp-p-inp',camp.desc); fv('adm-camp-end-inp',campMeta.endDate);
   const sh=c.shipping||{}, siteS=admLoad('akgulSettings',{});
   fv('adm-ship-free-inp',sh.freeShip||siteS.freeShip); fv('adm-ship-cost-inp',sh.shipCost||siteS.shipCost); fv('adm-ship-wa-inp',sh.whatsapp||siteS.waPhone);
-  const a=c.about||{};
+}
+
+function adminRenderAboutContent(){
+  const a=adminSiteContent.about||{};
+  const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
   fv('adm-ab-sub-inp',a.heroSub); fv('adm-ab-quote-inp',a.heroQuote); fv('adm-ab-meta-inp',a.heroMeta);
-  fv('adm-ab-fname-inp',a.founderName); fv('adm-ab-frole-inp',a.founderRole); fv('adm-ab-fquote-inp',a.founderQuote); fv('adm-ab-fbio-inp',a.founderBio);
-  const ct=c.contact||{};
+  fv('adm-ab-fname-inp',a.founderName); fv('adm-ab-frole-inp',a.founderRole);
+  fv('adm-ab-fquote-inp',a.founderQuote); fv('adm-ab-fbio-inp',a.founderBio);
+}
+
+function adminRenderIletisimContent(){
+  const ct=adminSiteContent.contact||{}, ft=adminSiteContent.footer||{};
+  const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
   fv('adm-ct-addr-inp',ct.address); fv('adm-ct-maps-inp',ct.mapsUrl); fv('adm-ct-phone-inp',ct.phone);
   fv('adm-ct-wa-inp',ct.whatsapp); fv('adm-ct-email-inp',ct.email); fv('adm-ct-ig-inp',ct.instagram);
   fv('adm-ct-fb-inp',ct.facebook); fv('adm-ct-tw-inp',ct.twitter);
-  const ft=c.footer||{};
   fv('adm-ft-slogan-inp',ft.slogan); fv('adm-ft-about-inp',ft.about);
+}
+
+function adminRenderSurzipContent(){
+  const d=admLoad('akgulSpecialPages',{});
+  const sk=d.surpriz||{};
+  const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
+  fv('adm-sk-title-inp',sk.title); fv('adm-sk-desc-inp',sk.desc);
+  const p=sk.packages||[{books:2,price:290,desc:'Hafif keşif'},{books:3,price:390,desc:'En çok tercih'},{books:5,price:590,desc:'Derin okuma'}];
+  fv('adm-sk-p1-books',p[0]?.books); fv('adm-sk-p1-price',p[0]?.price); fv('adm-sk-p1-desc',p[0]?.desc);
+  fv('adm-sk-p2-books',p[1]?.books); fv('adm-sk-p2-price',p[1]?.price); fv('adm-sk-p2-desc',p[1]?.desc);
+  fv('adm-sk-p3-books',p[2]?.books); fv('adm-sk-p3-price',p[2]?.price); fv('adm-sk-p3-desc',p[2]?.desc);
+}
+
+function adminRenderHediyeContent(){
+  const d=admLoad('akgulSpecialPages',{});
+  const hs=d.hediye||{};
+  const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
+  fv('adm-hs-label-inp',hs.label); fv('adm-hs-title-inp',hs.title); fv('adm-hs-sub-inp',hs.sub);
+}
+
+function adminRenderAiPageContent(){
+  const d=admLoad('akgulSpecialPages',{});
+  const ai=d.ai||{};
+  const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
+  fv('adm-ai-label-inp',ai.label); fv('adm-ai-title-inp',ai.title); fv('adm-ai-desc-inp',ai.desc);
 }
 
 window.adminSelSlideTab = function(i,btn){
@@ -10574,7 +10755,32 @@ window.adminSaveAboutContent = function(){
     founderName:agv('adm-ab-fname-inp'),founderRole:agv('adm-ab-frole-inp'),
     founderQuote:ag('adm-ab-fquote-inp')?.value.trim(),founderBio:ag('adm-ab-fbio-inp')?.value.trim()
   };
-  admSaveContent(); adminToast('✦ Hakkımızda güncellendi!');
+  admSaveContent(); applySiteContent(); adminToast('✦ Hakkımızda güncellendi!');
+};
+
+window.adminSaveSurzipContent = function(){
+  const d=admLoad('akgulSpecialPages',{});
+  d.surpriz={
+    title:agv('adm-sk-title-inp'), desc:ag('adm-sk-desc-inp')?.value.trim(),
+    packages:[
+      {books:+agv('adm-sk-p1-books')||2, price:+agv('adm-sk-p1-price')||290, desc:agv('adm-sk-p1-desc')||'Hafif keşif'},
+      {books:+agv('adm-sk-p2-books')||3, price:+agv('adm-sk-p2-price')||390, desc:agv('adm-sk-p2-desc')||'En çok tercih'},
+      {books:+agv('adm-sk-p3-books')||5, price:+agv('adm-sk-p3-price')||590, desc:agv('adm-sk-p3-desc')||'Derin okuma'},
+    ]
+  };
+  admSave('akgulSpecialPages',d); applySpecialPagesContent(); adminToast('✦ Sürpriz Kutu güncellendi!');
+};
+
+window.adminSaveHediyeContent = function(){
+  const d=admLoad('akgulSpecialPages',{});
+  d.hediye={label:agv('adm-hs-label-inp'), title:agv('adm-hs-title-inp'), sub:ag('adm-hs-sub-inp')?.value.trim()};
+  admSave('akgulSpecialPages',d); applySpecialPagesContent(); adminToast('✦ Hediye Sepeti güncellendi!');
+};
+
+window.adminSaveAiContent = function(){
+  const d=admLoad('akgulSpecialPages',{});
+  d.ai={label:agv('adm-ai-label-inp'), title:agv('adm-ai-title-inp'), desc:ag('adm-ai-desc-inp')?.value.trim()};
+  admSave('akgulSpecialPages',d); applySpecialPagesContent(); adminToast('✦ AI Öneri sayfası güncellendi!');
 };
 window.adminSaveSeoContent = function(){
   adminSiteContent.seo={title:agv('adm-seo-title-inp'),description:ag('adm-seo-desc-inp')?.value.trim(),keywords:agv('adm-seo-keys-inp')};
@@ -10732,7 +10938,7 @@ window.adminSaveContactContent = function(){
   const ft={slogan:agv('adm-ft-slogan-inp'),about:ag('adm-ft-about-inp')?.value.trim()};
   adminSiteContent.contact=ct; adminSiteContent.footer=ft;
   if(ct.whatsapp&&ct.whatsapp.length>=10){const s=admLoad('akgulSettings',{});s.waPhone=ct.whatsapp;admSave('akgulSettings',s);}
-  admSaveContent(); adminToast('✦ İletişim bilgileri güncellendi!');
+  admSaveContent(); applySiteContent(); adminToast('✦ İletişim bilgileri güncellendi!');
 };
 
 /* ═══════════════════════════════════════
@@ -10978,7 +11184,7 @@ function admApplyAIActions(actions){
       admSaveBlog(); admAiAppendAction('ti-news',`"${params.title}" eklendi`);
     } else if(tool==='navigate_to'){
       adminNavTo(params.page);
-      const labels={'p-dash':'Genel Bakış','p-books':'Kitaplar','p-orders':'Siparişler','p-users':'Kullanıcılar','p-blog':'Blog','p-reviews':'Yorumlar','p-analytics':'Analizler','p-authors':'Yazarlar','p-content':'Site İçeriği','p-settings':'Ayarlar'};
+      const labels={'p-dash':'Genel Bakış','p-books':'Kitaplar','p-orders':'Siparişler','p-users':'Kullanıcılar','p-blog':'Akgül Gazetesi','p-reviews':'Yorumlar','p-analytics':'Analizler','p-authors':'Yazarlar','p-content':'Anasayfa İçeriği','p-about':'Hakkımızda','p-iletisim':'İletişim & Footer','p-surpriz':'Sürpriz Kutu','p-hediye':'Hediye Sepeti','p-ai-content':'AI Öneri','p-settings':'Ayarlar'};
       admAiAppendAction('ti-arrow-right',(labels[params.page]||params.page)+' sayfasına gidildi');
     }
   }
