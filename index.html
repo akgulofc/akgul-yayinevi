@@ -162,6 +162,50 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .gp-order-btn{width:100%;padding:.75rem;background:var(--gold);color:var(--ink);border:none;border-radius:5px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:var(--font-sans);letter-spacing:.04em;transition:background .2s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
 .gp-order-btn:hover{background:var(--gold-l)}
 .gp-order-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+/* ── ASKIDA KİTAP SAYFASI ── */
+.ask-page{background:linear-gradient(160deg,#0F0E0B 0%,#0e1a12 55%,#1a1508 100%);min-height:calc(100vh - 84px);padding:0 0 5rem}
+.ask-stats{display:flex;justify-content:center;gap:3rem;padding:1.5rem 2rem;border-bottom:1px solid rgba(200,169,110,.1);max-width:700px;margin:0 auto}
+.ask-stat{text-align:center}
+.ask-stat-num{font-family:var(--font-serif);font-size:2.2rem;color:var(--gold);font-weight:700;line-height:1}
+.ask-stat-lbl{font-size:.65rem;color:rgba(245,239,229,.38);text-transform:uppercase;letter-spacing:.1em;margin-top:.3rem}
+.ask-main{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+.ask-section-hd{font-size:.7rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:1.25rem;padding-bottom:.6rem;border-bottom:1px solid rgba(200,169,110,.12);display:flex;align-items:center;justify-content:space-between}
+.ask-books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;margin-bottom:2rem}
+.ask-book-card{background:rgba(255,255,255,.03);border:1px solid rgba(200,169,110,.12);border-radius:10px;overflow:hidden;transition:transform .2s,border-color .2s}
+.ask-book-card:hover{transform:translateY(-3px);border-color:rgba(200,169,110,.35)}
+.ask-book-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:.7rem;color:rgba(255,255,255,.65);padding:.5rem;text-align:center}
+.ask-book-info{padding:.75rem}
+.ask-book-badge{display:inline-block;font-size:.58rem;padding:2px 7px;border-radius:10px;background:rgba(45,160,100,.15);color:#4ecb87;font-weight:600;margin-bottom:.35rem}
+.ask-book-title{font-size:.82rem;color:var(--cream);font-weight:600;margin-bottom:.2rem;line-height:1.3}
+.ask-book-author{font-size:.68rem;color:rgba(245,239,229,.38);margin-bottom:.6rem}
+.ask-btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.52rem 1.1rem;border-radius:6px;font-size:.78rem;font-weight:600;cursor:pointer;border:none;font-family:var(--font-sans);transition:all .18s;white-space:nowrap;text-decoration:none}
+.ask-btn-gold{background:linear-gradient(135deg,var(--gold),#b8892a);color:#000}
+.ask-btn-gold:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.ask-btn-outline{background:transparent;border:1px solid rgba(200,169,110,.35);color:var(--gold)}
+.ask-btn-outline:hover{background:rgba(200,169,110,.08)}
+.ask-cta{background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.12);border-radius:12px;padding:1.75rem;margin-top:2rem}
+.ask-disc-pill{display:inline-flex;align-items:center;gap:.4rem;background:rgba(200,169,110,.1);border:1px solid rgba(200,169,110,.22);border-radius:20px;padding:.3rem .85rem;font-size:.72rem;color:var(--gold);font-weight:600;margin-bottom:.85rem}
+.ask-empty{text-align:center;padding:2rem;color:rgba(245,239,229,.28);font-size:.85rem;border:1px dashed rgba(200,169,110,.13);border-radius:10px}
+/* Ask Modal */
+.ask-modal-over{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:3000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.ask-modal{background:#1a1711;border:1px solid rgba(200,169,110,.2);border-radius:14px;width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;overflow:hidden}
+.ask-modal-hd{padding:1.2rem 1.5rem;border-bottom:1px solid rgba(200,169,110,.1);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.ask-modal-title{font-family:var(--font-serif);font-size:1.15rem;color:var(--cream)}
+.ask-modal-x{background:none;border:none;color:rgba(245,239,229,.38);font-size:1.2rem;cursor:pointer;padding:.2rem;line-height:1}
+.ask-modal-x:hover{color:var(--cream)}
+.ask-modal-body{overflow-y:auto;padding:1.25rem 1.5rem;flex:1}
+.ask-modal-foot{padding:.9rem 1.5rem;border-top:1px solid rgba(200,169,110,.1);display:flex;gap:.7rem;justify-content:flex-end;flex-shrink:0}
+.ask-sel-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.65rem;margin-bottom:.5rem}
+.ask-sel-card{border:2px solid rgba(200,169,110,.1);border-radius:8px;padding:.7rem;cursor:pointer;transition:all .15s;position:relative}
+.ask-sel-card:hover{border-color:rgba(200,169,110,.38)}
+.ask-sel-card.sel{border-color:var(--gold);background:rgba(200,169,110,.07)}
+.ask-sel-check{position:absolute;top:.4rem;right:.4rem;width:17px;height:17px;border-radius:50%;background:var(--gold);display:none;align-items:center;justify-content:center;font-size:.62rem;color:#000;font-weight:700}
+.ask-sel-card.sel .ask-sel-check{display:flex}
+.ask-sel-title{font-size:.76rem;color:var(--cream);font-weight:600;margin-bottom:.2rem;line-height:1.3}
+.ask-sel-price{font-size:.7rem;color:var(--gold)}
+.ask-code-box{background:rgba(200,169,110,.07);border:1px dashed rgba(200,169,110,.38);border-radius:8px;padding:1rem 1.25rem;text-align:center;margin:1rem 0}
+.ask-code-val{font-family:monospace;font-size:1.5rem;color:var(--gold);font-weight:700;letter-spacing:.1em}
+.ask-code-note{font-size:.7rem;color:rgba(245,239,229,.38);margin-top:.35rem}
 /* ── ÇEKİLİŞ SAYFASI ── */
 .ck-bg{background:linear-gradient(160deg,#0F0E0B 0%,#1a0e1a 55%,#1a1508 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem}
 .ck-inner{max-width:1100px;margin:0 auto}
@@ -3317,6 +3361,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <!-- Mobil: özel sayfalar ayrı ayrı -->
     <li class="mob-only-li"><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu">Sürpriz Kutu</a></li>
     <li class="mob-only-li"><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti">Hediye Sepeti</a></li>
+    <li class="mob-only-li"><a onclick="go('askida-kitap');closeNav()" data-p="askida-kitap">Askıda Kitap</a></li>
     <li class="mob-only-li"><a onclick="go('cekilis');closeNav()" data-p="cekilis">Çekiliş Robotu</a></li>
     <!-- Masaüstü: dropdown -->
     <li class="desk-only-li nav-has-drop">
@@ -3324,6 +3369,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <ul class="nav-drop">
         <li><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu"><span class="nav-drop-icon">🎲</span>Sürpriz Kutu</a></li>
         <li><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti"><span class="nav-drop-icon">🎁</span>Hediye Sepeti</a></li>
+        <li><a onclick="go('askida-kitap');closeNav()" data-p="askida-kitap"><span class="nav-drop-icon">📚</span>Askıda Kitap</a></li>
         <li><a onclick="go('cekilis');closeNav()" data-p="cekilis"><span class="nav-drop-icon">🤖</span>Çekiliş Robotu</a></li>
       </ul>
     </li>
@@ -3872,6 +3918,36 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div id="gpContent">
         <!-- JS tarafından doldurulur -->
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ASKIDA KİTAP ═══════════ -->
+<div class="page ask-page" id="page-askida-kitap">
+  <div style="text-align:center;padding:4rem 2rem 2rem">
+    <span style="font-size:2.5rem;display:block;margin-bottom:.75rem">📚</span>
+    <p class="sec-label" style="color:var(--gold)">Topluluk Kitaplığı</p>
+    <h2 class="sec-title" style="color:var(--cream)">Askıda <em>Kitap</em></h2>
+    <p style="font-size:.92rem;color:rgba(245,239,229,.5);max-width:540px;margin:.75rem auto 0;line-height:1.8">
+      Bir kitabı askıya bırak, onu alamayacak birine ulaşsın.<br>
+      Bırakana <span id="ask-disc-pct" style="color:var(--gold);font-weight:700">%10</span> indirim hediyemiz.
+    </p>
+  </div>
+  <div class="ask-stats" id="ask-stats"></div>
+  <div class="ask-main">
+    <div class="ask-section-hd">
+      <span>📖 Şu An Askıda</span>
+      <span id="ask-avail-count" style="font-size:.7rem;color:rgba(245,239,229,.35)"></span>
+    </div>
+    <div id="ask-available-grid" class="ask-books-grid"></div>
+    <div class="ask-cta">
+      <div class="ask-disc-pill" id="ask-donate-pill">🎁 Bırakana %10 İndirim</div>
+      <div style="font-family:var(--font-serif);font-size:1.2rem;color:var(--cream);margin-bottom:.5rem">Sen de bir kitap bırak</div>
+      <p style="font-size:.85rem;color:rgba(245,239,229,.42);margin-bottom:1.25rem;line-height:1.65">Kataloğumuzdan istediğin kitabı seç, askıya bırak. WhatsApp siparişinde indirim kodunu paylaş.</p>
+      <button class="ask-btn ask-btn-gold" onclick="askidaOpenBirak()">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round"><path d="M12 5v14M5 12l7-7 7 7"/></svg>
+        Kitap Bırak
+      </button>
     </div>
   </div>
 </div>
@@ -4637,6 +4713,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a onclick="go('authors')">Yazarlarımız</a></li>
         <li><a onclick="go('surpriz-kutu')">Sürpriz Kutu</a></li>
         <li><a onclick="go('hediye-sepeti')">Hediye Sepeti</a></li>
+        <li><a onclick="go('askida-kitap')">Askıda Kitap</a></li>
         <li><a onclick="go('cekilis')">Çekiliş Robotu</a></li>
         <li><a onclick="go('ai-oneri')">AI Kitap Öneri</a></li>
         <li><a onclick="go('eser-basvuru')">Eser Başvuru</a></li>
@@ -5007,6 +5084,7 @@ function go(page){
     document.querySelectorAll('.af-fbtn').forEach((b,i)=>b.classList.toggle('act',i===0));
     renderAuthorFeatured();renderAuthors();
   }
+  if(page==='askida-kitap') renderAskida();
   if(page==='blog'){
     gazeteCat='all';
     document.querySelectorAll('.gz-fbtn').forEach((b,i)=>b.classList.toggle('act',i===0));
@@ -8556,6 +8634,7 @@ async function sendAIW(){
 
         <div class="sb-section">İçerik</div>
         <div class="nav-item" data-page="p-blog" onclick="adminNav(this)"><i class="ti ti-news"></i>Akgül Gazetesi<span class="nav-badge nb-gold" id="adm-navBlogCount">6</span></div>
+        <div class="nav-item" data-page="p-askida" onclick="adminNav(this)"><i class="ti ti-books"></i>Askıda Kitap<span class="nav-badge nb-gold" id="adm-navAskidaCount">0</span></div>
         <div class="nav-item" data-page="p-cekilis" onclick="adminNav(this)"><i class="ti ti-trophy"></i>Çekiliş Robotu</div>
         <div class="nav-item" data-page="p-content" onclick="adminNav(this)"><i class="ti ti-home"></i>Anasayfa İçeriği</div>
 
@@ -8994,6 +9073,52 @@ async function sendAIW(){
             <div class="card">
               <div class="card-head"><span class="card-title"><i class="ti ti-chart-bar"></i>Puan Dağılımı</span></div>
               <div class="card-body" id="adm-ratingDist"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── ASKIDA KİTAP ───────────────── -->
+        <div class="page" id="adm-p-askida">
+          <div class="gz-adm-kpi-row" id="adm-ask-kpis" style="margin-bottom:1.25rem"></div>
+          <div class="g2" style="margin-bottom:1.25rem">
+            <div class="card">
+              <div class="card-head">
+                <span class="card-title"><i class="ti ti-percent"></i>İndirim Oranı</span>
+                <div class="card-acts">
+                  <button class="card-btn primary" onclick="adminAskidaSaveSettings()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="field"><label>Kitap Bırakana İndirim (%)</label><input type="number" id="adm-ask-rate-inp" min="0" max="100" placeholder="10"></div>
+                <p style="font-size:.72rem;color:var(--txt2);margin-top:.3rem">İndirim kodu WhatsApp siparişinde kullanılır.</p>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-head">
+                <span class="card-title"><i class="ti ti-plus"></i>Manuel Kitap Ekle</span>
+                <div class="card-acts">
+                  <button class="card-btn primary" onclick="adminAskidaManualAdd()"><i class="ti ti-check" style="font-size:13px"></i>Ekle</button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="field"><label>Kitap Seç</label><select id="adm-ask-book-sel" style="width:100%;padding:.42rem .55rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.78rem;outline:none"></select></div>
+                <div class="field"><label>Not (isteğe bağlı)</label><input type="text" id="adm-ask-note-inp" placeholder="Bağışçı adı, açıklama..."></div>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-books"></i>Askıdaki Kitaplar</span>
+              <div class="card-acts">
+                <select id="adm-ask-filter" onchange="adminRenderAskida()" style="padding:.35rem .6rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.74rem;outline:none">
+                  <option value="all">Tümü</option>
+                  <option value="available">Müsait</option>
+                  <option value="claimed">Alındı</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-body" style="padding:0">
+              <table style="width:100%;border-collapse:collapse" id="adm-ask-table"></table>
             </div>
           </div>
         </div>
@@ -9594,6 +9719,7 @@ const ADM_PAGE_META = {
   'p-sales':   {title:'Satışlar',      bread:'Topluluk'},
   'p-users':   {title:'Kullanıcılar',  bread:'Topluluk'},
   'p-blog':       {title:'Akgül Gazetesi',    bread:'İçerik'},
+  'p-askida':     {title:'Askıda Kitap',      bread:'İçerik'},
   'p-reviews':    {title:'Yorumlar',          bread:'Moderasyon'},
   'p-cekilis':    {title:'Çekiliş Robotu',    bread:'İçerik'},
   'p-content':    {title:'Anasayfa İçeriği',  bread:'İçerik'},
@@ -9624,6 +9750,7 @@ window.adminNav = function(el){
   if(pid==='p-sales')    adminRenderSales();
   if(pid==='p-users')    adminRenderUsers();
   if(pid==='p-blog')     adminRenderBlog();
+  if(pid==='p-askida')   adminRenderAskida();
   if(pid==='p-reviews')  adminRenderReviews();
   if(pid==='p-cekilis')  adminRenderCekilis();
   if(pid==='p-content')    adminRenderContent();
@@ -10782,6 +10909,258 @@ window.adminSaveAiContent = function(){
   d.ai={label:agv('adm-ai-label-inp'), title:agv('adm-ai-title-inp'), desc:ag('adm-ai-desc-inp')?.value.trim()};
   admSave('akgulSpecialPages',d); applySpecialPagesContent(); adminToast('✦ AI Öneri sayfası güncellendi!');
 };
+/* ══════════════════════════════════════════
+   ASKIDA KİTAP
+══════════════════════════════════════════ */
+function loadAskidaData(){
+  try{return JSON.parse(localStorage.getItem('akgulAskida')||'null')||{items:[],discountRate:10};}catch(e){return{items:[],discountRate:10};}
+}
+function saveAskidaData(d){try{localStorage.setItem('akgulAskida',JSON.stringify(d));}catch(e){}}
+
+function askidaGenCode(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let s='';for(let i=0;i<4;i++)s+=c[Math.floor(Math.random()*c.length)];
+  return 'ASKIDA-'+s;
+}
+
+function renderAskida(){
+  const d=loadAskidaData();
+  const available=d.items.filter(i=>i.status==='available');
+  const claimed=d.items.filter(i=>i.status==='claimed').length;
+
+  const pct=d.discountRate||10;
+  const dpct=document.getElementById('ask-disc-pct'); if(dpct)dpct.textContent='%'+pct;
+  const dpill=document.getElementById('ask-donate-pill'); if(dpill)dpill.textContent='🎁 Bırakana %'+pct+' İndirim';
+
+  const stats=document.getElementById('ask-stats');
+  if(stats)stats.innerHTML=`
+    <div class="ask-stat"><div class="ask-stat-num">${available.length}</div><div class="ask-stat-lbl">Müsait Kitap</div></div>
+    <div class="ask-stat"><div class="ask-stat-num">${d.items.length}</div><div class="ask-stat-lbl">Toplam Bırakılan</div></div>
+    <div class="ask-stat"><div class="ask-stat-num">${claimed}</div><div class="ask-stat-lbl">Ulaşan Kitap</div></div>`;
+
+  const ac=document.getElementById('ask-avail-count');
+  if(ac)ac.textContent=available.length+' kitap müsait';
+
+  const grid=document.getElementById('ask-available-grid');
+  if(!grid)return;
+  if(available.length===0){
+    grid.innerHTML='<div class="ask-empty" style="grid-column:1/-1">Şu an askıda kitap yok. İlk bırakan sen ol! 📚</div>';
+    return;
+  }
+  grid.innerHTML=available.map(item=>`
+    <div class="ask-book-card">
+      <div class="ask-book-thumb" style="background:${escHtml(item.bookCover||'#1a1a1a')}">${escHtml(item.bookTitle)}</div>
+      <div class="ask-book-info">
+        <div class="ask-book-badge">Askıda</div>
+        <div class="ask-book-title">${escHtml(item.bookTitle)}</div>
+        <div class="ask-book-author">${escHtml(item.bookAuthor||'')}</div>
+        <button class="ask-btn ask-btn-outline" style="width:100%;margin-top:.4rem" onclick="askidaAl('${item.id}')">Kitabı Al →</button>
+      </div>
+    </div>`).join('');
+
+  // nav badge
+  const nb=document.getElementById('adm-navAskidaCount');
+  if(nb)nb.textContent=available.length;
+}
+
+let _askSelBook=null;
+function askidaOpenBirak(){
+  const catalog=(JSON.parse(localStorage.getItem('akgul_books_v2')||'[]').length>0?JSON.parse(localStorage.getItem('akgul_books_v2')||'[]'):books);
+  const over=document.createElement('div');
+  over.className='ask-modal-over'; over.id='ask-birak-over';
+  over.innerHTML=`<div class="ask-modal">
+    <div class="ask-modal-hd">
+      <span class="ask-modal-title">Askıya Kitap Bırak</span>
+      <button class="ask-modal-x" onclick="document.getElementById('ask-birak-over').remove()">✕</button>
+    </div>
+    <div class="ask-modal-body">
+      <p style="font-size:.78rem;color:rgba(245,239,229,.4);margin-bottom:1rem">Askıya bırakmak istediğin kitabı seç. Sipariş WhatsApp üzerinden tamamlanır.</p>
+      <div class="ask-sel-grid">${catalog.map(b=>`
+        <div class="ask-sel-card" onclick="askidaSelBook(this,${b.id},'${escHtml(b.title).replace(/'/g,"\\'")}','${escHtml(b.author||'').replace(/'/g,"\\'")}',${b.price||0},'${escHtml(b.bg||'#1a1a1a').replace(/'/g,"\\'")}')">
+          <div class="ask-sel-check">✓</div>
+          <div style="height:55px;border-radius:5px;margin-bottom:.45rem;background:${escHtml(b.bg||'#1a1a1a')};display:flex;align-items:center;justify-content:center;font-size:.58rem;color:rgba(255,255,255,.6);text-align:center;padding:.25rem">${escHtml(b.title)}</div>
+          <div class="ask-sel-title">${escHtml(b.title)}</div>
+          <div class="ask-sel-price">₺${b.price||0}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="ask-modal-foot">
+      <button class="ask-btn ask-btn-outline" onclick="document.getElementById('ask-birak-over').remove()">İptal</button>
+      <button class="ask-btn ask-btn-gold" id="ask-birak-btn" onclick="askidaConfirmBirak()" disabled style="opacity:.5">Askıya Bırak</button>
+    </div>
+  </div>`;
+  document.body.appendChild(over);
+}
+
+function askidaSelBook(el,id,title,author,price,bg){
+  _askSelBook={id,title,author,price,bg};
+  document.querySelectorAll('.ask-sel-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  const btn=document.getElementById('ask-birak-btn');
+  if(btn){btn.disabled=false;btn.style.opacity='1';}
+}
+
+function askidaConfirmBirak(){
+  if(!_askSelBook)return;
+  const d=loadAskidaData();
+  const code=askidaGenCode();
+  const item={
+    id:'ASK-'+Date.now(),bookId:_askSelBook.id,bookTitle:_askSelBook.title,
+    bookAuthor:_askSelBook.author,bookPrice:_askSelBook.price,bookCover:_askSelBook.bg,
+    discountCode:code,discountRate:d.discountRate,status:'available',
+    addedAt:new Date().toLocaleDateString('tr-TR'),claimedAt:null
+  };
+  d.items.unshift(item); saveAskidaData(d); _askSelBook=null;
+
+  const body=document.querySelector('#ask-birak-over .ask-modal-body');
+  const foot=document.querySelector('#ask-birak-over .ask-modal-foot');
+  if(body) body.innerHTML=`<div style="text-align:center;padding:.75rem 0">
+    <div style="font-size:2rem;margin-bottom:.75rem">🎉</div>
+    <div style="font-family:var(--font-serif);font-size:1.15rem;color:var(--cream);margin-bottom:.4rem">"${escHtml(item.bookTitle)}" askıya bırakıldı!</div>
+    <p style="font-size:.8rem;color:rgba(245,239,229,.42);margin-bottom:1.1rem">WhatsApp siparişinde bu kodu paylaş, %${d.discountRate} indirim kazanırsın:</p>
+    <div class="ask-code-box">
+      <div class="ask-code-val">${code}</div>
+      <div class="ask-code-note">%${d.discountRate} indirim · Tek kullanımlık</div>
+    </div>
+    <button class="ask-btn ask-btn-outline" style="margin-top:.5rem" onclick="navigator.clipboard.writeText('${code}').then(()=>this.textContent='✓ Kopyalandı')">Kodu Kopyala</button>
+  </div>`;
+  if(foot){
+    const waMsg=encodeURIComponent(`Merhaba! "${item.bookTitle}" kitabını askıya bırakmak istiyorum. İndirim kodum: ${code}`);
+    foot.innerHTML=`
+      <button class="ask-btn ask-btn-outline" onclick="document.getElementById('ask-birak-over').remove();renderAskida()">Kapat</button>
+      <a href="https://wa.me/${typeof WA_PHONE!=='undefined'?WA_PHONE:'905366483096'}?text=${waMsg}" target="_blank" class="ask-btn ask-btn-gold" onclick="setTimeout(()=>{document.getElementById('ask-birak-over')?.remove();renderAskida();},400)">WhatsApp'ta Sipariş Ver</a>`;
+  }
+}
+
+function askidaAl(itemId){
+  if(localStorage.getItem('akgulHasClaimed')){
+    const over=document.createElement('div');
+    over.className='ask-modal-over'; over.id='ask-al-over';
+    over.innerHTML=`<div class="ask-modal" style="max-width:380px"><div class="ask-modal-hd"><span class="ask-modal-title">Bilgi</span><button class="ask-modal-x" onclick="document.getElementById('ask-al-over').remove()">✕</button></div><div class="ask-modal-body" style="text-align:center;padding:1.5rem"><div style="font-size:2rem;margin-bottom:.75rem">📚</div><p style="color:rgba(245,239,229,.6);font-size:.85rem">Daha önce bir askıda kitap almışsınız. Her kullanıcı yalnızca <strong style="color:var(--cream)">bir kez</strong> kitap alabilir.</p></div><div class="ask-modal-foot"><button class="ask-btn ask-btn-outline" onclick="document.getElementById('ask-al-over').remove()">Tamam</button></div></div>`;
+    document.body.appendChild(over); return;
+  }
+  const d=loadAskidaData();
+  const item=d.items.find(i=>i.id===itemId);
+  if(!item||item.status!=='available'){renderAskida();return;}
+  const over=document.createElement('div');
+  over.className='ask-modal-over'; over.id='ask-al-over';
+  over.innerHTML=`<div class="ask-modal" style="max-width:420px">
+    <div class="ask-modal-hd"><span class="ask-modal-title">Askıdan Kitap Al</span><button class="ask-modal-x" onclick="document.getElementById('ask-al-over').remove()">✕</button></div>
+    <div class="ask-modal-body"><div style="text-align:center;padding:.5rem 0">
+      <div style="height:80px;border-radius:8px;margin-bottom:.9rem;background:${escHtml(item.bookCover||'#1a1a1a')};display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);color:rgba(255,255,255,.65);font-size:.78rem;padding:.5rem;text-align:center">${escHtml(item.bookTitle)}</div>
+      <div style="font-family:var(--font-serif);font-size:1.1rem;color:var(--cream);margin-bottom:.3rem">${escHtml(item.bookTitle)}</div>
+      <div style="font-size:.75rem;color:rgba(245,239,229,.38);margin-bottom:1rem">${escHtml(item.bookAuthor||'')}</div>
+      <p style="font-size:.8rem;color:rgba(245,239,229,.45);line-height:1.65">WhatsApp üzerinden iletişime geçip kitabı talep edebilirsin. Her kullanıcı yalnızca bir kez alabilir.</p>
+    </div></div>
+    <div class="ask-modal-foot">
+      <button class="ask-btn ask-btn-outline" onclick="document.getElementById('ask-al-over').remove()">İptal</button>
+      <button class="ask-btn ask-btn-gold" onclick="askidaConfirmAl('${itemId}')">WhatsApp'ta İste</button>
+    </div>
+  </div>`;
+  document.body.appendChild(over);
+}
+
+function askidaConfirmAl(itemId){
+  const d=loadAskidaData();
+  const item=d.items.find(i=>i.id===itemId);
+  if(!item||item.status!=='available')return;
+  item.status='claimed'; item.claimedAt=new Date().toLocaleDateString('tr-TR');
+  saveAskidaData(d); localStorage.setItem('akgulHasClaimed','1');
+  const waMsg=encodeURIComponent(`Merhaba! Askıdaki "${item.bookTitle}" kitabını almak istiyorum.`);
+  window.open(`https://wa.me/${typeof WA_PHONE!=='undefined'?WA_PHONE:'905366483096'}?text=${waMsg}`,'_blank');
+  document.getElementById('ask-al-over')?.remove();
+  renderAskida();
+}
+
+/* ── ADMIN ASKIDA ── */
+function adminRenderAskida(){
+  const d=loadAskidaData();
+  const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
+  fv('adm-ask-rate-inp',d.discountRate||10);
+
+  const allBooks=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  const catalog=allBooks.length>0?allBooks:books;
+  const sel=ag('adm-ask-book-sel');
+  if(sel) sel.innerHTML='<option value="">— kitap seç —</option>'+catalog.map(b=>`<option value="${b.id}" data-title="${admEsc(b.title)}" data-author="${admEsc(b.author||'')}" data-price="${b.price||0}" data-bg="${admEsc(b.bg||'')}">${admEsc(b.title)} — ₺${b.price||0}</option>`).join('');
+
+  const avail=d.items.filter(i=>i.status==='available').length;
+  const claimed=d.items.filter(i=>i.status==='claimed').length;
+  const kpis=ag('adm-ask-kpis');
+  if(kpis) kpis.innerHTML=`
+    <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(200,169,110,.1);color:var(--gold)"><i class="ti ti-books"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">${d.items.length}</div><div class="gz-adm-kpi-lbl">Toplam</div></div></div>
+    <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(45,160,100,.1);color:#4ecb87"><i class="ti ti-book"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">${avail}</div><div class="gz-adm-kpi-lbl">Müsait</div></div></div>
+    <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(107,63,160,.1);color:#9B59B6"><i class="ti ti-check"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">${claimed}</div><div class="gz-adm-kpi-lbl">Alındı</div></div></div>
+    <div class="gz-adm-kpi"><div class="gz-adm-kpi-icon" style="background:rgba(200,169,110,.1);color:var(--gold)"><i class="ti ti-percent"></i></div><div class="gz-adm-kpi-body"><div class="gz-adm-kpi-val">%${d.discountRate}</div><div class="gz-adm-kpi-lbl">İndirim</div></div></div>`;
+
+  const filter=ag('adm-ask-filter')?.value||'all';
+  const items=filter==='all'?d.items:d.items.filter(i=>i.status===filter);
+  const tbl=ag('adm-ask-table');
+  if(!tbl)return;
+  if(items.length===0){tbl.innerHTML=`<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--txt2);font-size:.82rem">Henüz kayıt yok.</td></tr>`;return;}
+  tbl.innerHTML=`<thead><tr style="border-bottom:1px solid var(--brd2)">
+    <th style="padding:.6rem 1rem;text-align:left;font-size:.68rem;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Kitap</th>
+    <th style="padding:.6rem 1rem;text-align:left;font-size:.68rem;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.06em">İndirim Kodu</th>
+    <th style="padding:.6rem 1rem;text-align:left;font-size:.68rem;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Tarih</th>
+    <th style="padding:.6rem 1rem;text-align:left;font-size:.68rem;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.06em">Durum</th>
+    <th style="padding:.6rem 1rem;text-align:left;font-size:.68rem;color:var(--txt2);font-weight:600;text-transform:uppercase;letter-spacing:.06em">İşlem</th>
+  </tr></thead><tbody>${items.map(it=>{
+    const pill=it.status==='available'
+      ?'<span style="font-size:.65rem;padding:2px 8px;border-radius:10px;background:rgba(45,160,100,.15);color:#4ecb87;font-weight:600">Müsait</span>'
+      :'<span style="font-size:.65rem;padding:2px 8px;border-radius:10px;background:rgba(107,63,160,.15);color:#9B59B6;font-weight:600">Alındı</span>';
+    return `<tr style="border-bottom:1px solid var(--brd2)">
+      <td style="padding:.75rem 1rem;font-size:.82rem;color:var(--txt1);font-weight:500">${admEsc(it.bookTitle)}</td>
+      <td style="padding:.75rem 1rem;font-family:monospace;font-size:.8rem;color:var(--gold)">${admEsc(it.discountCode||'-')}</td>
+      <td style="padding:.75rem 1rem;font-size:.78rem;color:var(--txt2)">${admEsc(it.addedAt||'-')}</td>
+      <td style="padding:.75rem 1rem">${pill}</td>
+      <td style="padding:.75rem 1rem">
+        <div style="display:flex;gap:.35rem">
+          ${it.status==='available'?`<button class="tb-btn" onclick="adminAskidaMarkClaimed('${it.id}')" style="font-size:.7rem;padding:.28rem .6rem">Alındı İşaretle</button>`:''}
+          <button class="tb-btn" onclick="adminAskidaRemove('${it.id}')" style="font-size:.7rem;padding:.28rem .6rem;color:#e07060;border-color:rgba(224,112,96,.3)">Sil</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('')}</tbody>`;
+
+  const nb=document.getElementById('adm-navAskidaCount');
+  if(nb)nb.textContent=avail;
+}
+
+window.adminAskidaSaveSettings = function(){
+  const d=loadAskidaData();
+  d.discountRate=Math.min(100,Math.max(0,parseInt(agv('adm-ask-rate-inp'))||10));
+  saveAskidaData(d); renderAskida(); adminToast('✦ İndirim oranı güncellendi!');
+};
+
+window.adminAskidaManualAdd = function(){
+  const sel=ag('adm-ask-book-sel');
+  const opt=sel?.options[sel?.selectedIndex];
+  if(!opt||!opt.value){adminToast('Kitap seçin','warn');return;}
+  const d=loadAskidaData();
+  const code=askidaGenCode();
+  d.items.unshift({
+    id:'ASK-'+Date.now(),bookId:opt.value,
+    bookTitle:opt.dataset.title||opt.text,bookAuthor:opt.dataset.author||'',
+    bookPrice:+opt.dataset.price||0,bookCover:opt.dataset.bg||'',
+    discountCode:code,discountRate:d.discountRate,status:'available',
+    addedAt:new Date().toLocaleDateString('tr-TR'),note:agv('adm-ask-note-inp'),claimedAt:null
+  });
+  saveAskidaData(d); adminRenderAskida(); renderAskida();
+  adminToast('✦ Kitap askıya eklendi! Kod: '+code);
+};
+
+window.adminAskidaMarkClaimed = function(id){
+  const d=loadAskidaData();
+  const it=d.items.find(i=>i.id===id);
+  if(it){it.status='claimed';it.claimedAt=new Date().toLocaleDateString('tr-TR');}
+  saveAskidaData(d); adminRenderAskida(); renderAskida();
+};
+
+window.adminAskidaRemove = function(id){
+  const d=loadAskidaData();
+  d.items=d.items.filter(i=>i.id!==id);
+  saveAskidaData(d); adminRenderAskida(); renderAskida();
+};
+
 window.adminSaveSeoContent = function(){
   adminSiteContent.seo={title:agv('adm-seo-title-inp'),description:ag('adm-seo-desc-inp')?.value.trim(),keywords:agv('adm-seo-keys-inp')};
   admSaveContent(); adminToast('✦ SEO ayarları güncellendi!');
