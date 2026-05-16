@@ -9697,6 +9697,7 @@ async function sendAIW(){
             <div class="card-head">
               <span class="card-title"><i class="ti ti-photo"></i>Slaytlar <span id="adm-slide-count-lbl" style="color:var(--txt3);font-weight:400;font-size:.73rem"></span></span>
               <div class="card-acts">
+                <button class="card-btn" onclick="admResetSlides()" title="Varsayılan 6 slayta dön"><i class="ti ti-refresh" style="font-size:13px"></i>Sıfırla</button>
                 <button class="card-btn primary" onclick="admAddSlide()"><i class="ti ti-plus" style="font-size:13px"></i>Slayt Ekle</button>
               </div>
             </div>
@@ -11454,9 +11455,12 @@ function admBgOpts(sel){return ADM_BG_PATS.map(a=>`<option value="${a.v}"${sel==
 
 const SS='padding:.42rem .55rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.78rem;width:100%;outline:none';
 
+function admNormSlide(s){
+  return{eyebrow:s.eyebrow||'',title:s.title||'',desc:s.desc||'',badge:s.badge||null,bgPattern:s.bgPattern||'lines',btn1Text:s.btn1Text||'Keşfet',btn1Act:s.btn1Act||'books-scroll',btn2Text:s.btn2Text||null,btn2Act:s.btn2Act||'',duration:s.duration||null,hidden:!!s.hidden};
+}
 function admGetSlides(){
   const raw=adminSiteContent.slides;
-  if(raw&&raw.length)return raw;
+  if(raw&&raw.length)return raw.map(admNormSlide);
   return JSON.parse(JSON.stringify([
     {eyebrow:'Akgül Yayınevi',title:'Kelimelerin <em>Büyüsüne</em> Kapılın',desc:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.',btn1Text:'Kitapları Keşfet',btn1Act:'books-scroll',btn2Text:'AI Öneri Al',btn2Act:'ai-oneri',bgPattern:'lines',duration:null,hidden:false},
     {eyebrow:'Yeni Çıktı',title:'<em>Mavi Oda</em> — Deniz Kaya',desc:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.',btn1Text:'İncele',btn1Act:'books',btn2Text:'Yazara Git',btn2Act:'authors',bgPattern:'dots',duration:null,hidden:false},
@@ -11530,7 +11534,8 @@ function admRenderSlideList(){
   const list=ag('adm-slides-list'); if(!list)return;
   const bgColors={lines:'#2a1d08',dots:'#0a2016',diag:'#160e22'};
   list.innerHTML=slides.map((s,i)=>{
-    const titlePreview=s.title.replace(/<[^>]+>/g,'').substring(0,45)+(s.title.length>45?'…':'');
+    const _t=s.title||'';
+    const titlePreview=_t.replace(/<[^>]+>/g,'').substring(0,45)+(_t.length>45?'…':'');
     const bgCol=bgColors[s.bgPattern]||'#1a1a1a';
     const isHidden=s.hidden?'opacity:.45;':'';
     return`<div class="adm-sc" id="adm-sc-${i}" style="${isHidden}border:1px solid var(--brd2);border-radius:8px;margin-bottom:.6rem;overflow:hidden">
@@ -11635,6 +11640,12 @@ window.admDeleteSlide = function(i){
   adminToast('Slayt silindi','warn');
 };
 
+window.admResetSlides = function(){
+  if(!confirm('Tüm slaytlar varsayılan 6 slayta sıfırlansın mı? Bu işlem geri alınamaz.'))return;
+  adminSiteContent.slides=null;
+  admSaveContent(); applySiteContent(); admRenderSlideList();
+  adminToast('Slaytlar sıfırlandı');
+};
 window.admMoveSlide = function(i,dir){
   const slides=admGetSlides();
   const j=i+dir;
