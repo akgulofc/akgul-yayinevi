@@ -7943,7 +7943,7 @@ function applySiteContent(){
 
 /* ── ÖZEL SAYFA İÇERİĞİ UYGULA ── */
 function applySpecialPagesContent(){
-  const d=admLoad('akgulSpecialPages',{});
+  let d={};try{const _v=localStorage.getItem('akgulSpecialPages');if(_v)d=JSON.parse(_v);}catch(e){}
   const el=id=>document.getElementById(id);
   // Sürpriz Kutu
   const sk=d.surpriz||{};
