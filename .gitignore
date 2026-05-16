@@ -1,4 +1,5 @@
 api/config.php
+.htaccess
 .claude/
 netlify/
 netlify.toml

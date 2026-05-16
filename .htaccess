@@ -1,5 +1,0 @@
-# Ortam değişkenleri — Hostinger hPanel'den de ayarlanabilir
-SetEnv GROQ_API_KEY      BURAYA_GROQ_API_KEY_YAZIN
-SetEnv GITHUB_TOKEN      BURAYA_GITHUB_TOKEN_YAZIN
-SetEnv ADMIN_SECRET      BURAYA_ADMIN_SECRET_YAZIN
-SetEnv PRIVATE_REPO_NAME akgul-data
