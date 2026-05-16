@@ -3712,79 +3712,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <div class="page act" id="page-home">
 
   <div class="hero">
-    <div class="slide act">
-      <div class="slide-bg lines"></div>
-      <div class="slide-content">
-        <div class="slide-eyebrow" id="s0-ey">Akgül Yayınevi</div>
-        <h1 id="s0-h1">Kelimelerin <em>Büyüsüne</em> Kapılın</h1>
-        <p id="s0-p">Adana'dan Türkiye'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.</p>
-        <div class="slide-btns" id="s0-btns">
-          <button class="btn-gold" onclick="sid('books-sec').scrollIntoView({behavior:'smooth'})">Kitapları Keşfet</button>
-          <button class="btn-outline" onclick="go('ai-oneri')">AI Öneri Al</button>
-        </div>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="slide-bg dots"></div>
-      <div class="slide-content">
-        <div class="slide-eyebrow" id="s1-ey">Yeni Çıktı</div>
-        <h1 id="s1-h1"><em>Mavi Oda</em> — Deniz Kaya</h1>
-        <p id="s1-p">Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026'nın en çarpıcı romanı.</p>
-        <div class="slide-btns" id="s1-btns">
-          <button class="btn-gold" onclick="openModal(8)">İncele</button>
-          <button class="btn-outline" onclick="go('authors')">Yazara Git</button>
-        </div>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="slide-bg diag"></div>
-      <div class="slide-content">
-        <div class="slide-eyebrow" id="s2-ey">Yazar mısınız?</div>
-        <h1 id="s2-h1">Eserinizi <em>Dünyayla</em> Buluşturun</h1>
-        <p id="s2-p">Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.</p>
-        <div class="slide-btns" id="s2-btns">
-          <button class="btn-gold" onclick="go('eser-basvuru')">Başvuru Yap</button>
-          <button class="btn-outline" onclick="go('about')">Hakkımızda</button>
-        </div>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="slide-bg lines"></div>
-      <div class="slide-content">
-        <div class="slide-eyebrow" id="s3-ey">Adana'dan Türkiye'ye</div>
-        <h1 id="s3-h1">Güney'in <em>Edebiyat Kalesi</em></h1>
-        <p id="s3-p">Akgül Yayınevi olarak Adana'nın derin kültür mirasını ve güney edebiyatının sesini tüm Türkiye'ye taşıyoruz. Her kitap bir köprüdür.</p>
-        <div class="slide-btns" id="s3-btns">
-          <button class="btn-gold" onclick="go('about')">Bizi Tanıyın</button>
-          <button class="btn-outline" onclick="go('authors')">Yazarlarımız</button>
-        </div>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="slide-bg dots"></div>
-      <div class="slide-content">
-        <div class="slide-eyebrow" id="s4-ey">Zengin Katalog</div>
-        <h1 id="s4-h1">Her Zevke Hitap Eden <em>Edebi Seçki</em></h1>
-        <p id="s4-p">Roman, şiir, deneme, tarih, felsefe ve kişisel gelişim... 18'den fazla özgün eserle Türk okuyucusunun yanındayız.</p>
-        <div class="slide-btns" id="s4-btns">
-          <button class="btn-gold" onclick="sid('books-sec').scrollIntoView({behavior:'smooth'})">Kataloğu Keşfet</button>
-          <button class="btn-outline" onclick="go('ai-oneri')">Bana Kitap Öner</button>
-        </div>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="slide-bg diag"></div>
-      <div class="slide-content">
-        <div class="slide-badge" id="s5-badge">Sınırlı Süre · Yaz Kampanyası</div>
-        <div class="slide-eyebrow" id="s5-ey">Özel İndirim</div>
-        <h1 id="s5-h1">Tüm Kitaplarda <em>%20 İndirim</em></h1>
-        <p id="s5-p">Haziran boyunca kataloğumuzdaki tüm eserlerde geçerli yaz kampanyamızdan yararlanın. Fırsatı kaçırmayın!</p>
-        <div class="slide-btns" id="s5-btns">
-          <button class="btn-gold" onclick="sid('books-sec').scrollIntoView({behavior:'smooth'})">Kampanyayı Gör</button>
-          <button class="btn-outline" onclick="go('contact')">Sipariş Ver</button>
-        </div>
-      </div>
-    </div>
+    <div id="hero-slides-wrap"></div>
     <!-- Çekiliş sonuç slaytı — JS tarafından gösterilir/gizlenir -->
     <div class="slide" id="slide-cekilis-result" style="display:none">
       <div class="slide-bg" style="background:linear-gradient(135deg,#1a0e1a,#2d1b3d)"></div>
@@ -5522,16 +5450,43 @@ const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isInte
 document.querySelectorAll('.fade').forEach(el=>observer.observe(el));
 
 /* ── SLIDER ── */
-const slides=document.querySelectorAll('.slide');
+let heroSlides=[];
 const hero=document.querySelector('.hero');
 let stX=0,stY=0,slideTimer=null,progressAnim=null;
-const SLIDE_DUR=8000;
-function startProgress(){
+let SLIDE_DUR=8000;
+
+const _HERO_SACT={
+  'books-scroll':"sid('books-sec')?.scrollIntoView({behavior:'smooth'})",
+  'books':"go('books')",
+  'authors':"go('authors')",
+  'ai-oneri':"go('ai-oneri')",
+  'about':"go('about')",
+  'eser-basvuru':"go('eser-basvuru')",
+  'contact':"go('contact')",
+  'blog':"go('blog')",
+  'wishlist':"go('wishlist')",
+};
+const _HERO_BGS=['lines','dots','diag'];
+function _safeTitleHtml(t){
+  return escHtml(t).replace(/&lt;em&gt;/g,'<em>').replace(/&lt;\/em&gt;/g,'</em>');
+}
+
+const _DEFAULT_SLIDES=[
+  {eyebrow:'Akgül Yayınevi',title:'Kelimelerin <em>Büyüsüne</em> Kapılın',desc:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.',btn1Text:'Kitapları Keşfet',btn1Act:'books-scroll',btn2Text:'AI Öneri Al',btn2Act:'ai-oneri',bgPattern:'lines'},
+  {eyebrow:'Yeni Çıktı',title:'<em>Mavi Oda</em> — Deniz Kaya',desc:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.',btn1Text:'İncele',btn1Act:'books',btn2Text:'Yazara Git',btn2Act:'authors',bgPattern:'dots'},
+  {eyebrow:'Yazar mısınız?',title:'Eserinizi <em>Dünyayla</em> Buluşturun',desc:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.',btn1Text:'Başvuru Yap',btn1Act:'eser-basvuru',btn2Text:'Hakkımızda',btn2Act:'about',bgPattern:'diag'},
+  {eyebrow:'Adana\'dan Türkiye\'ye',title:'Güney\'in <em>Edebiyat Kalesi</em>',desc:'',btn1Text:'Bizi Tanıyın',btn1Act:'about',btn2Text:'Yazarlarımız',btn2Act:'authors',bgPattern:'lines'},
+  {eyebrow:'Zengin Katalog',title:'Her Zevke Hitap Eden <em>Edebi Seçki</em>',desc:'',btn1Text:'Kataloğu Keşfet',btn1Act:'books-scroll',btn2Text:'Bana Kitap Öner',btn2Act:'ai-oneri',bgPattern:'dots'},
+  {eyebrow:'Özel İndirim',title:'Tüm Kitaplarda <em>%20 İndirim</em>',desc:'Haziran boyunca kataloğumuzdaki tüm eserlerde geçerli yaz kampanyamızdan yararlanın.',badge:'Sınırlı Süre · Yaz Kampanyası',btn1Text:'Kampanyayı Gör',btn1Act:'books-scroll',btn2Text:'Sipariş Ver',btn2Act:'contact',bgPattern:'diag'},
+];
+
+function startProgress(dur){
+  const d=dur||SLIDE_DUR;
   const p=sid('heroProgress');if(!p)return;
   p.style.transition='none';p.style.width='0%';
   requestAnimationFrame(()=>{
     requestAnimationFrame(()=>{
-      p.style.transition=`width ${SLIDE_DUR}ms linear`;
+      p.style.transition=`width ${d}ms linear`;
       p.style.width='100%';
     });
   });
@@ -5539,14 +5494,46 @@ function startProgress(){
 function updateSliderCounter(){
   const cur=sid('scCur'),tot=sid('scTot');
   if(cur)cur.textContent=String(curSlide+1).padStart(2,'0');
-  if(tot)tot.textContent=String(slides.length).padStart(2,'0');
+  if(tot)tot.textContent=String(heroSlides.length).padStart(2,'0');
+}
+function renderHeroSlider(slidesData){
+  const wrap=document.getElementById('hero-slides-wrap');if(!wrap)return;
+  const dotsWrap=sid('sliderDots');if(dotsWrap)dotsWrap.innerHTML='';
+  if(slideTimer){clearInterval(slideTimer);slideTimer=null;}
+  curSlide=0;
+  if(!slidesData||!slidesData.length)return;
+  const visible=slidesData.filter(s=>!s.hidden);
+  wrap.innerHTML=visible.map((s,i)=>{
+    const bgClass=s.bgPattern||_HERO_BGS[i%3];
+    const badge=s.badge?`<div class="slide-badge">${escHtml(s.badge)}</div>`:'';
+    const desc=s.desc?`<p>${escHtml(s.desc)}</p>`:'';
+    const b1act=_HERO_SACT[s.btn1Act]||"sid('books-sec')?.scrollIntoView({behavior:'smooth'})";
+    const b2act=_HERO_SACT[s.btn2Act]||'';
+    const b2=s.btn2Text?`<button class="btn-outline" onclick="${b2act}">${escHtml(s.btn2Text)}</button>`:'';
+    return`<div class="slide${i===0?' act':''}">
+      <div class="slide-bg ${bgClass}"></div>
+      <div class="slide-content">
+        ${badge}
+        <div class="slide-eyebrow">${escHtml(s.eyebrow||'')}</div>
+        <h1>${_safeTitleHtml(s.title||'')}</h1>
+        ${desc}
+        <div class="slide-btns">
+          <button class="btn-gold" onclick="${b1act}">${escHtml(s.btn1Text||'Keşfet')}</button>
+          ${b2}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  heroSlides=wrap.querySelectorAll('.slide');
+  if(dotsWrap){
+    heroSlides.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(i===0?' act':'');b.onclick=()=>goSlide(i);dotsWrap.appendChild(b)});
+  }
+  updateSliderCounter();
+  startProgress();
+  if(SLIDE_DUR>0){slideTimer=setInterval(nextSlide,SLIDE_DUR);}
 }
 function initSlider(){
-  const d=sid('sliderDots');if(!d)return;
-  slides.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(i===0?' act':'');b.onclick=()=>goSlide(i);d.appendChild(b)});
-  updateSliderCounter();
-  slideTimer=setInterval(nextSlide,SLIDE_DUR);
-  startProgress();
+  if(!hero)return;
   hero.addEventListener('touchstart',e=>{stX=e.touches[0].clientX;stY=e.touches[0].clientY},{passive:true});
   hero.addEventListener('touchend',e=>{
     const dx=e.changedTouches[0].clientX-stX,dy=e.changedTouches[0].clientY-stY;
@@ -5554,14 +5541,24 @@ function initSlider(){
   },{passive:true});
 }
 function goSlide(n){
-  slides[curSlide].classList.remove('act');document.querySelectorAll('.dot')[curSlide]?.classList.remove('act');
-  curSlide=(n+slides.length)%slides.length;
-  slides[curSlide].classList.add('act');document.querySelectorAll('.dot')[curSlide]?.classList.add('act');
+  if(!heroSlides.length)return;
+  heroSlides[curSlide].classList.remove('act');
+  document.querySelectorAll('#sliderDots .dot')[curSlide]?.classList.remove('act');
+  curSlide=(n+heroSlides.length)%heroSlides.length;
+  heroSlides[curSlide].classList.add('act');
+  document.querySelectorAll('#sliderDots .dot')[curSlide]?.classList.add('act');
   updateSliderCounter();
-  startProgress();
+  const visibleSlides=(siteContent.slides||_DEFAULT_SLIDES).filter(s=>!s.hidden);
+  const dur=visibleSlides[curSlide]?.duration||SLIDE_DUR;
+  if(slideTimer){clearInterval(slideTimer);}
+  slideTimer=setInterval(nextSlide,dur);
+  startProgress(dur);
 }
 function nextSlide(){goSlide(curSlide+1)}
 function prevSlide(){goSlide(curSlide-1)}
+const _initSlides=(siteContent.slides&&siteContent.slides.length)?siteContent.slides:_DEFAULT_SLIDES;
+if(siteContent.sliderSettings?.duration)SLIDE_DUR=siteContent.sliderSettings.duration;
+renderHeroSlider(_initSlides);
 initSlider();
 
 /* ── CANLI SAYAÇ ── */
@@ -8400,21 +8397,9 @@ function applySiteContent(){
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content',sDesc);
   }
   // Hero Slider
-  const _SACT={'books-scroll':"sid('books-sec')?.scrollIntoView({behavior:'smooth'})",'books':"go('books')",'authors':"go('authors')",'ai-oneri':"go('ai-oneri')",'about':"go('about')",'eser-basvuru':"go('eser-basvuru')",'contact':"go('contact')",'blog':"go('blog')",'wishlist':"go('wishlist')"};
-  if(c.slides){
-    c.slides.forEach((s,i)=>{
-      if(s.eyebrow){const e=el('s'+i+'-ey');if(e)e.textContent=s.eyebrow;}
-      if(s.title){const e=el('s'+i+'-h1');if(e)e.innerHTML=s.title;}
-      if(s.desc){const e=el('s'+i+'-p');if(e)e.textContent=s.desc;}
-      if(i===5&&s.badge){const e=el('s5-badge');if(e)e.textContent=s.badge;}
-      if(s.btn1Text||s.btn1Act){
-        const btns=el('s'+i+'-btns'); if(!btns)return;
-        const a1=_SACT[s.btn1Act]||"sid('books-sec')?.scrollIntoView({behavior:'smooth'})";
-        const b2=s.btn2Text?`<button class="btn-outline" onclick="${_SACT[s.btn2Act]||''}">${escHtml(s.btn2Text)}</button>`:'';
-        btns.innerHTML=`<button class="btn-gold" onclick="${a1}">${escHtml(s.btn1Text||'Keşfet')}</button>${b2}`;
-      }
-    });
-  }
+  if(c.sliderSettings?.duration)SLIDE_DUR=c.sliderSettings.duration;
+  const _heroSlides=c.slides&&c.slides.length?c.slides:_DEFAULT_SLIDES;
+  renderHeroSlider(_heroSlides);
   // Kargo & Ödeme
   if(c.shipping){
     if(c.shipping.freeShip)FREE_SHIP=parseInt(c.shipping.freeShip)||FREE_SHIP;
@@ -9687,25 +9672,35 @@ async function sendAIW(){
 
         <!-- ── SİTE İÇERİĞİ ─────────────── -->
         <div class="page" id="adm-p-content">
+          <!-- Slider Genel Ayarlar -->
           <div class="card" style="margin-bottom:1.25rem">
             <div class="card-head">
-              <span class="card-title"><i class="ti ti-photo"></i>Ana Sayfa Hero Slider</span>
+              <span class="card-title"><i class="ti ti-settings"></i>Slider Genel Ayarlar</span>
               <div class="card-acts">
-                <button class="card-btn primary" onclick="adminSaveHeroContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
+                <button class="card-btn primary" onclick="adminSaveSliderSettings()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
               </div>
             </div>
             <div class="card-body">
-              <p style="font-size:.75rem;color:var(--txt2);margin-bottom:.8rem">Her slide için başlık, üst etiket ve açıklamayı düzenleyin.</p>
-              <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem" id="adm-slideTabRow">
-                <button class="tb-btn act" onclick="adminSelSlideTab(0,this)">Slide 1</button>
-                <button class="tb-btn" onclick="adminSelSlideTab(1,this)">Slide 2</button>
-                <button class="tb-btn" onclick="adminSelSlideTab(2,this)">Slide 3</button>
-                <button class="tb-btn" onclick="adminSelSlideTab(3,this)">Slide 4</button>
-                <button class="tb-btn" onclick="adminSelSlideTab(4,this)">Slide 5</button>
-                <button class="tb-btn" onclick="adminSelSlideTab(5,this)">Slide 6 — Kampanya</button>
+              <div class="g2">
+                <div class="field"><label>Geçiş Süresi (saniye) <span style="font-weight:400;color:var(--txt3);font-size:.68rem">Her slayt bu süre kadar görünür</span></label><input type="number" id="adm-slider-dur" min="2" max="60" step="1" placeholder="8" style="width:100%"></div>
+                <div class="field"><label>Otomatik Geçiş</label>
+                  <div style="display:flex;align-items:center;gap:.65rem;margin-top:.4rem">
+                    <label class="toggle"><input type="checkbox" id="adm-slider-autoplay" checked><div class="toggle-track"></div><div class="toggle-thumb"></div></label>
+                    <span style="font-size:.78rem;color:var(--txt2)">Aktif olduğunda slaytlar otomatik ilerler</span>
+                  </div>
+                </div>
               </div>
-              <div id="adm-slideEditorWrap"></div>
             </div>
+          </div>
+          <!-- Slayt Yönetimi -->
+          <div class="card" style="margin-bottom:1.25rem">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-photo"></i>Slaytlar <span id="adm-slide-count-lbl" style="color:var(--txt3);font-weight:400;font-size:.73rem"></span></span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="admAddSlide()"><i class="ti ti-plus" style="font-size:13px"></i>Slayt Ekle</button>
+              </div>
+            </div>
+            <div id="adm-slides-list" style="padding:.5rem .75rem .75rem"></div>
           </div>
           <div class="card" style="margin-bottom:1.25rem">
             <div class="card-head">
@@ -11445,12 +11440,40 @@ window.adminImportData = function(){
 /* ═══════════════════════════════════════
    SITE CONTENT
 ═══════════════════════════════════════ */
-let _admCurSlideTab = 0;
+const ADM_SLIDE_ACTS=[
+  {v:'books-scroll',l:'Kitaplara Kaydır'},{v:'books',l:'Kitaplar Sayfası'},
+  {v:'authors',l:'Yazarlarımız'},{v:'ai-oneri',l:'AI Öneri'},
+  {v:'about',l:'Hakkımızda'},{v:'eser-basvuru',l:'Eser Başvuru'},
+  {v:'contact',l:'İletişim / Sipariş'},{v:'blog',l:'Akgül Gazetesi'},
+  {v:'askida-kitap',l:'Askıda Kitap'},{v:'wishlist',l:'İstek Listesi'},
+];
+function admSlActOpts(sel){return ADM_SLIDE_ACTS.map(a=>`<option value="${a.v}"${sel===a.v?' selected':''}>${a.l}</option>`).join('');}
+
+const ADM_BG_PATS=[{v:'lines',l:'Çizgili'},{v:'dots',l:'Noktalı'},{v:'diag',l:'Köşegen'}];
+function admBgOpts(sel){return ADM_BG_PATS.map(a=>`<option value="${a.v}"${sel===a.v?' selected':''}>${a.l}</option>`).join('');}
+
+const SS='padding:.42rem .55rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.78rem;width:100%;outline:none';
+
+function admGetSlides(){
+  const raw=adminSiteContent.slides;
+  if(raw&&raw.length)return raw;
+  return JSON.parse(JSON.stringify([
+    {eyebrow:'Akgül Yayınevi',title:'Kelimelerin <em>Büyüsüne</em> Kapılın',desc:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.',btn1Text:'Kitapları Keşfet',btn1Act:'books-scroll',btn2Text:'AI Öneri Al',btn2Act:'ai-oneri',bgPattern:'lines',duration:null,hidden:false},
+    {eyebrow:'Yeni Çıktı',title:'<em>Mavi Oda</em> — Deniz Kaya',desc:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.',btn1Text:'İncele',btn1Act:'books',btn2Text:'Yazara Git',btn2Act:'authors',bgPattern:'dots',duration:null,hidden:false},
+    {eyebrow:'Yazar mısınız?',title:'Eserinizi <em>Dünyayla</em> Buluşturun',desc:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.',btn1Text:'Başvuru Yap',btn1Act:'eser-basvuru',btn2Text:'Hakkımızda',btn2Act:'about',bgPattern:'diag',duration:null,hidden:false},
+    {eyebrow:'Adana\'dan Türkiye\'ye',title:'Güney\'in <em>Edebiyat Kalesi</em>',desc:'',btn1Text:'Bizi Tanıyın',btn1Act:'about',btn2Text:'Yazarlarımız',btn2Act:'authors',bgPattern:'lines',duration:null,hidden:false},
+    {eyebrow:'Zengin Katalog',title:'Her Zevke Hitap Eden <em>Edebi Seçki</em>',desc:'',btn1Text:'Kataloğu Keşfet',btn1Act:'books-scroll',btn2Text:'Bana Kitap Öner',btn2Act:'ai-oneri',bgPattern:'dots',duration:null,hidden:false},
+    {eyebrow:'Özel İndirim',title:'Tüm Kitaplarda <em>%20 İndirim</em>',desc:'Haziran boyunca kampanyamızdan yararlanın.',badge:'Sınırlı Süre · Yaz Kampanyası',btn1Text:'Kampanyayı Gör',btn1Act:'books-scroll',btn2Text:'Sipariş Ver',btn2Act:'contact',bgPattern:'diag',duration:null,hidden:false},
+  ]));
+}
 
 function adminRenderContent(){
-  const c = adminSiteContent;
-  adminRenderSlideEditor(_admCurSlideTab);
+  const c=adminSiteContent;
+  const ss=c.sliderSettings||{};
   const fv=(id,val)=>{const e=ag(id);if(e&&val!=null)e.value=val;};
+  fv('adm-slider-dur',(ss.duration||8000)/1000);
+  const ap=ag('adm-slider-autoplay'); if(ap)ap.checked=ss.autoplay!==false;
+  admRenderSlideList();
   const seo=c.seo||{}; fv('adm-seo-title-inp',seo.title); fv('adm-seo-desc-inp',seo.description); fv('adm-seo-keys-inp',seo.keywords);
   const camp=(c.slides&&c.slides[5])||{}, campMeta=c.campaign||{};
   fv('adm-camp-badge-inp',camp.badge); fv('adm-camp-ey-inp',camp.eyebrow); fv('adm-camp-h1-inp',camp.title); fv('adm-camp-p-inp',camp.desc); fv('adm-camp-end-inp',campMeta.endDate);
@@ -11500,83 +11523,140 @@ function adminRenderAiPageContent(){
   fv('adm-ai-label-inp',ai.label); fv('adm-ai-title-inp',ai.title); fv('adm-ai-desc-inp',ai.desc);
 }
 
-window.adminSelSlideTab = function(i,btn){
-  _admCurSlideTab=i;
-  document.querySelectorAll('#adm-slideTabRow .tb-btn').forEach((b,j)=>b.classList.toggle('act',j===i));
-  adminRenderSlideEditor(i);
-};
+function admRenderSlideList(){
+  const slides=admGetSlides();
+  adminSiteContent.slides=slides;
+  const lbl=ag('adm-slide-count-lbl'); if(lbl)lbl.textContent=`(${slides.length} slayt)`;
+  const list=ag('adm-slides-list'); if(!list)return;
+  const bgColors={lines:'#2a1d08',dots:'#0a2016',diag:'#160e22'};
+  list.innerHTML=slides.map((s,i)=>{
+    const titlePreview=s.title.replace(/<[^>]+>/g,'').substring(0,45)+(s.title.length>45?'…':'');
+    const bgCol=bgColors[s.bgPattern]||'#1a1a1a';
+    const isHidden=s.hidden?'opacity:.45;':'';
+    return`<div class="adm-sc" id="adm-sc-${i}" style="${isHidden}border:1px solid var(--brd2);border-radius:8px;margin-bottom:.6rem;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:.6rem;padding:.6rem .75rem;background:var(--bg3);cursor:pointer" onclick="admToggleSlide(${i})">
+        <div style="width:28px;height:40px;border-radius:4px;background:${bgCol};flex-shrink:0;display:flex;align-items:center;justify-content:center">
+          <span style="font-size:.55rem;color:rgba(200,169,110,.7);font-weight:700">${i+1}</span>
+        </div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:.8rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--txt1)">${titlePreview||'(başlıksız)'}</div>
+          <div style="font-size:.68rem;color:var(--txt3);margin-top:.1rem">${admEsc(s.eyebrow||'')}${s.badge?' · 🏷 '+s.badge:''}</div>
+        </div>
+        <div style="display:flex;gap:.25rem;flex-shrink:0" onclick="event.stopPropagation()">
+          ${!s.hidden?`<button class="act-btn" onclick="admToggleHideSlide(${i})" title="Gizle" style="font-size:.65rem;padding:3px 6px">👁</button>`:`<button class="act-btn" onclick="admToggleHideSlide(${i})" title="Göster" style="font-size:.65rem;padding:3px 6px;opacity:.5">🚫</button>`}
+          <button class="act-btn" onclick="admMoveSlide(${i},-1)" title="Yukarı" ${i===0?'disabled':''}>↑</button>
+          <button class="act-btn" onclick="admMoveSlide(${i},1)" title="Aşağı" ${i===slides.length-1?'disabled':''}>↓</button>
+          <button class="act-btn red" onclick="admDeleteSlide(${i})" title="Sil"><i class="ti ti-trash" style="font-size:11px"></i></button>
+        </div>
+        <span style="font-size:.65rem;color:var(--txt3);flex-shrink:0;margin-left:.25rem">✏</span>
+      </div>
+      <div id="adm-se-${i}" style="display:none;padding:.85rem .75rem .9rem;border-top:1px solid var(--brd2);background:var(--bg2)">
+        ${admSlideEditorHtml(s,i)}
+      </div>
+    </div>`;
+  }).join('');
+}
 
-const ADM_SLIDE_ACTS=[
-  {v:'books-scroll',l:'Kitaplara Kaydır'},
-  {v:'books',l:'Kitaplar Sayfası'},
-  {v:'authors',l:'Yazarlarımız'},
-  {v:'ai-oneri',l:'AI Öneri'},
-  {v:'about',l:'Hakkımızda'},
-  {v:'eser-basvuru',l:'Eser Başvuru'},
-  {v:'contact',l:'İletişim / Sipariş'},
-  {v:'blog',l:'Akgül Gazetesi'},
-  {v:'wishlist',l:'İstek Listesi'},
-];
-const ADM_SLIDE_ACT_JS={
-  'books-scroll':"sid('books-sec')?.scrollIntoView({behavior:'smooth'})",
-  'books':"go('books')",
-  'authors':"go('authors')",
-  'ai-oneri':"go('ai-oneri')",
-  'about':"go('about')",
-  'eser-basvuru':"go('eser-basvuru')",
-  'contact':"go('contact')",
-  'blog':"go('blog')",
-  'wishlist':"go('wishlist')",
-};
-function admSlActOpts(sel){return ADM_SLIDE_ACTS.map(a=>`<option value="${a.v}"${sel===a.v?' selected':''}>${a.l}</option>`).join('');}
-
-function adminRenderSlideEditor(i){
-  const slides=adminSiteContent.slides||[{},{},{},{},{},{}];
-  const s=slides[i]||{};
-  const defaults=[
-    {ey:'Akgül Yayınevi',h1:'Kelimelerin <em>Büyüsüne</em> Kapılın',p:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.',b1t:'Kitapları Keşfet',b1a:'books-scroll',b2t:'AI Öneri Al',b2a:'ai-oneri'},
-    {ey:'Yeni Çıktı',h1:'<em>Mavi Oda</em> — Deniz Kaya',p:'Psikolojik gerilim ile edebi kurguyu harmanlayan, 2026\'nın en çarpıcı romanı.',b1t:'İncele',b1a:'books',b2t:'Yazara Git',b2a:'authors'},
-    {ey:'Yazar mısınız?',h1:'Eserinizi <em>Dünyayla</em> Buluşturun',p:'Şeffaf ve adil bir yayınlama süreciyle yeni yazarları destekliyoruz.',b1t:'Başvuru Yap',b1a:'eser-basvuru',b2t:'Hakkımızda',b2a:'about'},
-    {ey:'Adana\'dan Türkiye\'ye',h1:'Güney\'in <em>Edebiyat Kalesi</em>',p:'',b1t:'Bizi Tanıyın',b1a:'about',b2t:'Yazarlarımız',b2a:'authors'},
-    {ey:'Zengin Katalog',h1:'Her Zevke Hitap Eden <em>Edebi Seçki</em>',p:'',b1t:'Kataloğu Keşfet',b1a:'books-scroll',b2t:'Bana Kitap Öner',b2a:'ai-oneri'},
-    {ey:'Özel İndirim',h1:'Tüm Kitaplarda <em>%20 İndirim</em>',p:'',badge:'Sınırlı Süre · Yaz Kampanyası',b1t:'Kampanyayı Gör',b1a:'books-scroll',b2t:'Sipariş Ver',b2a:'contact'},
-  ];
-  const d=defaults[i]||{};
-  const wrap=ag('adm-slideEditorWrap'); if(!wrap)return;
-  const selStyle='padding:.42rem .55rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.78rem;width:100%;outline:none';
-  const badgeRow=i===5?`<div class="field" style="margin-bottom:.75rem"><label>Kampanya Rozeti</label><input type="text" id="adm-sl-badge" placeholder="${d.badge||''}" value="${admEsc(s.badge||'')}"></div>`:'';
-  wrap.innerHTML=`
-    ${badgeRow}
-    <div class="g2" style="margin-bottom:.75rem">
-      <div class="field"><label>Üst Etiket</label><input type="text" id="adm-sl-ey" placeholder="${admEsc(d.ey||'')}" value="${admEsc(s.eyebrow||'')}"></div>
-      <div class="field"><label>Açıklama</label><input type="text" id="adm-sl-p" placeholder="${admEsc(d.p||'')}" value="${admEsc(s.desc||'')}"></div>
+function admSlideEditorHtml(s,i){
+  return`
+    <div class="g2" style="margin-bottom:.65rem">
+      <div class="field"><label>Arkaplan Deseni</label><select id="adm-sl-bg-${i}" style="${SS}">${admBgOpts(s.bgPattern||'lines')}</select></div>
+      <div class="field"><label>Slayt Süresi (sn) <span style="font-size:.62rem;color:var(--txt3)">(boş = genel ayar)</span></label><input type="number" id="adm-sl-dur-${i}" min="1" max="60" step="1" value="${s.duration?s.duration/1000:''}" placeholder="Genel" style="width:100%"></div>
     </div>
-    <div class="field" style="margin-bottom:.75rem"><label>Başlık <span style="font-size:.65rem;color:var(--txt3);font-weight:400">(&lt;em&gt; ile italik)</span></label><input type="text" id="adm-sl-h1" placeholder="${admEsc(d.h1||'')}" value="${admEsc(s.title||'')}"></div>
-    <div style="border-top:1px solid var(--brd2);margin:.75rem 0 .75rem;padding-top:.75rem">
-      <div style="font-size:.72rem;font-weight:600;color:var(--txt2);margin-bottom:.55rem;text-transform:uppercase;letter-spacing:.06em">Butonlar</div>
-      <div class="g2" style="margin-bottom:.55rem">
-        <div class="field"><label>Buton 1 Metni</label><input type="text" id="adm-sl-b1t" placeholder="${admEsc(d.b1t||'Keşfet')}" value="${admEsc(s.btn1Text||'')}"></div>
-        <div class="field"><label>Buton 1 Hedef</label><select id="adm-sl-b1a" style="${selStyle}"><option value="">— seçin —</option>${admSlActOpts(s.btn1Act||d.b1a||'')}</select></div>
+    <div class="field" style="margin-bottom:.65rem"><label>Kampanya Rozeti <span style="font-size:.62rem;color:var(--txt3)">(boş bırakılırsa görünmez)</span></label><input type="text" id="adm-sl-badge-${i}" value="${admEsc(s.badge||'')}" placeholder="Sınırlı Süre · Yaz Kampanyası"></div>
+    <div class="g2" style="margin-bottom:.65rem">
+      <div class="field"><label>Üst Etiket</label><input type="text" id="adm-sl-ey-${i}" value="${admEsc(s.eyebrow||'')}" placeholder="Akgül Yayınevi"></div>
+      <div class="field"><label>Açıklama Metni</label><input type="text" id="adm-sl-p-${i}" value="${admEsc(s.desc||'')}" placeholder="Kısa açıklama..."></div>
+    </div>
+    <div class="field" style="margin-bottom:.75rem"><label>Başlık <span style="font-size:.65rem;color:var(--txt3);font-weight:400">(&lt;em&gt; ile italik — örn: Kelimelerin &lt;em&gt;Büyüsüne&lt;/em&gt; Kapılın)</span></label><input type="text" id="adm-sl-h1-${i}" value="${admEsc(s.title||'')}" placeholder="Kelimelerin &lt;em&gt;Büyüsüne&lt;/em&gt; Kapılın"></div>
+    <div style="border-top:1px solid var(--brd2);padding-top:.65rem;margin-bottom:.65rem">
+      <div style="font-size:.68rem;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem">Butonlar</div>
+      <div class="g2" style="margin-bottom:.45rem">
+        <div class="field"><label>Buton 1 Metni</label><input type="text" id="adm-sl-b1t-${i}" value="${admEsc(s.btn1Text||'')}" placeholder="Kitapları Keşfet"></div>
+        <div class="field"><label>Buton 1 Hedef</label><select id="adm-sl-b1a-${i}" style="${SS}"><option value="">— seçin —</option>${admSlActOpts(s.btn1Act||'')}</select></div>
       </div>
       <div class="g2">
-        <div class="field"><label>Buton 2 Metni <span style="font-size:.62rem;color:var(--txt3)">(boş bırakılırsa gizlenir)</span></label><input type="text" id="adm-sl-b2t" placeholder="${admEsc(d.b2t||'')}" value="${admEsc(s.btn2Text||'')}"></div>
-        <div class="field"><label>Buton 2 Hedef</label><select id="adm-sl-b2a" style="${selStyle}"><option value="">— seçin —</option>${admSlActOpts(s.btn2Act||d.b2a||'')}</select></div>
+        <div class="field"><label>Buton 2 Metni <span style="font-size:.62rem;color:var(--txt3)">(boş = gizle)</span></label><input type="text" id="adm-sl-b2t-${i}" value="${admEsc(s.btn2Text||'')}" placeholder="AI Öneri Al"></div>
+        <div class="field"><label>Buton 2 Hedef</label><select id="adm-sl-b2a-${i}" style="${SS}"><option value="">— seçin —</option>${admSlActOpts(s.btn2Act||'')}</select></div>
       </div>
+    </div>
+    <div class="form-actions">
+      <button class="tb-btn primary" onclick="admSaveSlide(${i})"><i class="ti ti-check"></i>Bu Slaytı Kaydet</button>
+      <button class="tb-btn" onclick="admToggleSlide(${i})">Kapat</button>
     </div>`;
 }
 
-window.adminSaveHeroContent = function(){
-  if(!adminSiteContent.slides||adminSiteContent.slides.length<6) adminSiteContent.slides=[{},{},{},{},{},{}];
-  const s={
-    eyebrow:agv('adm-sl-ey'),title:agv('adm-sl-h1'),desc:agv('adm-sl-p'),
-    btn1Text:agv('adm-sl-b1t'),btn1Act:ag('adm-sl-b1a')?.value||'',
-    btn2Text:agv('adm-sl-b2t'),btn2Act:ag('adm-sl-b2a')?.value||''
+window.admToggleSlide = function(i){
+  const panel=ag('adm-se-'+i);
+  if(!panel)return;
+  const isOpen=panel.style.display!=='none';
+  document.querySelectorAll('#adm-slides-list [id^="adm-se-"]').forEach(p=>p.style.display='none');
+  if(!isOpen)panel.style.display='block';
+};
+
+window.admSaveSlide = function(i){
+  const slides=admGetSlides();
+  const dur=parseFloat(ag('adm-sl-dur-'+i)?.value||'')||null;
+  slides[i]={
+    ...slides[i],
+    bgPattern:ag('adm-sl-bg-'+i)?.value||'lines',
+    badge:agv('adm-sl-badge-'+i)||null,
+    eyebrow:agv('adm-sl-ey-'+i),
+    desc:agv('adm-sl-p-'+i),
+    title:agv('adm-sl-h1-'+i),
+    btn1Text:agv('adm-sl-b1t-'+i),
+    btn1Act:ag('adm-sl-b1a-'+i)?.value||'',
+    btn2Text:agv('adm-sl-b2t-'+i)||null,
+    btn2Act:ag('adm-sl-b2a-'+i)?.value||'',
+    duration:dur?Math.round(dur*1000):null,
   };
-  if(_admCurSlideTab===5){const b=agv('adm-sl-badge');if(b)s.badge=b;}
-  adminSiteContent.slides[_admCurSlideTab]=s;
+  adminSiteContent.slides=slides;
   admSaveContent();
   applySiteContent();
-  adminToast('✦ Slide '+(+_admCurSlideTab+1)+' güncellendi!');
+  adminToast('✦ Slayt '+(i+1)+' güncellendi!');
+  admRenderSlideList();
+};
+
+window.admAddSlide = function(){
+  const slides=admGetSlides();
+  slides.push({eyebrow:'Yeni Slayt',title:'Başlık <em>Buraya</em>',desc:'',btn1Text:'Keşfet',btn1Act:'books-scroll',btn2Text:'',btn2Act:'',bgPattern:'lines',duration:null,hidden:false});
+  adminSiteContent.slides=slides;
+  admSaveContent(); applySiteContent(); admRenderSlideList();
+  adminToast('✦ Yeni slayt eklendi!');
+};
+
+window.admDeleteSlide = function(i){
+  const slides=admGetSlides();
+  if(slides.length<=1){adminToast('En az 1 slayt olmalı!','warn');return;}
+  if(!confirm('Slayt '+(i+1)+' silinsin mi?'))return;
+  slides.splice(i,1);
+  adminSiteContent.slides=slides;
+  admSaveContent(); applySiteContent(); admRenderSlideList();
+  adminToast('Slayt silindi','warn');
+};
+
+window.admMoveSlide = function(i,dir){
+  const slides=admGetSlides();
+  const j=i+dir;
+  if(j<0||j>=slides.length)return;
+  [slides[i],slides[j]]=[slides[j],slides[i]];
+  adminSiteContent.slides=slides;
+  admSaveContent(); applySiteContent(); admRenderSlideList();
+};
+
+window.admToggleHideSlide = function(i){
+  const slides=admGetSlides();
+  slides[i].hidden=!slides[i].hidden;
+  adminSiteContent.slides=slides;
+  admSaveContent(); applySiteContent(); admRenderSlideList();
+  adminToast(slides[i].hidden?'Slayt gizlendi':'Slayt görünür yapıldı');
+};
+
+window.adminSaveSliderSettings = function(){
+  const dur=parseFloat(agv('adm-slider-dur'))||8;
+  const autoplay=ag('adm-slider-autoplay')?.checked!==false;
+  adminSiteContent.sliderSettings={duration:Math.round(dur*1000),autoplay};
+  admSaveContent(); applySiteContent(); adminToast('✦ Slider ayarları güncellendi!');
 };
 window.adminSaveAboutContent = function(){
   adminSiteContent.about={
