@@ -1018,104 +1018,6 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .box-review-meta{font-size:.68rem;color:var(--muted)}
 .box-review-empty{font-size:.85rem;color:var(--muted);text-align:center;padding:2rem}
 
-/* ── OKUMA KULÜBÜ ── */
-.club-bg{background:var(--cream)}
-.club-inner{max-width:1140px;margin:0 auto;padding:5rem 2rem}
-.club-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;margin-top:2rem}
-@media(max-width:768px){.club-grid{grid-template-columns:1fr}}
-.club-book{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:2rem;display:flex;gap:1.5rem;align-items:center}
-.club-cover{width:100px;aspect-ratio:2/3;border-radius:5px;flex-shrink:0;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
-.club-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-weight:700;margin-bottom:.4rem}
-.club-book-title{font-family:var(--font-serif);font-size:1.3rem;color:var(--ink);font-weight:700;margin-bottom:.3rem}
-.club-book-author{font-size:.82rem;color:var(--muted);margin-bottom:1rem}
-.club-members{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem}
-.club-av-stack{display:flex}
-.club-av{width:28px;height:28px;border-radius:50%;border:2px solid var(--white);margin-right:-8px;font-size:.62rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff}
-.club-join-info{font-size:.75rem;color:var(--muted)}
-.club-perks{list-style:none;display:flex;flex-direction:column;gap:.6rem}
-.club-perk{display:flex;align-items:flex-start;gap:.75rem;font-size:.85rem;color:var(--muted);line-height:1.5}
-.club-perk-icon{width:24px;height:24px;border-radius:50%;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.club-perk-icon svg{width:12px;height:12px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round}
-.club-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2rem;text-align:center}
-.club-stat{padding:1.5rem 1rem;background:var(--white);border:1px solid var(--border);border-radius:8px}
-.club-stat-num{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:.2rem}
-.club-stat-lbl{font-size:.65rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted)}
-@media(max-width:768px){.club-stats{grid-template-columns:repeat(2,1fr)}}
-.club-past-books{display:flex;flex-direction:column;gap:.6rem}
-.club-past-book{display:flex;align-items:center;gap:.8rem;padding:.6rem;background:var(--white);border:1px solid var(--border);border-radius:6px;transition:all .2s}
-.club-past-book:hover{border-color:var(--gold);transform:translateX(4px)}
-.club-past-cover{width:36px;aspect-ratio:2/3;border-radius:3px;flex-shrink:0;position:relative;overflow:hidden}
-.club-testimonials{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-.club-testi{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:1.5rem;text-align:center}
-.club-testi-stars{color:var(--gold);font-size:.9rem;margin-bottom:.8rem}
-.club-testi-text{font-size:.82rem;color:var(--muted);line-height:1.7;margin-bottom:.8rem;font-style:italic}
-.club-testi-author{font-size:.72rem;color:var(--ink);font-weight:600}
-.club-review-list{max-width:650px;margin:0 auto;display:flex;flex-direction:column;gap:.7rem}
-.club-review-item{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.9rem 1.1rem;transition:all .2s}
-.club-review-item:hover{border-color:var(--gold)}
-.club-review-stars{color:var(--gold);font-size:.75rem;letter-spacing:.12em;margin-bottom:.15rem}
-.club-review-text{font-size:.82rem;color:var(--ink);line-height:1.6;margin-bottom:.2rem}
-.club-review-meta{font-size:.66rem;color:var(--muted)}
-.club-review-empty{font-size:.85rem;color:var(--muted);text-align:center;padding:1.5rem 0}
-@media(max-width:768px){.club-testimonials{grid-template-columns:1fr}}
-/* Club Hero */
-.club-hero{background:var(--ink);color:var(--white);padding:4rem 2rem 3rem;position:relative;overflow:hidden;text-align:center}
-.club-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 80px,rgba(200,169,110,.03) 80px,rgba(200,169,110,.03) 81px)}
-.club-hero-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);font-weight:700;margin-bottom:1rem;position:relative;z-index:1}
-.club-hero-title{font-family:var(--font-serif);font-size:clamp(1.9rem,4vw,3rem);color:var(--white);font-weight:700;margin-bottom:2rem;position:relative;z-index:1}
-.club-hero-title em{color:var(--gold);font-style:italic}
-.club-hero-book{display:flex;align-items:center;justify-content:center;gap:2rem;margin:0 auto 2rem;max-width:480px;position:relative;z-index:1;text-align:left}
-.club-hero-cover{width:110px;flex-shrink:0;border-radius:8px;overflow:hidden;aspect-ratio:2/3;box-shadow:0 20px 40px rgba(0,0,0,.55)}
-.club-hero-cover svg{display:block;width:100%;height:100%}
-.club-hero-month{font-size:.62rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);font-weight:700;margin-bottom:.4rem}
-.club-hero-book-title{font-family:var(--font-serif);font-size:1.55rem;color:var(--white);font-weight:700;margin-bottom:.2rem}
-.club-hero-author{font-size:.85rem;color:rgba(255,255,255,.6);margin-bottom:1.2rem}
-.club-hero-avstack{display:flex;align-items:center;gap:.5rem;margin-bottom:1.2rem}
-.club-hero-cta{background:var(--gold);color:var(--ink);border:none;padding:11px 26px;border-radius:6px;font-weight:700;font-size:.88rem;cursor:pointer;transition:all .3s;font-family:var(--font-sans)}
-.club-hero-cta:hover{background:#d4aa6e;transform:translateY(-2px)}
-/* Countdown */
-.club-countdown{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.2);border-radius:12px;padding:1.2rem 2rem;display:flex;gap:1.5rem;justify-content:center;align-items:flex-end;flex-wrap:wrap;margin:2.5rem auto 0;max-width:420px;position:relative;z-index:1}
-.club-countdown-lbl{width:100%;text-align:center;font-size:.6rem;text-transform:uppercase;letter-spacing:.14em;color:rgba(255,255,255,.4);margin-bottom:.2rem}
-.club-cd-unit{text-align:center}
-.club-cd-num{font-family:var(--font-serif);font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1}
-.club-cd-lbl{font-size:.57rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.38);margin-top:.25rem}
-.club-cd-sep{font-size:1.5rem;color:rgba(200,169,110,.3);padding-bottom:.55rem}
-/* Timeline */
-.club-timeline{display:flex;flex-direction:column;position:relative;padding-left:.5rem}
-.club-timeline::before{content:'';position:absolute;left:19px;top:22px;bottom:22px;width:2px;background:linear-gradient(to bottom,var(--gold),rgba(200,169,110,.1))}
-.club-tl-item{display:flex;gap:.9rem;padding:.65rem 0}
-.club-tl-dot{width:40px;height:40px;border-radius:50%;background:var(--white);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.85rem;position:relative;z-index:1;transition:all .3s}
-.club-tl-item.tl-done .club-tl-dot{background:var(--gold);border-color:var(--gold)}
-.club-tl-item.tl-active .club-tl-dot{background:var(--ink);border-color:var(--gold);box-shadow:0 0 0 4px rgba(200,169,110,.18)}
-.club-tl-body{padding-top:.4rem}
-.club-tl-date{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700;margin-bottom:.1rem}
-.club-tl-name{font-size:.9rem;font-weight:600;color:var(--ink)}
-.club-tl-item.tl-done .club-tl-name{color:var(--muted);text-decoration:line-through}
-.club-tl-item.tl-active .club-tl-name{color:var(--gold)}
-/* Tartışma Soruları */
-.club-questions{display:flex;flex-direction:column;gap:.5rem}
-.club-q{border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:border-color .25s}
-.club-q.open{border-color:rgba(200,169,110,.55)}
-.club-q-head{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;background:var(--white);user-select:none;transition:background .2s}
-.club-q-head:hover{background:var(--cream)}
-.club-q-num{width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--gold);font-size:.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.club-q-text{flex:1;font-size:.87rem;color:var(--ink);font-weight:500}
-.club-q-arr{font-size:.6rem;color:var(--muted);transition:transform .3s;flex-shrink:0}
-.club-q.open .club-q-arr{transform:rotate(180deg)}
-.club-q-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
-.club-q.open .club-q-body{max-height:200px}
-.club-q-hint{padding:.75rem 1rem .85rem 3.25rem;background:var(--cream);font-size:.8rem;color:var(--muted);line-height:1.65;border-top:1px solid var(--border)}
-.club-q-hint strong{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:.3rem}
-/* Sonraki Ay Teaser */
-.club-teaser{background:var(--ink);border-radius:12px;padding:2rem 1.5rem;text-align:center;position:relative;overflow:hidden;margin-top:2.5rem}
-.club-teaser::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 12px,rgba(200,169,110,.025) 12px,rgba(200,169,110,.025) 13px)}
-.club-teaser-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:.16em;color:var(--gold);font-weight:700;margin-bottom:.75rem;position:relative;z-index:1}
-.club-teaser-q{font-size:2.8rem;position:relative;z-index:1;margin-bottom:.4rem}
-.club-teaser-title{font-family:var(--font-serif);font-size:1.2rem;color:var(--white);font-weight:700;margin-bottom:.25rem;position:relative;z-index:1}
-.club-teaser-sub{font-size:.78rem;color:rgba(255,255,255,.45);position:relative;z-index:1;margin-bottom:1.1rem}
-.club-teaser-chip{font-size:.7rem;color:var(--gold);border:1px solid rgba(200,169,110,.35);border-radius:20px;padding:6px 16px;display:inline-block;position:relative;z-index:1;cursor:pointer;transition:all .3s}
-.club-teaser-chip:hover{background:rgba(200,169,110,.1)}
-@media(max-width:768px){.club-hero-book{flex-direction:column;text-align:center}.club-hero-avstack{justify-content:center}.club-countdown{gap:1rem;padding:1rem}}
 
 /* ── YAYINCILIK SÜRECİ ── */
 .process-bg{background:var(--ink)}
@@ -1625,16 +1527,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .mbn-wish{position:static;background:transparent;border:1px solid rgba(200,169,110,.35);border-radius:4px;width:auto;height:auto;padding:10px 18px;font-size:.82rem;font-weight:500;font-family:var(--font-sans);display:inline-flex;align-items:center;gap:.4rem;transition:all .2s}
 .mbn-wish:hover{background:rgba(231,76,60,.08);border-color:#E74C3C;color:#E74C3C;transform:none}
 .mbn-wish.wishlisted{background:rgba(231,76,60,.09);border-color:#E74C3C;color:#E74C3C}
-.rg-card{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1.25rem;margin-bottom:1.5rem}
-.rg-title{font-family:var(--font-serif);font-size:1rem;font-weight:700;color:var(--ink);margin-bottom:.75rem}
-.rg-nums{display:flex;align-items:baseline;gap:.4rem;margin-bottom:.6rem}
-.rg-current{font-family:var(--font-serif);font-size:2rem;font-weight:700;color:var(--ink)}
-.rg-sep{font-size:1.1rem;color:var(--muted)}
-.rg-target{font-family:var(--font-serif);font-size:1.1rem;color:var(--muted)}
-.rg-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:.4rem}
-.rg-fill{height:100%;background:linear-gradient(90deg,var(--gold),#c8a96e);border-radius:4px;transition:width .6s ease}
-.rg-pct{font-size:.72rem;color:var(--muted)}
-.rg-edit{font-size:.72rem;color:var(--gold);background:none;border:1px solid var(--gold);border-radius:4px;padding:4px 10px;cursor:pointer;margin-top:.6rem;font-family:var(--font-sans)}
 .rev-card{display:flex;gap:.85rem;padding:1rem;background:var(--cream);border:1px solid var(--border);border-radius:8px;transition:all .2s;align-items:flex-start;margin-bottom:.75rem}
 .rev-card:hover{border-color:rgba(200,169,110,.5)}
 .rev-mini-cover{width:40px;height:60px;border-radius:3px;flex-shrink:0;overflow:hidden;position:relative}
@@ -2358,15 +2250,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .box-flow { gap: .1rem }
   .box-flow-step { padding: .38rem .6rem; font-size: .65rem }
 
-  /* ── OKUMA KULÜBÜ ── */
-  .club-inner { padding: 2.5rem 1rem }
-  .club-grid { grid-template-columns: 1fr; gap: 2rem }
-  .club-book { padding: 1.25rem; gap: 1.25rem }
-  .club-cover { width: 80px }
-  .club-stats { grid-template-columns: repeat(2,1fr); gap: .75rem }
-  .club-stat { padding: 1rem .75rem }
-  .club-stat-num { font-size: 1.6rem }
-  .club-testimonials { grid-template-columns: 1fr; gap: 1rem }
 
   /* ── YAYINCILIK SÜRECİ ── */
   .process-inner { padding: 2.5rem 1rem }
@@ -3186,7 +3069,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <li><a onclick="go('blog');closeNav()" data-p="blog">Yazı Köşesi</a></li>
     <li><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu">Sürpriz Kutu</a></li>
     <li><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti">Hediye Sepeti</a></li>
-    <li><a onclick="go('okuma-kulubu');closeNav()" data-p="okuma-kulubu">Okuma Kulübü</a></li>
     <li><a onclick="go('ai-oneri');closeNav()" data-p="ai-oneri">AI Öneri</a></li>
     <li><a onclick="go('eser-basvuru');closeNav()" data-p="eser-basvuru">Eser Başvuru</a></li>
     <li><a onclick="go('about');closeNav()" data-p="about">Hakkımızda</a></li>
@@ -3359,18 +3241,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="slide-btns" id="s5-btns">
           <button class="btn-gold" onclick="sid('books-sec').scrollIntoView({behavior:'smooth'})">Kampanyayı Gör</button>
           <button class="btn-outline" onclick="go('contact')">Sipariş Ver</button>
-        </div>
-      </div>
-    </div>
-    <div class="slide">
-      <div class="slide-bg dots"></div>
-      <div class="slide-content">
-        <div class="slide-eyebrow" id="s6-ey">Birlikte Okuyalım</div>
-        <h1 id="s6-h1">Akgül <em>Okuma Kulübü</em></h1>
-        <p id="s6-p">Her ay yeni bir eser, yeni bir sohbet. Okuma kulübümüze katılın; yazarlarla buluşun, fikirlerinizi paylaşın, edebiyatı birlikte keşfedin.</p>
-        <div class="slide-btns" id="s6-btns">
-          <button class="btn-gold" onclick="go('okuma-kulubu')">Kulübe Katıl</button>
-          <button class="btn-outline" onclick="go('blog')">Yazı Köşesi</button>
         </div>
       </div>
     </div>
@@ -3730,175 +3600,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
       <div id="gpContent">
         <!-- JS tarafından doldurulur -->
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════ OKUMA KULÜBÜ ═══════════ -->
-<div class="page" id="page-okuma-kulubu">
-
-  <!-- HERO -->
-  <div class="club-hero">
-    <p class="club-hero-label">✦ Akgül Okuma Kulübü</p>
-    <h2 class="club-hero-title">Bu Ay <em>Birlikte</em> Okuyoruz</h2>
-    <div class="club-hero-book">
-      <div class="club-hero-cover" style="background:linear-gradient(145deg,#1d2e2a,#2D3E3A)"><div class="bspine"></div></div>
-      <div>
-        <div class="club-hero-month">✦ Mayıs 2026 Seçimi</div>
-        <div class="club-hero-book-title">Mavi Oda</div>
-        <div class="club-hero-author">Deniz Kaya</div>
-        <div class="club-hero-avstack">
-          <div class="club-av-stack">
-            <div class="club-av" style="background:#2D4A3E;width:30px;height:30px;font-size:.6rem">ZA</div>
-            <div class="club-av" style="background:#4A2D3E;width:30px;height:30px;font-size:.6rem">MK</div>
-            <div class="club-av" style="background:#3E3A2D;width:30px;height:30px;font-size:.6rem">ED</div>
-            <div class="club-av" style="background:#2D3A4A;width:30px;height:30px;font-size:.6rem">+14</div>
-          </div>
-          <span style="font-size:.75rem;color:rgba(255,255,255,.55);margin-left:.5rem">17 okur katıldı</span>
-        </div>
-        <button class="club-hero-cta" onclick="joinClub()">Kulübe Katıl →</button>
-      </div>
-    </div>
-    <div class="club-countdown">
-      <div class="club-countdown-lbl">Tartışmaya Kalan Süre — 15 Mayıs</div>
-      <div class="club-cd-unit"><div class="club-cd-num" id="cdDays">--</div><div class="club-cd-lbl">Gün</div></div>
-      <div class="club-cd-sep">:</div>
-      <div class="club-cd-unit"><div class="club-cd-num" id="cdHours">--</div><div class="club-cd-lbl">Saat</div></div>
-      <div class="club-cd-sep">:</div>
-      <div class="club-cd-unit"><div class="club-cd-num" id="cdMins">--</div><div class="club-cd-lbl">Dakika</div></div>
-    </div>
-  </div>
-
-  <div class="club-bg fade">
-    <div class="club-inner" style="max-width:1200px">
-
-      <!-- İstatistikler -->
-      <div class="club-stats">
-        <div class="club-stat"><div class="club-stat-num">47</div><div class="club-stat-lbl">Aktif Üye</div></div>
-        <div class="club-stat"><div class="club-stat-num">12</div><div class="club-stat-lbl">Ay Okuduk</div></div>
-        <div class="club-stat"><div class="club-stat-num">312</div><div class="club-stat-lbl">Mesaj Bu Ay</div></div>
-        <div class="club-stat"><div class="club-stat-num">%94</div><div class="club-stat-lbl">Memnuniyet</div></div>
-      </div>
-
-      <div class="club-grid" style="grid-template-columns:1fr 1fr;gap:3rem;margin-top:3rem">
-
-        <!-- Sol: Takvim + Tartışma Soruları -->
-        <div>
-          <h3 style="font-family:var(--font-serif);font-size:1.2rem;color:var(--ink);margin-bottom:1.2rem">Bu Ay'ın Programı</h3>
-          <div class="club-timeline">
-            <div class="club-tl-item tl-done">
-              <div class="club-tl-dot">📖</div>
-              <div class="club-tl-body"><div class="club-tl-date">1–10 Mayıs</div><div class="club-tl-name">İlk 3 bölüm okunuyor</div></div>
-            </div>
-            <div class="club-tl-item tl-active">
-              <div class="club-tl-dot">💬</div>
-              <div class="club-tl-body"><div class="club-tl-date">15 Mayıs</div><div class="club-tl-name">Online tartışma (WhatsApp)</div></div>
-            </div>
-            <div class="club-tl-item">
-              <div class="club-tl-dot">✍️</div>
-              <div class="club-tl-body"><div class="club-tl-date">20 Mayıs</div><div class="club-tl-name">Yazarla soru-cevap</div></div>
-            </div>
-            <div class="club-tl-item">
-              <div class="club-tl-dot">📝</div>
-              <div class="club-tl-body"><div class="club-tl-date">30 Mayıs</div><div class="club-tl-name">Ayın değerlendirmesi</div></div>
-            </div>
-          </div>
-
-          <h3 style="font-family:var(--font-serif);font-size:1.2rem;color:var(--ink);margin:2.2rem 0 1rem">Tartışma Soruları</h3>
-          <div class="club-questions">
-            <div class="club-q" onclick="toggleClubQ(this)">
-              <div class="club-q-head"><div class="club-q-num">1</div><div class="club-q-text">Mavi Oda'nın renk sembolizmi sizi nasıl etkiledi?</div><span class="club-q-arr">▼</span></div>
-              <div class="club-q-body"><div class="club-q-hint"><strong>💡 Düşünce noktası</strong>Mavi renk; huzur mu, yalnızlık mı yoksa sır mı çağrıştırıyor? Kendi okuma deneyiminizle paylaşın.</div></div>
-            </div>
-            <div class="club-q" onclick="toggleClubQ(this)">
-              <div class="club-q-head"><div class="club-q-num">2</div><div class="club-q-text">Baş karakter Selin'in dönüşümünü nasıl değerlendiriyorsunuz?</div><span class="club-q-arr">▼</span></div>
-              <div class="club-q-body"><div class="club-q-hint"><strong>💡 Düşünce noktası</strong>Selin'in iç çatışmaları gerçekçi mi? Onun yerinizde siz ne yapardınız?</div></div>
-            </div>
-            <div class="club-q" onclick="toggleClubQ(this)">
-              <div class="club-q-head"><div class="club-q-num">3</div><div class="club-q-text">Deniz Kaya'nın anlatı dili sizde nasıl bir his uyandırdı?</div><span class="club-q-arr">▼</span></div>
-              <div class="club-q-body"><div class="club-q-hint"><strong>💡 Düşünce noktası</strong>Yazarın kısa cümleler ve yoğun metaforlar kullanan üslubunu önceki okuduklarınızla karşılaştırın.</div></div>
-            </div>
-            <div class="club-q" onclick="toggleClubQ(this)">
-              <div class="club-q-head"><div class="club-q-num">4</div><div class="club-q-text">Kitabın sonu hakkında ne düşünüyorsunuz? <em style="font-size:.7rem;color:var(--gold)">(Spoiler)</em></div><span class="club-q-arr">▼</span></div>
-              <div class="club-q-body"><div class="club-q-hint"><strong>⚠️ Spoiler İçerir</strong>Finalin yarattığı açık uç etkisi bilinçli bir tercih mi? Alternatif bir son nasıl olurdu?</div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sağ: Avantajlar + Geçmiş + Sonraki Ay -->
-        <div>
-          <div style="margin-bottom:2.5rem">
-            <h3 style="font-family:var(--font-serif);font-size:1.2rem;color:var(--ink);margin-bottom:1.2rem">Kulüp Avantajları</h3>
-            <ul class="club-perks" style="gap:.6rem">
-              <li class="club-perk" style="background:var(--white);padding:.8rem 1rem;border-radius:6px;border:1px solid var(--border)"><div class="club-perk-icon" style="background:var(--gold)"><svg viewBox="0 0 24 24" style="stroke:var(--ink)"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-weight:500">Her ay 1 kitap seçimi + tartışma soruları</span></li>
-              <li class="club-perk" style="background:var(--white);padding:.8rem 1rem;border-radius:6px;border:1px solid var(--border)"><div class="club-perk-icon" style="background:var(--gold)"><svg viewBox="0 0 24 24" style="stroke:var(--ink)"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-weight:500">WhatsApp grubunda aktif okur topluluğu</span></li>
-              <li class="club-perk" style="background:var(--white);padding:.8rem 1rem;border-radius:6px;border:1px solid var(--border)"><div class="club-perk-icon" style="background:var(--gold)"><svg viewBox="0 0 24 24" style="stroke:var(--ink)"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-weight:500">Yazarla buluşma etkinlikleri (online)</span></li>
-              <li class="club-perk" style="background:var(--white);padding:.8rem 1rem;border-radius:6px;border:1px solid var(--border)"><div class="club-perk-icon" style="background:var(--gold)"><svg viewBox="0 0 24 24" style="stroke:var(--ink)"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-weight:500">Üyelere özel %10 kitap indirimi</span></li>
-              <li class="club-perk" style="background:var(--white);padding:.8rem 1rem;border-radius:6px;border:1px solid var(--border)"><div class="club-perk-icon" style="background:var(--gold)"><svg viewBox="0 0 24 24" style="stroke:var(--ink)"><polyline points="20 6 9 17 4 12"/></svg></div><span style="font-weight:500">Aylık dijital okuma rehberi ve bülten</span></li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 style="font-family:var(--font-serif);font-size:1.2rem;color:var(--ink);margin-bottom:1.2rem">Geçmiş Seçimler</h3>
-            <div class="club-past-books">
-              <div class="club-past-book">
-                <div class="club-past-cover" style="background:linear-gradient(145deg,#2D4A3E,#1d3a2e)"><div class="bspine" style="width:3px"></div></div>
-                <div><div style="font-size:.85rem;font-weight:600;color:var(--ink)">Gece Sesleri</div><div style="font-size:.72rem;color:var(--muted)">Leyla Karadeniz · Nisan 2026</div></div>
-              </div>
-              <div class="club-past-book">
-                <div class="club-past-cover" style="background:linear-gradient(145deg,#4A2D3E,#3a1d2e)"><div class="bspine" style="width:3px"></div></div>
-                <div><div style="font-size:.85rem;font-weight:600;color:var(--ink)">Sessiz Kıyılar</div><div style="font-size:.72rem;color:var(--muted)">Ahmet Demir · Mart 2026</div></div>
-              </div>
-              <div class="club-past-book">
-                <div class="club-past-cover" style="background:linear-gradient(145deg,#3E3A2D,#2e2a1d)"><div class="bspine" style="width:3px"></div></div>
-                <div><div style="font-size:.85rem;font-weight:600;color:var(--ink)">Anadolu'nun Sesi</div><div style="font-size:.72rem;color:var(--muted)">Fatma Yıldız · Şubat 2026</div></div>
-              </div>
-              <div class="club-past-book">
-                <div class="club-past-cover" style="background:linear-gradient(145deg,#2D3A4A,#1d2a3a)"><div class="bspine" style="width:3px"></div></div>
-                <div><div style="font-size:.85rem;font-weight:600;color:var(--ink)">Kayıp Kelimeler</div><div style="font-size:.72rem;color:var(--muted)">Can Öztürk · Ocak 2026</div></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sonraki Ay Teaser -->
-          <div class="club-teaser">
-            <div class="club-teaser-lbl">Haziran 2026 Seçimi</div>
-            <div class="club-teaser-q">📚</div>
-            <div class="club-teaser-title">Sonraki Kitap</div>
-            <div class="club-teaser-sub">31 Mayıs'ta açıklanıyor — merak etmeye başlayabilirsin</div>
-            <div class="club-teaser-chip" onclick="joinClub()">🔔 Bildirim için WhatsApp Grubuna Katıl</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Üye Yorumları -->
-      <div style="margin-top:4rem">
-        <h3 style="font-family:var(--font-serif);font-size:1.4rem;color:var(--ink);text-align:center;margin-bottom:2rem">Üyelerimiz <em style="color:var(--gold)">Ne Diyor?</em></h3>
-        <div class="club-testimonials">
-          <div class="club-testi">
-            <div class="club-testi-stars">★★★★★</div>
-            <p class="club-testi-text">"Mavi Oda'yı kulüpte tartıştıktan sonra kitaba bakışım tamamen değişti. Herkesin yorumu bir başka oluyor."</p>
-            <div class="club-testi-author">— Zeynep A., İstanbul</div>
-          </div>
-          <div class="club-testi">
-            <div class="club-testi-stars">★★★★★</div>
-            <p class="club-testi-text">"WhatsApp grubundaki tartışmalar sayesinde her ay en az 1 kitap bitiriyorum. Harika bir motivasyon!"</p>
-            <div class="club-testi-author">— Murat K., Ankara</div>
-          </div>
-          <div class="club-testi">
-            <div class="club-testi-stars">★★★★<span style="color:var(--border)">★</span></div>
-            <p class="club-testi-text">"Yazarla buluşma etkinlikleri benim için en büyük avantaj. Deniz Hanım'ın Mavi Oda'yı anlatması bambaşka."</p>
-            <div class="club-testi-author">— Elif S., İzmir</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Kulüp Yorumları -->
-      <div class="club-user-reviews" style="margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--border)">
-        <h3 class="box-section-title">Kulüp Hakkında Yorum Yap</h3>
-        <div id="clubReviewForm"></div>
-        <div class="club-review-list" id="clubReviewList"></div>
       </div>
     </div>
   </div>
@@ -4590,8 +4291,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
                 <div class="admin-field"><label>WhatsApp Numarası</label><input type="text" id="set-waphone" placeholder="905xxxxxxxxx" maxlength="12"></div>
                 <div class="admin-field"><label>Ücretsiz Kargo Eşiği (₺)</label><input type="number" id="set-freeship" placeholder="500" min="0"></div>
                 <div class="admin-field"><label>Kargo Ücreti (₺)</label><input type="number" id="set-shipcost" placeholder="35" min="0"></div>
-                <div class="admin-field"><label>Okuma Kulübü Kitabı</label><input type="text" id="set-clubbook" placeholder="Ay'ın kitabının başlığı"></div>
-                <div class="admin-field"><label>Kulüp Toplantı Tarihi</label><input type="datetime-local" id="set-clubdate"></div>
               </div>
               <button class="admin-submit" onclick="adminSaveSettings()">Ayarları Kaydet</button>
             </div>
@@ -4638,7 +4337,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a onclick="go('authors')">Yazarlarımız</a></li>
         <li><a onclick="go('surpriz-kutu')">Sürpriz Kutu</a></li>
         <li><a onclick="go('hediye-sepeti')">Hediye Sepeti</a></li>
-        <li><a onclick="go('okuma-kulubu')">Okuma Kulübü</a></li>
         <li><a onclick="go('ai-oneri')">AI Kitap Öneri</a></li>
         <li><a onclick="go('eser-basvuru')">Eser Başvuru</a></li>
         <li><a onclick="go('about')">Hakkımızda</a></li>
@@ -5021,7 +4719,6 @@ function go(page){
     updateBoxFlow(1);renderBoxSection();initBoxCounter();
   }
   if(page==='hediye-sepeti'){renderGiftPage();}
-  if(page==='okuma-kulubu')renderClubSection();
   if(page==='about')setTimeout(initAboutCounters,100);
   if(page==='ai-oneri')initAIOneri();
   if(page==='auth'){
@@ -5730,7 +5427,6 @@ function orderBoxPage(){
 }
 
 /* ── KULÜP ── */
-function joinClub(){window.open(`https://wa.me/${WA_PHONE}?text=${encodeURIComponent("Merhaba, Okuma Kulübü'ne katılmak istiyorum!")}`,'_blank')}
 
 /* ── BAŞVURU ── */
 function submitProcess(){
@@ -5955,32 +5651,6 @@ function submitBoxReview(){
   const st=sid('boxReviewStatus');if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
   renderBoxReviews();
 }
-/* ── KULÜP YORUMLARI ── */
-let clubReviewStars=5;
-function setClubStars(n){
-  clubReviewStars=n;
-  document.querySelectorAll('#clubStarPick span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=n));
-}
-function loadClubReviews(){return JSON.parse(localStorage.getItem('akgulClubReviews')||'[]')}
-function saveClubReviews(r){localStorage.setItem('akgulClubReviews',JSON.stringify(r))}
-function toggleClubQ(el){el.classList.toggle('open')}
-function initClubCountdown(){
-  const target=new Date('2026-05-15T19:00:00');
-  const pad=n=>String(n).padStart(2,'0');
-  function tick(){
-    const diff=target-new Date();
-    if(diff<=0){
-      ['cdDays','cdHours','cdMins'].forEach(id=>{const e=sid(id);if(e)e.textContent='00'});
-      return;
-    }
-    const d=sid('cdDays'),h=sid('cdHours'),m=sid('cdMins');
-    if(d)d.textContent=pad(Math.floor(diff/86400000));
-    if(h)h.textContent=pad(Math.floor((diff%86400000)/3600000));
-    if(m)m.textContent=pad(Math.floor((diff%3600000)/60000));
-  }
-  tick();
-  if(!window._clubCdIv)window._clubCdIv=setInterval(tick,30000);
-}
 function initAboutCounters(){
   const els=document.querySelectorAll('#page-about .abs-num[data-target]');
   if(!els.length)return;
@@ -6004,59 +5674,6 @@ function initAboutCounters(){
     });
   },{threshold:0.4});
   els.forEach(el=>obs.observe(el));
-}
-function renderClubSection(){
-  initClubCountdown();
-  const el=sid('clubReviewForm');if(!el)return;
-  if(currentUser){
-    el.innerHTML=`
-    <div style="max-width:500px;margin:0 auto 2rem">
-      <div class="rf-row">
-        <div class="rf-label">Puanın</div>
-        <div class="star-pick" id="clubStarPick">${[5,4,3,2,1].map(s=>`<span onclick="setClubStars(${s})" data-s="${s}">★</span>`).join('')}</div>
-      </div>
-      <div class="rf-row">
-        <div class="rf-label">Yorumun</div>
-        <textarea class="rf-input rf-textarea" id="clubReviewTxt" placeholder="Okuma Kulübü hakkında ne düşünüyorsun?" maxlength="500" oninput="charCount(this)"></textarea>
-        <div class="rf-char"><span>0</span>/500</div>
-      </div>
-      <div class="rf-submit-row">
-        <button class="rf-btn" onclick="submitClubReview()">Yorum Gönder</button>
-        <div class="rf-status" id="clubReviewStatus"></div>
-      </div>
-    </div>`;
-  }else{
-    el.innerHTML=`
-    <div style="text-align:center;padding:1.5rem;background:var(--cream);border-radius:5px;border:1px solid var(--border);margin-bottom:2rem;max-width:500px;margin-left:auto;margin-right:auto">
-      <div style="font-size:2rem;margin-bottom:.5rem;opacity:.4">✍</div>
-      <div style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">Yorum yapmak için üye girişi yapmalısın.</div>
-      <button class="rf-btn" onclick="go('auth')">Giriş Yap / Üye Ol</button>
-    </div>`;
-  }
-  renderClubReviews();
-}
-function renderClubReviews(){
-  const el=sid('clubReviewList');if(!el)return;
-  const revs=loadClubReviews();
-  el.innerHTML=revs.length?revs.map(r=>`
-    <div class="club-review-item">
-      <div class="club-review-stars">${'★'.repeat(r.s)}<span style="color:var(--border)">${'☆'.repeat(5-r.s)}</span></div>
-      <div class="club-review-text">${escHtml(r.t)}</div>
-      <div class="club-review-meta">— ${escHtml(r.u)} · ${r.d||'geçen gün'}</div>
-    </div>`).join(''):'<div class="club-review-empty">Henüz yorum yok. İlk yorumu sen yap!</div>';
-}
-function submitClubReview(){
-  if(!currentUser){go('auth');toast('Yorum yapmak için giriş yapmalısın');return}
-  const txt=sid('clubReviewTxt')?.value.trim();
-  if(!txt){const st=sid('clubReviewStatus');if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
-  if(txt.length<3){const st=sid('clubReviewStatus');if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
-  const revs=loadClubReviews();
-  revs.unshift({u:currentUser.name,s:clubReviewStars,t:txt,d:new Date().toLocaleDateString('tr-TR')});
-  saveClubReviews(revs);
-  sid('clubReviewTxt').value='';clubReviewStars=5;
-  const sp=sid('clubStarPick');if(sp)sp.querySelectorAll('span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=5));
-  const st=sid('clubReviewStatus');if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
-  renderClubReviews();
 }
 
 /* ── AI YORUMLARI ── */
@@ -6895,13 +6512,6 @@ function deleteMyReview(bookId,ev){
   renderOkurContents();
   renderProfile();
 }
-function getReadingGoal(){try{return parseInt(localStorage.getItem('akgulReadGoal')||'12',10)}catch(e){return 12}}
-function setReadingGoal(){
-  const cur=getReadingGoal();
-  const val=prompt('Yıllık okuma hedefiniz (kitap sayısı):',cur);
-  const n=parseInt(val,10);
-  if(!isNaN(n)&&n>0){localStorage.setItem('akgulReadGoal',n);renderOkurContents();}
-}
 
 /* ── PROFİL ── */
 function renderProfile(){
@@ -6939,7 +6549,7 @@ function renderProfile(){
       <div class="psb-item"><span class="psb-val">${wlCount}</span><span class="psb-lbl">İstek Listesi</span></div>
     </div>`;
   } else if(statBarEl){statBarEl.innerHTML='';}
-  const tabs=isYazar?['Genel Bakış','Yazılarım','Yeni Yazı','Kitaplarım','Satış Analizi','Siparişlerim','Profil']:['Kütüphanem','İstek Listem','Rozetler','Yorumlarım','Okuma Kulübü','Siparişlerim','Profil'];
+  const tabs=isYazar?['Genel Bakış','Yazılarım','Yeni Yazı','Kitaplarım','Satış Analizi','Siparişlerim','Profil']:['Kütüphanem','İstek Listem','Rozetler','Yorumlarım','Siparişlerim','Profil'];
   sid('profileTabs').innerHTML=tabs.map((t,i)=>`<button class="ptab${i===0?' act':''}" onclick="ptab(this,${i})">${t}</button>`).join('');
   if(isYazar)renderYazarContents();else renderOkurContents();
 }
@@ -7023,8 +6633,6 @@ function renderOkurContents(){
   const myRevs=books.flatMap(b=>b.reviews.filter(r=>r.u===currentUser.name).map(r=>({...r,book:b.title,bookId:b.id,bookBg:b.bg,bookCover:b.cover})));
   const wl=getWishlist();
   const wlBooks=books.filter(b=>wl.includes(b.id));
-  const goal=getReadingGoal();
-  const pct=Math.min(100,Math.round((myRevs.length/goal)*100));
 
   /* ── BADGES ── */
   const allBadges=[
@@ -7108,12 +6716,6 @@ function renderOkurContents(){
         </div>`;}).join('')
     :'<p style="color:var(--muted);font-size:.9rem">Henüz yorum yapmadınız. Kitaplara göz atıp fikrini paylaşabilirsin!</p>';
 
-  /* ── READING GOAL + CLUB TAB ── */
-  const clubSettings=JSON.parse(localStorage.getItem('akgulSettings')||'{}');
-  const clubBook=clubSettings.clubBook||'Mavi Oda';
-  const clubDate=clubSettings.clubDate||'Mayıs 2026';
-  const clubAuthorData=books.find(b=>b.title===clubBook);
-
   /* ── ORDERS TAB ── */
   const allStoredOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
   const myOrders=allStoredOrders.filter(o=>
@@ -7142,28 +6744,6 @@ function renderOkurContents(){
         <div class="stat-card" style="padding:.6rem 1.2rem"><div class="stat-card-num" style="font-size:1.2rem">${myRevs.length}</div><div class="stat-card-lbl" style="font-size:.65rem">Yorum</div></div>
       </div>
       ${revsHtml}
-    </div>
-    <div class="ptab-content">
-      <div class="rg-card">
-        <div class="rg-title">🎯 ${new Date().getFullYear()} Okuma Hedefi</div>
-        <div class="rg-nums">
-          <span class="rg-current">${myRevs.length}</span>
-          <span class="rg-sep">/</span>
-          <span class="rg-target">${goal} kitap</span>
-        </div>
-        <div class="rg-bar"><div class="rg-fill" style="width:${pct}%"></div></div>
-        <div class="rg-pct">%${pct} tamamlandı${pct>=100?' 🎉 Hedefinize ulaştınız!':''}</div>
-        <button class="rg-edit" onclick="setReadingGoal()">Hedefi Güncelle</button>
-      </div>
-      <div class="club-book" style="margin-bottom:1.5rem">
-        <div class="club-cover" style="background:${clubAuthorData?.bg||'linear-gradient(145deg,#1d2e2a,#2D3E3A)'}"><div class="bspine"></div></div>
-        <div>
-          <div class="club-label">✦ ${clubDate} Seçimi</div>
-          <div class="club-book-title">${escHtml(clubBook)}</div>
-          ${clubAuthorData?`<div class="club-book-author">${escHtml(clubAuthorData.author)}</div>`:''}
-          <button class="btn-gold" style="font-size:.78rem;padding:8px 16px;margin-top:.5rem" onclick="joinClub()">WhatsApp Grubuna Katıl</button>
-        </div>
-      </div>
     </div>
     <div class="ptab-content">${ordersHtml}</div>
     <div class="ptab-content">${profileEditForm()}</div>`;
@@ -7601,21 +7181,17 @@ function adminSaveSettings(){
   const waPhone=(sid('set-waphone')?.value||'').trim().replace(/\D/g,'');
   const freeShip=parseInt(sid('set-freeship')?.value)||500;
   const shipCost=parseInt(sid('set-shipcost')?.value)||35;
-  const clubBook=(sid('set-clubbook')?.value||'').trim();
-  const clubDate=sid('set-clubdate')?.value||'';
   if(waPhone.length>=10)WA_PHONE=waPhone;
   FREE_SHIP=freeShip;SHIP_COST=shipCost;
-  const settings={waPhone:WA_PHONE,freeShip:FREE_SHIP,shipCost:SHIP_COST,clubBook,clubDate};
+  const settings={waPhone:WA_PHONE,freeShip:FREE_SHIP,shipCost:SHIP_COST};
   Object.assign(siteSettings,settings);
   localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
-  if(clubDate&&window._clubCdIv){clearInterval(window._clubCdIv);window._clubCdIv=null;}
   toast('✦ Ayarlar kaydedildi!');
 }
 function loadSettingsForm(){
   const s=siteSettings;
   const f=(id,val)=>{const el=sid(id);if(el&&val)el.value=val};
   f('set-waphone',s.waPhone);f('set-freeship',s.freeShip);f('set-shipcost',s.shipCost);
-  f('set-clubbook',s.clubBook);f('set-clubdate',s.clubDate);
 }
 function adminChangePass(){
   const old=sid('set-oldpass')?.value,n1=sid('set-newpass')?.value,n2=sid('set-newpass2')?.value;
@@ -7678,7 +7254,7 @@ function applySiteContent(){
     document.querySelector('meta[name="twitter:description"]')?.setAttribute('content',sDesc);
   }
   // Hero Slider
-  const _SACT={'books-scroll':"sid('books-sec')?.scrollIntoView({behavior:'smooth'})",'books':"go('books')",'authors':"go('authors')",'ai-oneri':"go('ai-oneri')",'about':"go('about')",'eser-basvuru':"go('eser-basvuru')",'contact':"go('contact')",'okuma-kulubu':"go('okuma-kulubu')",'blog':"go('blog')",'wishlist':"go('wishlist')"};
+  const _SACT={'books-scroll':"sid('books-sec')?.scrollIntoView({behavior:'smooth'})",'books':"go('books')",'authors':"go('authors')",'ai-oneri':"go('ai-oneri')",'about':"go('about')",'eser-basvuru':"go('eser-basvuru')",'contact':"go('contact')",'blog':"go('blog')",'wishlist':"go('wishlist')"};
   if(c.slides){
     c.slides.forEach((s,i)=>{
       if(s.eyebrow){const e=el('s'+i+'-ey');if(e)e.textContent=s.eyebrow;}
@@ -7698,11 +7274,6 @@ function applySiteContent(){
     if(c.shipping.freeShip)FREE_SHIP=parseInt(c.shipping.freeShip)||FREE_SHIP;
     if(c.shipping.shipCost)SHIP_COST=parseInt(c.shipping.shipCost)||SHIP_COST;
     if(c.shipping.whatsapp&&c.shipping.whatsapp.length>=10)WA_PHONE=c.shipping.whatsapp.replace(/\D/g,'');
-  }
-  // Okuma Kulübü
-  if(c.club){
-    if(c.club.book)siteSettings.clubBook=c.club.book;
-    if(c.club.date)siteSettings.clubDate=c.club.date;
   }
   // İletişim Kartları
   if(c.contact){
@@ -7765,7 +7336,6 @@ if(!users.find(u=>u.email==='akgulyayinevi@gmail.com')){
 applySiteContent();
 renderHomeAuthors();
 renderBoxSection();
-renderClubSection();
 renderAISection();
 updateBadge();updateWishlistBadge();
 updateAuthNav();
@@ -8757,7 +8327,6 @@ async function sendAIW(){
                 <button class="tb-btn" onclick="adminSelSlideTab(3,this)">Slide 4</button>
                 <button class="tb-btn" onclick="adminSelSlideTab(4,this)">Slide 5</button>
                 <button class="tb-btn" onclick="adminSelSlideTab(5,this)">Slide 6 — Kampanya</button>
-                <button class="tb-btn" onclick="adminSelSlideTab(6,this)">Slide 7</button>
               </div>
               <div id="adm-slideEditorWrap"></div>
             </div>
@@ -8805,25 +8374,6 @@ async function sendAIW(){
                 <div class="field"><label>Kargo Ücreti (₺)</label><input type="number" id="adm-ship-cost-inp" placeholder="35" min="0"></div>
               </div>
               <div class="field"><label>WhatsApp Numarası</label><input type="text" id="adm-ship-wa-inp" placeholder="905366483096" maxlength="12"></div>
-            </div>
-          </div>
-          <div class="card" style="margin-bottom:1.25rem">
-            <div class="card-head">
-              <span class="card-title"><i class="ti ti-book"></i>Okuma Kulübü</span>
-              <div class="card-acts">
-                <button class="card-btn primary" onclick="adminSaveClubContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="g2">
-                <div class="field"><label>Ay'ın Kitabı</label><input type="text" id="adm-club-book-inp"></div>
-                <div class="field"><label>Yazar</label><input type="text" id="adm-club-author-inp"></div>
-              </div>
-              <div class="g2">
-                <div class="field"><label>Ay / Dönem</label><input type="text" id="adm-club-month-inp"></div>
-                <div class="field"><label>Toplantı Tarihi & Saati</label><input type="datetime-local" id="adm-club-date-inp"></div>
-              </div>
-              <div class="field"><label>Kulüp Açıklaması</label><textarea id="adm-club-desc-inp" rows="2" style="width:100%;resize:vertical"></textarea></div>
             </div>
           </div>
           <div class="g2">
@@ -9049,7 +8599,7 @@ function admSaveUsers(){ admSave(ADM_STORE_USERS,adminUsers); }
 function admSaveNotifs(){ admSave(ADM_STORE_NOTIFS,adminNotifs); }
 
 const ADM_STORE_CONTENT = 'akgulSiteContent';
-let adminSiteContent = admLoad(ADM_STORE_CONTENT,{slides:[{},{},{},{},{},{},{}],about:{},contact:{},footer:{},seo:{},campaign:{},shipping:{},club:{}});
+let adminSiteContent = admLoad(ADM_STORE_CONTENT,{slides:[{},{},{},{},{},{}],about:{},contact:{},footer:{},seo:{},campaign:{},shipping:{}});
 function admSaveContent(){ admSave(ADM_STORE_CONTENT, adminSiteContent); }
 
 /* ── DEFAULTS ── */
@@ -10135,8 +9685,6 @@ function adminRenderContent(){
   fv('adm-camp-badge-inp',camp.badge); fv('adm-camp-ey-inp',camp.eyebrow); fv('adm-camp-h1-inp',camp.title); fv('adm-camp-p-inp',camp.desc); fv('adm-camp-end-inp',campMeta.endDate);
   const sh=c.shipping||{}, siteS=admLoad('akgulSettings',{});
   fv('adm-ship-free-inp',sh.freeShip||siteS.freeShip); fv('adm-ship-cost-inp',sh.shipCost||siteS.shipCost); fv('adm-ship-wa-inp',sh.whatsapp||siteS.waPhone);
-  const cl=c.club||{};
-  fv('adm-club-book-inp',cl.book||siteS.clubBook); fv('adm-club-author-inp',cl.author); fv('adm-club-month-inp',cl.month); fv('adm-club-date-inp',cl.date||siteS.clubDate); fv('adm-club-desc-inp',cl.desc);
   const a=c.about||{};
   fv('adm-ab-sub-inp',a.heroSub); fv('adm-ab-quote-inp',a.heroQuote); fv('adm-ab-meta-inp',a.heroMeta);
   fv('adm-ab-fname-inp',a.founderName); fv('adm-ab-frole-inp',a.founderRole); fv('adm-ab-fquote-inp',a.founderQuote); fv('adm-ab-fbio-inp',a.founderBio);
@@ -10162,7 +9710,6 @@ const ADM_SLIDE_ACTS=[
   {v:'about',l:'Hakkımızda'},
   {v:'eser-basvuru',l:'Eser Başvuru'},
   {v:'contact',l:'İletişim / Sipariş'},
-  {v:'okuma-kulubu',l:'Okuma Kulübü'},
   {v:'blog',l:'Yazı Köşesi'},
   {v:'wishlist',l:'İstek Listesi'},
 ];
@@ -10174,14 +9721,13 @@ const ADM_SLIDE_ACT_JS={
   'about':"go('about')",
   'eser-basvuru':"go('eser-basvuru')",
   'contact':"go('contact')",
-  'okuma-kulubu':"go('okuma-kulubu')",
   'blog':"go('blog')",
   'wishlist':"go('wishlist')",
 };
 function admSlActOpts(sel){return ADM_SLIDE_ACTS.map(a=>`<option value="${a.v}"${sel===a.v?' selected':''}>${a.l}</option>`).join('');}
 
 function adminRenderSlideEditor(i){
-  const slides=adminSiteContent.slides||[{},{},{},{},{},{},{}];
+  const slides=adminSiteContent.slides||[{},{},{},{},{},{}];
   const s=slides[i]||{};
   const defaults=[
     {ey:'Akgül Yayınevi',h1:'Kelimelerin <em>Büyüsüne</em> Kapılın',p:'Adana\'dan Türkiye\'ye uzanan edebi yolculukta sizinle olmaktan mutluluk duyuyoruz.',b1t:'Kitapları Keşfet',b1a:'books-scroll',b2t:'AI Öneri Al',b2a:'ai-oneri'},
@@ -10190,7 +9736,6 @@ function adminRenderSlideEditor(i){
     {ey:'Adana\'dan Türkiye\'ye',h1:'Güney\'in <em>Edebiyat Kalesi</em>',p:'',b1t:'Bizi Tanıyın',b1a:'about',b2t:'Yazarlarımız',b2a:'authors'},
     {ey:'Zengin Katalog',h1:'Her Zevke Hitap Eden <em>Edebi Seçki</em>',p:'',b1t:'Kataloğu Keşfet',b1a:'books-scroll',b2t:'Bana Kitap Öner',b2a:'ai-oneri'},
     {ey:'Özel İndirim',h1:'Tüm Kitaplarda <em>%20 İndirim</em>',p:'',badge:'Sınırlı Süre · Yaz Kampanyası',b1t:'Kampanyayı Gör',b1a:'books-scroll',b2t:'Sipariş Ver',b2a:'contact'},
-    {ey:'Birlikte Okuyalım',h1:'Akgül <em>Okuma Kulübü</em>',p:'',b1t:'Kulübe Katıl',b1a:'okuma-kulubu',b2t:'Yazı Köşesi',b2a:'blog'}
   ];
   const d=defaults[i]||{};
   const wrap=ag('adm-slideEditorWrap'); if(!wrap)return;
@@ -10217,7 +9762,7 @@ function adminRenderSlideEditor(i){
 }
 
 window.adminSaveHeroContent = function(){
-  if(!adminSiteContent.slides||adminSiteContent.slides.length<7) adminSiteContent.slides=[{},{},{},{},{},{},{}];
+  if(!adminSiteContent.slides||adminSiteContent.slides.length<6) adminSiteContent.slides=[{},{},{},{},{},{}];
   const s={
     eyebrow:agv('adm-sl-ey'),title:agv('adm-sl-h1'),desc:agv('adm-sl-p'),
     btn1Text:agv('adm-sl-b1t'),btn1Act:ag('adm-sl-b1a')?.value||'',
@@ -10242,7 +9787,7 @@ window.adminSaveSeoContent = function(){
   admSaveContent(); adminToast('✦ SEO ayarları güncellendi!');
 };
 window.adminSaveCampaignContent = function(){
-  if(!adminSiteContent.slides||adminSiteContent.slides.length<7) adminSiteContent.slides=[{},{},{},{},{},{},{}];
+  if(!adminSiteContent.slides||adminSiteContent.slides.length<6) adminSiteContent.slides=[{},{},{},{},{},{}];
   const existing=adminSiteContent.slides[5]||{};
   adminSiteContent.slides[5]={...existing,badge:agv('adm-camp-badge-inp'),eyebrow:agv('adm-camp-ey-inp'),title:agv('adm-camp-h1-inp'),desc:ag('adm-camp-p-inp')?.value.trim()};
   adminSiteContent.campaign={endDate:agv('adm-camp-end-inp')};
@@ -10255,12 +9800,6 @@ window.adminSaveShippingContent = function(){
   adminSiteContent.shipping={freeShip,shipCost,whatsapp:wa};
   const s=admLoad('akgulSettings',{}); s.freeShip=freeShip; s.shipCost=shipCost; if(wa.length>=10)s.waPhone=wa;
   admSave('akgulSettings',s); admSaveContent(); adminToast('✦ Kargo ayarları güncellendi!');
-};
-window.adminSaveClubContent = function(){
-  const club={book:agv('adm-club-book-inp'),author:agv('adm-club-author-inp'),month:agv('adm-club-month-inp'),date:agv('adm-club-date-inp'),desc:ag('adm-club-desc-inp')?.value.trim()};
-  adminSiteContent.club=club;
-  const s=admLoad('akgulSettings',{}); if(club.book)s.clubBook=club.book; if(club.date)s.clubDate=club.date;
-  admSave('akgulSettings',s); admSaveContent(); adminToast('✦ Okuma Kulübü güncellendi!');
 };
 window.adminSaveContactContent = function(){
   const ct={address:ag('adm-ct-addr-inp')?.value.trim(),mapsUrl:agv('adm-ct-maps-inp'),phone:agv('adm-ct-phone-inp'),whatsapp:agv('adm-ct-wa-inp').replace(/\D/g,''),email:agv('adm-ct-email-inp'),instagram:agv('adm-ct-ig-inp').replace('@',''),facebook:agv('adm-ct-fb-inp'),twitter:agv('adm-ct-tw-inp')};
