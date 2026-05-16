@@ -116,12 +116,16 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .gim-btn{width:100%;padding:.72rem;background:var(--gold);color:var(--ink);border:none;border-radius:5px;font-size:.9rem;font-weight:600;font-family:var(--font-sans);cursor:pointer;transition:background .2s;letter-spacing:.03em}
 .gim-btn:hover{background:var(--gold-l)}
 /* ── HEDİYE SEPETİ SAYFASI ── */
-.gp-bg{background:linear-gradient(160deg,#0F0E0B 0%,#1a1508 55%,#1c2010 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem}
+.gp-bg{background:linear-gradient(160deg,#110810 0%,#20081a 50%,#1a0808 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem;position:relative;overflow:hidden}
+.gp-bg::before{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(200,169,110,.08) 1px,transparent 1px);background-size:32px 32px;pointer-events:none}
 .gp-inner{max-width:1100px;margin:0 auto}
 .gp-hero{text-align:center;margin-bottom:3.5rem}
 .gp-hero-label{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
 .gp-hero-title{font-family:var(--font-serif);font-size:clamp(2rem,5vw,3.2rem);color:var(--cream);font-weight:600;line-height:1.18;margin-bottom:1rem}
 .gp-hero-sub{font-size:.92rem;color:rgba(245,239,229,.5);max-width:520px;margin:0 auto}
+.gp-gift-svg{width:110px;height:auto;margin:0 auto 1.5rem;display:block;filter:drop-shadow(0 8px 28px rgba(200,169,110,.35))}
+@keyframes gpGiftFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
+.gp-gift-svg{animation:gpGiftFloat 3.8s ease-in-out infinite}
 .gp-empty{text-align:center;padding:4.5rem 2rem;color:rgba(245,239,229,.45)}
 .gp-empty-icon{font-size:3.5rem;margin-bottom:1rem;opacity:.35}
 .gp-empty-title{font-family:var(--font-serif);font-size:1.6rem;color:var(--cream);margin-bottom:.6rem}
@@ -171,9 +175,12 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .ask-main{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
 .ask-section-hd{font-size:.7rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-bottom:1.25rem;padding-bottom:.6rem;border-bottom:1px solid rgba(200,169,110,.12);display:flex;align-items:center;justify-content:space-between}
 .ask-books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;margin-bottom:2rem}
-.ask-book-card{background:rgba(255,255,255,.03);border:1px solid rgba(200,169,110,.12);border-radius:10px;overflow:hidden;transition:transform .2s,border-color .2s}
-.ask-book-card:hover{transform:translateY(-3px);border-color:rgba(200,169,110,.35)}
-.ask-book-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:.7rem;color:rgba(255,255,255,.65);padding:.5rem;text-align:center}
+.ask-book-card{background:rgba(255,255,255,.03);border:1px solid rgba(200,169,110,.12);border-radius:10px;overflow:hidden;transition:transform .25s,border-color .25s,box-shadow .25s}
+.ask-book-card:hover{transform:translateY(-6px) rotate(-0.5deg);border-color:rgba(200,169,110,.45);box-shadow:0 16px 48px rgba(0,0,0,.55)}
+.ask-book-thumb{height:145px;position:relative;overflow:hidden}
+.ask-book-thumb::before{content:'';position:absolute;left:0;top:0;bottom:0;width:9px;background:rgba(0,0,0,.35);z-index:1}
+.ask-book-thumb::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.07) 0%,rgba(0,0,0,.35) 100%)}
+.ask-thumb-title{position:absolute;bottom:.65rem;left:1.3rem;right:.65rem;font-family:var(--font-serif);font-size:.8rem;color:rgba(255,255,255,.9);line-height:1.4;font-weight:600;z-index:2;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 .ask-book-info{padding:.75rem}
 .ask-book-badge{display:inline-block;font-size:.58rem;padding:2px 7px;border-radius:10px;background:rgba(45,160,100,.15);color:#4ecb87;font-weight:600;margin-bottom:.35rem}
 .ask-book-title{font-size:.82rem;color:var(--cream);font-weight:600;margin-bottom:.2rem;line-height:1.3}
@@ -223,7 +230,22 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .ask-how-arrow{font-size:1.2rem;color:rgba(200,169,110,.3);padding-top:1.6rem;flex-shrink:0;align-self:flex-start}
 @media(max-width:600px){.ask-how{flex-direction:column;align-items:center;gap:.75rem}.ask-how-arrow{transform:rotate(90deg);padding-top:0;align-self:center}}
 /* ── ÇEKİLİŞ SAYFASI ── */
-.ck-bg{background:linear-gradient(160deg,#0F0E0B 0%,#1a0e1a 55%,#1a1508 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem}
+.ck-bg{background:linear-gradient(160deg,#0d0b1a 0%,#1b0d33 50%,#0e0b20 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem;position:relative;overflow:hidden}
+.ck-bg::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(124,92,191,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(124,92,191,.08) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.ck-bg::after{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(ellipse,rgba(124,92,191,.18) 0%,transparent 70%);pointer-events:none}
+/* Robot */
+.ck-robot-wrap{display:flex;justify-content:center;margin-bottom:1.75rem}
+.ck-robot-svg{width:170px;height:auto;filter:drop-shadow(0 0 25px rgba(155,89,182,.55)) drop-shadow(0 0 60px rgba(155,89,182,.2))}
+@keyframes ckRobotFloat{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(1.5deg)}}
+.ck-robot-wrap{animation:ckRobotFloat 4s ease-in-out infinite}
+@keyframes ckLedPulse{0%,100%{opacity:1}50%{opacity:.25}}
+.ck-robot-led1{animation:ckLedPulse 1.8s ease-in-out infinite}
+.ck-robot-led2{animation:ckLedPulse 1.8s ease-in-out infinite .6s}
+.ck-robot-led3{animation:ckLedPulse 1.8s ease-in-out infinite 1.2s}
+@keyframes ckRobotBlink{0%,85%,100%{opacity:1}88%,96%{opacity:.08}}
+.ck-robot-blink{animation:ckRobotBlink 4.5s ease-in-out infinite}
+@keyframes ckScanLine{0%{transform:translateY(-100%)}100%{transform:translateY(300%)}}
+.ck-robot-scan{animation:ckScanLine 2.5s linear infinite;opacity:.35}
 .ck-inner{max-width:1100px;margin:0 auto}
 .ck-hero{text-align:center;margin-bottom:3rem}
 .ck-layout{display:grid;grid-template-columns:260px 1fr;gap:3rem;align-items:start}
@@ -984,6 +1006,34 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .ep-quote{font-size:.8rem;color:var(--ink);font-style:italic;line-height:1.7;border-left:2px solid var(--gold);padding-left:.75rem;opacity:.8}
 
 /* ── YAZI KÖŞESİ ── */
+/* ── ANA SAYFA GAZETESİ PREVİEW ── */
+.hp-gz-mast{display:flex;align-items:center;gap:1.5rem;margin-bottom:2rem}
+.hp-gz-mast-line{flex:1;height:1px;background:var(--border)}
+.hp-gz-mast-mid{text-align:center;flex-shrink:0}
+.hp-gz-mast-rule{width:36px;height:2px;background:var(--gold);margin:.4rem auto 0}
+.hp-gz-grid{display:grid;grid-template-columns:1fr 300px;gap:0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--white)}
+.hp-gz-feat{cursor:pointer;display:flex;flex-direction:column;transition:background .2s}
+.hp-gz-feat:hover{background:rgba(200,169,110,.03)}
+.hp-gz-feat-img{height:260px;overflow:hidden;position:relative;flex-shrink:0;background:#e8e2d8}
+.hp-gz-feat-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .45s var(--ease)}
+.hp-gz-feat:hover .hp-gz-feat-img img{transform:scale(1.04)}
+.hp-gz-feat-body{padding:1.5rem 1.6rem;flex:1;display:flex;flex-direction:column}
+.hp-gz-cat{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-d);font-weight:700}
+.hp-gz-feat-title{font-family:var(--font-serif);font-size:1.5rem;color:var(--ink);line-height:1.2;margin:.45rem 0 .7rem;font-weight:700;flex:1}
+.hp-gz-feat-exc{font-size:.8rem;color:var(--muted);line-height:1.65;margin-bottom:.9rem}
+.hp-gz-meta{font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-top:auto}
+.hp-gz-dot{opacity:.35}
+.hp-gz-side{border-left:1px solid var(--border);display:flex;flex-direction:column}
+.hp-gz-sm-card{padding:1.1rem;cursor:pointer;flex:1;transition:background .2s;display:flex;gap:.8rem;align-items:flex-start}
+.hp-gz-sm-card:hover{background:rgba(200,169,110,.04)}
+.hp-gz-sm-card+.hp-gz-sm-card{border-top:1px solid var(--border)}
+.hp-gz-sm-img{width:70px;height:70px;border-radius:6px;overflow:hidden;flex-shrink:0;background:#e8e2d8}
+.hp-gz-sm-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.hp-gz-sm-card:hover .hp-gz-sm-img img{transform:scale(1.07)}
+.hp-gz-sm-body{flex:1;min-width:0}
+.hp-gz-sm-title{font-family:var(--font-serif);font-size:.88rem;color:var(--ink);line-height:1.3;margin:.3rem 0 .4rem;font-weight:700;display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hp-gz-read-more{text-align:center;margin-top:1.75rem}
+@media(max-width:720px){.hp-gz-grid{grid-template-columns:1fr}.hp-gz-side{border-left:none;border-top:1px solid var(--border)}.hp-gz-feat-img{height:200px}}
 .blog-bg{background:var(--cream)}
 .blog-inner{max-width:1140px;margin:0 auto;padding:5.5rem 2rem}
 /* filter bar */
@@ -3714,14 +3764,18 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 
   <div class="blog-bg fade">
     <div class="blog-inner">
-      <div style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem">
-        <div>
-          <p class="sec-label" style="margin-bottom:.5rem">Akgül Gazetesi'nden</p>
-          <h2 class="sec-title" style="margin-bottom:0">Son <em>Yazılar</em></h2>
+      <div class="hp-gz-mast">
+        <div class="hp-gz-mast-line"></div>
+        <div class="hp-gz-mast-mid">
+          <p class="sec-label" style="margin-bottom:.3rem;letter-spacing:.22em;font-size:.68rem">Akgül Gazetesi</p>
+          <div class="hp-gz-mast-rule"></div>
         </div>
-        <button class="btn-gold" onclick="go('blog')">Tüm Yazıları Gör</button>
+        <div class="hp-gz-mast-line"></div>
       </div>
-      <div class="blog-grid" id="blogPreview"></div>
+      <div id="blogPreview"></div>
+      <div class="hp-gz-read-more">
+        <button class="btn-gold" onclick="go('blog')">Tüm Sayıyı Oku →</button>
+      </div>
     </div>
   </div>
   <!-- krem blog-bg → karanlık yazarlar -->
@@ -3927,7 +3981,34 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="gp-bg">
     <div class="gp-inner">
       <div class="gp-hero fade">
-        <p class="gp-hero-label" id="hs-label">🎁 Kişiye Özel Hediye</p>
+        <svg class="gp-gift-svg" viewBox="0 0 130 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Kutu gövdesi -->
+          <rect x="18" y="52" width="94" height="52" rx="5" fill="#2a1022" stroke="#c8a96e" stroke-width="1.8"/>
+          <!-- Kutu kapak -->
+          <rect x="12" y="38" width="106" height="20" rx="5" fill="#38162e" stroke="#c8a96e" stroke-width="1.8"/>
+          <!-- Dikey şerit – gövde -->
+          <rect x="59" y="52" width="12" height="52" fill="rgba(200,169,110,.22)"/>
+          <!-- Dikey şerit – kapak -->
+          <rect x="59" y="38" width="12" height="20" fill="rgba(200,169,110,.22)"/>
+          <!-- Yatay şerit – kapak üzerinde -->
+          <rect x="12" y="45" width="106" height="8" rx="2" fill="rgba(200,169,110,.18)"/>
+          <!-- Fiyonk sol kulak -->
+          <path d="M65,38 Q38,8 20,30 Q32,42 65,38Z" fill="#c8a96e" opacity=".85"/>
+          <!-- Fiyonk sağ kulak -->
+          <path d="M65,38 Q92,8 110,30 Q98,42 65,38Z" fill="#c8a96e" opacity=".85"/>
+          <!-- Fiyonk düğümü -->
+          <ellipse cx="65" cy="38" rx="8" ry="6" fill="#e8c97a"/>
+          <!-- Fiyonk uçları -->
+          <path d="M62,33 Q56,18 60,8" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          <path d="M68,33 Q74,18 70,8" fill="none" stroke="#c8a96e" stroke-width="2" stroke-linecap="round" opacity=".7"/>
+          <!-- Parıltılar -->
+          <circle cx="12" cy="22" r="2.5" fill="#c8a96e" opacity=".55"/>
+          <circle cx="118" cy="18" r="2" fill="#c8a96e" opacity=".45"/>
+          <circle cx="115" cy="78" r="2" fill="#c8a96e" opacity=".4"/>
+          <circle cx="16" cy="80" r="2" fill="#c8a96e" opacity=".4"/>
+          <circle cx="65" cy="100" r="1.5" fill="#c8a96e" opacity=".3"/>
+        </svg>
+        <p class="gp-hero-label" id="hs-label">Kişiye Özel Hediye</p>
         <h2 class="gp-hero-title" id="hs-title">Hediye <em>Sepetim</em></h2>
         <p class="gp-hero-sub" id="hs-sub">Sevdiklerinize istediğiniz kitabı seçin — imzalı kopya ve kişisel notunuzla özel bir hediyeye dönüştürün.</p>
       </div>
@@ -4008,9 +4089,79 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="ck-bg">
     <div class="ck-inner">
       <div class="ck-hero fade">
-        <p class="ck-label">🎁 Aylık Kitap Çekilişi</p>
-        <h2 class="ck-title">Akgül <em>Çekilişi</em></h2>
-        <p class="ck-sub">Her ay kitap hediye ediyoruz. Katıl, kazan!</p>
+        <div class="ck-robot-wrap">
+          <svg class="ck-robot-svg" viewBox="0 0 200 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Anten parıltısı -->
+            <circle cx="100" cy="10" r="10" fill="rgba(155,89,182,.25)"/>
+            <circle cx="100" cy="10" r="5" fill="#9b59b6" class="ck-robot-blink"/>
+            <line x1="100" y1="15" x2="100" y2="33" stroke="#7c5cbf" stroke-width="2.5" stroke-linecap="round"/>
+            <!-- Kafa -->
+            <rect x="48" y="33" width="104" height="70" rx="18" fill="#1c1830" stroke="#7c5cbf" stroke-width="2.5"/>
+            <!-- Kafa ekranı -->
+            <rect x="57" y="41" width="86" height="54" rx="12" fill="#0e0c1a"/>
+            <!-- Tarama çizgisi (animasyonlu) -->
+            <rect x="57" y="41" width="86" height="8" rx="4" fill="rgba(155,89,182,.15)" class="ck-robot-scan"/>
+            <!-- Sol göz -->
+            <circle cx="81" cy="66" r="14" fill="#1a0e30"/>
+            <circle cx="81" cy="66" r="9" fill="#9b59b6"/>
+            <circle cx="85" cy="62" r="3.5" fill="#fff" opacity=".9"/>
+            <!-- Sağ göz -->
+            <circle cx="119" cy="66" r="14" fill="#1a0e30"/>
+            <circle cx="119" cy="66" r="9" fill="#9b59b6"/>
+            <circle cx="123" cy="62" r="3.5" fill="#fff" opacity=".9"/>
+            <!-- Piksel gülümseme -->
+            <circle cx="82" cy="86" r="3" fill="#c8a96e"/>
+            <circle cx="90" cy="90" r="3" fill="#c8a96e"/>
+            <circle cx="100" cy="92" r="3" fill="#c8a96e"/>
+            <circle cx="110" cy="90" r="3" fill="#c8a96e"/>
+            <circle cx="118" cy="86" r="3" fill="#c8a96e"/>
+            <!-- Boyun -->
+            <rect x="87" y="103" width="26" height="14" rx="5" fill="#2a2050"/>
+            <circle cx="93" cy="110" r="3" fill="#7c5cbf"/>
+            <circle cx="107" cy="110" r="3" fill="#7c5cbf"/>
+            <!-- Gövde -->
+            <rect x="35" y="117" width="130" height="100" rx="20" fill="#1c1830" stroke="#7c5cbf" stroke-width="2.5"/>
+            <!-- Gövde ekranı -->
+            <rect x="52" y="130" width="96" height="72" rx="12" fill="#0e0c1a"/>
+            <!-- LED'ler -->
+            <circle cx="72" cy="147" r="6.5" fill="#9b59b6" class="ck-robot-led1"/>
+            <circle cx="100" cy="147" r="6.5" fill="#c8a96e" class="ck-robot-led2"/>
+            <circle cx="128" cy="147" r="6.5" fill="#4ecb87" class="ck-robot-led3"/>
+            <!-- Ekran metni -->
+            <text x="100" y="172" text-anchor="middle" font-family="monospace" font-size="8.5" fill="#9b59b6" letter-spacing="2">ÇEKİLİŞ</text>
+            <text x="100" y="186" text-anchor="middle" font-family="monospace" font-size="7" fill="rgba(200,169,110,.6)" letter-spacing="1.5">ROBOTU</text>
+            <!-- Sol kol -->
+            <rect x="5" y="124" width="30" height="16" rx="8" fill="#2a2050" stroke="#7c5cbf" stroke-width="1.5"/>
+            <!-- Kupa (sol el) -->
+            <g transform="translate(4,140)">
+              <rect x="2" y="2" width="13" height="19" rx="2.5" fill="#c8a96e"/>
+              <path d="M0,3 Q7.5,-12 15,3" fill="none" stroke="#c8a96e" stroke-width="2.5" stroke-linecap="round"/>
+              <rect x="4" y="21" width="9" height="4" fill="#c8a96e"/>
+              <rect x="0" y="25" width="17" height="4.5" rx="2" fill="#b8892a"/>
+              <text x="8.5" y="14" text-anchor="middle" font-family="serif" font-size="8" fill="#fff">★</text>
+            </g>
+            <!-- Sağ kol -->
+            <rect x="165" y="124" width="30" height="16" rx="8" fill="#2a2050" stroke="#7c5cbf" stroke-width="1.5"/>
+            <!-- Kitap (sağ el) -->
+            <g transform="translate(165,140)">
+              <rect x="0" y="0" width="28" height="36" rx="3.5" fill="#4a3a8a"/>
+              <rect x="0" y="0" width="5.5" height="36" fill="#6a5aaa"/>
+              <line x1="9" y1="9" x2="23" y2="9" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+              <line x1="9" y1="15" x2="23" y2="15" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+              <line x1="9" y1="21" x2="23" y2="21" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+              <line x1="9" y1="27" x2="18" y2="27" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+            </g>
+            <!-- Bacaklar -->
+            <rect x="64" y="217" width="28" height="40" rx="9" fill="#2a2050" stroke="#7c5cbf" stroke-width="1.5"/>
+            <rect x="108" y="217" width="28" height="40" rx="9" fill="#2a2050" stroke="#7c5cbf" stroke-width="1.5"/>
+            <!-- Ayaklar -->
+            <rect x="54" y="249" width="48" height="17" rx="8.5" fill="#1c1830" stroke="#7c5cbf" stroke-width="1.5"/>
+            <rect x="98" y="249" width="48" height="17" rx="8.5" fill="#1c1830" stroke="#7c5cbf" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <p class="ck-label">✨ Aylık Kitap Çekilişi</p>
+        <h2 class="ck-title">Akgül <em>Çekiliş Robotu</em></h2>
+        <p class="ck-sub">Robotumuz her ay rastgele birini seçiyor — bu sefer sen olabilirsin!</p>
       </div>
       <div id="ckContent"><!-- JS doldurur --></div>
     </div>
@@ -5375,24 +5526,32 @@ function readingTime(body){const t=(body||'').replace(/<[^>]+>/g,'').trim().spli
 function renderBlogPreview(){
   const el=sid('blogPreview');if(!el)return;
   const items=blogData.filter(p=>p.type!=='ilan').slice(0,3);
-  el.innerHTML=items.map(p=>{
-    const rt=readingTime(p.body||'');
-    const imgHtml=p.images&&p.images[0]?`<img src="${p.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`:'';
-    return`<div class="blog-card" onclick="openBlog(${p.id})">
-      <div class="blog-img" style="background:${p.bg||'linear-gradient(135deg,#2D4A3E,#1a3028)'}">${imgHtml}<div class="blog-img-overlay"><div class="blog-img-overlay-text">${escHtml(p.excerpt||'')}</div></div></div>
-      <div class="blog-body">
-        <div class="blog-meta">
-          <div class="blog-author-av" style="background:${p.color||'#2D4A3E'}">${p.initials||'A'}</div>
-          <div class="blog-author-name">${escHtml(p.author)}</div>
-          <div class="blog-date" style="margin-left:.3rem">${escHtml(p.date)}</div>
-          <div class="blog-rt">~${rt} dk</div>
-        </div>
-        <div class="blog-title">${escHtml(p.title)}</div>
-        <div class="blog-excerpt">${escHtml(p.excerpt||'')}</div>
-        <div class="blog-cats-row"><span class="blog-cat-tag">${escHtml(p.cat||'')}</span></div>
+  if(!items.length){el.innerHTML='';return;}
+  const rt=p=>readingTime(p.body||'');
+  const bgImg=p=>p.images&&p.images[0]
+    ?`<img src="${p.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`
+    :`<div style="width:100%;height:100%;background:${p.bg||'linear-gradient(135deg,#2D4A3E,#1a3028)'}"></div>`;
+  const feat=items[0];
+  const sides=items.slice(1);
+  el.innerHTML=`<div class="hp-gz-grid">
+    <div class="hp-gz-feat" onclick="openBlog(${feat.id})">
+      <div class="hp-gz-feat-img">${bgImg(feat)}</div>
+      <div class="hp-gz-feat-body">
+        <span class="hp-gz-cat">${escHtml(feat.cat||'Yazı')}</span>
+        <h3 class="hp-gz-feat-title">${escHtml(feat.title)}</h3>
+        <p class="hp-gz-feat-exc">${escHtml(feat.excerpt||'')}</p>
+        <div class="hp-gz-meta"><span>${escHtml(feat.author)}</span><span class="hp-gz-dot">·</span><span>${escHtml(feat.date)}</span><span class="hp-gz-dot">·</span><span>${rt(feat)} dk okuma</span></div>
       </div>
-    </div>`;
-  }).join('');
+    </div>
+    <div class="hp-gz-side">${sides.map(p=>`<div class="hp-gz-sm-card" onclick="openBlog(${p.id})">
+      <div class="hp-gz-sm-img">${bgImg(p)}</div>
+      <div class="hp-gz-sm-body">
+        <span class="hp-gz-cat">${escHtml(p.cat||'Yazı')}</span>
+        <h4 class="hp-gz-sm-title">${escHtml(p.title)}</h4>
+        <div class="hp-gz-meta"><span>${escHtml(p.author)}</span><span class="hp-gz-dot">·</span><span>${rt(p)} dk</span></div>
+      </div>
+    </div>`).join('')}</div>
+  </div>`;
 }
 /* ── AKGÜL GAZETESİ RENDER ── */
 let gazeteCat='all';
@@ -11000,7 +11159,9 @@ function renderAskida(){
   }
   grid.innerHTML=available.map(item=>`
     <div class="ask-book-card">
-      <div class="ask-book-thumb" style="background:${escHtml(item.bookCover||'#1a1a1a')}">${escHtml(item.bookTitle)}</div>
+      <div class="ask-book-thumb" style="background:${escHtml(item.bookCover||'#1a1a1a')}">
+        <div class="ask-thumb-title">${escHtml(item.bookTitle)}</div>
+      </div>
       <div class="ask-book-info">
         <div class="ask-book-badge">Askıda</div>
         <div class="ask-book-title">${escHtml(item.bookTitle)}</div>
