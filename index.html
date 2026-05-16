@@ -1007,13 +1007,18 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .gz-sd-text:hover{color:#fff}
 
 /* BÖLÜM ÇUBUĞU */
-.gz-filter-bar{background:var(--ink);padding:.3rem 1.5rem;display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;position:sticky;top:84px;z-index:100;border-bottom:3px double rgba(200,169,110,.4)}
+.gz-filter-wrap{position:sticky;top:84px;z-index:100;background:var(--paper-bg)}
+.gz-filter-top-rule{height:3px;background:var(--ink-rule-strong)}
+.gz-filter-bar{padding:.18rem 1.5rem;display:flex;align-items:stretch;gap:0;overflow-x:auto;scrollbar-width:none}
 .gz-filter-bar::-webkit-scrollbar{display:none}
-.gz-fbar-label{font-family:var(--font-sans);font-size:.55rem;color:rgba(200,169,110,.5);letter-spacing:.15em;text-transform:uppercase;padding-right:.9rem;border-right:1px solid rgba(200,169,110,.2);margin-right:.5rem;white-space:nowrap;flex-shrink:0}
-.gz-fbtn{background:none;border:none;font-family:var(--font-serif);font-style:italic;font-size:.75rem;color:rgba(200,169,110,.55);padding:.3rem .7rem;cursor:pointer;border-right:1px solid rgba(200,169,110,.1);transition:color .15s;white-space:nowrap}
+.gz-fbar-label{font-family:var(--font-sans);font-size:.5rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);display:flex;align-items:center;padding:.4rem .75rem .4rem 0;border-right:1px solid var(--ink-rule);margin-right:.25rem;white-space:nowrap;flex-shrink:0}
+.gz-fbtn{background:none;border:none;font-family:var(--font-serif);font-style:italic;font-size:.8rem;color:#6B6050;padding:.35rem .65rem;cursor:pointer;border-right:1px solid var(--ink-rule);transition:all .15s;white-space:nowrap;position:relative}
 .gz-fbtn:last-child{border-right:none}
-.gz-fbtn:hover{color:var(--gold)}
-.gz-fbtn.act{color:var(--gold);font-weight:700}
+.gz-fbtn::after{content:'';position:absolute;bottom:0;left:.65rem;right:.65rem;height:2px;background:var(--ink-rule-strong);transform:scaleX(0);transition:transform .18s}
+.gz-fbtn:hover{color:var(--ink)}
+.gz-fbtn.act{color:var(--ink);font-weight:700;font-style:normal}
+.gz-fbtn.act::after{transform:scaleX(1)}
+.gz-filter-bot-rule{height:1px;background:var(--ink-rule)}
 
 /* İÇ ALAN */
 .gz-inner{max-width:1240px;margin:0 auto;padding:1.75rem 1.5rem 5rem}
@@ -1957,27 +1962,56 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .am-soc-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(200,169,110,.06)}
 .am-soc-btn svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
-/* ── BLOG DETAIL ── */
-.blog-detail{max-width:720px;margin:0 auto;padding:4rem 2rem}
-.bd-eyebrow{font-size:.68rem;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:.8rem}
-.bd-title{font-family:var(--font-serif);font-size:clamp(1.8rem,4vw,2.8rem);color:var(--ink);font-weight:700;line-height:1.2;margin-bottom:1rem}
-.bd-meta{display:flex;align-items:center;gap:.8rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
-.bd-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
-.bd-author{font-size:.82rem;color:var(--ink);font-weight:500}
-.bd-date{font-size:.75rem;color:var(--muted)}
-.bd-images{display:flex;flex-wrap:wrap;gap:.75rem;margin-bottom:1.5rem}
-.bd-img-item{flex:0 0 auto;width:100%;max-width:600px;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
-.bd-img-item img{width:100%;height:auto;display:block;max-height:500px;object-fit:contain;background:var(--cream)}
-.bd-body{font-size:.95rem;color:var(--ink);line-height:1.9}
-.bd-body p{margin-bottom:1.2rem}
-.bd-body h2{font-family:var(--font-serif);font-size:1.5rem;margin:2rem 0 .8rem;font-weight:700}
-.blog-comments h4 small{font-family:var(--font-sans);font-size:.65rem;color:var(--muted);font-weight:400}
-.bc-item{padding:.75rem .9rem;background:var(--cream);border-radius:5px;border:1px solid var(--border);margin-bottom:.65rem;transition:opacity .3s,transform .3s}
+/* ── BLOG DETAIL (GAZETE MAKALE) ── */
+#page-blogdetail{background:var(--paper-bg)}
+.gzd-wrap{max-width:740px;margin:0 auto;padding:0 1.5rem 5rem}
+/* Geri + kategori başlığı */
+.gzd-topbar{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--ink-rule);margin-bottom:0}
+.gzd-back{font-family:var(--font-sans);font-size:.58rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;display:flex;align-items:center;gap:.3rem;transition:color .15s}
+.gzd-back:hover{color:var(--ink)}
+.gzd-back svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;flex-shrink:0}
+.gzd-rubric{font-family:var(--font-sans);font-size:.52rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+/* Başlık alanı */
+.gzd-header{padding:2rem 0 1.5rem;text-align:center;border-bottom:3px solid var(--ink-rule-strong)}
+.gzd-cat-label{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-sans);font-size:.54rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--rust);margin-bottom:1.1rem}
+.gzd-cat-label::before,.gzd-cat-label::after{content:'';display:inline-block;width:20px;height:1.5px;background:var(--rust)}
+.gzd-title{font-family:var(--font-serif);font-size:clamp(2rem,5vw,3.2rem);color:var(--ink);font-weight:700;line-height:1.1;letter-spacing:-.02em;margin-bottom:1.25rem}
+.gzd-excerpt{font-family:var(--font-serif);font-size:1rem;font-style:italic;color:#5A5248;line-height:1.6;max-width:540px;margin:0 auto 1.25rem}
+/* Byline */
+.gzd-byline{display:flex;align-items:center;justify-content:center;gap:.65rem;padding-top:1rem;border-top:1px solid var(--ink-rule)}
+.gzd-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-sans);font-size:.72rem;font-weight:700;color:#fff;flex-shrink:0}
+.gzd-byline-text{text-align:left}
+.gzd-author{font-family:var(--font-sans);font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
+.gzd-dateline{font-family:var(--font-sans);font-size:.58rem;color:var(--muted);letter-spacing:.04em}
+/* Hero görsel */
+.gzd-hero{width:calc(100% + 3rem);margin:0 -1.5rem;position:relative;overflow:hidden;border-top:1px solid var(--ink-rule);border-bottom:1px solid var(--ink-rule)}
+.gzd-hero img{width:100%;max-height:420px;object-fit:cover;display:block;filter:grayscale(15%) contrast(1.05)}
+.gzd-hero-cap{text-align:center;font-family:var(--font-serif);font-style:italic;font-size:.68rem;color:var(--muted);padding:.5rem;background:rgba(237,232,220,.7)}
+/* Makale metni */
+.gzd-body-wrap{padding-top:1.75rem}
+.gzd-body{font-family:var(--font-serif);font-size:1.02rem;color:#2A2520;line-height:1.95;text-align:justify;hyphens:auto}
+.gzd-body p{margin-bottom:1.3rem}
+.gzd-body p:first-child::first-letter{font-size:3.8rem;font-weight:700;float:left;line-height:.8;margin:.08em .12em -.08em 0;color:var(--ink);font-family:var(--font-serif)}
+.gzd-body h2{font-family:var(--font-serif);font-size:1.45rem;font-weight:700;color:var(--ink);line-height:1.2;margin:2.2rem 0 1rem;padding-top:1.2rem;border-top:1px solid var(--ink-rule);letter-spacing:-.01em}
+.gzd-body ul,.gzd-body ol{margin:0 0 1.2rem 1.5rem;font-family:var(--font-serif);font-size:1rem;line-height:1.9;color:#2A2520}
+.gzd-body li{margin-bottom:.35rem}
+.gzd-body blockquote{margin:1.5rem 0;padding:1rem 1.5rem;border-left:3px solid var(--ink-rule-strong);font-style:italic;color:#5A5248;font-size:1.05rem;line-height:1.75;background:rgba(200,169,110,.07)}
+/* Yazı sonu çizgisi */
+.gzd-end-rule{display:flex;align-items:center;gap:.6rem;margin:2.5rem 0 2rem;font-family:var(--font-serif);font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.gzd-end-rule::before,.gzd-end-rule::after{content:'';flex:1;height:1px;background:var(--ink-rule)}
+/* Yorumlar */
+.gzd-comments{border-top:3px solid var(--ink-rule-strong);padding-top:1.5rem}
+.gzd-comments-head{font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:1.2rem;display:flex;align-items:baseline;gap:.5rem}
+.gzd-comments-head small{font-family:var(--font-sans);font-size:.6rem;color:var(--muted);font-weight:400}
+.bc-item{padding:.8rem 1rem;background:rgba(255,255,255,.55);border:1px solid var(--ink-rule);margin-bottom:.6rem;transition:opacity .3s,transform .3s}
 .bc-item:last-child{margin-bottom:0}
 .bc-head{display:flex;align-items:center;gap:.4rem;margin-bottom:.25rem}
-.bc-name{font-size:.72rem;font-weight:600;color:var(--ink)}
-.bc-date{font-size:.62rem;color:var(--muted)}
-.bc-text{font-size:.8rem;color:var(--ink);line-height:1.6}
+.bc-name{font-family:var(--font-sans);font-size:.65rem;font-weight:700;color:var(--ink);text-transform:uppercase;letter-spacing:.05em}
+.bc-date{font-family:var(--font-sans);font-size:.58rem;color:var(--muted)}
+.bc-text{font-family:var(--font-serif);font-size:.85rem;color:#2A2520;line-height:1.65}
+.blog-detail{padding:0;margin:0}
+.bd-eyebrow,.bd-title,.bd-meta,.bd-av,.bd-author,.bd-date,.bd-images,.bd-img-item,.bd-body{display:none}
+.blog-comments h4 small{font-family:var(--font-sans);font-size:.65rem;color:var(--muted);font-weight:400}
 
 /* ── ABOUT STATS ── */
 .about-stats-bar{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);position:relative}
@@ -4128,17 +4162,21 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <span class="gz-sd-text" id="gz-sd-text"></span>
   </div>
   <!-- Filtre -->
-  <div class="gz-filter-bar">
-    <span class="gz-fbar-label">Bölümler</span>
-    <button class="gz-fbtn act" onclick="setGazeteCat(this,'all')">Tümü</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'Yazarlık')">Yazarlık</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'Şiir & Dil')">Şiir & Dil</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'Tarih & Araştırma')">Tarih</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'Felsefe')">Felsefe</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'Çocuk Edebiyatı')">Çocuk</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'Psikoloji & Okuma')">Psikoloji</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'İlan')">İlanlar</button>
-    <button class="gz-fbtn" onclick="setGazeteCat(this,'tanitim')">Tanıtım</button>
+  <div class="gz-filter-wrap">
+    <div class="gz-filter-top-rule"></div>
+    <div class="gz-filter-bar">
+      <span class="gz-fbar-label">Bölümler</span>
+      <button class="gz-fbtn act" onclick="setGazeteCat(this,'all')">Tümü</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'Yazarlık')">Yazarlık</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'Şiir & Dil')">Şiir & Dil</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'Tarih & Araştırma')">Tarih</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'Felsefe')">Felsefe</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'Çocuk Edebiyatı')">Çocuk</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'Psikoloji & Okuma')">Psikoloji</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'İlan')">İlanlar</button>
+      <button class="gz-fbtn" onclick="setGazeteCat(this,'tanitim')">Tanıtım</button>
+    </div>
+    <div class="gz-filter-bot-rule"></div>
   </div>
   <!-- İçerik -->
   <div class="gz-inner" id="gz-inner"></div>
@@ -5360,18 +5398,34 @@ function openBlog(id){
       <div class="bc-text">${escHtml(c.t)}</div>
     </div>`).join(''):'<div class="review-empty">Henüz yorum yok. İlk yorumu sen yap!</div>';
   const el=sid('blogDetailContent');if(!el)return;
-  el.innerHTML=`
-    <div style="margin-bottom:1.5rem"><a href="#" onclick="go('blog');return false" style="font-size:.8rem;color:var(--gold);text-decoration:none">← Akgül Gazetesi</a></div>
-    <div class="bd-eyebrow">${p.cat}</div>
-    <h1 class="bd-title">${p.title}</h1>
-    <div class="bd-meta">
-      <div class="bd-av" style="background:${p.color}">${p.initials}</div>
-      <div><div class="bd-author">${p.author}</div><div class="bd-date">${p.date} · ~${rt} dk okuma</div></div>
+  const heroImg=p.images&&p.images.length?p.images[0]:null;
+  const typeLbl=p.type==='ilan'?'İlan':p.type==='tanitim'?'Tanıtım':p.type==='cekilis-sonuc'?'Çekiliş Sonucu':(p.cat||'Yazı');
+  el.innerHTML=`<div class="gzd-wrap">
+    <div class="gzd-topbar">
+      <a class="gzd-back" href="#" onclick="go('blog');return false">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>Akgül Gazetesi
+      </a>
+      <span class="gzd-rubric">${escHtml(typeLbl)}</span>
     </div>
-    ${p.images&&p.images.length?`<div class="bd-images">${p.images.map(img=>`<div class="bd-img-item"><img src="${img}" alt=""></div>`).join('')}</div>`:''}
-    <div class="bd-body">${p.body}</div>
-    <div class="blog-comments" style="margin-top:2.5rem;border-top:1px solid var(--border);padding-top:1.5rem">
-      <h4 style="font-family:var(--font-serif);font-size:1rem;color:var(--ink);margin-bottom:1rem">Yorumlar <small style="font-family:var(--font-sans);font-size:.65rem;color:var(--muted);font-weight:400">· ${comments.length} yorum</small></h4>
+    <div class="gzd-header">
+      <div class="gzd-cat-label">${escHtml(typeLbl)}</div>
+      <h1 class="gzd-title">${escHtml(p.title)}</h1>
+      ${p.excerpt?`<div class="gzd-excerpt">${escHtml(p.excerpt)}</div>`:''}
+      <div class="gzd-byline">
+        <div class="gzd-av" style="background:${p.color||'#2D4A3E'}">${p.initials||'A'}</div>
+        <div class="gzd-byline-text">
+          <div class="gzd-author">${escHtml(p.author)}</div>
+          <div class="gzd-dateline">${escHtml(p.date)} &nbsp;·&nbsp; ~${rt} dk okuma</div>
+        </div>
+      </div>
+    </div>
+    ${heroImg?`<div class="gzd-hero"><img src="${escHtml(heroImg)}" alt="${escHtml(p.title)}"></div>`:''}
+    <div class="gzd-body-wrap">
+      <div class="gzd-body">${p.body||''}</div>
+    </div>
+    <div class="gzd-end-rule">✦ Son ✦</div>
+    <div class="gzd-comments">
+      <div class="gzd-comments-head">Yorumlar <small>· ${comments.length} yorum</small></div>
       ${currentUser?`
       <div class="rf-row">
         <div class="rf-label">Adın</div>
@@ -5386,13 +5440,14 @@ function openBlog(id){
         <button class="rf-btn" onclick="submitBlogComment(${p.id})">Yorum Gönder</button>
         <div class="rf-status" id="bcStatus-${p.id}"></div>
       </div>`:`
-      <div style="text-align:center;padding:1.5rem;background:var(--cream);border-radius:5px;border:1px solid var(--border);margin-bottom:1rem">
-        <div style="font-size:2rem;margin-bottom:.5rem;opacity:.4">✍</div>
-        <div style="font-size:.85rem;color:var(--muted);margin-bottom:.8rem">Yorum yapmak için üye girişi yapmalısın.</div>
+      <div style="text-align:center;padding:1.5rem;background:rgba(255,255,255,.5);border:1px solid var(--ink-rule);margin-bottom:1rem">
+        <div style="font-family:var(--font-serif);font-size:1.5rem;margin-bottom:.5rem;opacity:.35">✍</div>
+        <div style="font-family:var(--font-serif);font-style:italic;font-size:.88rem;color:var(--muted);margin-bottom:.8rem">Yorum yapmak için üye girişi yapmalısın.</div>
         <button class="rf-btn" onclick="go('auth')">Giriş Yap / Üye Ol</button>
       </div>`}
       <div class="review-list" id="bcList-${p.id}">${comHtml}</div>
-    </div>`;
+    </div>
+  </div>`;
   go('blogdetail');
 }
 
