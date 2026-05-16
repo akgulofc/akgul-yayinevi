@@ -997,31 +997,13 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .books-filter{display:flex;gap:.55rem;flex-wrap:wrap;margin-bottom:2.2rem}
 .fcat{padding:7px 18px;border:1px solid var(--border);background:var(--white);border-radius:24px;font-size:.73rem;cursor:pointer;color:var(--muted);transition:all .2s var(--ease-spring);font-family:var(--font-sans)}
 .fcat.act,.fcat:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12)}
-.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1.25rem}
-.book-card{cursor:pointer;transition:transform .3s var(--ease-spring),filter .3s}
-.book-card:hover{transform:translateY(-6px)}
-.bcover{
-  width:100%;aspect-ratio:2/3;border-radius:var(--radius-lg);position:relative;
-  overflow:hidden;
-  box-shadow:0 6px 24px rgba(0,0,0,.18),0 1px 4px rgba(0,0,0,.1);
-  margin-bottom:.9rem;
-  transition:box-shadow .3s,transform .3s var(--ease-spring);
-}
-.book-card:hover .bcover{
-  box-shadow:0 18px 48px rgba(0,0,0,.28),0 4px 12px rgba(0,0,0,.15),0 0 0 1px rgba(200,169,110,.12);
-}
-/* Sağ kenar gölgesi — kitap cildi derinliği */
-.bcover::after{
-  content:'';position:absolute;right:0;top:0;bottom:0;width:18px;
-  background:linear-gradient(to left,rgba(0,0,0,.22),transparent);
-  z-index:5;pointer-events:none;
-}
-/* Sol üst köşe parlaması */
-.bcover::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,transparent 45%);
-  z-index:5;pointer-events:none;
-}
+.books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1.5rem}
+.book-card{cursor:pointer;transition:transform .32s var(--ease-spring)}
+.book-card:hover{transform:translateY(-9px)}
+.bcover{width:100%;aspect-ratio:2/3;border-radius:var(--radius-lg);position:relative;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.2),0 2px 6px rgba(0,0,0,.1);margin-bottom:.88rem;transition:box-shadow .32s var(--ease-spring)}
+.book-card:hover .bcover{box-shadow:0 24px 56px rgba(0,0,0,.34),0 6px 16px rgba(0,0,0,.18),0 0 0 1px rgba(200,169,110,.2)}
+.bcover::after{content:'';position:absolute;right:0;top:0;bottom:0;width:18px;background:linear-gradient(to left,rgba(0,0,0,.22),transparent);z-index:5;pointer-events:none}
+.bcover::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,transparent 45%);z-index:5;pointer-events:none}
 .bspine{position:absolute;left:0;top:0;bottom:0;width:9px;background:linear-gradient(180deg,rgba(200,169,110,.55) 0%,rgba(200,169,110,.25) 100%);z-index:2}
 .bcover-inner{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:1rem;z-index:3}
 .bcov-title{font-family:var(--font-serif);font-size:.95rem;color:#fff;font-weight:600;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.5)}
@@ -1032,14 +1014,28 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .brating{position:absolute;bottom:10px;right:10px;z-index:6;display:flex;align-items:center;gap:3px;background:rgba(0,0,0,.65);padding:3px 8px;border-radius:8px;backdrop-filter:blur(6px)}
 .br-stars{font-size:.58rem;color:var(--gold);letter-spacing:.04em}
 .br-count{font-size:.58rem;color:rgba(255,255,255,.75)}
-.binfo-title{font-family:var(--font-serif);font-size:.95rem;color:var(--ink);font-weight:700;margin-bottom:.18rem;line-height:1.3}
-.binfo-author{font-size:.72rem;color:var(--muted);margin-bottom:.5rem}
-.binfo-bottom{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.bprice{font-size:.95rem;font-weight:700;color:var(--gold);font-family:var(--font-serif)}
+.bcover-ov{position:absolute;inset:0;z-index:8;display:flex;flex-direction:column;align-items:stretch;justify-content:flex-end;padding:.82rem .72rem;background:linear-gradient(to top,rgba(0,0,0,.93) 0%,rgba(0,0,0,.5) 44%,transparent 100%);opacity:0;transition:opacity .24s;pointer-events:none}
+.book-card:hover .bcover-ov{opacity:1;pointer-events:auto}
+.bov-rating{display:flex;align-items:center;gap:3px;margin-bottom:.45rem}
+.bov-stars{font-size:.62rem;color:var(--gold)}
+.bov-rcount{font-size:.6rem;color:rgba(255,255,255,.5);margin-left:1px}
+.bov-add{width:100%;background:var(--gold);color:var(--ink);border:none;border-radius:4px;padding:7px 0;font-size:.72rem;font-weight:700;cursor:pointer;font-family:var(--font-sans);letter-spacing:.05em;margin-bottom:.42rem;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:4px}
+.bov-add:hover{background:#f0d474}
+.bov-add.added{background:rgba(200,169,110,.13);color:var(--gold);border:1px solid rgba(200,169,110,.45)}
+.bov-acts{display:flex;gap:.35rem}
+.bov-icon{flex:1;background:rgba(255,255,255,.1);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.12);color:#fff;border-radius:4px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.82rem;transition:background .15s}
+.bov-icon:hover{background:rgba(255,255,255,.22)}
+.bov-icon.wishlisted{color:#ff8888}
+.binfo-title{font-family:var(--font-serif);font-size:.93rem;color:var(--ink);font-weight:700;margin-bottom:.12rem;line-height:1.28;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.binfo-author{font-size:.7rem;color:var(--muted);margin-bottom:.38rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.binfo-bottom{display:flex;align-items:center;justify-content:space-between}
+.bprice{font-size:.98rem;font-weight:700;color:var(--gold);font-family:var(--font-serif)}
+.binfo-stars{font-size:.6rem;color:var(--gold);letter-spacing:.03em}
 .badd{background:var(--ink);color:var(--gold);border:1px solid transparent;padding:6px 13px;border-radius:4px;cursor:pointer;font-size:.68rem;font-weight:500;transition:all .2s var(--ease-spring);display:flex;align-items:center;gap:4px;font-family:var(--font-sans);white-space:nowrap}
 .badd:hover{background:var(--gold);color:var(--ink);transform:scale(1.04)}
 .badd.added{background:transparent;color:var(--gold);border-color:rgba(200,169,110,.4)}
 .badd svg{width:12px;height:12px;stroke:currentColor;fill:none;stroke-width:2}
+@media(hover:none){.bcover-ov{opacity:1;pointer-events:auto;background:linear-gradient(to top,rgba(0,0,0,.84) 0%,transparent 58%)}.bov-rating{display:none}}
 @media(max-width:600px){.books-grid{grid-template-columns:repeat(2,1fr);gap:.75rem}.bcover{border-radius:var(--radius)}}
 
 /* ── CANLI SAYAÇ ── */
@@ -5436,25 +5432,30 @@ function renderBooks(filter){
     const avg=b.reviews.length?b.reviews.reduce((s,r)=>s+r.s,0)/b.reviews.length:b.rating||0;
     const starsHtml=avg?`${'★'.repeat(Math.round(avg))}${'☆'.repeat(5-Math.round(avg))}`:'';
     const wishlisted=isWishlisted(b.id);
+    const svgCover=bookCoverSvg(b);
+    const coverHtml=b.cover
+      ?`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0;z-index:1" onerror="this.style.display='none';var fb=document.getElementById('fb${b.id}');if(fb)fb.style.display='block'"><span id="fb${b.id}" style="display:none;position:absolute;inset:0;width:100%;height:100%">${svgCover}</span>`
+      :svgCover;
     return`<div class="book-card" onclick="openModal(${b.id})">
       <div class="bcover">
-        ${b.cover?`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">${b.badge?`<div class="bbadge">${escHtml(b.badge)}</div>`:''}`
-          :bookCoverSvg(b)}
+        ${coverHtml}
+        ${b.badge?`<div class="bbadge">${escHtml(b.badge)}</div>`:''}
         <div class="bviews"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${b.views}</div>
-        ${avg?`<div class="brating"><span class="br-stars" style="letter-spacing:.06em">${starsHtml}</span><span class="br-count">&thinsp;${b.rating||avg.toFixed(1)}</span></div>`:''}
+        <div class="bcover-ov">
+          ${avg?`<div class="bov-rating"><span class="bov-stars">${starsHtml}</span><span class="bov-rcount">&thinsp;${b.rating||avg.toFixed(1)}</span></div>`:''}
+          <button class="bov-add${inCart?' added':''}" onclick="event.stopPropagation();addCart(${b.id})">${inCart?'✓ Sepette':'+ Sepete Ekle'}</button>
+          <div class="bov-acts">
+            <button class="bov-icon${wishlisted?' wishlisted':''}" onclick="event.stopPropagation();toggleWishlist(${b.id},event)" title="${wishlisted?'İstek listesinden çıkar':'İstek listesine ekle'}">${wishlisted?'♥':'♡'}</button>
+            <button class="bov-icon" onclick="event.stopPropagation();openGiftItemModal(${b.id})" title="Hediye Sepetine Ekle">🎁</button>
+            <button class="bov-icon" onclick="event.stopPropagation();askidaBirakKitap(${b.id})" title="Askıda Kitap'a bırak">📚</button>
+          </div>
+        </div>
       </div>
       <div class="binfo-title">${escHtml(b.title)}</div>
       <div class="binfo-author">${escHtml(b.author)}</div>
       <div class="binfo-bottom">
         <div class="bprice">₺${b.price}</div>
-        <div class="bcard-acts">
-          <button class="bwish bwish-bar${wishlisted?' wishlisted':''}" data-id="${b.id}" onclick="event.stopPropagation();toggleWishlist(${b.id},event)" title="${wishlisted?'İstek listesinden çıkar':'İstek listesine ekle'}">${wishlisted?'♥':'♡'}</button>
-          <button class="badd ${inCart?'added':''}" onclick="event.stopPropagation();addCart(${b.id})">
-            ${inCart?'<svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Sepette':'<svg viewBox="0 0 24 24" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ekle'}
-          </button>
-          <button class="bgift${giftCart.find(g=>g.id===b.id)?' gifted':''}" onclick="event.stopPropagation();openGiftItemModal(${b.id})" title="Hediye Sepetine Ekle">🎁</button>
-          <button class="badd-askida" onclick="event.stopPropagation();askidaBirakKitap(${b.id})" title="Askıda Kitap'a bırak">📚</button>
-        </div>
+        ${avg?`<div class="binfo-stars">${starsHtml}</div>`:''}
       </div>
     </div>`}).join('');
 }
