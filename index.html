@@ -5509,7 +5509,17 @@ function renderHeroSlider(slidesData){
   const visible=slidesData.filter(s=>!s.hidden);
   wrap.innerHTML=visible.map((s,i)=>{
     const bgClass=s.bgPattern||_HERO_BGS[i%3];
-    const badge=s.badge?`<div class="slide-badge">${escHtml(s.badge)}</div>`:'';
+    let badgeHtml='';
+    if(s.badge){
+      let countdown='';
+      if(s.campaignEnd){
+        const _diff=new Date(s.campaignEnd)-new Date();
+        const _days=Math.ceil(_diff/86400000);
+        if(_days>0)countdown=` · ${_days} gün kaldı`;
+        else if(_days===0)countdown=' · Son gün!';
+      }
+      badgeHtml=`<div class="slide-badge">${escHtml(s.badge)}${countdown}</div>`;
+    }
     const desc=s.desc?`<p>${escHtml(s.desc)}</p>`:'';
     const b1act=_HERO_SACT[s.btn1Act]||"sid('books-sec')?.scrollIntoView({behavior:'smooth'})";
     const b2act=_HERO_SACT[s.btn2Act]||'';
@@ -5517,7 +5527,7 @@ function renderHeroSlider(slidesData){
     return`<div class="slide${i===0?' act':''}">
       <div class="slide-bg ${bgClass}"></div>
       <div class="slide-content">
-        ${badge}
+        ${badgeHtml}
         <div class="slide-eyebrow">${escHtml(s.eyebrow||'')}</div>
         <h1>${_safeTitleHtml(s.title||'')}</h1>
         ${desc}
@@ -11468,7 +11478,7 @@ function admBgOpts(sel){return ADM_BG_PATS.map(a=>`<option value="${a.v}"${sel==
 const SS='padding:.42rem .55rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.78rem;width:100%;outline:none';
 
 function admNormSlide(s){
-  return{eyebrow:s.eyebrow||'',title:s.title||'',desc:s.desc||'',badge:s.badge||null,bgPattern:s.bgPattern||'lines',btn1Text:s.btn1Text||'Keşfet',btn1Act:s.btn1Act||'books-scroll',btn2Text:s.btn2Text||null,btn2Act:s.btn2Act||'',duration:s.duration||null,hidden:!!s.hidden};
+  return{eyebrow:s.eyebrow||'',title:s.title||'',desc:s.desc||'',badge:s.badge||null,campaignEnd:s.campaignEnd||null,bgPattern:s.bgPattern||'lines',btn1Text:s.btn1Text||'Keşfet',btn1Act:s.btn1Act||'books-scroll',btn2Text:s.btn2Text||null,btn2Act:s.btn2Act||'',duration:s.duration||null,hidden:!!s.hidden};
 }
 function admGetSlides(){
   const raw=adminSiteContent.slides;
@@ -11580,7 +11590,10 @@ function admSlideEditorHtml(s,i){
       <div class="field"><label>Arkaplan Deseni</label><select id="adm-sl-bg-${i}" style="${SS}">${admBgOpts(s.bgPattern||'lines')}</select></div>
       <div class="field"><label>Slayt Süresi (sn) <span style="font-size:.62rem;color:var(--txt3)">(boş = genel ayar)</span></label><input type="number" id="adm-sl-dur-${i}" min="1" max="60" step="1" value="${s.duration?s.duration/1000:''}" placeholder="Genel" style="width:100%"></div>
     </div>
-    <div class="field" style="margin-bottom:.65rem"><label>Kampanya Rozeti <span style="font-size:.62rem;color:var(--txt3)">(boş bırakılırsa görünmez)</span></label><input type="text" id="adm-sl-badge-${i}" value="${admEsc(s.badge||'')}" placeholder="Sınırlı Süre · Yaz Kampanyası"></div>
+    <div class="g2" style="margin-bottom:.65rem">
+      <div class="field"><label>Kampanya Rozeti <span style="font-size:.62rem;color:var(--txt3)">(boş = görünmez)</span></label><input type="text" id="adm-sl-badge-${i}" value="${admEsc(s.badge||'')}" placeholder="Sınırlı Süre · Yaz Kampanyası"></div>
+      <div class="field"><label>Kampanya Bitiş Tarihi <span style="font-size:.62rem;color:var(--txt3)">(geri sayım gösterilir)</span></label><input type="date" id="adm-sl-campend-${i}" value="${admEsc(s.campaignEnd||'')}"></div>
+    </div>
     <div class="g2" style="margin-bottom:.65rem">
       <div class="field"><label>Üst Etiket</label><input type="text" id="adm-sl-ey-${i}" value="${admEsc(s.eyebrow||'')}" placeholder="Akgül Yayınevi"></div>
       <div class="field"><label>Açıklama Metni</label><input type="text" id="adm-sl-p-${i}" value="${admEsc(s.desc||'')}" placeholder="Kısa açıklama..."></div>
@@ -11618,6 +11631,7 @@ window.admSaveSlide = function(i){
     ...slides[i],
     bgPattern:ag('adm-sl-bg-'+i)?.value||'lines',
     badge:agv('adm-sl-badge-'+i)||null,
+    campaignEnd:agv('adm-sl-campend-'+i)||null,
     eyebrow:agv('adm-sl-ey-'+i),
     desc:agv('adm-sl-p-'+i),
     title:agv('adm-sl-h1-'+i),
