@@ -85,6 +85,96 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .nav-icon-btn svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .cart-badge{position:absolute;top:-2px;right:-2px;background:#C0392B;color:#fff;font-size:.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:scale(0);transition:transform .2s}
 .cart-badge.on{transform:scale(1)}
+.gift-badge{position:absolute;top:-2px;right:-2px;background:var(--gold);color:var(--ink);font-size:.6rem;font-weight:700;width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;transform:scale(0);transition:transform .2s}
+.gift-badge.on{transform:scale(1)}
+/* ── HEDİYE ET BUTONU (kitap kartı) ── */
+.bgift{background:none;border:1px solid rgba(200,169,110,.4);color:var(--gold);padding:5px 10px;border-radius:3px;font-size:.68rem;letter-spacing:.05em;cursor:pointer;transition:all .2s;font-family:var(--font-sans);white-space:nowrap;display:flex;align-items:center;gap:.3rem}
+.bgift:hover,.bgift.gifted{background:var(--gold);color:var(--ink)}
+/* ── HEDİYE ITEM MODAL ── */
+.gim-overlay{position:fixed;inset:0;background:rgba(13,12,9,.82);backdrop-filter:blur(6px);z-index:1100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.gim-overlay.open{opacity:1;pointer-events:all}
+.gim-box{background:var(--paper);border-radius:var(--radius-lg);width:100%;max-width:480px;padding:2rem;position:relative;box-shadow:var(--shadow-lg);transform:translateY(18px);transition:transform .25s}
+.gim-overlay.open .gim-box{transform:translateY(0)}
+.gim-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.gim-close:hover{background:var(--cream)}
+.gim-head{display:flex;align-items:center;gap:.85rem;margin-bottom:1.25rem}
+.gim-cover{width:58px;height:80px;border-radius:4px;overflow:hidden;flex-shrink:0;position:relative}
+.gim-book-title{font-family:var(--font-serif);font-size:1.1rem;font-weight:600;color:var(--ink);line-height:1.2;margin-bottom:.2rem}
+.gim-book-author{font-size:.78rem;color:var(--muted);margin-bottom:.25rem}
+.gim-book-price{font-size:.82rem;color:var(--gold)}
+.gim-field{margin-bottom:.9rem}
+.gim-field label{display:block;font-size:.72rem;color:var(--muted);margin-bottom:.3rem;letter-spacing:.04em;text-transform:uppercase}
+.gim-field input,.gim-field textarea{width:100%;border:1px solid var(--border);border-radius:5px;padding:.55rem .75rem;font-size:.88rem;font-family:var(--font-sans);background:var(--cream);color:var(--ink);transition:border-color .2s;resize:vertical}
+.gim-field input:focus,.gim-field textarea:focus{outline:none;border-color:var(--gold)}
+.gim-field textarea{min-height:76px}
+.gim-signed{display:flex;align-items:center;gap:.65rem;padding:.65rem .9rem;background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.25);border-radius:6px;cursor:pointer;margin-bottom:1rem}
+.gim-signed input[type=checkbox]{width:15px;height:15px;accent-color:var(--gold);cursor:pointer;flex-shrink:0}
+.gim-signed-texts{flex:1}
+.gim-signed-lbl{font-size:.85rem;font-weight:500;color:var(--ink)}
+.gim-signed-sub{font-size:.71rem;color:var(--muted)}
+.gim-fee-note{font-size:.73rem;color:var(--gold);background:rgba(200,169,110,.09);border-radius:4px;padding:.3rem .65rem;margin-bottom:1rem;text-align:center}
+.gim-btn{width:100%;padding:.72rem;background:var(--gold);color:var(--ink);border:none;border-radius:5px;font-size:.9rem;font-weight:600;font-family:var(--font-sans);cursor:pointer;transition:background .2s;letter-spacing:.03em}
+.gim-btn:hover{background:var(--gold-l)}
+/* ── HEDİYE SEPETİ SAYFASI ── */
+.gp-bg{background:linear-gradient(160deg,#0F0E0B 0%,#1a1508 55%,#1c2010 100%);min-height:calc(100vh - 84px);padding:4rem 2rem 5rem}
+.gp-inner{max-width:1100px;margin:0 auto}
+.gp-hero{text-align:center;margin-bottom:3.5rem}
+.gp-hero-label{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.7rem}
+.gp-hero-title{font-family:var(--font-serif);font-size:clamp(2rem,5vw,3.2rem);color:var(--cream);font-weight:600;line-height:1.18;margin-bottom:1rem}
+.gp-hero-sub{font-size:.92rem;color:rgba(245,239,229,.5);max-width:520px;margin:0 auto}
+.gp-empty{text-align:center;padding:4.5rem 2rem;color:rgba(245,239,229,.45)}
+.gp-empty-icon{font-size:3.5rem;margin-bottom:1rem;opacity:.35}
+.gp-empty-title{font-family:var(--font-serif);font-size:1.6rem;color:var(--cream);margin-bottom:.6rem}
+.gp-empty-sub{font-size:.88rem;line-height:1.65;margin-bottom:1.5rem}
+.gp-empty-cta{background:var(--gold);color:var(--ink);border:none;padding:.7rem 1.6rem;border-radius:4px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:var(--font-sans);transition:background .2s}
+.gp-empty-cta:hover{background:var(--gold-l)}
+.gp-layout{display:grid;grid-template-columns:1fr 340px;gap:2rem;align-items:start}
+@media(max-width:800px){.gp-layout{grid-template-columns:1fr}}
+.gp-item{background:rgba(255,255,255,.04);border:1px solid rgba(200,169,110,.15);border-radius:10px;padding:1.25rem;margin-bottom:1rem;position:relative;transition:border-color .2s}
+.gp-item:hover{border-color:rgba(200,169,110,.3)}
+.gp-item-head{display:flex;gap:1rem;margin-bottom:1rem}
+.gp-item-cover{width:60px;height:84px;border-radius:4px;overflow:hidden;flex-shrink:0;position:relative}
+.gp-item-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:600;color:var(--cream);line-height:1.2;margin-bottom:.2rem}
+.gp-item-author{font-size:.78rem;color:rgba(245,239,229,.45);margin-bottom:.3rem}
+.gp-item-price{font-size:.85rem;color:var(--gold)}
+.gp-item-rm{position:absolute;top:.75rem;right:.75rem;background:none;border:none;color:rgba(245,239,229,.3);cursor:pointer;width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:all .2s;font-size:1rem}
+.gp-item-rm:hover{background:rgba(200,56,44,.15);color:#e74c3c}
+.gp-item-fields{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:.75rem}
+@media(max-width:520px){.gp-item-fields{grid-template-columns:1fr}}
+.gp-item-field label{display:block;font-size:.69rem;color:rgba(245,239,229,.38);margin-bottom:.28rem;letter-spacing:.04em;text-transform:uppercase}
+.gp-item-field input,.gp-item-field textarea{width:100%;border:1px solid rgba(200,169,110,.18);border-radius:5px;padding:.45rem .6rem;font-size:.82rem;font-family:var(--font-sans);background:rgba(255,255,255,.05);color:var(--cream);transition:border-color .2s;resize:vertical}
+.gp-item-field input:focus,.gp-item-field textarea:focus{outline:none;border-color:var(--gold)}
+.gp-item-field input::placeholder,.gp-item-field textarea::placeholder{color:rgba(245,239,229,.18)}
+.gp-item-note{grid-column:1/-1}
+.gp-item-note textarea{min-height:58px}
+.gp-item-signed{display:flex;align-items:center;gap:.55rem;padding:.5rem .75rem;background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.18);border-radius:5px;cursor:pointer;user-select:none}
+.gp-item-signed input[type=checkbox]{width:14px;height:14px;accent-color:var(--gold);cursor:pointer;flex-shrink:0}
+.gp-item-signed-lbl{font-size:.78rem;color:rgba(245,239,229,.65)}
+.gp-item-signed-fee{font-size:.7rem;color:var(--gold);margin-left:auto}
+.gp-summary{background:rgba(255,255,255,.04);border:1px solid rgba(200,169,110,.15);border-radius:10px;padding:1.5rem;position:sticky;top:100px}
+.gp-sum-title{font-family:var(--font-serif);font-size:1.1rem;color:var(--cream);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid rgba(200,169,110,.15)}
+.gp-sum-row{display:flex;justify-content:space-between;align-items:center;font-size:.84rem;color:rgba(245,239,229,.55);margin-bottom:.45rem}
+.gp-sum-val{color:var(--cream)}
+.gp-sum-row.total{font-size:1rem;color:var(--cream);font-weight:600;margin-top:.75rem;padding-top:.75rem;border-top:1px solid rgba(200,169,110,.15)}
+.gp-features{margin:1rem 0;border-top:1px solid rgba(200,169,110,.1);padding-top:.9rem}
+.gp-feature{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:rgba(245,239,229,.45);margin-bottom:.4rem}
+.gp-feature-icon{color:var(--gold)}
+.gp-order-btn{width:100%;padding:.75rem;background:var(--gold);color:var(--ink);border:none;border-radius:5px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:var(--font-sans);letter-spacing:.04em;transition:background .2s;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.gp-order-btn:hover{background:var(--gold-l)}
+.gp-order-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+/* ── HEDİYE CHECKOUT MODAL ── */
+.gchk-overlay{position:fixed;inset:0;background:rgba(13,12,9,.85);backdrop-filter:blur(6px);z-index:1200;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.gchk-overlay.open{opacity:1;pointer-events:all}
+.gchk-box{background:var(--paper);border-radius:var(--radius-lg);width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+.gchk-head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
+.gchk-head h3{font-family:var(--font-serif);font-size:1.15rem;color:var(--ink)}
+.gchk-close{background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.gchk-close:hover{background:var(--cream)}
+.gchk-body{padding:1.5rem}
+.gchk-summary{background:var(--cream);border-radius:6px;padding:1rem;margin-bottom:1.25rem}
+.gchk-sum-label{font-size:.7rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem}
+.gchk-sum-row{display:flex;justify-content:space-between;font-size:.82rem;color:var(--muted);margin-bottom:.3rem}
+.gchk-sum-row.total{font-weight:700;color:var(--ink);margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--border);font-size:.9rem}
 .hamburger{
   display:none;background:none;
   border:1px solid rgba(200,169,110,.2);border-radius:6px;
@@ -3095,6 +3185,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <li><a onclick="go('authors');closeNav()" data-p="authors">Yazarlarımız</a></li>
     <li><a onclick="go('blog');closeNav()" data-p="blog">Yazı Köşesi</a></li>
     <li><a onclick="go('surpriz-kutu');closeNav()" data-p="surpriz-kutu">Sürpriz Kutu</a></li>
+    <li><a onclick="go('hediye-sepeti');closeNav()" data-p="hediye-sepeti">Hediye Sepeti</a></li>
     <li><a onclick="go('okuma-kulubu');closeNav()" data-p="okuma-kulubu">Okuma Kulübü</a></li>
     <li><a onclick="go('ai-oneri');closeNav()" data-p="ai-oneri">AI Öneri</a></li>
     <li><a onclick="go('eser-basvuru');closeNav()" data-p="eser-basvuru">Eser Başvuru</a></li>
@@ -3137,6 +3228,10 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <button class="nav-icon-btn" onclick="go('wishlist')" aria-label="İstek Listesi" title="İstek Listesi">
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       <span class="wl-badge" id="wlBadge">0</span>
+    </button>
+    <button class="nav-icon-btn" onclick="go('hediye-sepeti')" aria-label="Hediye Sepeti" title="Hediye Sepeti">
+      <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+      <span class="gift-badge" id="giftBadge">0</span>
     </button>
     <button class="nav-icon-btn" onclick="toggleCart()" aria-label="Sepet">
       <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
@@ -3619,6 +3714,22 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <h3 class="box-section-title">Senin Deneyimin</h3>
         <div id="boxReviewForm"></div>
         <div class="box-review-list" id="boxReviewList" style="max-width:700px;margin:0 auto"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ HEDİYE SEPETİ ═══════════ -->
+<div class="page" id="page-hediye-sepeti">
+  <div class="gp-bg">
+    <div class="gp-inner">
+      <div class="gp-hero fade">
+        <p class="gp-hero-label">🎁 Kişiye Özel Hediye</p>
+        <h2 class="gp-hero-title">Hediye <em>Sepetim</em></h2>
+        <p class="gp-hero-sub">Sevdiklerinize istediğiniz kitabı seçin — imzalı kopya ve kişisel notunuzla özel bir hediyeye dönüştürün.</p>
+      </div>
+      <div id="gpContent">
+        <!-- JS tarafından doldurulur -->
       </div>
     </div>
   </div>
@@ -4526,6 +4637,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a onclick="go('blog')">Yazı Köşesi</a></li>
         <li><a onclick="go('authors')">Yazarlarımız</a></li>
         <li><a onclick="go('surpriz-kutu')">Sürpriz Kutu</a></li>
+        <li><a onclick="go('hediye-sepeti')">Hediye Sepeti</a></li>
         <li><a onclick="go('okuma-kulubu')">Okuma Kulübü</a></li>
         <li><a onclick="go('ai-oneri')">AI Kitap Öneri</a></li>
         <li><a onclick="go('eser-basvuru')">Eser Başvuru</a></li>
@@ -4613,6 +4725,38 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <div class="moverlay" id="moverlay" onclick="if(event.target===this)closeMod()"><div class="modal" id="modalContent"></div></div>
+<!-- HEDİYE ITEM MODAL -->
+<div class="gim-overlay" id="gimOverlay" onclick="if(event.target===this)closeGiftItemModal()">
+  <div class="gim-box">
+    <button class="gim-close" onclick="closeGiftItemModal()">×</button>
+    <div class="gim-head" id="gimHead">
+      <div class="gim-cover" id="gimCover"></div>
+      <div>
+        <div class="gim-book-title" id="gimTitle"></div>
+        <div class="gim-book-author" id="gimAuthor"></div>
+        <div class="gim-book-price" id="gimPrice"></div>
+      </div>
+    </div>
+    <div class="gim-field">
+      <label>Alıcının Adı *</label>
+      <input id="gimRecipient" placeholder="Kime gönderilecek?" maxlength="60">
+    </div>
+    <div class="gim-field">
+      <label>Kişisel Not / İthaf <span style="font-weight:400;opacity:.6">(opsiyonel)</span></label>
+      <textarea id="gimNote" placeholder="Kitabın iç kapağına yazılacak ithaf veya mesajınız…" maxlength="200"></textarea>
+    </div>
+    <label class="gim-signed">
+      <input type="checkbox" id="gimSigned">
+      <div class="gim-signed-texts">
+        <div class="gim-signed-lbl">İmzalı Kopya İstiyorum ✍️</div>
+        <div class="gim-signed-sub">Yazar tarafından imzalanmış, özel ambalajlı</div>
+      </div>
+    </label>
+    <div class="gim-fee-note" id="gimFeeNote" style="display:none">🎁 İmzalı kopya + özel ambalaj: <strong>+₺50</strong> ek ücret uygulanır</div>
+    <button class="gim-btn" onclick="confirmAddToGift()">Hediye Sepetine Ekle 🎁</button>
+  </div>
+</div>
+
 <!-- CHECKOUT MODAL -->
 <div class="chk-overlay" id="chkOverlay" onclick="if(event.target===this)closeCheckout()">
   <div class="chk-box">
@@ -4661,6 +4805,58 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         </button>
       </div>
       <div id="chkConfirm" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HEDİYE CHECKOUT MODAL -->
+<div class="gchk-overlay" id="gchkOverlay" onclick="if(event.target===this)closeGiftCheckout()">
+  <div class="gchk-box">
+    <div class="gchk-head">
+      <h3>🎁 Hediye Siparişi</h3>
+      <button class="gchk-close" onclick="closeGiftCheckout()">×</button>
+    </div>
+    <div class="gchk-body">
+      <div class="gchk-summary" id="gchkSummary"></div>
+      <div id="gchkForm">
+        <div class="chk-row">
+          <div class="chk-field">
+            <label>Gönderen Adı Soyadı *</label>
+            <input type="text" id="gchkName" placeholder="Adınız Soyadınız" autocomplete="name">
+            <div class="chk-err" id="gchkNameErr"></div>
+          </div>
+          <div class="chk-field">
+            <label>Telefon *</label>
+            <input type="tel" id="gchkPhone" placeholder="0532 000 00 00" autocomplete="tel">
+            <div class="chk-err" id="gchkPhoneErr"></div>
+          </div>
+        </div>
+        <div class="chk-row">
+          <div class="chk-field">
+            <label>E-posta <span class="opt">(opsiyonel)</span></label>
+            <input type="email" id="gchkEmail" placeholder="email@ornek.com" autocomplete="email">
+          </div>
+          <div class="chk-field">
+            <label>Şehir *</label>
+            <input type="text" id="gchkCity" placeholder="Adana" autocomplete="address-level1">
+            <div class="chk-err" id="gchkCityErr"></div>
+          </div>
+        </div>
+        <div class="chk-field">
+          <label>Teslimat Adresi *</label>
+          <textarea id="gchkAddr" placeholder="Mahalle, cadde, sokak, bina no, daire no…" autocomplete="street-address"></textarea>
+          <div class="chk-err" id="gchkAddrErr"></div>
+        </div>
+        <div class="chk-field">
+          <label>Ek Not <span class="opt">(opsiyonel)</span></label>
+          <textarea id="gchkNote" placeholder="Kargo veya hediye paketiyle ilgili eklemek istedikleriniz…" style="min-height:44px"></textarea>
+        </div>
+        <button class="chk-btn primary" onclick="submitGiftOrder()">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.09a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Siparişi Onayla
+        </button>
+      </div>
+      <div id="gchkConfirm" style="display:none"></div>
     </div>
   </div>
 </div>
@@ -4720,6 +4916,8 @@ const blogPosts=[
 
 /* ── STATE ── */
 let cart=JSON.parse(localStorage.getItem('akgulCart')||'[]');
+let giftCart=JSON.parse(localStorage.getItem('akgulGiftCart')||'[]');
+const GIFT_FEE=50;
 let currentUser=JSON.parse(localStorage.getItem('akgulUser')||'null');
 let users=JSON.parse(localStorage.getItem('akgulUsers')||'[]');
 /* Admin panelinden geliniyorsa oturumu otomatik aç */
@@ -4822,6 +5020,7 @@ function go(page){
     document.querySelectorAll('#boxPackages .box-pkg').forEach((b,i)=>b.classList.toggle('sel',i===1));
     updateBoxFlow(1);renderBoxSection();initBoxCounter();
   }
+  if(page==='hediye-sepeti'){renderGiftPage();}
   if(page==='okuma-kulubu')renderClubSection();
   if(page==='about')setTimeout(initAboutCounters,100);
   if(page==='ai-oneri')initAIOneri();
@@ -4990,6 +5189,7 @@ function renderBooks(filter){
           <button class="badd ${inCart?'added':''}" onclick="event.stopPropagation();addCart(${b.id})">
             ${inCart?'<svg viewBox="0 0 24 24" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Sepette':'<svg viewBox="0 0 24 24" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Ekle'}
           </button>
+          <button class="bgift${giftCart.find(g=>g.id===b.id)?' gifted':''}" onclick="event.stopPropagation();openGiftItemModal(${b.id})" title="Hediye Sepetine Ekle">🎁</button>
         </div>
       </div>
     </div>`}).join('');
@@ -5611,6 +5811,7 @@ function openModal(id){
     <div class="modal-desc">${b.desc||''}</div>
     <div class="modal-btns">
       <button class="mbn" onclick="addCart(${b.id});closeMod()">Sepete Ekle</button>
+      <button class="mbn" style="background:rgba(200,169,110,.12);border:1px solid rgba(200,169,110,.35);color:var(--gold)" onclick="closeMod();openGiftItemModal(${b.id})">🎁 Hediye Et</button>
       <button class="bwish mbn-wish${_wishlisted?' wishlisted':''}" data-id="${b.id}" onclick="toggleWishlist(${b.id},event)">${_wishlisted?'♥ İstek Listesinde':'♡ İstek Listesine Ekle'}</button>
       <button class="mbn-wa" onclick="window.open('https://wa.me/${WA_PHONE}?text=${waMsg}','_blank')">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -5979,6 +6180,204 @@ function submitHomeReview(){
   const st=sid('homeReviewStatus');if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
   renderHomeReviews();
 }
+
+/* ── HEDİYE SEPETİ ── */
+let _gimBookId=null;
+
+function saveGiftCart(){localStorage.setItem('akgulGiftCart',JSON.stringify(giftCart));}
+
+function updateGiftBadge(){
+  const n=giftCart.length;
+  const b=sid('giftBadge');
+  if(b){b.textContent=n;b.classList.toggle('on',n>0);}
+}
+
+function openGiftItemModal(id){
+  const b=books.find(x=>x.id===id);if(!b)return;
+  _gimBookId=id;
+  sid('gimTitle').textContent=b.title;
+  sid('gimAuthor').textContent=b.author;
+  sid('gimPrice').textContent='₺'+b.price;
+  const cov=sid('gimCover');
+  if(b.cover){cov.innerHTML=`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`;}
+  else{cov.innerHTML=bookCoverSvg(b);}
+  const existing=giftCart.find(g=>g.id===id);
+  sid('gimRecipient').value=existing?existing.recipientName:'';
+  sid('gimNote').value=existing?existing.personalNote:'';
+  sid('gimSigned').checked=existing?existing.signed:false;
+  sid('gimFeeNote').style.display=existing&&existing.signed?'block':'none';
+  sid('gimSigned').onchange=function(){sid('gimFeeNote').style.display=this.checked?'block':'none';};
+  sid('gimOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>sid('gimRecipient')?.focus(),80);
+}
+
+function closeGiftItemModal(){
+  sid('gimOverlay').classList.remove('open');
+  document.body.style.overflow='';
+  _gimBookId=null;
+}
+
+function confirmAddToGift(){
+  const recipient=(sid('gimRecipient')?.value||'').trim();
+  if(!recipient){sid('gimRecipient').style.borderColor='#e74c3c';sid('gimRecipient').focus();toast('Lütfen alıcının adını girin.');return;}
+  sid('gimRecipient').style.borderColor='';
+  const b=books.find(x=>x.id===_gimBookId);if(!b)return;
+  const note=(sid('gimNote')?.value||'').trim();
+  const signed=sid('gimSigned')?.checked||false;
+  const existing=giftCart.findIndex(g=>g.id===_gimBookId);
+  const item={id:b.id,recipientName:recipient,personalNote:note,signed};
+  if(existing>=0){giftCart[existing]=item;}else{giftCart.push(item);}
+  saveGiftCart();updateGiftBadge();
+  renderBooks(currentFilter||'all');
+  closeGiftItemModal();
+  toast(`"${b.title}" hediye sepetine eklendi 🎁`);
+}
+
+function removeFromGift(idx){
+  giftCart.splice(idx,1);
+  saveGiftCart();updateGiftBadge();
+  renderGiftPage();
+  renderBooks(currentFilter||'all');
+}
+
+function renderGiftPage(){
+  const el=sid('gpContent');if(!el)return;
+  if(!giftCart.length){
+    el.innerHTML=`<div class="gp-empty">
+      <div class="gp-empty-icon">🎁</div>
+      <div class="gp-empty-title">Hediye Sepetiniz Boş</div>
+      <div class="gp-empty-sub">Kitap kartlarındaki 🎁 butonuyla<br>sevdiklerinize hediye seçmeye başlayın.</div>
+      <button class="gp-empty-cta" onclick="go('home');setTimeout(()=>sid('books-sec')?.scrollIntoView({behavior:'smooth'}),300)">Kitaplara Göz At</button>
+    </div>`;
+    return;
+  }
+  const subtotal=giftCart.reduce((s,g)=>{const b=books.find(x=>x.id===g.id);return s+(b?b.price:0)+(g.signed?GIFT_FEE:0);},0);
+  const shipping=subtotal>=FREE_SHIP?0:SHIP_COST;
+  const total=subtotal+shipping;
+  const itemsHtml=giftCart.map((g,idx)=>{
+    const b=books.find(x=>x.id===g.id);if(!b)return'';
+    const coverHtml=b.cover?`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`:bookCoverSvg(b);
+    const linePrice=b.price+(g.signed?GIFT_FEE:0);
+    return`<div class="gp-item">
+      <button class="gp-item-rm" onclick="removeFromGift(${idx})" title="Kaldır">✕</button>
+      <div class="gp-item-head">
+        <div class="gp-item-cover">${coverHtml}</div>
+        <div>
+          <div class="gp-item-title">${escHtml(b.title)}</div>
+          <div class="gp-item-author">${escHtml(b.author)}</div>
+          <div class="gp-item-price">₺${linePrice}${g.signed?` <span style="font-size:.7rem;opacity:.7">(+₺${GIFT_FEE} imzalı)</span>`:''}</div>
+        </div>
+      </div>
+      <div class="gp-item-fields">
+        <div class="gp-item-field">
+          <label>Alıcı Adı</label>
+          <input value="${escHtml(g.recipientName)}" placeholder="Alıcının adı" oninput="giftCart[${idx}].recipientName=this.value;saveGiftCart()">
+        </div>
+        <div class="gp-item-field gp-item-note">
+          <label>Kişisel Not / İthaf</label>
+          <textarea placeholder="İthaf veya kişisel mesajınız…" oninput="giftCart[${idx}].personalNote=this.value;saveGiftCart()">${escHtml(g.personalNote)}</textarea>
+        </div>
+      </div>
+      <label class="gp-item-signed">
+        <input type="checkbox" ${g.signed?'checked':''} onchange="giftCart[${idx}].signed=this.checked;saveGiftCart();renderGiftPage()">
+        <span class="gp-item-signed-lbl">✍️ İmzalı Kopya + Özel Ambalaj</span>
+        <span class="gp-item-signed-fee">+₺${GIFT_FEE}</span>
+      </label>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="gp-layout">
+    <div class="gp-items">${itemsHtml}</div>
+    <div class="gp-summary">
+      <div class="gp-sum-title">Sipariş Özeti</div>
+      ${giftCart.map(g=>{const b=books.find(x=>x.id===g.id);if(!b)return'';return`<div class="gp-sum-row"><span>${escHtml(b.title)}</span><span class="gp-sum-val">₺${b.price+(g.signed?GIFT_FEE:0)}</span></div>`;}).join('')}
+      <div class="gp-sum-row"><span>Kargo</span><span class="gp-sum-val">${shipping===0?'<span style="color:#2D4A3E">Ücretsiz ✓</span>':'₺'+shipping}</span></div>
+      <div class="gp-sum-row total"><span>Genel Toplam</span><span class="gp-sum-val">₺${total}</span></div>
+      <div class="gp-features">
+        <div class="gp-feature"><span class="gp-feature-icon">✍️</span> İmzalı kopya yazar tarafından imzalanır</div>
+        <div class="gp-feature"><span class="gp-feature-icon">🎁</span> Kraft kağıt özel hediye ambalajı</div>
+        <div class="gp-feature"><span class="gp-feature-icon">📝</span> Kişisel notunuz iç kapağa yazılır</div>
+        <div class="gp-feature"><span class="gp-feature-icon">🚚</span> ₺${FREE_SHIP} üzeri ücretsiz kargo</div>
+      </div>
+      <button class="gp-order-btn" onclick="giftCheckout()">
+        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.09a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Sipariş Ver
+      </button>
+    </div>
+  </div>`;
+}
+
+function giftCheckout(){
+  if(!giftCart.length){toast('Hediye sepetiniz boş!');return;}
+  const subtotal=giftCart.reduce((s,g)=>{const b=books.find(x=>x.id===g.id);return s+(b?b.price:0)+(g.signed?GIFT_FEE:0);},0);
+  const shipping=subtotal>=FREE_SHIP?0:SHIP_COST;
+  const total=subtotal+shipping;
+  const sum=sid('gchkSummary');
+  if(sum){
+    const rows=giftCart.map(g=>{const b=books.find(x=>x.id===g.id);if(!b)return'';return`<div class="gchk-sum-row"><span>${escHtml(b.title)} → ${escHtml(g.recipientName||'?')}${g.signed?' ✍️':''}</span><span>₺${b.price+(g.signed?GIFT_FEE:0)}</span></div>`;}).join('');
+    sum.innerHTML=`<div class="gchk-sum-label">Hediye Kalemleri</div>${rows}<div class="gchk-sum-row"><span>Kargo</span><span>${shipping===0?'Ücretsiz ✓':'₺'+shipping}</span></div><div class="gchk-sum-row total"><span>Genel Toplam</span><span>₺${total}</span></div>`;
+  }
+  sid('gchkForm').style.display='';
+  sid('gchkConfirm').style.display='none';
+  ['gchkNameErr','gchkPhoneErr','gchkCityErr','gchkAddrErr'].forEach(id=>{const e=sid(id);if(e)e.style.display='none';});
+  if(currentUser){const ni=sid('gchkName'),pi=sid('gchkPhone');if(ni&&!ni.value)ni.value=currentUser.name||'';if(pi&&!pi.value&&currentUser.phone)pi.value=currentUser.phone;}
+  sid('gchkOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  setTimeout(()=>sid('gchkName')?.focus(),80);
+}
+
+function closeGiftCheckout(){
+  sid('gchkOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+function submitGiftOrder(){
+  const name=(sid('gchkName')?.value||'').trim();
+  const phone=(sid('gchkPhone')?.value||'').trim();
+  const email=(sid('gchkEmail')?.value||'').trim();
+  const city=(sid('gchkCity')?.value||'').trim();
+  const address=(sid('gchkAddr')?.value||'').trim();
+  const note=(sid('gchkNote')?.value||'').trim();
+  let ok=true;
+  const showErr=(id,msg)=>{const e=sid(id);if(e){e.textContent=msg;e.style.display=msg?'block':'none';}if(msg)ok=false;};
+  showErr('gchkNameErr',!name?'Ad soyad zorunludur':'');
+  showErr('gchkPhoneErr',!phone?'Telefon numarası zorunludur':phone.replace(/\D/g,'').length<10?'Geçerli bir telefon girin':'');
+  showErr('gchkCityErr',!city?'Şehir zorunludur':'');
+  showErr('gchkAddrErr',!address?'Adres zorunludur':'');
+  if(!ok)return;
+  const subtotal=giftCart.reduce((s,g)=>{const b=books.find(x=>x.id===g.id);return s+(b?b.price:0)+(g.signed?GIFT_FEE:0);},0);
+  const shipping=subtotal>=FREE_SHIP?0:SHIP_COST;
+  const total=subtotal+shipping;
+  const ordId='#AKH'+Date.now().toString(36).slice(-4).toUpperCase();
+  const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
+  const itemLines=giftCart.map(g=>{
+    const b=books.find(x=>x.id===g.id);if(!b)return'';
+    let line=`• ${b.title} → ${g.recipientName||'?'} — ₺${b.price+(g.signed?GIFT_FEE:0)}`;
+    if(g.signed)line+=` (İmzalı+Ambalaj)`;
+    if(g.personalNote)line+=`\n  İthaf: "${g.personalNote}"`;
+    return line;
+  }).join('\n');
+  const shipLine=shipping===0?'Kargo: Ücretsiz ✓':`Kargo: ₺${shipping}`;
+  const waMsg=`Merhaba, hediye sepeti siparişi vermek istiyorum.\n\nSipariş No: ${ordId}\n\n${itemLines}\n\n${shipLine}\nGenel Toplam: ₺${total}\n\n— Gönderen Bilgileri —\nAd: ${name}\nTelefon: ${phone}\nŞehir: ${city}\nAdres: ${address}${note?'\nNot: '+note:''}`;
+  const conf=sid('gchkConfirm');
+  if(conf){
+    conf.innerHTML=`<div class="chk-confirm">
+      <div class="chk-confirm-icon">🎁</div>
+      <div class="chk-confirm-num">${ordId}</div>
+      <div class="chk-confirm-label">Hediye Sipariş Numaranız</div>
+      <div class="chk-confirm-msg">Siparişiniz kaydedildi! WhatsApp üzerinden bize ulaşarak siparişinizi onaylayın ve ödeme bilgilerini alın.</div>
+      <button class="chk-btn wa" onclick="window.open('https://wa.me/${WA_PHONE}?text='+encodeURIComponent(${JSON.stringify(waMsg)}),'_blank')">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.522 3.659 1.432 5.169L2 22l4.975-1.404A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        WhatsApp'ta Onayla
+      </button>
+      <button class="chk-btn dark" style="margin-top:.5rem" onclick="closeGiftCheckout();giftCart=[];saveGiftCart();updateGiftBadge();renderGiftPage();">Tamam — Hediye Sepetini Kapat</button>
+    </div>`;
+    conf.style.display='';
+  }
+  sid('gchkForm').style.display='none';
+}
+
+updateGiftBadge();
 
 /* ── SEPET ── */
 let FREE_SHIP=siteSettings.freeShip||500;let SHIP_COST=siteSettings.shipCost||35;
