@@ -1074,6 +1074,7 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .hp-gz-mast-line{flex:1;height:1px;background:var(--border)}
 .hp-gz-mast-mid{text-align:center;flex-shrink:0}
 .hp-gz-mast-rule{width:36px;height:2px;background:var(--gold);margin:.4rem auto 0}
+.hp-gz-mast-date{font-size:.58rem;color:var(--muted);letter-spacing:.1em;margin-top:.55rem;font-family:var(--font-sans)}
 .hp-gz-grid{display:grid;grid-template-columns:1fr 300px;gap:0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--white)}
 .hp-gz-feat{cursor:pointer;display:flex;flex-direction:column;transition:background .2s}
 .hp-gz-feat:hover{background:rgba(200,169,110,.03)}
@@ -1550,6 +1551,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ft-bottom-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 .ft-copy{font-size:.67rem;color:rgba(200,192,178,.48);letter-spacing:.04em}
 .ft-copy strong{color:rgba(200,169,110,.6);font-weight:500}
+.ft-credit{text-align:center;font-size:.58rem;color:rgba(200,192,178,.28);letter-spacing:.06em;padding:.45rem 2rem .75rem;border-top:1px solid rgba(200,169,110,.04)}
+.ft-credit strong{color:rgba(200,169,110,.4);font-weight:500}
 .ft-badges{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
 .ft-badge{font-size:.6rem;color:rgba(200,192,178,.45);display:flex;align-items:center;gap:.38rem;letter-spacing:.07em;text-transform:uppercase}
 .ft-badge svg{width:13px;height:13px;stroke:rgba(200,169,110,.5);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
@@ -3800,6 +3803,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="hp-gz-mast-mid">
           <p class="sec-label" style="margin-bottom:.3rem;letter-spacing:.22em;font-size:.68rem">Akgül Gazetesi</p>
           <div class="hp-gz-mast-rule"></div>
+          <div class="hp-gz-mast-date" id="hpGzDate"></div>
         </div>
         <div class="hp-gz-mast-line"></div>
       </div>
@@ -3843,18 +3847,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     </div>
   </div>
 
-  <div class="testi-bg fade">
-    <div class="testi-inner">
-      <p class="sec-label">Okur Sesleri</p>
-      <h2 class="sec-title">Okuyanlar Ne <em>Dedi?</em></h2>
-      <div class="testi-grid">
-        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Adana'dan yükselen bu ses Türk edebiyatına gerçekten taze bir soluk getirdi."</p><div class="testi-author">— Zeynep A., Adana</div></div>
-        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"AI öneri özelliği müthiş! Tam ruh halime uygun kitabı buldu."</p><div class="testi-author">— Murat K., Mersin</div></div>
-        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Sürpriz kutu harika bir hediye fikri! El yazısı kart özellikle çok dokunucu."</p><div class="testi-author">— Elif D., Adana</div></div>
-        <div class="testi-card"><div class="testi-stars">★★★★★</div><p class="testi-text">"Yazar köşesindeki yazılar okuma deneyimimi tamamen değiştirdi."</p><div class="testi-author">— Emre S., Antalya</div></div>
-      </div>
-    </div>
-  </div>
   <!-- Ana Sayfa Kullanıcı Yorumları -->
   <div class="home-user-reviews" style="padding:3rem 1rem 4rem;max-width:800px;margin:0 auto">
     <p class="sec-label">Senin Görüşün</p>
@@ -3971,15 +3963,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           <div class="box-step"><div class="box-step-num">3</div><div class="box-step-text">WhatsApp'tan sipariş verin</div></div>
           <div class="box-step-arrow">→</div>
           <div class="box-step"><div class="box-step-num">4</div><div class="box-step-text">Kutunuzu kapınızda açın</div></div>
-        </div>
-      </div>
-      <!-- Müşteri Yorumları -->
-      <div class="box-testimonials">
-        <h3 class="box-section-title">Okurlarımız Ne Diyor?</h3>
-        <div class="box-testi-grid">
-          <div class="box-testi"><div class="box-testi-stars">★★★★★</div><p>"Sürpriz kutu harika bir hediye fikri! El yazısı kart özellikle çok dokunucu."</p><div class="box-testi-author">— Elif D., Adana</div></div>
-          <div class="box-testi"><div class="box-testi-stars">★★★★★</div><p>"Ruh halime uygun kitaplar seçilmiş, çok isabetli oldu. Teşekkürler!"</p><div class="box-testi-author">— Mehmet K., İstanbul</div></div>
-          <div class="box-testi"><div class="box-testi-stars">★★★★★</div><p>"Kraft ambalaj ve özenli paketleme harika. Tekrar sipariş vereceğim."</p><div class="box-testi-author">— Zeynep A., Ankara</div></div>
         </div>
       </div>
       <!-- Kullanıcı Yorumları -->
@@ -4426,27 +4409,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
     </div>
   </div>
-  <!-- Müşteri Yorumları -->
-  <div class="ai-testimonials">
-    <h3 class="ai-section-title">Okurlarımız Ne Diyor?</h3>
-    <div class="ai-testi-grid">
-      <div class="ai-testi">
-        <div class="ai-testi-stars">★★★★★</div>
-        <p>"AI öneri özelliği müthiş! Tam ruh halime uygun kitabı buldu."</p>
-        <div class="ai-testi-author">— Murat K., Mersin</div>
-      </div>
-      <div class="ai-testi">
-        <div class="ai-testi-stars">★★★★★</div>
-        <p>"Hüzünlü kitaplar seçtim, hepsi birbirinden güzel çıktı. Teşekkürler!"</p>
-        <div class="ai-testi-author">— Ayşe T., İzmir</div>
-      </div>
-      <div class="ai-testi">
-        <div class="ai-testi-stars">★★★★★</div>
-        <p>"Tarih kategorisindeki öneriler çok isabetli. Kesinlikle deneyin."</p>
-        <div class="ai-testi-author">— Selim B., Ankara</div>
-      </div>
-    </div>
-  </div>
   <!-- AI Kullanıcı Yorumları -->
   <div class="ai-user-reviews" style="padding:0 1rem 3rem;max-width:800px;margin:0 auto">
     <h3 class="ai-section-title" style="margin-bottom:1.5rem">Senin Deneyimin</h3>
@@ -4718,8 +4680,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="admin-section act" id="as-dashboard">
           <div class="admin-page-title">Genel Bakış</div>
           <div class="admin-page-sub" id="adminWelcome">Hoş geldiniz</div>
-          <div class="notice-bar"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>Tüm veriler demo amaçlıdır.</div>
-          <div class="admin-kpi-row" id="adminKpis"></div>
+<div class="admin-kpi-row" id="adminKpis"></div>
           <div class="admin-split">
             <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Aylık Satış Trendi</div></div><div class="admin-card-body"><div class="admin-mini-chart" id="adminChart"></div><div class="admin-chart-labels" id="adminChartLabels"></div></div></div>
             <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">En Çok Görüntülenen</div></div><div class="admin-card-body" id="adminTopBooks"></div></div>
@@ -5020,6 +4981,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
     </div>
   </div>
+  <div class="ft-credit">Bu site <strong>Akgül Yayınevi</strong> tarafından tasarlanmıştır.</div>
 </footer>
 
 <button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
@@ -5548,16 +5510,33 @@ function readingTime(body){const t=(body||'').replace(/<[^>]+>/g,'').trim().spli
 function renderBlogPreview(){
   const el=sid('blogPreview');if(!el)return;
   const items=blogData.filter(p=>p.type!=='ilan').slice(0,3);
-  if(!items.length){el.innerHTML='';return;}
+  /* Masthead tarih + sayı no */
+  const dateEl=sid('hpGzDate');
+  if(dateEl){
+    const now=new Date();
+    const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+    const sayiNo=gazeteBaskiNo?gazeteBaskiNo():1;
+    dateEl.textContent=`${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} · ${sayiNo}. Sayı`;
+  }
+  if(!items.length){el.innerHTML='<p style="text-align:center;color:var(--muted);padding:3rem 0;font-size:.88rem">Henüz yazı yayınlanmamış.</p>';return;}
   const rt=p=>readingTime(p.body||'');
-  const bgImg=p=>p.images&&p.images[0]
-    ?`<img src="${p.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`
-    :`<div style="width:100%;height:100%;background:${p.bg||'linear-gradient(135deg,#2D4A3E,#1a3028)'}"></div>`;
+  const bgImg=(p,feat)=>{
+    if(p.images&&p.images[0])return`<img src="${p.images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`;
+    const bg=p.bg||'linear-gradient(135deg,#2D4A3E,#1a3028)';
+    const letter=(p.title||'A')[0].toUpperCase();
+    const cat=(p.cat||'YAZI').toUpperCase();
+    return`<div style="width:100%;height:100%;background:${bg};display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;gap:.35rem">
+      <div style="position:absolute;font-family:var(--font-serif);font-size:${feat?'11rem':'6rem'};color:rgba(255,255,255,.05);font-weight:700;line-height:1;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%)">${letter}</div>
+      <span style="position:relative;font-size:.5rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(200,169,110,.65);font-family:var(--font-sans)">${escHtml(cat)}</span>
+      <div style="position:relative;width:28px;height:1px;background:rgba(200,169,110,.25)"></div>
+      <span style="position:relative;font-size:.42rem;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.25);font-family:var(--font-sans)">AKGÜL GAZETESİ</span>
+    </div>`;
+  };
   const feat=items[0];
   const sides=items.slice(1);
   el.innerHTML=`<div class="hp-gz-grid">
     <div class="hp-gz-feat" onclick="openBlog(${feat.id})">
-      <div class="hp-gz-feat-img">${bgImg(feat)}</div>
+      <div class="hp-gz-feat-img">${bgImg(feat,true)}</div>
       <div class="hp-gz-feat-body">
         <span class="hp-gz-cat">${escHtml(feat.cat||'Yazı')}</span>
         <h3 class="hp-gz-feat-title">${escHtml(feat.title)}</h3>
@@ -5566,7 +5545,7 @@ function renderBlogPreview(){
       </div>
     </div>
     <div class="hp-gz-side">${sides.map(p=>`<div class="hp-gz-sm-card" onclick="openBlog(${p.id})">
-      <div class="hp-gz-sm-img">${bgImg(p)}</div>
+      <div class="hp-gz-sm-img">${bgImg(p,false)}</div>
       <div class="hp-gz-sm-body">
         <span class="hp-gz-cat">${escHtml(p.cat||'Yazı')}</span>
         <h4 class="hp-gz-sm-title">${escHtml(p.title)}</h4>
