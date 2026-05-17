@@ -10449,7 +10449,7 @@ async function sendAIW(){
               </div>
               <div style="display:flex;gap:.5rem">
                 <button class="card-btn primary" onclick="window.admPressAdd&&window.admPressAdd()"><i class="ti ti-check" style="font-size:12px"></i>Ekle</button>
-                <button class="card-btn" onclick="admPressHideAdd()">İptal</button>
+                <button class="card-btn" onclick="window.admPressHideAdd&&admPressHideAdd()">İptal</button>
               </div>
             </div>
             <div id="adm-press-list" style="min-height:80px">
@@ -13396,8 +13396,8 @@ window.admPressAdd=function(){
   ['adm-press-title','adm-press-email','adm-press-author','adm-press-note-new'].forEach(id=>{const el=ag(id);if(el)el.value='';});
   window.adminRenderPressProcess();
 };
-function admPressShowAdd(){const f=ag('adm-press-add-form');if(f)f.style.display='block';}
-function admPressHideAdd(){const f=ag('adm-press-add-form');if(f)f.style.display='none';}
+window.admPressShowAdd=function(){const f=ag('adm-press-add-form');if(f)f.style.display='block';}
+window.admPressHideAdd=function(){const f=ag('adm-press-add-form');if(f)f.style.display='none';}
 
 /* ═══════════════════════════════════════
    EDİTÖRÜN SEÇİMİ YÖNETİMİ
