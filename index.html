@@ -3689,7 +3689,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
       <span class="gift-badge" id="giftBadge">0</span>
     </button>
-    <button class="nav-icon-btn" onclick="toggleAskidaCart()" aria-label="Askıda Kitap" title="Askıda Kitap Sepeti">
+    <button class="nav-icon-btn" onclick="toggleAskidaCart()" aria-label="Kitap Bırak" title="Kitap Bırak Paneli">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M9 11l2 2 4-4"/></svg>
       <span class="ask-cart-badge" id="askCartBadge">0</span>
     </button>
@@ -5265,7 +5265,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <div class="ask-cp-overlay" id="askCpOverlay" onclick="toggleAskidaCart()"></div>
 <div class="ask-cp" id="askCartPanel">
   <div class="ask-cp-head">
-    <h3>📚 Askıda Kitap <span id="askCpCount" style="font-size:.7rem;font-weight:400;color:rgba(245,239,229,.3)"></span></h3>
+    <h3>📚 Kitap Bırak <span id="askCpCount" style="font-size:.7rem;font-weight:400;color:rgba(245,239,229,.3)"></span></h3>
     <button class="ask-cp-close" onclick="toggleAskidaCart()">×</button>
   </div>
   <div class="ask-cp-body" id="askCpBody"></div>
@@ -7589,7 +7589,7 @@ function renderAskidaCart(){
   const totalQty=askidaCart.reduce((s,c)=>s+c.qty,0);
   if(cnt)cnt.textContent=totalQty?`(${totalQty} kitap)`:'';
   if(!askidaCart.length){
-    body.innerHTML=`<div class="ask-cp-empty"><div style="font-size:2.8rem;margin-bottom:.75rem">📚</div><div style="font-family:var(--font-serif);font-size:1rem;color:var(--cream);margin-bottom:.4rem">Askıda Kitap Sepeti Boş</div><div style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:1.1rem">Kitap kartlarındaki 📚 butonuyla kitap seçin —<br>bedelini ödeyin, ihtiyacı olan birisi okusun.</div><button class="ask-btn ask-btn-gold" onclick="toggleAskidaCart();go('books')">Kitaplara Göz At</button></div>`;
+    body.innerHTML=`<div class="ask-cp-empty"><div style="font-size:2.8rem;margin-bottom:.75rem">📚</div><div style="font-family:var(--font-serif);font-size:1rem;color:var(--cream);margin-bottom:.4rem">Kitap Bırakma Sepeti Boş</div><div style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:1.1rem">Katalogdan bir kitap seçip 📚 butonuna basın —<br>bedelini ödeyin, ihtiyacı olan biri okusun.</div><button class="ask-btn ask-btn-gold" onclick="toggleAskidaCart();go('books')">Kitaplara Göz At</button></div>`;
     if(foot)foot.innerHTML='';return;
   }
   const discPct=loadAskidaData().discountRate||10;
@@ -7613,7 +7613,7 @@ function renderAskidaCart(){
   const waLines=askidaCart.map(c=>{const b=findBook(c.id);return b?`• ${b.title} ×${c.qty} — ₺${b.price*c.qty}`:''}).filter(Boolean).join('\n');
   const _waMsg=encodeURIComponent(`Merhaba! Askıda kitap bırakmak istiyorum:\n\n${waLines}\n\nToplam: ₺${total}`);
   if(foot)foot.innerHTML=`
-    <div class="ask-cp-disc">Bıraktığın her kitap için bir sonraki alışverişinde <strong>%${discPct} indirim</strong> kazanırsın!</div>
+    <div class="ask-cp-disc">Kitap bırakana özel: bir sonraki siparişinde <strong>%${discPct} indirim</strong> kodu kazanırsın!</div>
     <div class="ask-cp-sum"><span class="ask-cp-sum-lbl">Toplam bağış tutarı</span><span class="ask-cp-sum-val">₺${total}</span></div>
     <button class="ask-cp-wa" onclick="window.open('https://wa.me/${WA_PHONE}?text=${_waMsg}','_blank')">
       <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -8154,7 +8154,7 @@ function renderProfile(){
       <div class="psb-item"><span class="psb-val">${wlCount}</span><span class="psb-lbl">İstek Listesi</span></div>
     </div>`;
   } else if(statBarEl){statBarEl.innerHTML='';}
-  const tabs=isYazar?['Genel Bakış','Yazılarım','Yeni Yazı','Kitaplarım','Satış Analizi','Siparişlerim','Profil']:['Kütüphanem','İstek Listem','Rozetler','Yorumlarım','Siparişlerim','Profil'];
+  const tabs=isYazar?['Genel Bakış','Yazılarım','Yeni Yazı','Kitaplarım','Satış Analizi','Siparişlerim','Profil']:['Kütüphanem','İstek Listem','Rozetler','Yorumlarım','Siparişlerim','Askıda Kitap','Profil'];
   sid('profileTabs').innerHTML=tabs.map((t,i)=>`<button class="ptab${i===0?' act':''}" onclick="ptab(this,${i})">${t}</button>`).join('');
   if(isYazar)renderYazarContents();else renderOkurContents();
 }
@@ -8340,6 +8340,38 @@ function renderOkurContents(){
     </div>`).join('')
     :`<div class="lib-empty"><div class="lib-empty-icon">📦</div><div class="lib-empty-txt">Henüz siparişiniz yok.<br>Sipariş verdikten sonra burada görünür.</div><button class="btn-gold" style="font-size:.8rem;padding:9px 20px;margin-top:1rem" onclick="go('books')">Kitaplara Göz At</button></div>`;
 
+  /* ── ASKIDA KİTAP TAB (alan) ── */
+  const _askd=(()=>{try{return JSON.parse(localStorage.getItem('akgulAskida')||'null')||{items:[],discountRate:10};}catch(e){return{items:[],discountRate:10};}})();
+  const _askAvail=_askd.items.filter(i=>i.status==='available');
+  const _hasClaimed=!!localStorage.getItem('akgulHasClaimed');
+  const _myClaimedItem=_askd.items.find(i=>i.status==='claimed'&&i.claimedBy===currentUser.email);
+  const askidaTabHtml=`
+    ${_myClaimedItem?`<div style="background:rgba(78,203,135,.07);border:1px solid rgba(78,203,135,.2);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.75rem">
+      <div style="font-size:1.4rem">✅</div>
+      <div>
+        <div style="font-weight:600;font-size:.86rem;margin-bottom:.1rem">Talep Ettiğiniz Kitap</div>
+        <div style="color:var(--muted);font-size:.76rem">"${escHtml(_myClaimedItem.bookTitle)}" — ${_myClaimedItem.claimedAt||''}</div>
+      </div>
+    </div>`:''}
+    <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.25rem">
+      ${_askAvail.length?`Şu an <strong>${_askAvail.length} kitap</strong> sizi bekliyor. Talep etmek için bir kitap seçin.`:'Şu an askıda bekleyen kitap bulunmuyor.'}
+    </p>
+    ${_askAvail.length?`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:1rem">
+      ${_askAvail.map(item=>`<div style="border:1px solid var(--brd2);border-radius:10px;overflow:hidden;background:var(--surface,#fff)">
+        <div style="height:118px;background:${escHtml(item.bookCover||'linear-gradient(135deg,#1a3028,#2D4A3E)')};position:relative;overflow:hidden">
+          <span style="position:absolute;top:.4rem;right:.4rem;background:rgba(78,203,135,.2);color:#4ecb87;border:1px solid rgba(78,203,135,.28);border-radius:10px;font-size:.52rem;font-weight:700;padding:2px 6px">Müsait</span>
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:.5rem .65rem;background:linear-gradient(to top,rgba(0,0,0,.82),transparent)">
+            <div style="font-family:var(--font-serif);font-size:.72rem;color:#fff;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${escHtml(item.bookTitle)}</div>
+          </div>
+        </div>
+        <div style="padding:.7rem">
+          <div style="font-size:.67rem;color:var(--muted);margin-bottom:.3rem">${escHtml(item.bookAuthor||'')}</div>
+          ${item.donorNote?`<div style="font-size:.62rem;color:var(--muted);font-style:italic;margin-bottom:.5rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">"${escHtml(item.donorNote)}"</div>`:'<div style="margin-bottom:.5rem"></div>'}
+          <button onclick="askidaAl('${escHtml(item.id)}')" ${_hasClaimed?'disabled title="Zaten bir kitap talep ettiniz"':''} style="width:100%;padding:.42rem;background:${_hasClaimed?'rgba(0,0,0,.04)':'rgba(200,169,110,.1)'};border:1px solid ${_hasClaimed?'var(--brd2)':'rgba(200,169,110,.28)'};border-radius:6px;color:${_hasClaimed?'var(--muted)':'var(--gold)'};font-size:.67rem;font-weight:600;cursor:${_hasClaimed?'not-allowed':'pointer'};font-family:var(--font-sans);transition:background .18s">${_hasClaimed?'Zaten Talep Edildi':'Talep Et →'}</button>
+        </div>
+      </div>`).join('')}
+    </div>`:`<div class="lib-empty"><div class="lib-empty-icon">📚</div><div class="lib-empty-txt">Askıda kitap yok.<br>Bir bağışçı kitap bıraktığında burada görünür.</div><button class="btn-gold" style="font-size:.8rem;padding:9px 20px;margin-top:1rem" onclick="go('askida-kitap')">Askıda Kitap Sayfası</button></div>`}`;
+
   sid('profileTabContents').innerHTML=`
     <div class="ptab-content act">${libHtml}</div>
     <div class="ptab-content">${wishHtml}</div>
@@ -8351,6 +8383,7 @@ function renderOkurContents(){
       ${revsHtml}
     </div>
     <div class="ptab-content">${ordersHtml}</div>
+    <div class="ptab-content">${askidaTabHtml}</div>
     <div class="ptab-content">${profileEditForm()}</div>`;
 }
 function profileEditForm(){
