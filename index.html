@@ -9172,10 +9172,14 @@ function getSiteAIData(){
   };
 }
 
+var aiSiteBusy = false;
+
 async function sendSiteAI(){
+  if(aiSiteBusy) return;
   const input=sid('aiSiteInput');
   const text=input?.value.trim();
   if(!text) return;
+  aiSiteBusy=true;
   const btn=sid('aiSiteSendBtn');
   input.value=''; input.style.height='auto'; if(btn)btn.disabled=true;
 
@@ -9189,25 +9193,29 @@ async function sendSiteAI(){
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({messages:aiSiteHistory, data:getSiteAIData()})
     });
-    thinking.remove();
+    if(thinking.parentNode) thinking.remove();
 
     if(!res.ok){
-      const e=await res.json().catch(()=>({}));
       siteAIAppendBubble('ai','Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
       aiSiteHistory.pop(); return;
     }
 
-    const {reply}=await res.json();
+    const data=await res.json().catch(()=>null);
+    const reply=data?.reply;
     if(reply){
       siteAIAppendBubble('ai',reply);
       aiSiteHistory.push({role:'assistant',content:reply});
+    } else {
+      siteAIAppendBubble('ai','Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
+      aiSiteHistory.pop();
     }
 
   } catch(err){
-    if(thinking.parentNode)thinking.remove();
+    if(thinking.parentNode) thinking.remove();
     siteAIAppendBubble('ai','Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
     aiSiteHistory.pop();
   } finally{
+    aiSiteBusy=false;
     if(btn)btn.disabled=false; input?.focus();
   }
 }
