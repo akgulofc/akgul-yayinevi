@@ -7615,7 +7615,6 @@ function renderAskidaCart(){
   const waLines=askidaCart.map(c=>{const b=findBook(c.id);return b?`• ${b.title} ×${c.qty} — ₺${b.price*c.qty}`:''}).filter(Boolean).join('\n');
   const _waMsg=encodeURIComponent(`Merhaba! Askıda kitap bırakmak istiyorum:\n\n${waLines}\n\nToplam: ₺${total}`);
   if(foot)foot.innerHTML=`
-    <div class="ask-cp-disc">Kitap bırakana özel: bir sonraki siparişinde <strong>%${discPct} indirim</strong> kodu kazanırsın!</div>
     <div class="ask-cp-sum"><span class="ask-cp-sum-lbl">Toplam bağış tutarı</span><span class="ask-cp-sum-val">₺${total}</span></div>
     <button class="ask-cp-wa" onclick="window.open('https://wa.me/${WA_PHONE}?text=${_waMsg}','_blank')">
       <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -12592,15 +12591,39 @@ function askidaConfirmAl(itemId){
   const item=d.items.find(i=>i.id===itemId);
   if(!item||item.status!=='available')return;
   item.status='claimed'; item.claimedAt=new Date().toLocaleDateString('tr-TR');
+  const discPct=d.discountRate||10;
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code=''; for(let i=0;i<4;i++) code+=chars[Math.floor(Math.random()*chars.length)];
+  code='ALAN-'+code;
   saveAskidaData(d); localStorage.setItem('akgulHasClaimed','1');
+  localStorage.setItem('akgulAlanDiscount',JSON.stringify({code,discPct}));
   if(typeof currentUser!=='undefined'&&currentUser?.token){
     fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({action:'claim_askida',email:currentUser.email,token:currentUser.token,itemId})}).catch(()=>{});
   }
-  const waMsg=encodeURIComponent(`Merhaba! Askıdaki "${item.bookTitle}" kitabını almak istiyorum.`);
-  window.open(`https://wa.me/${typeof WA_PHONE!=='undefined'?WA_PHONE:'905366483096'}?text=${waMsg}`,'_blank');
   document.getElementById('ask-al-over')?.remove();
-  renderAskida();
+  const waMsg=encodeURIComponent(`Merhaba! Askıdaki "${item.bookTitle}" kitabını almak istiyorum. İndirim kodum: ${code}`);
+  const waTel=typeof WA_PHONE!=='undefined'?WA_PHONE:'905366483096';
+  const over2=document.createElement('div');
+  over2.className='ask-modal-over'; over2.id='ask-al-success-over';
+  over2.innerHTML=`<div class="ask-modal" style="max-width:400px">
+    <div class="ask-modal-hd"><span class="ask-modal-title">🎉 Kitap Ayrıldı!</span></div>
+    <div class="ask-modal-body" style="text-align:center;padding:1.5rem 1.25rem">
+      <div style="font-size:.84rem;color:rgba(245,239,229,.55);margin-bottom:1.2rem;line-height:1.65">"<strong style="color:var(--cream)">${escHtml(item.bookTitle)}</strong>" sana ayrıldı. WhatsApp'tan onayladıktan sonra kitabın gönderilecek.</div>
+      <div style="font-size:.68rem;color:rgba(200,169,110,.7);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.45rem">İndirim Kodun</div>
+      <div style="background:rgba(200,169,110,.09);border:1px dashed rgba(200,169,110,.38);border-radius:8px;padding:.85rem 1.2rem;margin-bottom:.4rem">
+        <div style="font-family:monospace;font-size:1.5rem;font-weight:700;color:var(--gold);letter-spacing:.18em">${code}</div>
+      </div>
+      <div style="font-size:.7rem;color:rgba(245,239,229,.32);margin-bottom:1.25rem">%${discPct} indirim · Tek kullanımlık · WhatsApp'ta paylaş</div>
+    </div>
+    <div class="ask-modal-foot">
+      <button class="ask-btn ask-btn-gold" style="width:100%;gap:.5rem;display:flex;align-items:center;justify-content:center" onclick="window.open('https://wa.me/${waTel}?text=${waMsg}','_blank');document.getElementById('ask-al-success-over')?.remove();renderAskida()">
+        <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp ile Onayla
+      </button>
+    </div>
+  </div>`;
+  document.body.appendChild(over2);
 }
 
 /* ── ADMIN ASKIDA ── */
