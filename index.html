@@ -5317,9 +5317,30 @@ if(adminAuthors.length>0){authors=adminAuthors;}
 
 function saveReviews(){
   const rev={};
-  books.forEach(b=>{if(b.reviews.length)rev[b.id]=b.reviews});
+  books.forEach(b=>{if(b.reviews&&b.reviews.length)rev[b.id]=b.reviews});
   localStorage.setItem('akgulSiteReviews',JSON.stringify(rev));
 }
+
+async function fetchReviews(){
+  try{
+    const res=await fetch('/api/reviews.php');if(!res.ok)return;
+    const data=await res.json();
+    if(data.books&&typeof data.books==='object'){
+      Object.entries(data.books).forEach(([bid,revs])=>{
+        const b=books.find(x=>String(x.id)===bid);
+        if(b){
+          if(!Array.isArray(b.reviews))b.reviews=[];
+          revs.forEach(r=>{if(!b.reviews.find(x=>x.t===r.t&&x.u===r.u))b.reviews.push(r)});
+        }
+      });
+      saveReviews();
+    }
+    if(data.box&&data.box.length)localStorage.setItem('akgulBoxReviews',JSON.stringify(data.box));
+    if(data.ai&&data.ai.length)localStorage.setItem('akgulAIReviews',JSON.stringify(data.ai));
+    if(data.home&&data.home.length)localStorage.setItem('akgulHomeReviews',JSON.stringify(data.home));
+  }catch(e){}
+}
+fetchReviews();
 
 function saveCart(){localStorage.setItem('akgulCart',JSON.stringify(cart))}
 function saveUsers(){localStorage.setItem('akgulUsers',JSON.stringify(users))}
@@ -6468,14 +6489,23 @@ function showStatus(msg,type){
   el.textContent=msg;el.className='rf-status show '+type;
   if(type==='ok'){setTimeout(()=>el.className='rf-status',2500)}
 }
-function submitReview(bid){
+async function submitReview(bid){
   if(!currentUser){closeMod();go('auth');toast('Yorum yapmak için giriş yapmalısın');return}
   const b=books.find(x=>x.id===bid);if(!b)return;
   const name=sid('reviewName')?.value.trim()||currentUser.name;
   const txt=sid('reviewTxt')?.value.trim();
   if(!txt){showStatus('Lütfen bir yorum yazın','err');return}
   if(txt.length<3){showStatus('Yorum çok kısa (en az 3 karakter)','err');return}
-  b.reviews.push({u:name,s:reviewStars,t:txt,d:new Date().toLocaleDateString('tr-TR')});
+  const rev={u:name,s:reviewStars,t:txt,d:new Date().toLocaleDateString('tr-TR')};
+  if(currentUser.token){
+    try{
+      const res=await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add',email:currentUser.email,token:currentUser.token,type:'book',bookId:String(bid),review:rev})});
+      const data=await res.json();
+      if(!res.ok){showStatus(data.error||'Sunucu hatası','err');return}
+    }catch(e){}
+  }
+  b.reviews.push(rev);
   saveReviews();
   sid('reviewName').value='';sid('reviewTxt').value='';sid('reviewChar').innerHTML='<span>0</span>/500';
   reviewStars=5;setStars(5);
@@ -6546,18 +6576,28 @@ function renderBoxReviews(){
       <div class="box-review-meta">— ${escHtml(r.u)} · ${r.d||'geçen gün'}</div>
     </div>`).join(''):'<div class="box-review-empty">Henüz yorum yok. İlk deneyimi sen paylaş!</div>';
 }
-function submitBoxReview(){
+async function submitBoxReview(){
   if(!currentUser){go('auth');toast('Yorum yapmak için giriş yapmalısın');return}
   const mood=sid('boxMoodSelect')?.value||'';
   const txt=sid('boxReviewTxt')?.value.trim();
-  if(!txt){const st=sid('boxReviewStatus');if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
-  if(txt.length<3){const st=sid('boxReviewStatus');if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const st=sid('boxReviewStatus');
+  if(!txt){if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
+  if(txt.length<3){if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const rev={u:currentUser.name,s:boxReviewStars,t:txt,mood,d:new Date().toLocaleDateString('tr-TR')};
+  if(currentUser.token){
+    try{
+      const res=await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add',email:currentUser.email,token:currentUser.token,type:'box',review:rev})});
+      const data=await res.json();
+      if(!res.ok){if(st){st.textContent=data.error||'Sunucu hatası';st.className='rf-status show err'}return}
+    }catch(e){}
+  }
   const revs=loadBoxReviews();
-  revs.unshift({u:currentUser.name,s:boxReviewStars,t:txt,mood,d:new Date().toLocaleDateString('tr-TR')});
+  revs.unshift(rev);
   saveBoxReviews(revs);
   sid('boxReviewTxt').value='';sid('boxMoodSelect').selectedIndex=0;boxReviewStars=5;
   const sp=sid('boxStarPick');if(sp)sp.querySelectorAll('span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=5));
-  const st=sid('boxReviewStatus');if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
+  if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
   renderBoxReviews();
 }
 function initAboutCounters(){
@@ -6632,17 +6672,27 @@ function renderAIReviews(){
       <div class="ai-review-meta">— ${escHtml(r.u)} · ${r.d||'geçen gün'}</div>
     </div>`).join(''):'<div class="ai-review-empty">Henüz yorum yok. İlk yorumu sen yap!</div>';
 }
-function submitAIReview(){
+async function submitAIReview(){
   if(!currentUser){go('auth');toast('Yorum yapmak için giriş yapmalısın');return}
   const txt=sid('aiReviewTxt')?.value.trim();
-  if(!txt){const st=sid('aiReviewStatus');if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
-  if(txt.length<3){const st=sid('aiReviewStatus');if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const st=sid('aiReviewStatus');
+  if(!txt){if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
+  if(txt.length<3){if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const rev={u:currentUser.name,s:aiReviewStars,t:txt,d:new Date().toLocaleDateString('tr-TR')};
+  if(currentUser.token){
+    try{
+      const res=await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add',email:currentUser.email,token:currentUser.token,type:'ai',review:rev})});
+      const data=await res.json();
+      if(!res.ok){if(st){st.textContent=data.error||'Sunucu hatası';st.className='rf-status show err'}return}
+    }catch(e){}
+  }
   const revs=loadAIReviews();
-  revs.unshift({u:currentUser.name,s:aiReviewStars,t:txt,d:new Date().toLocaleDateString('tr-TR')});
+  revs.unshift(rev);
   saveAIReviews(revs);
   sid('aiReviewTxt').value='';aiReviewStars=5;
   const sp=sid('aiStarPick');if(sp)sp.querySelectorAll('span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=5));
-  const st=sid('aiReviewStatus');if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
+  if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
   renderAIReviews();
 }
 
@@ -6693,17 +6743,27 @@ function renderHomeReviews(){
       <div class="home-review-meta">— ${escHtml(r.u)} · ${r.d||'geçen gün'}</div>
     </div>`).join(''):'<div class="home-review-empty">Henüz yorum yok. İlk yorumu sen yap!</div>';
 }
-function submitHomeReview(){
+async function submitHomeReview(){
   if(!currentUser){go('auth');toast('Yorum yapmak için giriş yapmalısın');return}
   const txt=sid('homeReviewTxt')?.value.trim();
-  if(!txt){const st=sid('homeReviewStatus');if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
-  if(txt.length<3){const st=sid('homeReviewStatus');if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const st=sid('homeReviewStatus');
+  if(!txt){if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
+  if(txt.length<3){if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const rev={u:currentUser.name,s:homeReviewStars,t:txt,d:new Date().toLocaleDateString('tr-TR')};
+  if(currentUser.token){
+    try{
+      const res=await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add',email:currentUser.email,token:currentUser.token,type:'home',review:rev})});
+      const data=await res.json();
+      if(!res.ok){if(st){st.textContent=data.error||'Sunucu hatası';st.className='rf-status show err'}return}
+    }catch(e){}
+  }
   const revs=loadHomeReviews();
-  revs.unshift({u:currentUser.name,s:homeReviewStars,t:txt,d:new Date().toLocaleDateString('tr-TR')});
+  revs.unshift(rev);
   saveHomeReviews(revs);
   sid('homeReviewTxt').value='';homeReviewStars=5;
   const sp=sid('homeStarPick');if(sp)sp.querySelectorAll('span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=5));
-  const st=sid('homeReviewStatus');if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
+  if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
   renderHomeReviews();
 }
 
@@ -8250,9 +8310,17 @@ function renderAdminReviews(){
   if(!allRevs.length){sid('adminReviewsList').innerHTML='<p style="color:var(--muted);font-size:.88rem">Henüz yorum yok.</p>';return}
   sid('adminReviewsList').innerHTML=allRevs.map(r=>`<div class="review-flag"><div style="flex:1"><div class="review-flag-book">${escHtml(r.bookTitle)}</div><div style="color:var(--gold);font-size:.82rem">${'★'.repeat(r.s)}${'☆'.repeat(5-r.s)}</div><div class="review-flag-text">${escHtml(r.t)}</div><div class="review-flag-meta">— ${escHtml(r.u)}</div></div><div class="review-flag-actions"><button class="admin-action-btn danger" onclick="adminDeleteReview(${r.bookId},${r.revIdx})">Sil</button></div></div>`).join('');
 }
-function adminDeleteReview(bookId,idx){
+async function adminDeleteReview(bookId,idx){
   const b=books.find(x=>x.id===bookId);if(!b)return;
-  if(idx>-1&&idx<b.reviews.length){b.reviews.splice(idx,1);renderAdminReviews();toast('Yorum silindi.')}
+  if(idx<0||idx>=b.reviews.length)return;
+  b.reviews.splice(idx,1);
+  saveReviews();
+  renderAdminReviews();
+  toast('Yorum silindi.');
+  const creds=typeof admGetCreds==='function'?admGetCreds():{pass:''};
+  if(!creds.pass)return;
+  try{await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_delete',type:'book',bookId:String(bookId),index:idx})});}catch(e){}
 }
 /* ── BAŞVURULAR ── */
 let _appFilter='all';
