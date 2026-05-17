@@ -2403,10 +2403,10 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ai-result{display:grid;grid-template-columns:1fr;gap:1rem;padding:1.5rem 1rem 0;max-width:760px;margin:0 auto;width:100%;box-sizing:border-box;position:relative;z-index:1}
 .ai-result:empty{display:none}
 /* AI Öneri Kartı */
-.ai-rec-card{display:flex;gap:1rem;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1rem;transition:all .3s;cursor:pointer;position:relative;overflow:hidden}
+.ai-rec-card{display:flex;gap:1.25rem;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.1rem 1.1rem 1.1rem 1rem;transition:all .3s;cursor:pointer;position:relative;overflow:hidden;align-items:flex-start}
 .ai-rec-card:hover{box-shadow:0 8px 24px rgba(107,63,160,.15);border-color:#9B59B6;transform:translateX(4px)}
 .ai-rec-score{position:absolute;top:.75rem;right:.75rem;background:linear-gradient(135deg,#6B3FA0,#9B59B6);color:#fff;padding:3px 10px;border-radius:12px;font-size:.65rem;font-weight:700;letter-spacing:.04em}
-.ai-rec-cover{width:80px;flex-shrink:0;border-radius:8px;overflow:hidden;aspect-ratio:2/3;position:relative}
+.ai-rec-cover{width:110px;flex-shrink:0;border-radius:8px;overflow:hidden;aspect-ratio:2/3;position:relative;box-shadow:4px 6px 20px rgba(0,0,0,.18),-1px 0 rgba(0,0,0,.12)}
 .ai-rec-cover svg,.ai-rec-cover img{width:100%;height:100%;object-fit:cover;display:block}
 .ai-rec-info{flex:1;display:flex;flex-direction:column;gap:.3rem;min-width:0}
 .ai-rec-title{font-family:var(--font-serif);font-size:1rem;color:var(--ink);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:4rem}
