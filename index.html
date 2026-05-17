@@ -6413,7 +6413,7 @@ async function selAiMood(el,mood){
     _aiMatches=(data.recommendations||[]).map((rec,i)=>{const b=books.find(x=>x.id===rec.id||String(x.id)===String(rec.id));return b?{...b,_aiReason:rec.reason,_score:scores[i]??82}:null}).filter(Boolean);
   }catch(err){
     load.style.display='none';
-    if(res)res.innerHTML=`<p style="text-align:center;color:var(--muted);padding:2rem">Öneri alınırken bir hata oluştu: ${escHtml(err.message||'Bilinmeyen hata')}</p>`;
+    if(res)res.innerHTML='<p style="text-align:center;color:var(--muted);padding:2rem">Öneri alınırken bir hata oluştu. Lütfen tekrar deneyin.</p>';
     return;
   }
   load.style.display='none';_renderAIResults();
@@ -9159,7 +9159,7 @@ async function sendSiteAI(){
 
     if(!res.ok){
       const e=await res.json().catch(()=>({}));
-      siteAIAppendBubble('ai',e.error?`Hata: ${e.error}`:'Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
+      siteAIAppendBubble('ai','Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
       aiSiteHistory.pop(); return;
     }
 
@@ -9171,7 +9171,7 @@ async function sendSiteAI(){
 
   } catch(err){
     if(thinking.parentNode)thinking.remove();
-    siteAIAppendBubble('ai',err.message&&err.message!=='Failed to fetch'?`Hata: ${err.message}`:'Bağlantı kurulamadı. Sunucu çalışıyor mu?');
+    siteAIAppendBubble('ai','Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
     aiSiteHistory.pop();
   } finally{
     if(btn)btn.disabled=false; input?.focus();
