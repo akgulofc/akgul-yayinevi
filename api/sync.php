@@ -48,6 +48,7 @@ function loadSync($url, $hdrs) {
     if (!isset($data['editorPick']))   $data['editorPick']   = [];
     if (!isset($data['content']))      $data['content']      = [];
     if (!isset($data['specialPages'])) $data['specialPages'] = [];
+    if (!isset($data['applications'])) $data['applications'] = [];
     return [$data, $d['sha'] ?? null];
 }
 
@@ -143,6 +144,25 @@ if ($action === 'join_cekilis') {
     exit;
 }
 
+/* ── add_application: eser başvurusu kaydet (auth gerekmez) ── */
+if ($action === 'add_application') {
+    $app = $body['application'] ?? null;
+    if (!$app || !($app['id'] ?? '')) { http_response_code(400); echo json_encode(['error' => 'Başvuru verisi eksik']); exit; }
+    [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
+    foreach ($sync['applications'] as $existing) {
+        if (($existing['id'] ?? '') === $app['id']) {
+            echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE); exit;
+        }
+    }
+    array_unshift($sync['applications'], $app);
+    if (count($sync['applications']) > 200) $sync['applications'] = array_slice($sync['applications'], 0, 200);
+    if (!saveSync($syncUrl, $ghHdrs, $sync, $sha, "Başvuru: {$app['title']} ({$app['email']})")) {
+        http_response_code(500); echo json_encode(['error' => 'Kaydetme hatası']); exit;
+    }
+    echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 /* ── claim_askida: askıda kitap talep et (token auth) ── */
 if ($action === 'claim_askida') {
     $email  = strtolower(trim($body['email'] ?? ''));
@@ -175,7 +195,7 @@ if (!$isAdmin) { http_response_code(401); echo json_encode(['error' => 'Yetkisiz
 if ($action === 'admin_save') {
     $key   = $body['key']   ?? '';
     $value = $body['value'] ?? null;
-    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages', 'pressProcess'];
+    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages', 'pressProcess', 'applications'];
     if (!in_array($key, $allowed, true)) { http_response_code(400); echo json_encode(['error' => 'Geçersiz key']); exit; }
     [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
     $sync[$key] = $value;

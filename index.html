@@ -5517,6 +5517,12 @@ async function fetchServerData(){
     if(data.pressProcess&&Array.isArray(data.pressProcess)){
       localStorage.setItem('akgulPressProcess',JSON.stringify(data.pressProcess));
     }
+    if(data.applications&&Array.isArray(data.applications)&&data.applications.length){
+      const localApps=JSON.parse(localStorage.getItem('akgulApplications')||'[]');
+      const serverIds=new Set(data.applications.map(a=>a.id));
+      const localOnly=localApps.filter(a=>!serverIds.has(a.id));
+      localStorage.setItem('akgulApplications',JSON.stringify([...data.applications,...localOnly]));
+    }
     if(data.specialPages&&Object.keys(data.specialPages).length){
       const local=JSON.parse(localStorage.getItem('akgulSpecialPages')||'{}');
       Object.assign(local,data.specialPages);
@@ -6576,8 +6582,11 @@ function submitProcess(){
   if(!summary||summary.length<50)ferr('pfSummary','pfSummaryErr','Özet en az 50 karakter olmalıdır');
   if(!valid){document.querySelector('.pf-err:not(:empty)')?.scrollIntoView({behavior:'smooth',block:'center'});return;}
   const apps=JSON.parse(localStorage.getItem('akgulApplications')||'[]');
-  apps.push({name,email,phone:sid('pfPhone')?.value.trim(),title,genre,words,summary,date:new Date().toLocaleDateString('tr-TR'),id:Date.now()});
+  const newApp={name,email,phone:sid('pfPhone')?.value.trim(),title,genre,words,summary,date:new Date().toLocaleDateString('tr-TR'),id:Date.now(),status:'bekliyor'};
+  apps.push(newApp);
   localStorage.setItem('akgulApplications',JSON.stringify(apps));
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'add_application',application:newApp})}).catch(()=>{});
   sid('pfFormWrap').style.display='none';
   const s=sid('pfSuccess');if(s){s.style.display='block';s.scrollIntoView({behavior:'smooth',block:'start'});}
 }
@@ -12002,6 +12011,9 @@ window.adminBsvUpdate = function(id,status){
   const apps=JSON.parse(localStorage.getItem('akgulApplications')||'[]');
   const app=apps.find(a=>a.id===id);if(!app)return;
   app.status=status;localStorage.setItem('akgulApplications',JSON.stringify(apps));
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'applications',value:apps})}).catch(()=>{});
   adminRenderBasvurular();admUpdateNavBadges();
   adminToast(`"${admEsc(app.title)}" ${status==='kabul'?'kabul edildi':'reddedildi'}`);
 };
@@ -12009,7 +12021,11 @@ window.adminBsvDelete = function(id){
   const apps=JSON.parse(localStorage.getItem('akgulApplications')||'[]');
   const app=apps.find(a=>a.id===id);
   if(!app||!confirm(`"${app.title}" başvurusunu silmek istiyor musunuz?`))return;
-  localStorage.setItem('akgulApplications',JSON.stringify(apps.filter(a=>a.id!==id)));
+  const newApps=apps.filter(a=>a.id!==id);
+  localStorage.setItem('akgulApplications',JSON.stringify(newApps));
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'applications',value:newApps})}).catch(()=>{});
   adminRenderBasvurular();admUpdateNavBadges();adminToast('Başvuru silindi','warn');
 };
 window.adminBsvDetail = function(id){
