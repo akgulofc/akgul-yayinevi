@@ -7570,16 +7570,20 @@ function toggleAskidaCart(){
   if(!open){renderAskidaCart();history.pushState({overlay:'askida-cart'},'',location.href);}
 }
 function addAskidaCart(bookId){
-  const b=books.find(x=>x.id===bookId);if(!b)return;
-  const ex=askidaCart.find(c=>c.id===bookId);
-  if(ex)ex.qty++;else askidaCart.push({id:bookId,qty:1});
+  const b=books.find(x=>String(x.id)===String(bookId));if(!b)return;
+  const ex=askidaCart.find(c=>String(c.id)===String(bookId));
+  if(ex)ex.qty++;else askidaCart.push({id:b.id,qty:1});
   saveAskidaCart();updateAskidaBadge();
   toast(`"${b.title}" askıda kitap sepetine eklendi 📚`);
 }
-function removeAskidaCart(id){askidaCart=askidaCart.filter(c=>c.id!==id);saveAskidaCart();updateAskidaBadge();renderAskidaCart()}
-function changeAskidaQty(id,d){const item=askidaCart.find(c=>c.id===id);if(!item)return;item.qty+=d;if(item.qty<=0){removeAskidaCart(id);return}saveAskidaCart();renderAskidaCart()}
+function removeAskidaCart(id){askidaCart=askidaCart.filter(c=>String(c.id)!==String(id));saveAskidaCart();updateAskidaBadge();renderAskidaCart()}
+function changeAskidaQty(id,d){const item=askidaCart.find(c=>String(c.id)===String(id));if(!item)return;item.qty+=d;if(item.qty<=0){removeAskidaCart(id);return}saveAskidaCart();renderAskidaCart()}
 function renderAskidaCart(){
   const body=sid('askCpBody'),foot=sid('askCpFoot'),cnt=sid('askCpCount');if(!body)return;
+  const findBook=id=>books.find(x=>String(x.id)===String(id));
+  // Sepetten artık var olmayan kitapları temizle
+  const stale=askidaCart.filter(c=>!findBook(c.id));
+  if(stale.length){askidaCart=askidaCart.filter(c=>findBook(c.id));saveAskidaCart();updateAskidaBadge();}
   const totalQty=askidaCart.reduce((s,c)=>s+c.qty,0);
   if(cnt)cnt.textContent=totalQty?`(${totalQty} kitap)`:'';
   if(!askidaCart.length){
@@ -7588,7 +7592,7 @@ function renderAskidaCart(){
   }
   const discPct=loadAskidaData().discountRate||10;
   body.innerHTML=askidaCart.map(c=>{
-    const b=books.find(x=>x.id===c.id);if(!b)return'';
+    const b=findBook(c.id);if(!b)return'';
     const cvr=b.cover?`<img src="${escHtml(b.cover)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0" onerror="this.style.display='none'">`:bookCoverSvg(b);
     return`<div class="ask-cp-item">
       <div class="ask-cp-cover" style="background:${b.bg}" onclick="toggleAskidaCart();openModal(${b.id})">${cvr}</div>
@@ -7603,8 +7607,8 @@ function renderAskidaCart(){
       </div>
     </div>`;
   }).join('');
-  const total=askidaCart.reduce((s,c)=>{const b=books.find(x=>x.id===c.id);return s+(b?b.price*c.qty:0)},0);
-  const waLines=askidaCart.map(c=>{const b=books.find(x=>x.id===c.id);return b?`• ${b.title} ×${c.qty} — ₺${b.price*c.qty}`:''}).filter(Boolean).join('\n');
+  const total=askidaCart.reduce((s,c)=>{const b=findBook(c.id);return s+(b?b.price*c.qty:0)},0);
+  const waLines=askidaCart.map(c=>{const b=findBook(c.id);return b?`• ${b.title} ×${c.qty} — ₺${b.price*c.qty}`:''}).filter(Boolean).join('\n');
   const _waMsg=encodeURIComponent(`Merhaba! Askıda kitap bırakmak istiyorum:\n\n${waLines}\n\nToplam: ₺${total}`);
   if(foot)foot.innerHTML=`
     <div class="ask-cp-disc">Bıraktığın her kitap için bir sonraki alışverişinde <strong>%${discPct} indirim</strong> kazanırsın!</div>
