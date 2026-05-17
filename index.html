@@ -4793,6 +4793,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="admin-nav-item" onclick="adminTab(this,'reviews')">
           <svg class="admin-nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Yorumlar
         </div>
+        <div class="admin-nav-item" onclick="adminTab(this,'editorpick');window.renderAdminEditorPick&&window.renderAdminEditorPick()">
+          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Editörün Seçimi
+        </div>
         <div class="admin-nav-item" onclick="adminTab(this,'settings')">
           <svg class="admin-nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Ayarlar
         </div>
@@ -4955,6 +4958,19 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           <div class="admin-page-title">Yorum Yönetimi</div>
           <div class="admin-page-sub">Okuyucu yorumlarını inceleyin ve onaylayın</div>
           <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Tüm Yorumlar</div></div><div class="admin-card-body" id="adminReviewsList"></div></div>
+        </div>
+        <div class="admin-section" id="as-editorpick">
+          <div class="admin-page-title">Editörün Seçimi</div>
+          <div class="admin-page-sub">Anasayfada gösterilecek 1–3 kitap ve editör yorumlarını belirleyin</div>
+          <div class="admin-card">
+            <div class="admin-card-head"><div class="admin-card-title">✦ Seçilen Kitaplar</div></div>
+            <div class="admin-card-body" id="adm-ep-body" style="display:flex;flex-direction:column;gap:1rem">
+              <p style="color:var(--muted);font-size:.82rem">Yükleniyor…</p>
+            </div>
+            <div style="padding:1rem 1.5rem;border-top:1px solid rgba(200,169,110,.1)">
+              <button class="admin-btn" onclick="window.adminSaveEditorPick&&window.adminSaveEditorPick()">✦ Kaydet &amp; Anasayfaya Yansıt</button>
+            </div>
+          </div>
         </div>
         <div class="admin-section" id="as-settings">
           <div class="admin-page-title">Site Ayarları</div>
@@ -5428,6 +5444,69 @@ async function fetchReviews(){
 }
 fetchReviews();
 
+async function fetchServerData(){
+  try{
+    const res=await fetch('/api/sync.php');if(!res.ok)return;
+    const data=await res.json();
+    if(data.settings&&Object.keys(data.settings).length){
+      Object.assign(siteSettings,data.settings);
+      localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
+      if(data.settings.waPhone)WA_PHONE=data.settings.waPhone;
+      if(data.settings.freeShip)FREE_SHIP=data.settings.freeShip;
+      if(data.settings.shipCost)SHIP_COST=data.settings.shipCost;
+    }
+    if(data.editorPick&&data.editorPick.length){
+      localStorage.setItem('akgulEditorPick',JSON.stringify(data.editorPick));
+      renderEditors();
+    }
+    if(data.orders&&data.orders.length){
+      const local=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
+      const ids=new Set(local.map(o=>o.id));
+      const merged=[...local,...data.orders.filter(o=>!ids.has(o.id))];
+      localStorage.setItem('akgul_orders_v2',JSON.stringify(merged));
+    }
+    if(data.cekilis){
+      const local=JSON.parse(localStorage.getItem('akgulCekilis')||'null');
+      if(!local){
+        localStorage.setItem('akgulCekilis',JSON.stringify(data.cekilis));
+        updateCekilisSlide();
+      } else {
+        const serverParts=data.cekilis.participants||[];
+        if(!local.participants)local.participants=[];
+        const localEmails=new Set(local.participants.map(p=>p.email));
+        serverParts.forEach(p=>{if(!localEmails.has(p.email))local.participants.push(p);});
+        localStorage.setItem('akgulCekilis',JSON.stringify(local));
+      }
+    }
+    if(data.askida){
+      const local=JSON.parse(localStorage.getItem('akgulAskida')||'null');
+      if(!local){
+        localStorage.setItem('akgulAskida',JSON.stringify(data.askida));
+      } else if(data.askida.items){
+        data.askida.items.forEach(si=>{
+          const li=(local.items||[]).find(i=>i.id===si.id);
+          if(li&&si.status==='claimed'&&li.status==='available'){
+            li.status='claimed';li.claimedAt=si.claimedAt;
+          }
+        });
+        localStorage.setItem('akgulAskida',JSON.stringify(local));
+      }
+    }
+    if(data.content&&Object.keys(data.content).length){
+      const local=JSON.parse(localStorage.getItem('akgulSiteContent')||'{}');
+      Object.assign(local,data.content);
+      localStorage.setItem('akgulSiteContent',JSON.stringify(local));
+    }
+    if(data.specialPages&&Object.keys(data.specialPages).length){
+      const local=JSON.parse(localStorage.getItem('akgulSpecialPages')||'{}');
+      Object.assign(local,data.specialPages);
+      localStorage.setItem('akgulSpecialPages',JSON.stringify(local));
+      if(typeof applySpecialPagesContent==='function')applySpecialPagesContent();
+    }
+  }catch(e){}
+}
+fetchServerData();
+
 function saveCart(){localStorage.setItem('akgulCart',JSON.stringify(cart))}
 function saveUsers(){localStorage.setItem('akgulUsers',JSON.stringify(users))}
 function saveUser(){localStorage.setItem('akgulUser',JSON.stringify(currentUser))}
@@ -5789,11 +5868,13 @@ renderBooks('all');
 /* ── EDİTÖRÜN SEÇİMİ ── */
 function renderEditors(){
   const ep=sid('epGrid');if(!ep)return;
-  const picks=[
-    {book:books[7],quote:'"Gerilim ve edebiyatın mükemmel uyumu." — Editör'},
-    {book:books[2],quote:'"Anadolu\'nun kadim hikâyesini bugüne taşıyan başyapıt." — Editör'},
-    {book:books[10],quote:'"Kendini keşfetme yolculuğunda eşsiz bir rehber." — Editör'},
-  ].filter(p=>p.book);
+  const stored=JSON.parse(localStorage.getItem('akgulEditorPick')||'null');
+  const rawPicks=stored&&stored.length?stored:[
+    {bookId:books[7]?.id,quote:'"Gerilim ve edebiyatın mükemmel uyumu." — Editör'},
+    {bookId:books[2]?.id,quote:'"Anadolu\'nun kadim hikâyesini bugüne taşıyan başyapıt." — Editör'},
+    {bookId:books[10]?.id,quote:'"Kendini keşfetme yolculuğunda eşsiz bir rehber." — Editör'},
+  ];
+  const picks=rawPicks.map(p=>({book:books.find(b=>String(b.id)===String(p.bookId)),quote:p.quote})).filter(p=>p.book);
   ep.innerHTML=picks.map(p=>`
     <div class="ep-card" onclick="openModal(${p.book.id})">
       <div class="ep-cover" style="position:relative;overflow:hidden;aspect-ratio:${bookAspect(p.book.coverFormat)}">${p.book.cover?`<img src="${escHtml(p.book.cover)}" alt="${escHtml(p.book.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`:bookCoverSvg(p.book)}</div>
@@ -7232,6 +7313,11 @@ function joinCekilis(){
   if(!ck.participants)ck.participants=[];
   ck.participants.push({email:currentUser.email,name:currentUser.name,igUser:igRaw,joinedAt:new Date().toISOString()});
   saveCekilisData(ck);
+  if(currentUser.token){
+    fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'join_cekilis',email:currentUser.email,token:currentUser.token,
+        participant:{email:currentUser.email,name:currentUser.name,igUser:igRaw}})}).catch(()=>{});
+  }
   toast('✦ Çekilişe başarıyla katıldınız! 🎉');
   renderCekilisPage();
 }
@@ -7432,6 +7518,7 @@ function submitGiftOrder(){
   const _giftItems=giftCart.map(g=>{const b=books.find(x=>x.id===g.id);if(!b)return null;const p=b.price+(g.signed?GIFT_FEE:0);return{id:b.id,title:b.title+(g.signed?' (İmzalı)':''),author:b.author,qty:1,price:p,lineTotal:p};}).filter(Boolean);
   const _giftOrder={id:ordId,customer:name,phone,email:'',city,address,note,book:_giftItems.map(i=>i.title).join(', '),items:_giftItems,subtotal,shipping,total,date:today,status:'Hazırlanıyor',orderType:'hediye'};
   const _giftExisting=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');_giftExisting.unshift(_giftOrder);localStorage.setItem('akgul_orders_v2',JSON.stringify(_giftExisting));
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add_order',order:_giftOrder})}).catch(()=>{});
   const conf=sid('gchkConfirm');
   if(conf){
     conf.innerHTML=`<div class="chk-confirm">
@@ -7639,6 +7726,7 @@ function submitOrder(){
   const existing=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
   existing.unshift(order);
   localStorage.setItem('akgul_orders_v2',JSON.stringify(existing));
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add_order',order})}).catch(()=>{});
   const itemLines=items.map(i=>`• ${i.title} ×${i.qty} = ₺${i.lineTotal}`).join('\n');
   const shipLine=shipping===0?'Kargo: Ücretsiz ✓':`Kargo: ₺${shipping}`;
   const waMsg=`Merhaba, sipariş vermek istiyorum.\n\nSipariş No: ${ordId}\n\n${itemLines}\n\n${shipLine}\nGenel Toplam: ₺${total}\n\n— Müşteri Bilgileri —\nAd: ${name}\nTelefon: ${phone}\nŞehir: ${city}\nAdres: ${address}${note?'\nNot: '+note:''}`;
@@ -8760,7 +8848,10 @@ function adminSaveSettings(){
   const settings={waPhone:WA_PHONE,freeShip:FREE_SHIP,shipCost:SHIP_COST};
   Object.assign(siteSettings,settings);
   localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
-  toast('✦ Ayarlar kaydedildi!');
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':adminCredentials.pass},
+    body:JSON.stringify({action:'admin_save',key:'settings',value:settings})}).then(r=>{
+    toast(r.ok?'✦ Ayarlar sunucuya kaydedildi!':'✦ Ayarlar kaydedildi (yerel)');
+  }).catch(()=>toast('✦ Ayarlar kaydedildi!'));
 }
 function loadSettingsForm(){
   const s=siteSettings;
@@ -10468,7 +10559,12 @@ async function admPushToGitHub(){
     else{adminToast('GitHub\'a kaydedilemedi (yerel kaydedildi)','warn');}
   }catch(e){adminToast('Bağlantı hatası – yerel kaydedildi','warn');}
 }
-function admSaveOrders(){ admSave(ADM_STORE_ORDERS,adminOrders); }
+function admSaveOrders(){
+  admSave(ADM_STORE_ORDERS,adminOrders);
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'orders',value:adminOrders})}).catch(()=>{});
+}
 function admSaveBlog(){ admSave(ADM_STORE_BLOG,adminBlogPosts); admSave('akgulSiteBlog',adminBlogPosts); admUpdateNavBadges(); }
 function admSaveAuthors(){
   admSave(ADM_STORE_AUTHORS,adminAuthorsData);
@@ -10493,7 +10589,12 @@ function admSaveNotifs(){ admSave(ADM_STORE_NOTIFS,adminNotifs); }
 
 const ADM_STORE_CONTENT = 'akgulSiteContent';
 let adminSiteContent = admLoad(ADM_STORE_CONTENT,{slides:[{},{},{},{},{},{}],about:{},contact:{},footer:{},seo:{},campaign:{},shipping:{}});
-function admSaveContent(){ admSave(ADM_STORE_CONTENT, adminSiteContent); }
+function admSaveContent(){
+  admSave(ADM_STORE_CONTENT, adminSiteContent);
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'content',value:adminSiteContent})}).catch(()=>{});
+}
 
 /* ── DEFAULTS ── */
 function admDefaultBooks(){return[
@@ -12116,18 +12217,21 @@ window.adminSaveSurzipContent = function(){
     ]
   };
   admSave('akgulSpecialPages',d); applySpecialPagesContent(); adminToast('✦ Sürpriz Kutu güncellendi!');
+  const creds=admGetCreds();fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},body:JSON.stringify({action:'admin_save',key:'specialPages',value:d})}).catch(()=>{});
 };
 
 window.adminSaveHediyeContent = function(){
   const d=admLoad('akgulSpecialPages',{});
   d.hediye={label:agv('adm-hs-label-inp'), title:agv('adm-hs-title-inp'), sub:ag('adm-hs-sub-inp')?.value.trim()};
   admSave('akgulSpecialPages',d); applySpecialPagesContent(); adminToast('✦ Hediye Sepeti güncellendi!');
+  const creds=admGetCreds();fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},body:JSON.stringify({action:'admin_save',key:'specialPages',value:d})}).catch(()=>{});
 };
 
 window.adminSaveAiContent = function(){
   const d=admLoad('akgulSpecialPages',{});
   d.ai={label:agv('adm-ai-label-inp'), title:agv('adm-ai-title-inp'), desc:ag('adm-ai-desc-inp')?.value.trim()};
   admSave('akgulSpecialPages',d); applySpecialPagesContent(); adminToast('✦ AI Öneri sayfası güncellendi!');
+  const creds=admGetCreds();fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},body:JSON.stringify({action:'admin_save',key:'specialPages',value:d})}).catch(()=>{});
 };
 /* ══════════════════════════════════════════
    ASKIDA KİTAP
@@ -12135,7 +12239,12 @@ window.adminSaveAiContent = function(){
 function loadAskidaData(){
   try{return JSON.parse(localStorage.getItem('akgulAskida')||'null')||{items:[],discountRate:10};}catch(e){return{items:[],discountRate:10};}
 }
-function saveAskidaData(d){try{localStorage.setItem('akgulAskida',JSON.stringify(d));}catch(e){}}
+function saveAskidaData(d){
+  try{localStorage.setItem('akgulAskida',JSON.stringify(d));}catch(e){}
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'askida',value:d})}).catch(()=>{});
+}
 
 function askidaGenCode(){
   const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -12430,6 +12539,10 @@ function askidaConfirmAl(itemId){
   if(!item||item.status!=='available')return;
   item.status='claimed'; item.claimedAt=new Date().toLocaleDateString('tr-TR');
   saveAskidaData(d); localStorage.setItem('akgulHasClaimed','1');
+  if(typeof currentUser!=='undefined'&&currentUser?.token){
+    fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'claim_askida',email:currentUser.email,token:currentUser.token,itemId})}).catch(()=>{});
+  }
   const waMsg=encodeURIComponent(`Merhaba! Askıdaki "${item.bookTitle}" kitabını almak istiyorum.`);
   window.open(`https://wa.me/${typeof WA_PHONE!=='undefined'?WA_PHONE:'905366483096'}?text=${waMsg}`,'_blank');
   document.getElementById('ask-al-over')?.remove();
@@ -12599,7 +12712,11 @@ window.adminSaveCekilis = function(){
   ck.requireTagging=ag('adm-ck-tagging')?.checked||false;
   saveCekilisData(ck);
   updateCekilisSlide();
-  adminToast('✦ Çekiliş kaydedildi!');
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'cekilis',value:ck})}).then(r=>{
+    adminToast(r.ok?'✦ Çekiliş kaydedildi ve sunucuya yüklendi!':'✦ Çekiliş kaydedildi (yerel)','success');
+  }).catch(()=>adminToast('✦ Çekiliş kaydedildi!'));
 };
 
 window.adminDeleteCekilis = function(){
@@ -12607,6 +12724,9 @@ window.adminDeleteCekilis = function(){
   localStorage.removeItem(ADM_STORE_CEKILIS);
   updateCekilisSlide();
   adminRenderCekilis();
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'cekilis',value:null})}).catch(()=>{});
   adminToast('Çekiliş silindi.');
 };
 
@@ -12634,6 +12754,9 @@ window.adminRunDraw = async function(){
   saveCekilisData(ck);
   updateCekilisSlide();
   adminRenderCekilis();
+  const _ckCreds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':_ckCreds.pass},
+    body:JSON.stringify({action:'admin_save',key:'cekilis',value:ck})}).catch(()=>{});
   const ann=ag('adm-ck-announce');
   if(ann&&ck.announceText){ann.textContent=ck.announceText;ann.style.display='';}
   if(btn){btn.disabled=false;btn.innerHTML='<i class="ti ti-refresh"></i>Tekrar Çek';}
@@ -12957,6 +13080,45 @@ window.adminSendAIMessage = async function(){
   }finally{
     btn.disabled=false; input.focus();
   }
+};
+
+/* ═══════════════════════════════════════
+   EDİTÖRÜN SEÇİMİ YÖNETİMİ
+═══════════════════════════════════════ */
+window.renderAdminEditorPick = function(){
+  const body=ag('adm-ep-body');if(!body)return;
+  const stored=JSON.parse(localStorage.getItem('akgulEditorPick')||'null')||[{bookId:'',quote:''},{bookId:'',quote:''},{bookId:'',quote:''}];
+  const catalog=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
+  const allBooks=catalog.length?catalog:books;
+  const opts='<option value="">— kitap seç —</option>'+allBooks.map(b=>`<option value="${b.id}">${admEsc(b.title)} — ${admEsc(b.author||'')}</option>`).join('');
+  body.innerHTML=stored.map((p,i)=>`
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:1rem;align-items:start;padding:.5rem 0;border-bottom:1px solid rgba(200,169,110,.08)">
+      <div class="admin-field" style="margin:0">
+        <label style="font-size:.72rem">Kitap ${i+1}</label>
+        <select id="adm-ep-book-${i}" style="width:100%">${opts}</select>
+      </div>
+      <div class="admin-field" style="margin:0">
+        <label style="font-size:.72rem">Editör Yorumu</label>
+        <input type="text" id="adm-ep-quote-${i}" value="${admEsc(p.quote||'')}" placeholder='"Harika bir kitap." — Editör' style="width:100%">
+      </div>
+    </div>`).join('');
+  stored.forEach((p,i)=>{const sel=ag(`adm-ep-book-${i}`);if(sel&&p.bookId)sel.value=String(p.bookId);});
+};
+
+window.adminSaveEditorPick = function(){
+  const picks=[];
+  for(let i=0;i<3;i++){
+    const bookId=ag(`adm-ep-book-${i}`)?.value;
+    const quote=(ag(`adm-ep-quote-${i}`)?.value||'').trim();
+    if(bookId)picks.push({bookId:parseInt(bookId)||bookId,quote:quote||'"Editörün önerisi." — Editör'});
+  }
+  localStorage.setItem('akgulEditorPick',JSON.stringify(picks));
+  if(typeof renderEditors==='function')renderEditors();
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'editorPick',value:picks})}).then(r=>{
+    adminToast(r.ok?'✦ Editör seçimi kaydedildi ve anasayfaya yansıtıldı!':'✦ Seçim kaydedildi (yerel)',r.ok?'success':'warn');
+  }).catch(()=>adminToast('✦ Seçim yerel kaydedildi'));
 };
 
 /* ═══════════════════════════════════════
