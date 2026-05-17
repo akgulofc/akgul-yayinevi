@@ -9183,17 +9183,19 @@ async function sendSiteAI(){
   const btn=sid('aiSiteSendBtn');
   input.value=''; input.style.height='auto'; if(btn)btn.disabled=true;
 
-  siteAIAppendBubble('user',text);
-  aiSiteHistory.push({role:'user',content:text});
-  const thinking=siteAIAppendThinking();
-
+  let thinking=null;
   try{
+    if(!Array.isArray(aiSiteHistory)) aiSiteHistory=[];
+    siteAIAppendBubble('user',text);
+    aiSiteHistory.push({role:'user',content:text});
+    thinking=siteAIAppendThinking();
+
     const res=await fetch(AI_SITE_EP,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({messages:aiSiteHistory, data:getSiteAIData()})
     });
-    if(thinking.parentNode) thinking.remove();
+    if(thinking&&thinking.parentNode) thinking.remove();
 
     if(!res.ok){
       siteAIAppendBubble('ai','Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
@@ -9211,9 +9213,9 @@ async function sendSiteAI(){
     }
 
   } catch(err){
-    if(thinking.parentNode) thinking.remove();
+    if(thinking&&thinking.parentNode) thinking.remove();
     siteAIAppendBubble('ai','Şu an yanıt veremiyorum. Lütfen daha sonra tekrar deneyin.');
-    aiSiteHistory.pop();
+    if(Array.isArray(aiSiteHistory)&&aiSiteHistory.length) aiSiteHistory.pop();
   } finally{
     aiSiteBusy=false;
     if(btn)btn.disabled=false; input?.focus();
