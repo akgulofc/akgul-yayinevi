@@ -7473,7 +7473,15 @@ function renderGiftPage(){
           <label>Alıcı Adı</label>
           <input value="${escHtml(g.recipientName)}" placeholder="Alıcının adı" oninput="giftCart[${idx}].recipientName=this.value;saveGiftCart()">
         </div>
-        <div class="gp-item-field gp-item-note">
+        <div class="gp-item-field">
+          <label>Alıcı Telefonu</label>
+          <input type="tel" value="${escHtml(g.recipientPhone||'')}" placeholder="05XX XXX XX XX" oninput="giftCart[${idx}].recipientPhone=this.value;saveGiftCart()">
+        </div>
+        <div class="gp-item-field gp-item-note" style="grid-column:1/-1">
+          <label>Alıcı Adresi</label>
+          <textarea placeholder="Mahalle, cadde, bina no, daire, ilçe, şehir…" rows="2" oninput="giftCart[${idx}].recipientAddress=this.value;saveGiftCart()">${escHtml(g.recipientAddress||'')}</textarea>
+        </div>
+        <div class="gp-item-field gp-item-note" style="grid-column:1/-1">
           <label>Kişisel Not / İthaf</label>
           <textarea placeholder="İthaf veya kişisel mesajınız…" oninput="giftCart[${idx}].personalNote=this.value;saveGiftCart()">${escHtml(g.personalNote)}</textarea>
         </div>
@@ -7553,13 +7561,15 @@ function submitGiftOrder(){
     const b=books.find(x=>x.id===g.id);if(!b)return'';
     let line=`• ${b.title} → ${g.recipientName||'?'} — ₺${b.price+(g.signed?GIFT_FEE:0)}`;
     if(g.signed)line+=` (İmzalı+Ambalaj)`;
+    if(g.recipientPhone)line+=`\n  Alıcı Tel: ${g.recipientPhone}`;
+    if(g.recipientAddress)line+=`\n  Alıcı Adres: ${g.recipientAddress}`;
     if(g.personalNote)line+=`\n  İthaf: "${g.personalNote}"`;
     return line;
   }).join('\n');
   const shipLine=shipping===0?'Kargo: Ücretsiz ✓':`Kargo: ₺${shipping}`;
   const waMsg=`Merhaba, hediye sepeti siparişi vermek istiyorum.\n\nSipariş No: ${ordId}\n\n${itemLines}\n\n${shipLine}\nGenel Toplam: ₺${total}\n\n— Gönderen Bilgileri —\nAd: ${name}\nTelefon: ${phone}\nŞehir: ${city}\nAdres: ${address}${note?'\nNot: '+note:''}`;
   /* Hediye siparişini sisteme kaydet */
-  const _giftItems=giftCart.map(g=>{const b=books.find(x=>x.id===g.id);if(!b)return null;const p=b.price+(g.signed?GIFT_FEE:0);return{id:b.id,title:b.title+(g.signed?' (İmzalı)':''),author:b.author,qty:1,price:p,lineTotal:p};}).filter(Boolean);
+  const _giftItems=giftCart.map(g=>{const b=books.find(x=>x.id===g.id);if(!b)return null;const p=b.price+(g.signed?GIFT_FEE:0);return{id:b.id,title:b.title+(g.signed?' (İmzalı)':''),author:b.author,qty:1,price:p,lineTotal:p,recipientName:g.recipientName||'',recipientPhone:g.recipientPhone||'',recipientAddress:g.recipientAddress||''};}).filter(Boolean);
   const _giftOrder={id:ordId,customer:name,phone,email:'',city,address,note,book:_giftItems.map(i=>i.title).join(', '),items:_giftItems,subtotal,shipping,total,date:today,status:'Hazırlanıyor',orderType:'hediye'};
   const _giftExisting=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');_giftExisting.unshift(_giftOrder);localStorage.setItem('akgul_orders_v2',JSON.stringify(_giftExisting));
   fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add_order',order:_giftOrder})}).catch(()=>{});
