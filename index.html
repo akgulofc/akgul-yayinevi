@@ -6466,7 +6466,7 @@ function _renderAIResults(){
     const stars='★'.repeat(Math.round(b.rating))+'☆'.repeat(5-Math.round(b.rating));
     return`<div class="ai-rec-card" onclick="openModal(${b.id})">
       <div class="ai-rec-score">${b._score}% uyum</div>
-      <div class="ai-rec-cover">${bookCoverSvg(b)}</div>
+      <div class="ai-rec-cover">${b.cover?`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" style="width:100%;height:100%;object-fit:cover;display:block">`:bookCoverSvg(b)}</div>
       <div class="ai-rec-info">
         <div class="ai-rec-title">${escHtml(b.title)}</div>
         <div class="ai-rec-author">${escHtml(b.author)}</div>
