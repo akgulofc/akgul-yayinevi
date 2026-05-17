@@ -175,7 +175,7 @@ if (!$isAdmin) { http_response_code(401); echo json_encode(['error' => 'Yetkisiz
 if ($action === 'admin_save') {
     $key   = $body['key']   ?? '';
     $value = $body['value'] ?? null;
-    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages'];
+    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages', 'pressProcess'];
     if (!in_array($key, $allowed, true)) { http_response_code(400); echo json_encode(['error' => 'Geçersiz key']); exit; }
     [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
     $sync[$key] = $value;

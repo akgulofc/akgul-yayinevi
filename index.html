@@ -2055,6 +2055,23 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 @keyframes pgIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
 
 /* ── YAZAR PANEL ── */
+.press-book-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
+.press-book-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:.2rem}
+.press-book-meta{font-size:.71rem;color:var(--muted);margin-bottom:.85rem}
+.press-current-badge{display:inline-flex;align-items:center;gap:.3rem;background:rgba(200,169,110,.12);border:1px solid rgba(200,169,110,.28);color:var(--gold);font-size:.67rem;font-weight:700;padding:.22rem .65rem;border-radius:20px;margin-bottom:.9rem;text-transform:uppercase;letter-spacing:.06em}
+.press-timeline{display:flex;flex-direction:column;gap:0;position:relative}
+.press-timeline::before{content:'';position:absolute;left:16px;top:8px;bottom:8px;width:2px;background:var(--border);z-index:0}
+.pt-step{display:flex;align-items:flex-start;gap:.9rem;position:relative;z-index:1;padding-bottom:1.1rem}
+.pt-step:last-child{padding-bottom:0}
+.pt-dot{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;border:2px solid var(--border);background:var(--cream)}
+.pt-dot.done{background:var(--gold);border-color:var(--gold);color:#fff}
+.pt-dot.active{background:#fff;border-color:var(--gold);color:var(--gold);box-shadow:0 0 0 4px rgba(200,169,110,.15)}
+.pt-dot.pending{color:var(--muted)}
+.pt-body{flex:1;padding-top:.35rem}
+.pt-label{font-size:.83rem;font-weight:600;color:var(--ink)}
+.pt-label.muted{color:var(--muted);font-weight:400}
+.pt-date{font-size:.68rem;color:var(--muted);margin-top:.1rem}
+.pt-note-txt{font-size:.72rem;color:var(--muted);margin-top:.18rem;font-style:italic}
 .stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem}
 .stat-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.1rem;text-align:left;position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
 .stat-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.07);transform:translateY(-2px)}
@@ -5495,6 +5512,9 @@ async function fetchServerData(){
       Object.assign(local,data.content);
       localStorage.setItem('akgulSiteContent',JSON.stringify(local));
     }
+    if(data.pressProcess&&Array.isArray(data.pressProcess)){
+      localStorage.setItem('akgulPressProcess',JSON.stringify(data.pressProcess));
+    }
     if(data.specialPages&&Object.keys(data.specialPages).length){
       const local=JSON.parse(localStorage.getItem('akgulSpecialPages')||'{}');
       Object.assign(local,data.specialPages);
@@ -8152,7 +8172,7 @@ function renderProfile(){
       <div class="psb-item"><span class="psb-val">${wlCount}</span><span class="psb-lbl">İstek Listesi</span></div>
     </div>`;
   } else if(statBarEl){statBarEl.innerHTML='';}
-  const tabs=isYazar?['Genel Bakış','Yazılarım','Yeni Yazı','Kitaplarım','Satış Analizi','Siparişlerim','Profil']:['Kütüphanem','İstek Listem','Rozetler','Yorumlarım','Siparişlerim','Askıda Kitap','Profil'];
+  const tabs=isYazar?['Genel Bakış','Yazılarım','Yeni Yazı','Kitaplarım','Satış Analizi','Siparişlerim','Baskı Süreci','Profil']:['Kütüphanem','İstek Listem','Rozetler','Yorumlarım','Siparişlerim','Askıda Kitap','Profil'];
   sid('profileTabs').innerHTML=tabs.map((t,i)=>`<button class="ptab${i===0?' act':''}" onclick="ptab(this,${i})">${t}</button>`).join('');
   if(isYazar)renderYazarContents();else renderOkurContents();
 }
@@ -8259,6 +8279,26 @@ function renderYazarContents(){
     <div class="ptab-content">
       ${(()=>{const _ao=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');const _mo=_ao.filter(o=>(o.customer&&o.customer===currentUser.name)||(o.email&&currentUser.email&&o.email===currentUser.email));const _ob=s=>s==='Tamamlandı'?'done':s==='Kargoda'?'ship':s==='Hazırlanıyor'?'proc':'canc';return _mo.length?_mo.map(o=>`<div class="ord-row"><div class="ord-row-head"><span class="ord-num">${escHtml(o.id)}</span><span class="ord-badge ${_ob(o.status)}">${escHtml(o.status)}</span><span class="ord-date">${escHtml(o.date)}</span><span class="ord-total">₺${o.total}</span></div><div class="ord-items">${escHtml(o.book)}</div></div>`).join(''):`<div class="lib-empty"><div class="lib-empty-icon">📦</div><div class="lib-empty-txt">Henüz siparişiniz yok.<br>Sipariş verdikten sonra burada görünür.</div><button class="btn-gold" style="font-size:.8rem;padding:9px 20px;margin-top:1rem" onclick="go('books')">Kitaplara Göz At</button></div>`;})()}
     </div>
+    <div class="ptab-content">${(()=>{
+      const _pd=JSON.parse(localStorage.getItem('akgulPressProcess')||'[]');
+      const _mp=_pd.filter(p=>p.authorEmail&&currentUser.email&&p.authorEmail.toLowerCase()===currentUser.email.toLowerCase());
+      const _psl=['Yazı Teslimi','Redaksiyon','Sayfa Tasarımı','Kapak Tasarımı','Son Okuma','Baskı Onayı','Baskıda','Tamamlandı'];
+      const _psi=['📄','✏️','📐','🎨','👁','✅','🖨','🎉'];
+      if(!_mp.length)return`<div class="lib-empty"><div class="lib-empty-icon">📋</div><div class="lib-empty-txt">Henüz bir baskı süreci başlatılmadı.<br>Editörünüz süreç başlattığında burada göreceksiniz.</div></div>`;
+      return _mp.map(book=>{
+        const stages=book.stages||_psl.map(()=>({done:false,date:''}));
+        const doneCount=stages.filter(s=>s.done).length;
+        const activeIdx=stages.findIndex(s=>!s.done);
+        const activeLbl=activeIdx>=0?_psl[activeIdx]:'Tamamlandı';
+        return`<div class="press-book-card">
+          <div class="press-book-title">${escHtml(book.bookTitle)}</div>
+          <div class="press-book-meta">${doneCount}/${_psl.length} aşama tamamlandı · ${escHtml(book.createdAt||'')}</div>
+          <div class="press-current-badge">⚡ Şu an: ${activeLbl}</div>
+          <div class="press-timeline">${_psl.map((lbl,i)=>{const st=stages[i]||{};const isDone=st.done;const isActive=!isDone&&i===activeIdx;const cls=isDone?'done':isActive?'active':'pending';return`<div class="pt-step"><div class="pt-dot ${cls}">${isDone?'✓':_psi[i]}</div><div class="pt-body"><div class="pt-label${cls==='pending'?' muted':''}">${lbl}</div>${st.date?`<div class="pt-date">${st.date}</div>`:''}</div></div>`;}).join('')}</div>
+          ${book.note?`<div style="margin-top:1rem;padding:.7rem .9rem;background:rgba(200,169,110,.07);border-left:3px solid rgba(200,169,110,.3);border-radius:0 8px 8px 0;font-size:.77rem;color:var(--muted);line-height:1.5;font-style:italic">"${escHtml(book.note)}"</div>`:''}
+        </div>`;
+      }).join('');
+    })()}</div>
     <div class="ptab-content">
       <div class="profile-preview-card">
         ${previewPhoto}
@@ -9682,6 +9722,7 @@ async function sendAIW(){
         <div class="sb-section">Katalog</div>
         <div class="nav-item" data-page="p-books" onclick="adminNav(this)"><i class="ti ti-books"></i>Kitaplar<span class="nav-badge nb-gold" id="adm-navBookCount">14</span></div>
         <div class="nav-item" data-page="p-authors" onclick="adminNav(this)"><i class="ti ti-pencil"></i>Yazarlar</div>
+        <div class="nav-item" data-page="p-press" onclick="adminNav(this)"><i class="ti ti-printer"></i>Baskı Süreçleri</div>
 
         <div class="sb-section">Topluluk</div>
         <div class="nav-item" data-page="p-orders" onclick="adminNav(this)"><i class="ti ti-shopping-cart"></i>Siparişler<span class="nav-badge nb-red" id="adm-navOrderCount">2</span></div>
@@ -10360,6 +10401,35 @@ async function sendAIW(){
           </div>
         </div>
 
+        <!-- ── BASKI SÜREÇLERİ ──────────────── -->
+        <div class="page" id="adm-p-press">
+          <div class="card">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-printer"></i>Baskı Öncesi Süreçler</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="admPressShowAdd()"><i class="ti ti-plus" style="font-size:13px"></i>Yeni Kitap Ekle</button>
+              </div>
+            </div>
+            <div id="adm-press-add-form" style="display:none;padding:1rem 1.25rem;border-bottom:1px solid var(--brd2);background:var(--bg2)">
+              <div class="g2" style="margin-bottom:.75rem">
+                <div class="field"><label>Kitap Adı</label><input type="text" id="adm-press-title" placeholder="Kitabın adı"></div>
+                <div class="field"><label>Yazar E-posta</label><input type="text" id="adm-press-email" placeholder="yazar@email.com"></div>
+              </div>
+              <div class="g2" style="margin-bottom:.75rem">
+                <div class="field"><label>Yazar Adı</label><input type="text" id="adm-press-author" placeholder="Yazar Adı Soyadı"></div>
+                <div class="field"><label>Editör Notu (isteğe bağlı)</label><input type="text" id="adm-press-note-new" placeholder="Yazara görünecek not…"></div>
+              </div>
+              <div style="display:flex;gap:.5rem">
+                <button class="card-btn primary" onclick="window.admPressAdd&&window.admPressAdd()"><i class="ti ti-check" style="font-size:12px"></i>Ekle</button>
+                <button class="card-btn" onclick="admPressHideAdd()">İptal</button>
+              </div>
+            </div>
+            <div id="adm-press-list" style="min-height:80px">
+              <p style="text-align:center;color:var(--txt3);font-size:.82rem;padding:2rem">Yükleniyor…</p>
+            </div>
+          </div>
+        </div>
+
         <!-- ── HAKKIMIZDA SAYFASI ────────────── -->
         <div class="page" id="adm-p-about">
           <div class="card" style="margin-bottom:1.25rem">
@@ -10842,6 +10912,7 @@ const ADM_PAGE_META = {
   'p-reviews':    {title:'Yorumlar',          bread:'Moderasyon'},
   'p-basvurular': {title:'Eser Başvuruları',  bread:'Topluluk'},
   'p-cekilis':    {title:'Çekiliş Robotu',    bread:'İçerik'},
+  'p-press':      {title:'Baskı Öncesi Süreçler', bread:'Katalog'},
   'p-content':    {title:'Anasayfa İçeriği',  bread:'İçerik'},
   'p-about':      {title:'Hakkımızda',        bread:'Sayfalar'},
   'p-iletisim':   {title:'İletişim & Footer', bread:'Sayfalar'},
@@ -10866,6 +10937,7 @@ window.adminNav = function(el){
   if(pid==='p-books')    adminRenderBooks();
   if(pid==='p-analytics')adminRenderAnalytics();
   if(pid==='p-authors')  adminRenderAuthorsTable();
+  if(pid==='p-press')    window.adminRenderPressProcess&&window.adminRenderPressProcess();
   if(pid==='p-orders')   adminRenderOrders();
   if(pid==='p-sales')    adminRenderSales();
   if(pid==='p-users')    adminRenderUsers();
@@ -13208,6 +13280,70 @@ window.adminSendAIMessage = async function(){
     btn.disabled=false; input.focus();
   }
 };
+
+/* ── BASKI SÜREÇLERİ ── */
+const ADM_PRESS_STAGES=['Yazı Teslimi','Redaksiyon','Sayfa Tasarımı','Kapak Tasarımı','Son Okuma','Baskı Onayı','Baskıda','Tamamlandı'];
+function admLoadPress(){return JSON.parse(localStorage.getItem('akgulPressProcess')||'[]');}
+function admSavePress(data){
+  localStorage.setItem('akgulPressProcess',JSON.stringify(data));
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'pressProcess',value:data})
+  }).then(r=>adminToast(r.ok?'✓ Baskı süreci kaydedildi':'Yerel kaydedildi','success')).catch(()=>adminToast('Yerel kaydedildi'));
+}
+window.adminRenderPressProcess=function(){
+  const list=ag('adm-press-list');if(!list)return;
+  const data=admLoadPress();
+  if(!data.length){list.innerHTML='<p style="text-align:center;color:var(--txt3);font-size:.82rem;padding:2rem 1rem">Henüz süreç eklenmedi. "Yeni Kitap Ekle" ile başlayın.</p>';return;}
+  list.innerHTML=data.map((book,bi)=>`
+    <div style="padding:1.25rem;border-bottom:1px solid var(--brd2)">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:.85rem">
+        <div>
+          <div style="font-weight:700;color:var(--ink);font-size:.92rem">${admEsc(book.bookTitle)}</div>
+          <div style="font-size:.72rem;color:var(--txt3);margin-top:.15rem">${admEsc(book.authorName||'')} · ${admEsc(book.authorEmail)}</div>
+          <div style="font-size:.68rem;color:var(--txt3);margin-top:.1rem">Eklendi: ${admEsc(book.createdAt||'')}</div>
+        </div>
+        <button onclick="window.admPressDelete&&window.admPressDelete(${bi})" style="border:1px solid #e0b0b0;background:#fff5f5;color:#c0392b;border-radius:6px;padding:.3rem .6rem;cursor:pointer;font-size:.72rem;white-space:nowrap;flex-shrink:0"><i class="ti ti-trash" style="font-size:11px"></i> Sil</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.45rem;margin-bottom:.85rem">
+        ${ADM_PRESS_STAGES.map((lbl,si)=>{const st=(book.stages||[])[si]||{};return`<label style="display:flex;align-items:center;gap:.4rem;cursor:pointer;padding:.38rem .6rem;border-radius:6px;border:1px solid ${st.done?'var(--gold)':'var(--brd2)'};background:${st.done?'rgba(200,169,110,.09)':'transparent'};font-size:.73rem;color:${st.done?'var(--ink)':'var(--txt3)'}"><input type="checkbox" ${st.done?'checked':''} onchange="window.admPressToggle&&window.admPressToggle(${bi},${si},this.checked)" style="accent-color:var(--gold);flex-shrink:0">${admEsc(lbl)}</label>`;}).join('')}
+      </div>
+      <div style="display:flex;align-items:center;gap:.5rem">
+        <input type="text" placeholder="Editör notu (yazara görünür)…" value="${admEsc(book.note||'')}" id="adm-press-note-${bi}" style="flex:1;padding:.35rem .7rem;border:1px solid var(--brd2);border-radius:6px;font-size:.75rem;background:#fff">
+        <button onclick="window.admPressUpdateNote&&window.admPressUpdateNote(${bi})" style="border:1px solid var(--gold);background:var(--gold);color:#fff;border-radius:6px;padding:.35rem .75rem;cursor:pointer;font-size:.72rem;white-space:nowrap">Notu Kaydet</button>
+      </div>
+    </div>`).join('');
+};
+window.admPressToggle=function(bi,si,checked){
+  const data=admLoadPress();if(!data[bi])return;
+  if(!data[bi].stages)data[bi].stages=ADM_PRESS_STAGES.map(()=>({done:false,date:''}));
+  data[bi].stages[si]={done:checked,date:checked?new Date().toLocaleDateString('tr-TR'):''};
+  admSavePress(data);window.adminRenderPressProcess();
+};
+window.admPressUpdateNote=function(bi){
+  const data=admLoadPress();if(!data[bi])return;
+  data[bi].note=(ag(`adm-press-note-${bi}`)?.value||'').trim();
+  admSavePress(data);adminToast('Not güncellendi','success');
+};
+window.admPressDelete=function(bi){
+  if(!confirm('Bu baskı süreci kaydı silinecek?'))return;
+  const data=admLoadPress();data.splice(bi,1);admSavePress(data);window.adminRenderPressProcess();
+};
+window.admPressAdd=function(){
+  const title=(ag('adm-press-title')?.value||'').trim();
+  const email=(ag('adm-press-email')?.value||'').trim().toLowerCase();
+  const author=(ag('adm-press-author')?.value||'').trim();
+  const note=(ag('adm-press-note-new')?.value||'').trim();
+  if(!title||!email){adminToast('Kitap adı ve yazar e-postası zorunlu','warn');return;}
+  const data=admLoadPress();
+  const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let id='PP-';for(let i=0;i<4;i++)id+=chars[Math.floor(Math.random()*chars.length)];
+  data.push({id,bookTitle:title,authorEmail:email,authorName:author,note,createdAt:new Date().toLocaleDateString('tr-TR'),stages:ADM_PRESS_STAGES.map(()=>({done:false,date:''}))});
+  admSavePress(data);admPressHideAdd();
+  ['adm-press-title','adm-press-email','adm-press-author','adm-press-note-new'].forEach(id=>{const el=ag(id);if(el)el.value='';});
+  window.adminRenderPressProcess();
+};
+function admPressShowAdd(){const f=ag('adm-press-add-form');if(f)f.style.display='block';}
+function admPressHideAdd(){const f=ag('adm-press-add-form');if(f)f.style.display='none';}
 
 /* ═══════════════════════════════════════
    EDİTÖRÜN SEÇİMİ YÖNETİMİ
