@@ -4794,9 +4794,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="admin-nav-item" onclick="adminTab(this,'reviews')">
           <svg class="admin-nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Yorumlar
         </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'editorpick');window.renderAdminEditorPick&&window.renderAdminEditorPick()">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>Editörün Seçimi
-        </div>
         <div class="admin-nav-item" onclick="adminTab(this,'settings')">
           <svg class="admin-nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Ayarlar
         </div>
@@ -4959,19 +4956,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           <div class="admin-page-title">Yorum Yönetimi</div>
           <div class="admin-page-sub">Okuyucu yorumlarını inceleyin ve onaylayın</div>
           <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Tüm Yorumlar</div></div><div class="admin-card-body" id="adminReviewsList"></div></div>
-        </div>
-        <div class="admin-section" id="as-editorpick">
-          <div class="admin-page-title">Editörün Seçimi</div>
-          <div class="admin-page-sub">Anasayfada gösterilecek 1–3 kitap ve editör yorumlarını belirleyin</div>
-          <div class="admin-card">
-            <div class="admin-card-head"><div class="admin-card-title">✦ Seçilen Kitaplar</div></div>
-            <div class="admin-card-body" id="adm-ep-body" style="display:flex;flex-direction:column;gap:1rem">
-              <p style="color:var(--muted);font-size:.82rem">Yükleniyor…</p>
-            </div>
-            <div style="padding:1rem 1.5rem;border-top:1px solid rgba(200,169,110,.1)">
-              <button class="admin-btn" onclick="window.adminSaveEditorPick&&window.adminSaveEditorPick()">✦ Kaydet &amp; Anasayfaya Yansıt</button>
-            </div>
-          </div>
         </div>
         <div class="admin-section" id="as-settings">
           <div class="admin-page-title">Site Ayarları</div>
@@ -10294,6 +10278,18 @@ async function sendAIW(){
               <div class="field"><label>Anahtar Kelimeler</label><input type="text" id="adm-seo-keys-inp" placeholder="akgül yayınevi, türk edebiyatı, kitap"></div>
             </div>
           </div>
+          <!-- Editörün Seçimi -->
+          <div class="card" style="margin-bottom:1.25rem">
+            <div class="card-head">
+              <span class="card-title"><i class="ti ti-star"></i>Editörün Seçimi</span>
+              <div class="card-acts">
+                <button class="card-btn primary" onclick="window.adminSaveEditorPick&&window.adminSaveEditorPick()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet &amp; Yansıt</button>
+              </div>
+            </div>
+            <div class="card-body" id="adm-ep-body">
+              <p style="color:var(--txt3);font-size:.82rem">Yükleniyor…</p>
+            </div>
+          </div>
           <div class="card" style="margin-bottom:1.25rem">
             <div class="card-head">
               <span class="card-title"><i class="ti ti-truck"></i>Kargo & Ödeme</span>
@@ -12057,6 +12053,7 @@ function adminRenderContent(){
   fv('adm-slider-dur',(ss.duration||8000)/1000);
   const ap=ag('adm-slider-autoplay'); if(ap)ap.checked=ss.autoplay!==false;
   admRenderSlideList();
+  window.renderAdminEditorPick&&window.renderAdminEditorPick();
   const seo=c.seo||{}; fv('adm-seo-title-inp',seo.title); fv('adm-seo-desc-inp',seo.description); fv('adm-seo-keys-inp',seo.keywords);
   const sh=c.shipping||{}, siteS=admLoad('akgulSettings',{});
   fv('adm-ship-free-inp',sh.freeShip||siteS.freeShip); fv('adm-ship-cost-inp',sh.shipCost||siteS.shipCost); fv('adm-ship-wa-inp',sh.whatsapp||siteS.waPhone);
