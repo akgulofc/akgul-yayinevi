@@ -9295,6 +9295,15 @@ function toggleAIW(){
     setTimeout(()=>sid('aiInputW')?.focus(), 290);
   }
 }
+document.addEventListener('click', function(e){
+  if(!aiOpenW) return;
+  const panel = sid('aiPanelW');
+  const fab   = sid('aiFabW');
+  if(panel && !panel.contains(e.target) && fab && !fab.contains(e.target)){
+    aiOpenW = false;
+    panel.classList.remove('open');
+  }
+});
 
 function clearAIW(){
   aiHistoryW = [];
