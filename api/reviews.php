@@ -38,10 +38,13 @@ function loadReviewsFile($url, $hdrs) {
     $d    = json_decode($r['body'], true);
     $data = json_decode(base64_decode(str_replace("\n", '', $d['content'] ?? '')), true);
     if (!is_array($data)) $data = [];
-    if (!isset($data['books'])) $data['books'] = new stdClass();
-    if (!isset($data['box']))   $data['box']   = [];
-    if (!isset($data['ai']))    $data['ai']    = [];
-    if (!isset($data['home']))  $data['home']  = [];
+    if (!isset($data['books']))   $data['books']   = new stdClass();
+    if (!isset($data['box']))     $data['box']     = [];
+    if (!isset($data['ai']))      $data['ai']      = [];
+    if (!isset($data['home']))    $data['home']    = [];
+    if (!isset($data['gift']))    $data['gift']    = [];
+    if (!isset($data['askida']))  $data['askida']  = [];
+    if (!isset($data['cekilis'])) $data['cekilis'] = [];
     return [$data, $d['sha'] ?? null];
 }
 function saveReviewsFile($url, $hdrs, $data, $sha, $msg) {
@@ -87,7 +90,7 @@ if ($action === 'add') {
     if (!$email || !$token || !$type || !$review) {
         http_response_code(400); echo json_encode(['error' => 'Eksik parametre']); exit;
     }
-    if (!in_array($type, ['book', 'box', 'ai', 'home'], true)) {
+    if (!in_array($type, ['book', 'box', 'ai', 'home', 'gift', 'askida', 'cekilis'], true)) {
         http_response_code(400); echo json_encode(['error' => 'Geçersiz type']); exit;
     }
     if (!verifyToken($email, $token, $ADMIN_SECRET)) {
@@ -156,7 +159,7 @@ if ($action === 'admin_delete') {
             array_splice($reviews['books'][$bookId], $index, 1);
             if (empty($reviews['books'][$bookId])) unset($reviews['books'][$bookId]);
         }
-    } elseif (in_array($type, ['box', 'ai', 'home'], true)) {
+    } elseif (in_array($type, ['box', 'ai', 'home', 'gift', 'askida', 'cekilis'], true)) {
         if (isset($reviews[$type][$index])) array_splice($reviews[$type], $index, 1);
     }
 

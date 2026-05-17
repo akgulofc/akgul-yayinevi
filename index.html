@@ -1778,6 +1778,43 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ask-cp-qty span{font-size:.82rem;color:var(--cream);min-width:18px;text-align:center}
 .ask-cp-rm{background:none;border:none;color:rgba(245,239,229,.18);cursor:pointer;font-size:1.15rem;padding:.1rem;line-height:1;transition:color .15s;flex-shrink:0}
 .ask-cp-rm:hover{color:#ff6b6b}
+/* ── İSTEK LİSTESİ PANELİ ── */
+.wl-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:700;display:none;opacity:0;transition:opacity .25s}
+.wl-panel-overlay.on{display:block;opacity:1}
+.wl-panel{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:92vw;background:var(--white);z-index:710;transform:translateX(110%);transition:transform .3s var(--ease);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.15)}
+.wl-panel.on{transform:translateX(0)}
+.wl-ph{padding:1.4rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.wl-pb{flex:1;overflow-y:auto;padding:1.1rem 1.25rem}
+.wl-pf{padding:1.1rem 1.5rem;border-top:1px solid var(--border);background:var(--cream)}
+.wl-pi{display:flex;gap:.85rem;padding:.75rem 0;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s}
+.wl-pi:last-child{border-bottom:none}
+.wl-pi:hover .wl-pi-title{color:var(--gold)}
+.wl-pi-cover{width:42px;aspect-ratio:2/3;border-radius:4px;flex-shrink:0;position:relative;overflow:hidden;box-shadow:2px 3px 12px rgba(0,0,0,.22)}
+.wl-pi-info{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.16rem}
+.wl-pi-title{font-family:var(--font-serif);font-size:.86rem;font-weight:700;color:var(--ink);transition:color .15s;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wl-pi-author{font-size:.68rem;color:var(--muted)}
+.wl-pi-price{font-size:.82rem;font-weight:700;color:var(--ink)}
+.wl-pi-rm{background:none;border:none;color:var(--border);cursor:pointer;font-size:1.15rem;padding:.2rem;line-height:1;transition:color .15s;flex-shrink:0;align-self:flex-start;margin-top:2px}
+.wl-pi-rm:hover{color:#E74C3C}
+/* ── HEDİYE SEPETİ PANELİ ── */
+.gp-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:700;display:none;opacity:0;transition:opacity .25s}
+.gp-panel-overlay.on{display:block;opacity:1}
+.gp-panel{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:92vw;background:var(--white);z-index:710;transform:translateX(110%);transition:transform .3s var(--ease);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.15)}
+.gp-panel.on{transform:translateX(0)}
+.gp-ph{padding:1.4rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.gp-pb{flex:1;overflow-y:auto;padding:1.1rem 1.25rem}
+.gp-pf{padding:1.1rem 1.5rem;border-top:1px solid var(--border);background:var(--cream)}
+.gp-pi{display:flex;gap:.85rem;padding:.75rem 0;border-bottom:1px solid var(--border)}
+.gp-pi:last-child{border-bottom:none}
+.gp-pi-cover{width:42px;aspect-ratio:2/3;border-radius:4px;flex-shrink:0;position:relative;overflow:hidden;box-shadow:2px 3px 12px rgba(0,0,0,.22)}
+/* ── ASKIDA DETAY PANELİ ── */
+.ask-dp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:700;display:none;opacity:0;transition:opacity .25s}
+.ask-dp-overlay.on{display:block;opacity:1}
+.ask-dp{position:fixed;top:0;right:0;bottom:0;width:380px;max-width:92vw;background:#0D0C09;border-left:1px solid rgba(200,169,110,.12);z-index:710;transform:translateX(110%);transition:transform .3s var(--ease);display:flex;flex-direction:column;box-shadow:-8px 0 48px rgba(0,0,0,.55)}
+.ask-dp.on{transform:translateX(0)}
+.ask-dp-head{padding:1.4rem 1.5rem;border-bottom:1px solid rgba(200,169,110,.12);display:flex;align-items:center;justify-content:space-between}
+.ask-dp-body{flex:1;overflow-y:auto;padding:1.5rem}
+.ask-dp-foot{padding:1.25rem 1.5rem;border-top:1px solid rgba(200,169,110,.12);display:flex;gap:.75rem}
 .ask-cp-disc{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.13);border-radius:7px;padding:.65rem .85rem;margin-bottom:.75rem;font-size:.73rem;color:rgba(245,239,229,.42);text-align:center;line-height:1.55}
 .ask-cp-disc strong{color:var(--gold)}
 .ask-cp-sum{display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem}
@@ -3644,11 +3681,11 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <button class="nav-icon-btn" onclick="toggleSearch()" aria-label="Ara">
       <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
-    <button class="nav-icon-btn" onclick="go('wishlist')" aria-label="İstek Listesi" title="İstek Listesi">
+    <button class="nav-icon-btn" onclick="toggleWishlistPanel()" aria-label="İstek Listesi" title="İstek Listesi">
       <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       <span class="wl-badge" id="wlBadge">0</span>
     </button>
-    <button class="nav-icon-btn" onclick="go('hediye-sepeti')" aria-label="Hediye Sepeti" title="Hediye Sepeti">
+    <button class="nav-icon-btn" onclick="toggleGiftPanel()" aria-label="Hediye Sepeti" title="Hediye Sepeti">
       <svg viewBox="0 0 24 24"><path d="M20 12v10H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
       <span class="gift-badge" id="giftBadge">0</span>
     </button>
@@ -4082,6 +4119,12 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div id="gpContent">
         <!-- JS tarafından doldurulur -->
       </div>
+      <div style="padding:3rem 0 2.5rem;max-width:680px;margin:0 auto">
+        <div class="sec-label" style="text-align:center;margin-bottom:.4rem">— Deneyimini Paylaş</div>
+        <h3 class="sec-title" style="text-align:center;margin-bottom:2rem">Hediye <em>Deneyimin</em></h3>
+        <div id="giftReviewForm"></div>
+        <div class="home-review-list" id="giftReviewList" style="margin-top:1.5rem"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -4152,6 +4195,13 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       </div>
       <button class="ask-cta-btn" onclick="askidaOpenBirak()">Kitap Bırak →</button>
     </div>
+  </div>
+
+  <div style="background:rgba(0,0,0,.35);padding:3rem 1.5rem 2.5rem;text-align:center">
+    <div class="sec-label" style="color:var(--gold);margin-bottom:.4rem">— Topluluktan</div>
+    <h3 class="sec-title" style="color:var(--cream);margin-bottom:2rem">Bu Güzel <em>Girişim</em> Hakkında</h3>
+    <div id="askidaReviewForm" style="max-width:600px;margin:0 auto 1.5rem"></div>
+    <div id="askidaReviewList" style="max-width:600px;margin:0 auto"></div>
   </div>
 
 </div>
@@ -4236,6 +4286,12 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <p class="ck-sub">Robotumuz her ay rastgele birini seçiyor — bu sefer sen olabilirsin!</p>
       </div>
       <div id="ckContent"><!-- JS doldurur --></div>
+      <div style="max-width:680px;margin:3rem auto 0;padding:0 1rem 3rem">
+        <div class="sec-label" style="text-align:center;margin-bottom:.4rem;color:rgba(155,89,182,.8)">— Katılımcılardan</div>
+        <h3 class="sec-title" style="text-align:center;margin-bottom:2rem;color:var(--cream)">Çekiliş <em>Deneyimleri</em></h3>
+        <div id="cekilisReviewForm"></div>
+        <div id="cekilisReviewList" style="margin-top:1.5rem"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -5199,6 +5255,33 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="ask-cp-body" id="askCpBody"></div>
   <div class="ask-cp-foot" id="askCpFoot"></div>
 </div>
+<div class="ask-dp-overlay" id="askDpOverlay" onclick="closeAskidaDetail()"></div>
+<div class="ask-dp" id="askDetailPanel">
+  <div class="ask-dp-head">
+    <h3 style="font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--cream);margin:0">Askıda Kitap</h3>
+    <button style="background:none;border:none;color:rgba(245,239,229,.32);font-size:1.4rem;cursor:pointer;padding:.1rem .4rem;line-height:1;transition:color .15s" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='rgba(245,239,229,.32)'" onclick="closeAskidaDetail()">×</button>
+  </div>
+  <div class="ask-dp-body" id="askDpBody"></div>
+  <div class="ask-dp-foot" id="askDpFoot"></div>
+</div>
+<div class="wl-panel-overlay" id="wlPanelOverlay" onclick="toggleWishlistPanel()"></div>
+<div class="wl-panel" id="wlPanel">
+  <div class="wl-ph">
+    <h3 style="font-family:var(--font-serif);font-size:1.15rem;font-weight:700;margin:0">İstek <em>Listem</em> <span id="wlPanelCount" style="font-size:.72rem;font-weight:400;color:var(--muted)"></span></h3>
+    <button style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1;padding:.2rem .3rem" onclick="toggleWishlistPanel()">×</button>
+  </div>
+  <div class="wl-pb" id="wlPanelBody"></div>
+  <div class="wl-pf" id="wlPanelFoot"></div>
+</div>
+<div class="gp-panel-overlay" id="gpPanelOverlay" onclick="toggleGiftPanel()"></div>
+<div class="gp-panel" id="gpPanel">
+  <div class="gp-ph">
+    <h3 style="font-family:var(--font-serif);font-size:1.15rem;font-weight:700;margin:0">Hediye <em>Sepetim</em> <span id="gpPanelCount" style="font-size:.72rem;font-weight:400;color:var(--muted)"></span></h3>
+    <button style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:var(--muted);line-height:1;padding:.2rem .3rem" onclick="toggleGiftPanel()">×</button>
+  </div>
+  <div class="gp-pb" id="gpPanelBody"></div>
+  <div class="gp-pf" id="gpPanelFoot"></div>
+</div>
 <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-panel" id="cartPanel">
   <div class="cp-head"><h3>Sepetim <span id="cpCount" style="font-size:.75rem;font-weight:400;color:var(--muted)"></span></h3><button class="cp-close" onclick="toggleCart()">×</button></div>
@@ -5338,6 +5421,9 @@ async function fetchReviews(){
     if(data.box&&data.box.length)localStorage.setItem('akgulBoxReviews',JSON.stringify(data.box));
     if(data.ai&&data.ai.length)localStorage.setItem('akgulAIReviews',JSON.stringify(data.ai));
     if(data.home&&data.home.length)localStorage.setItem('akgulHomeReviews',JSON.stringify(data.home));
+    if(data.gift&&data.gift.length)localStorage.setItem('akgulGiftReviews',JSON.stringify(data.gift));
+    if(data.askida&&data.askida.length)localStorage.setItem('akgulAskidaReviews',JSON.stringify(data.askida));
+    if(data.cekilis&&data.cekilis.length)localStorage.setItem('akgulCekilisReviews',JSON.stringify(data.cekilis));
   }catch(e){}
 }
 fetchReviews();
@@ -5396,7 +5482,7 @@ function go(page){
     document.querySelectorAll('.af-fbtn').forEach((b,i)=>b.classList.toggle('act',i===0));
     renderAuthorFeatured();renderAuthors();
   }
-  if(page==='askida-kitap') renderAskida();
+  if(page==='askida-kitap'){renderAskida();renderAskidaReviewSection();}
   if(page==='blog'){
     gazeteCat='all';
     document.querySelectorAll('.gz-fbtn').forEach((b,i)=>b.classList.toggle('act',i===0));
@@ -5410,8 +5496,8 @@ function go(page){
     document.querySelectorAll('#boxPackages .box-pkg').forEach((b,i)=>b.classList.toggle('sel',i===1));
     updateBoxFlow(1);renderBoxSection();initBoxCounter();
   }
-  if(page==='hediye-sepeti'){renderGiftPage();}
-  if(page==='cekilis'){renderCekilisPage();}
+  if(page==='hediye-sepeti'){renderGiftPage();renderGiftReviewSection();}
+  if(page==='cekilis'){renderCekilisPage();renderCekilisReviewSection();}
   if(page==='about')setTimeout(initAboutCounters,100);
   if(page==='ai-oneri')initAIOneri();
   if(page==='auth'){
@@ -6765,6 +6851,247 @@ async function submitHomeReview(){
   const sp=sid('homeStarPick');if(sp)sp.querySelectorAll('span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=5));
   if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
   renderHomeReviews();
+}
+
+/* ── İSTEK LİSTESİ PANELİ ── */
+function toggleWishlistPanel(){
+  const p=sid('wlPanel'),o=sid('wlPanelOverlay');if(!p||!o)return;
+  const open=p.classList.contains('on');
+  if(!open){
+    if(sid('cartPanel')?.classList.contains('on'))toggleCart();
+    if(sid('askCartPanel')?.classList.contains('on'))toggleAskidaCart();
+    if(sid('gpPanel')?.classList.contains('on'))toggleGiftPanel();
+    if(sid('askDetailPanel')?.classList.contains('on'))closeAskidaDetail();
+  }
+  p.classList.toggle('on');o.classList.toggle('on');
+  document.body.style.overflow=open?'':'hidden';
+  if(!open){renderWishlistPanel();history.pushState({overlay:'wl-panel'},'',location.href);}
+}
+function renderWishlistPanel(){
+  const wl=getWishlist();
+  const wlBooks=books.filter(b=>wl.includes(b.id));
+  const body=sid('wlPanelBody'),foot=sid('wlPanelFoot'),cnt=sid('wlPanelCount');
+  if(cnt)cnt.textContent=wlBooks.length?`(${wlBooks.length})`:'';
+  if(!body)return;
+  if(!wlBooks.length){
+    body.innerHTML=`<div style="text-align:center;padding:3rem 1rem;color:var(--muted)"><div style="font-size:2rem;margin-bottom:.75rem">♡</div><div style="font-family:var(--font-serif);font-size:.95rem;color:var(--ink);margin-bottom:.4rem">İstek listeniz boş</div><div style="font-size:.8rem;line-height:1.6;margin-bottom:1.1rem">Kitap kartlarındaki ♡ ile listeye ekleyebilirsiniz</div><button onclick="toggleWishlistPanel();go('home')" class="btn-gold" style="font-size:.8rem;padding:9px 20px">Kitaplara Göz At</button></div>`;
+    if(foot)foot.innerHTML='';return;
+  }
+  body.innerHTML=wlBooks.map(b=>{
+    const inCart=cart.some(c=>c.id===b.id);
+    const coverHtml=b.cover?`<img src="${escHtml(b.cover)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`:bookCoverSvg(b);
+    return`<div class="wl-pi" onclick="toggleWishlistPanel();openModal(${b.id})">
+      <div class="wl-pi-cover" style="background:${b.bg||'#1a1a1a'}">${coverHtml}</div>
+      <div class="wl-pi-info">
+        <div class="wl-pi-title">${escHtml(b.title)}</div>
+        <div class="wl-pi-author">${escHtml(b.author)}</div>
+        <div class="wl-pi-price">₺${b.price}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.45rem;flex-shrink:0;margin-top:2px">
+        <button class="wl-pi-rm" onclick="event.stopPropagation();toggleWishlist(${b.id},event);setTimeout(renderWishlistPanel,50)" title="Listeden çıkar">×</button>
+        <button onclick="event.stopPropagation();if(!${inCart}){addCart(${b.id});}renderWishlistPanel()" style="font-size:.7rem;padding:.4rem .75rem;border:1px solid var(--border);border-radius:6px;background:${inCart?'var(--cream)':'var(--ink)'};color:${inCart?'var(--muted)':'#fff'};cursor:pointer;white-space:nowrap;transition:all .15s">${inCart?'✓ Sepette':'+ Sepete'}</button>
+      </div>
+    </div>`;
+  }).join('');
+  if(foot)foot.innerHTML=`<button onclick="addAllWishlistToCart();renderWishlistPanel()" class="cp-checkout-btn" style="width:100%;padding:.85rem;font-size:.88rem">Tümünü Sepete Ekle</button>`;
+}
+
+/* ── HEDİYE SEPETİ PANELİ ── */
+function toggleGiftPanel(){
+  const p=sid('gpPanel'),o=sid('gpPanelOverlay');if(!p||!o)return;
+  const open=p.classList.contains('on');
+  if(!open){
+    if(sid('cartPanel')?.classList.contains('on'))toggleCart();
+    if(sid('askCartPanel')?.classList.contains('on'))toggleAskidaCart();
+    if(sid('wlPanel')?.classList.contains('on'))toggleWishlistPanel();
+    if(sid('askDetailPanel')?.classList.contains('on'))closeAskidaDetail();
+  }
+  p.classList.toggle('on');o.classList.toggle('on');
+  document.body.style.overflow=open?'':'hidden';
+  if(!open){renderGiftPanel();history.pushState({overlay:'gp-panel'},'',location.href);}
+}
+function renderGiftPanel(){
+  const body=sid('gpPanelBody'),foot=sid('gpPanelFoot'),cnt=sid('gpPanelCount');
+  if(cnt)cnt.textContent=giftCart.length?`(${giftCart.length})`:'';
+  if(!body)return;
+  if(!giftCart.length){
+    body.innerHTML=`<div style="text-align:center;padding:3rem 1rem;color:var(--muted)"><div style="font-size:2rem;margin-bottom:.75rem">🎁</div><div style="font-family:var(--font-serif);font-size:.95rem;color:var(--ink);margin-bottom:.4rem">Hediye sepetiniz boş</div><div style="font-size:.8rem;line-height:1.6;margin-bottom:1.1rem">Kitap kartlarındaki 🎁 ile sevdiklerinize hediye seçin</div><button onclick="toggleGiftPanel();go('home')" class="btn-gold" style="font-size:.8rem;padding:9px 20px">Kitaplara Göz At</button></div>`;
+    if(foot)foot.innerHTML='';return;
+  }
+  const subtotal=giftCart.reduce((s,g)=>{const b=books.find(x=>x.id===g.id);return s+(b?b.price:0)+(g.signed?GIFT_FEE:0);},0);
+  const shipping=subtotal>=FREE_SHIP?0:SHIP_COST;
+  body.innerHTML=giftCart.map((g,idx)=>{
+    const b=books.find(x=>x.id===g.id);if(!b)return'';
+    const coverHtml=b.cover?`<img src="${escHtml(b.cover)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`:bookCoverSvg(b);
+    return`<div class="gp-pi">
+      <div class="gp-pi-cover" style="background:${b.bg||'#1a1a1a'};position:relative;overflow:hidden">${coverHtml}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:var(--font-serif);font-size:.88rem;font-weight:700;color:var(--ink);margin-bottom:.15rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(b.title)}</div>
+        <div style="font-size:.68rem;color:var(--muted);margin-bottom:.2rem">${escHtml(b.author)}</div>
+        ${g.recipientName?`<div style="font-size:.7rem;color:var(--muted)">→ ${escHtml(g.recipientName)}</div>`:''}
+        <div style="font-size:.83rem;font-weight:700;color:var(--ink);margin-top:.2rem">₺${b.price+(g.signed?GIFT_FEE:0)}</div>
+      </div>
+      <button onclick="removeFromGift(${idx});renderGiftPanel()" style="background:none;border:none;color:var(--border);cursor:pointer;font-size:1.15rem;padding:.2rem;line-height:1;flex-shrink:0;align-self:flex-start;transition:color .15s" onmouseover="this.style.color='#E74C3C'" onmouseout="this.style.color='var(--border)'" title="Kaldır">×</button>
+    </div>`;
+  }).join('');
+  if(foot)foot.innerHTML=`
+    <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.45rem"><span style="color:var(--muted)">Ara Toplam</span><span style="font-weight:700">₺${subtotal}</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:1rem"><span style="color:var(--muted)">Kargo</span><span style="color:${shipping===0?'#2D4A3E':'var(--ink)'};font-weight:600">${shipping===0?'Ücretsiz ✓':'₺'+shipping}</span></div>
+    <button onclick="toggleGiftPanel();go('hediye-sepeti')" class="cp-checkout-btn" style="width:100%;padding:.85rem;font-size:.88rem">Hediye Sepetine Git →</button>`;
+}
+
+/* ── ASKIDA DETAY PANELİ ── */
+function openAskidaDetail(itemId){
+  const d=loadAskidaData();
+  const item=d.items.find(i=>i.id===itemId);
+  if(!item||item.status!=='available')return;
+  if(sid('askCartPanel')?.classList.contains('on'))toggleAskidaCart();
+  const body=sid('askDpBody'),foot=sid('askDpFoot');
+  if(!body||!foot)return;
+  body.innerHTML=`
+    <div style="height:190px;border-radius:10px;margin-bottom:1.35rem;background:${escHtml(item.bookCover||'linear-gradient(135deg,#1a3028,#2D4A3E)')};position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.6)">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0,transparent 55%)"></div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:1rem">
+        <div style="font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.2rem;line-height:1.3">${escHtml(item.bookTitle)}</div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.45)">${escHtml(item.bookAuthor||'')}</div>
+      </div>
+    </div>
+    <div style="background:rgba(200,169,110,.06);border:1px solid rgba(200,169,110,.14);border-radius:8px;padding:.9rem 1rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:.65rem">
+      <div style="width:8px;height:8px;border-radius:50%;background:#4ecb87;flex-shrink:0"></div>
+      <div style="font-size:.8rem;color:rgba(245,239,229,.65)">Bu kitap seni bekliyor — müsait</div>
+    </div>
+    ${item.donorNote?`<div style="background:rgba(200,169,110,.05);border-left:3px solid rgba(200,169,110,.28);border-radius:0 8px 8px 0;padding:.85rem 1rem;margin-bottom:1.25rem">
+      <div style="font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:rgba(200,169,110,.5);margin-bottom:.3rem">Bırakan kişiden</div>
+      <div style="font-size:.82rem;color:rgba(245,239,229,.62);font-style:italic;line-height:1.65">"${escHtml(item.donorNote)}"</div>
+    </div>`:''}
+    <p style="font-size:.78rem;color:rgba(245,239,229,.35);line-height:1.75;margin:0">WhatsApp üzerinden iletişime geçip kitabı talep edebilirsin. Her kullanıcı yalnızca bir kez alabilir.</p>`;
+  foot.innerHTML=`
+    <button class="ask-btn ask-btn-outline" onclick="closeAskidaDetail()" style="flex:1">İptal</button>
+    <button class="ask-btn ask-btn-gold" onclick="closeAskidaDetail();askidaAl('${escHtml(itemId)}')" style="flex:2">WhatsApp'ta İste</button>`;
+  const p=sid('askDetailPanel'),o=sid('askDpOverlay');if(!p||!o)return;
+  p.classList.add('on');o.classList.add('on');
+  document.body.style.overflow='hidden';
+  history.pushState({overlay:'ask-detail'},'',location.href);
+}
+function closeAskidaDetail(){
+  const p=sid('askDetailPanel'),o=sid('askDpOverlay');if(!p||!o)return;
+  p.classList.remove('on');o.classList.remove('on');
+  document.body.style.overflow='';
+}
+
+/* ── SAYFА YORUM BÖLÜMLERİ: HEDİYE/ASKIDA/ÇEKİLİŞ ── */
+function _pageReviewStars(ns,pfx){return`<div id="${pfx}StarPick" style="display:flex;gap:.25rem;cursor:pointer;justify-content:center;margin-bottom:.85rem">${[1,2,3,4,5].map(i=>`<span data-s="${i}" onclick="${ns}=this.closest('[id]').parentElement.querySelector('span.lit,span')?${i}:${i};document.querySelectorAll('#${pfx}StarPick span').forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=${i}))" style="font-size:1.5rem;color:var(--gold);transition:transform .1s" class="lit">★</span>`).join('')}</div>`;}
+
+let giftRevStars=5,askidaRevStars=5,cekilisRevStars=5;
+function _setStars(n,pfx,varSetter){varSetter(n);document.querySelectorAll(`#${pfx}StarPick span`).forEach(s=>s.classList.toggle('lit',parseInt(s.dataset.s)<=n));}
+
+function _reviewFormHtml(pfx,placeholder,statusId,submitFn,starVar){
+  return`<div class="review-form" style="background:transparent;border-top:none;padding-top:0">
+    <h4 style="display:flex;align-items:center;gap:.4rem"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Yorum Yaz <small>Giriş gerekir</small></h4>
+    <div class="rf-row"><div class="rf-label">Puanın</div>
+      <div id="${pfx}StarPick" style="display:flex;gap:.2rem;cursor:pointer">${[1,2,3,4,5].map(i=>`<span data-s="${i}" onclick="_setStars(${i},'${pfx}',n=>{${starVar}=n})" style="font-size:1.4rem;color:var(--gold)" class="${i<=5?'lit':''}">${i<=5?'★':'☆'}</span>`).join('')}</div>
+    </div>
+    <div class="rf-row"><div class="rf-label">Yorumun</div>
+      <textarea class="rf-input rf-textarea" id="${pfx}Txt" placeholder="${placeholder}" maxlength="500" oninput="charCount(this)" rows="4"></textarea>
+      <div class="rf-char"><span>0</span>/500</div>
+    </div>
+    <div class="rf-submit-row"><button class="rf-btn" onclick="${submitFn}()">Yorum Gönder</button><div class="rf-status" id="${statusId}"></div></div>
+  </div>`;}
+
+function _reviewListHtml(revs,emptyMsg){
+  if(!revs||!revs.length)return`<div class="review-empty">${emptyMsg}</div>`;
+  return revs.map((r,i)=>`<div class="review-item" style="animation-delay:${i*25}ms">
+    <div class="review-item-stars">${'★'.repeat(r.s)}<span style="color:var(--border)">${'☆'.repeat(5-r.s)}</span></div>
+    <div class="review-item-text">${escHtml(r.t)}</div>
+    <div class="review-item-by">— ${escHtml(r.u)}<span class="review-item-date">· ${r.d||'geçen gün'}</span></div>
+  </div>`).join('');
+}
+
+function loadPageRevs(key){return JSON.parse(localStorage.getItem(key)||'[]')}
+function savePageRevs(key,r){localStorage.setItem(key,JSON.stringify(r))}
+
+/* Hediye */
+function renderGiftReviewSection(){
+  const formEl=sid('giftReviewForm'),listEl=sid('giftReviewList');
+  if(!formEl)return;
+  if(currentUser){formEl.innerHTML=_reviewFormHtml('giftRev','Hediye deneyiminizi paylaşın...','giftRevStatus','submitGiftReview','giftRevStars');}
+  else{formEl.innerHTML=`<div style="text-align:center;padding:1.5rem;color:var(--muted);font-size:.88rem">Yorum yazmak için <button onclick="go('auth')" class="btn-link" style="color:var(--gold);background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;padding:0">giriş yapın</button></div>`;}
+  if(listEl)listEl.innerHTML=_reviewListHtml(loadPageRevs('akgulGiftReviews'),'Henüz yorum yok. İlk deneyimi paylaşan sen ol!');
+}
+async function submitGiftReview(){
+  if(!currentUser){toast('Yorum için giriş yapmalısın');return}
+  const txt=sid('giftRevTxt')?.value.trim(),st=sid('giftRevStatus');
+  if(!txt){if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
+  if(txt.length<3){if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const rev={u:currentUser.name,s:giftRevStars,t:txt,d:new Date().toLocaleDateString('tr-TR')};
+  if(currentUser.token){
+    try{
+      const res=await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add',email:currentUser.email,token:currentUser.token,type:'gift',review:rev})});
+      const data=await res.json();
+      if(!res.ok){if(st){st.textContent=data.error||'Sunucu hatası';st.className='rf-status show err'}return}
+    }catch(e){}
+  }
+  const revs=loadPageRevs('akgulGiftReviews');revs.unshift(rev);savePageRevs('akgulGiftReviews',revs);
+  sid('giftRevTxt').value='';giftRevStars=5;_setStars(5,'giftRev',n=>{giftRevStars=n});
+  if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
+  const listEl=sid('giftReviewList');if(listEl)listEl.innerHTML=_reviewListHtml(revs,'');
+}
+
+/* Askıda */
+function renderAskidaReviewSection(){
+  const formEl=sid('askidaReviewForm'),listEl=sid('askidaReviewList');
+  if(!formEl)return;
+  if(currentUser){formEl.innerHTML=_reviewFormHtml('askidaRev','Askıda kitap deneyiminizi paylaşın...','askidaRevStatus','submitAskidaReview','askidaRevStars');}
+  else{formEl.innerHTML=`<div style="text-align:center;padding:1.5rem;color:rgba(245,239,229,.45);font-size:.88rem">Yorum yazmak için <button onclick="go('auth')" style="color:var(--gold);background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;padding:0">giriş yapın</button></div>`;}
+  if(listEl)listEl.innerHTML=_reviewListHtml(loadPageRevs('akgulAskidaReviews'),'Henüz yorum yok. Bu güzel girişim hakkındaki düşüncelerini paylaş!');
+}
+async function submitAskidaReview(){
+  if(!currentUser){toast('Yorum için giriş yapmalısın');return}
+  const txt=sid('askidaRevTxt')?.value.trim(),st=sid('askidaRevStatus');
+  if(!txt){if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
+  if(txt.length<3){if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const rev={u:currentUser.name,s:askidaRevStars,t:txt,d:new Date().toLocaleDateString('tr-TR')};
+  if(currentUser.token){
+    try{
+      const res=await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add',email:currentUser.email,token:currentUser.token,type:'askida',review:rev})});
+      const data=await res.json();
+      if(!res.ok){if(st){st.textContent=data.error||'Sunucu hatası';st.className='rf-status show err'}return}
+    }catch(e){}
+  }
+  const revs=loadPageRevs('akgulAskidaReviews');revs.unshift(rev);savePageRevs('akgulAskidaReviews',revs);
+  sid('askidaRevTxt').value='';askidaRevStars=5;_setStars(5,'askidaRev',n=>{askidaRevStars=n});
+  if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
+  const listEl=sid('askidaReviewList');if(listEl)listEl.innerHTML=_reviewListHtml(revs,'');
+}
+
+/* Çekiliş */
+function renderCekilisReviewSection(){
+  const formEl=sid('cekilisReviewForm'),listEl=sid('cekilisReviewList');
+  if(!formEl)return;
+  if(currentUser){formEl.innerHTML=_reviewFormHtml('cekilisRev','Çekiliş deneyiminizi paylaşın...','cekilisRevStatus','submitCekilisReview','cekilisRevStars');}
+  else{formEl.innerHTML=`<div style="text-align:center;padding:1.5rem;color:rgba(245,239,229,.45);font-size:.88rem">Yorum yazmak için <button onclick="go('auth')" style="color:#9b59b6;background:none;border:none;cursor:pointer;font-family:inherit;font-size:inherit;padding:0">giriş yapın</button></div>`;}
+  if(listEl)listEl.innerHTML=_reviewListHtml(loadPageRevs('akgulCekilisReviews'),'Henüz yorum yok. Çekiliş deneyimini ilk paylaşan sen ol!');
+}
+async function submitCekilisReview(){
+  if(!currentUser){toast('Yorum için giriş yapmalısın');return}
+  const txt=sid('cekilisRevTxt')?.value.trim(),st=sid('cekilisRevStatus');
+  if(!txt){if(st){st.textContent='Lütfen bir yorum yazın';st.className='rf-status show err'}return}
+  if(txt.length<3){if(st){st.textContent='Yorum çok kısa';st.className='rf-status show err'}return}
+  const rev={u:currentUser.name,s:cekilisRevStars,t:txt,d:new Date().toLocaleDateString('tr-TR')};
+  if(currentUser.token){
+    try{
+      const res=await fetch('/api/reviews.php',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({action:'add',email:currentUser.email,token:currentUser.token,type:'cekilis',review:rev})});
+      const data=await res.json();
+      if(!res.ok){if(st){st.textContent=data.error||'Sunucu hatası';st.className='rf-status show err'}return}
+    }catch(e){}
+  }
+  const revs=loadPageRevs('akgulCekilisReviews');revs.unshift(rev);savePageRevs('akgulCekilisReviews',revs);
+  sid('cekilisRevTxt').value='';cekilisRevStars=5;_setStars(5,'cekilisRev',n=>{cekilisRevStars=n});
+  if(st){st.textContent='✦ Yorumun eklendi!';st.className='rf-status show ok';setTimeout(()=>st.className='rf-status',2500)}
+  const listEl=sid('cekilisReviewList');if(listEl)listEl.innerHTML=_reviewListHtml(revs,'');
 }
 
 /* ── ÇEKİLİŞ ── */
@@ -8599,6 +8926,9 @@ applySpecialPagesContent();
 renderHomeAuthors();
 renderBoxSection();
 renderAISection();
+renderGiftReviewSection();
+renderAskidaReviewSection();
+renderCekilisReviewSection();
 updateCekilisSlide();
 updateBadge();updateWishlistBadge();updateAskidaBadge();
 updateAuthNav();
@@ -11815,7 +12145,7 @@ function askidaGenCode(){
 
 function _askShelfCards(items){
   return items.map(item=>`
-    <div class="ask-shelf-book">
+    <div class="ask-shelf-book" onclick="openAskidaDetail('${escHtml(item.id)}')" style="cursor:pointer">
       <div class="ask-shelf-cover" style="background:${escHtml(item.bookCover||'linear-gradient(135deg,#1a3028,#2D4A3E)')}">
         <span class="ask-shelf-badge">Müsait</span>
         <div class="ask-shelf-title">${escHtml(item.bookTitle)}</div>
@@ -11824,7 +12154,7 @@ function _askShelfCards(items){
         <div class="ask-shelf-name">${escHtml(item.bookTitle)}</div>
         <div class="ask-shelf-author">${escHtml(item.bookAuthor||'')}</div>
         ${item.donorNote?`<div class="ask-shelf-note">"${escHtml(item.donorNote)}"</div>`:''}
-        <button class="ask-shelf-get-btn" onclick="askidaAl('${escHtml(item.id)}')">Al →</button>
+        <button class="ask-shelf-get-btn" onclick="event.stopPropagation();openAskidaDetail('${escHtml(item.id)}')">Detay →</button>
       </div>
     </div>`).join('');
 }
