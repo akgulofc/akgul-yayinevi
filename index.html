@@ -2055,10 +2055,23 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 @keyframes pgIn{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
 
 /* ── YAZAR PANEL ── */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:2rem}
-.stat-card{background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:1.25rem;text-align:center}
-.stat-card-num{font-family:var(--font-serif);font-size:2rem;color:var(--ink);font-weight:700}
-.stat-card-lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:.2rem}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-bottom:1.5rem}
+.stat-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.1rem;text-align:left;position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
+.stat-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.07);transform:translateY(-2px)}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),rgba(200,169,110,.3))}
+.stat-card-ico{width:34px;height:34px;border-radius:8px;background:rgba(200,169,110,.12);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem;margin-bottom:.75rem}
+.stat-card-num{font-family:var(--font-serif);font-size:2rem;color:var(--ink);font-weight:700;line-height:1;margin-bottom:.25rem}
+.stat-card-lbl{font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.yz-welcome{background:linear-gradient(135deg,#f5f0e8 0%,#ede4d0 100%);border:1px solid rgba(200,169,110,.25);border-radius:14px;padding:1.4rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.yz-welcome-left{flex:1;min-width:0}
+.yz-welcome-name{font-family:var(--font-serif);font-size:1.25rem;font-weight:700;color:var(--ink);margin-bottom:.2rem}
+.yz-welcome-genre{font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:600}
+.yz-welcome-bio{font-size:.78rem;color:var(--muted);margin-top:.5rem;line-height:1.55;max-width:480px}
+.yz-quick-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1.25rem;margin-bottom:1.5rem}
+.yz-qa-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.5rem .9rem;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--cream);color:var(--ink);transition:all .18s;text-decoration:none}
+.yz-qa-btn:hover{border-color:var(--gold);color:var(--gold);background:#faf6ee}
+.yz-qa-btn.primary{background:var(--gold);color:#fff;border-color:var(--gold)}
+.yz-qa-btn.primary:hover{background:#b8945a;border-color:#b8945a}
 .blog-editor{background:var(--cream);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:2rem}
 .be-toolbar{padding:.75rem 1rem;border-bottom:1px solid var(--border);display:flex;gap:.5rem;flex-wrap:wrap;background:var(--white)}
 .be-tool{background:none;border:1px solid var(--border);border-radius:3px;width:30px;height:28px;cursor:pointer;font-size:.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .2s;color:var(--ink)}
@@ -8156,11 +8169,40 @@ function renderYazarContents(){
     :`<div class="ppc-init">${av}</div>`;
   sid('profileTabContents').innerHTML=`
     <div class="ptab-content act">
-<div class="stats-row">
-        <div class="stat-card"><div class="stat-card-num">${myBooks.length}</div><div class="stat-card-lbl">Yayınlanan Kitap</div></div>
-        <div class="stat-card"><div class="stat-card-num">${myPosts.length}</div><div class="stat-card-lbl">Blog Yazısı</div></div>
-        <div class="stat-card"><div class="stat-card-num">${totalViews}</div><div class="stat-card-lbl">Toplam Görüntüleme</div></div>
-        <div class="stat-card"><div class="stat-card-num">${myBooks.reduce((s,b)=>s+b.reviews.length,0)}</div><div class="stat-card-lbl">Okur Yorumu</div></div>
+      <div class="yz-welcome">
+        <div class="yz-welcome-left">
+          <div class="yz-welcome-name">Hoş geldiniz, ${currentUser.name.split(' ')[0]} ✦</div>
+          <div class="yz-welcome-genre">${authorData?.genre||'Yazar'}</div>
+          ${authorData?.bio?`<div class="yz-welcome-bio">${authorData.bio.slice(0,120)}${authorData.bio.length>120?'…':''}</div>`:''}
+        </div>
+      </div>
+      <div class="yz-quick-actions">
+        <button class="yz-qa-btn primary" onclick="ptab(document.querySelectorAll('.ptab')[2],2)"><i class="ti ti-pencil-plus" style="font-size:.85rem"></i>Yeni Yazı</button>
+        <button class="yz-qa-btn" onclick="ptab(document.querySelectorAll('.ptab')[1],1)"><i class="ti ti-news" style="font-size:.85rem"></i>Yazılarım</button>
+        <button class="yz-qa-btn" onclick="ptab(document.querySelectorAll('.ptab')[3],3)"><i class="ti ti-books" style="font-size:.85rem"></i>Kitaplarım</button>
+        <button class="yz-qa-btn" onclick="ptab(document.querySelectorAll('.ptab')[5],5)"><i class="ti ti-package" style="font-size:.85rem"></i>Siparişlerim</button>
+      </div>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-card-ico"><i class="ti ti-books"></i></div>
+          <div class="stat-card-num">${myBooks.length}</div>
+          <div class="stat-card-lbl">Yayınlanan Kitap</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-ico"><i class="ti ti-pencil"></i></div>
+          <div class="stat-card-num">${myPosts.length}</div>
+          <div class="stat-card-lbl">Blog Yazısı</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-ico"><i class="ti ti-eye"></i></div>
+          <div class="stat-card-num">${totalViews}</div>
+          <div class="stat-card-lbl">Toplam Görüntüleme</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-ico"><i class="ti ti-message-circle"></i></div>
+          <div class="stat-card-num">${myBooks.reduce((s,b)=>s+b.reviews.length,0)}</div>
+          <div class="stat-card-lbl">Okur Yorumu</div>
+        </div>
       </div>
       <div class="chart-wrap"><div class="chart-title">Son 7 Ay Satış</div>
         <div class="mini-chart">${salesData.map(v=>`<div class="mc-bar" style="height:${Math.round(v/maxS*100)}%" data-val="${v}"></div>`).join('')}</div>
