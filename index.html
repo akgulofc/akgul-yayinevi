@@ -788,11 +788,22 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 }
 .s-book-row:hover{background:rgba(200,169,110,.06);border-color:rgba(200,169,110,.1)}
 .s-book-cover{
-  width:34px;height:50px;border-radius:4px;flex-shrink:0;
+  width:46px;height:69px;border-radius:5px;flex-shrink:0;
   position:relative;overflow:hidden;
-  box-shadow:0 2px 10px rgba(0,0,0,.5);
+  box-shadow:3px 4px 16px rgba(0,0,0,.65),-1px 0 rgba(0,0,0,.18);
 }
 .s-bspine{position:absolute;left:0;top:0;bottom:0;width:5px;background:rgba(200,169,110,.4);z-index:1}
+.s-feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;padding:.35rem 0}
+.s-feat-card{display:flex;flex-direction:column;border-radius:9px;overflow:hidden;cursor:pointer;background:rgba(200,169,110,.04);border:1px solid rgba(200,169,110,.09);transition:all .22s}
+.s-feat-card:hover{background:rgba(200,169,110,.09);border-color:rgba(200,169,110,.2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.s-feat-cover{width:100%;aspect-ratio:2/3;position:relative;overflow:hidden;background:#111}
+.s-feat-cover img{width:100%;height:100%;object-fit:cover;display:block}
+.s-feat-spine{position:absolute;left:0;top:0;bottom:0;width:6px;background:rgba(200,169,110,.35);z-index:1}
+.s-feat-meta{padding:.55rem .65rem .65rem}
+.s-feat-badge{font-size:.48rem;padding:2px 6px;background:rgba(200,169,110,.14);color:var(--gold);border-radius:2px;letter-spacing:.07em;text-transform:uppercase;display:inline-block;margin-bottom:.3rem}
+.s-feat-title{font-family:var(--font-serif);font-size:.88rem;color:#E8E0D4;margin-bottom:.15rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.s-feat-author{font-size:.66rem;color:rgba(200,169,110,.48)}
+.s-feat-price{font-family:var(--font-serif);font-size:.85rem;color:var(--gold);margin-top:.3rem}
 .s-book-info{flex:1;min-width:0}
 .s-book-title{
   font-family:var(--font-serif);font-size:.97rem;
@@ -2916,7 +2927,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .s-fbtn { font-size: .62rem; padding: 3px 10px }
   .s-results-body { padding: .7rem .75rem 1rem }
   .s-book-row { padding: .65rem .4rem; gap: .6rem }
-  .s-book-cover { width: 28px; height: 42px }
+  .s-book-cover { width: 38px; height: 57px }
+  .s-feat-grid { grid-template-columns: 1fr 1fr; gap: .45rem }
   .s-book-title { font-size: .88rem }
   .s-author-av { width: 34px; height: 34px }
   .s-quick-tags { gap: .38rem }
@@ -7951,23 +7963,22 @@ function renderSearchDefault(){
   </div>
   <div style="height:1px;background:rgba(200,169,110,.07)"></div>
   <div><div class="s-sec-head">Öne Çıkan Kitaplar</div>`;
-  featured.slice(0,4).forEach((b,i,arr)=>{
-    html+=`<div class="s-book-row" onclick="openModal(${b.id});toggleSearch()">
-      <div class="s-book-cover" style="background:${b.bg}"><div class="s-bspine"></div></div>
-      <div class="s-book-info">
-        <div class="s-badge-mini">${b.badge}</div>
-        <div class="s-book-title">${b.title}</div>
-        <div class="s-book-sub">${b.author}</div>
+  html+=`<div class="s-feat-grid">`;
+  featured.slice(0,4).forEach(b=>{
+    const coverHtml=b.cover
+      ?`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" onerror="this.style.display='none'">`
+      :`<div class="s-feat-spine"></div>`;
+    html+=`<div class="s-feat-card" onclick="openModal(${b.id});toggleSearch()">
+      <div class="s-feat-cover">${coverHtml}</div>
+      <div class="s-feat-meta">
+        ${b.badge?`<div class="s-feat-badge">${b.badge}</div>`:''}
+        <div class="s-feat-title">${b.title}</div>
+        <div class="s-feat-author">${b.author}</div>
+        <div class="s-feat-price">₺${b.price}</div>
       </div>
-      <div class="s-book-right">
-        <div class="s-book-price">₺${b.price}</div>
-        <div class="s-book-cat-lbl">${CATS[b.cat]||b.cat}</div>
-      </div>
-      <span class="s-arr">›</span>
-    </div>
-    ${i<arr.length-1?'<div class="s-sep"></div>':''}`;
+    </div>`;
   });
-  html+='</div>';
+  html+=`</div></div>`;
   body.innerHTML=html;
 }
 
