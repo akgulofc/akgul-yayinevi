@@ -5269,8 +5269,22 @@ if(!currentUser && localStorage.getItem('akgul_auth')==='1'){
   localStorage.setItem('akgulUser',JSON.stringify(currentUser));
 }
 function loadBlogData(){try{const v2=JSON.parse(localStorage.getItem('akgul_blog_v2')||'null');if(v2&&v2.length)return v2;const old=JSON.parse(localStorage.getItem('akgulSiteBlog')||'null');if(old&&old.length)return old}catch(e){}return null}
-function saveBlogData(d){localStorage.setItem('akgul_blog_v2',JSON.stringify(d));localStorage.setItem('akgulSiteBlog',JSON.stringify(d))}
-let blogData=loadBlogData()||[...blogPosts];
+function _saveBlogLocal(d){localStorage.setItem('akgul_blog_v2',JSON.stringify(d));localStorage.setItem('akgulSiteBlog',JSON.stringify(d))}
+function saveBlogData(d){_saveBlogLocal(d);if(adminLoggedIn)blogSync(d);}
+async function blogSync(posts){
+  const creds=typeof admGetCreds==='function'?admGetCreds():{pass:''};
+  if(!creds.pass)return;
+  try{await fetch('/api/blog.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},body:JSON.stringify({action:'admin_sync',posts:posts||blogData})});}catch(e){}
+}
+async function fetchBlogData(){
+  try{
+    const res=await fetch('/api/blog.php');if(!res.ok)return;
+    const data=await res.json();
+    if(data.posts&&data.posts.length){blogData=data.posts;_saveBlogLocal(data.posts);renderBlogPreview();}
+  }catch(e){}
+}
+fetchBlogData();
+let blogData=loadBlogData()||[];
 let selRoleVal='okur';
 let selBoxMoodPage='Hüzünlü & Sakin';
 let curSlide=0;
@@ -7486,29 +7500,25 @@ function doForgot(){
 }
 async function doLogin(){
   const email=sid('loginEmail').value.trim(),pass=sid('loginPass').value,err=sid('loginError');err.style.display='none';
-  // Önce yerel cache'e bak (hızlı yol)
   let u=users.find(x=>x.email===email&&x.pass===pass);
-  if(!u){
-    // Sunucudan doğrula (farklı cihazdan kayıt olmuş olabilir)
-    try{
-      const res=await fetch('/api/user-auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email,pass})});
-      const data=await res.json();
-      if(res.ok&&data.user){
-        u={...data.user,pass};// pass'ı yerel cache için ekle
-        if(!users.find(x=>x.email===email)){users.push(u);saveUsers();}
-      }
-    }catch(e){}
-  }
-  if(!u){
-    // Yazar üyelik kontrolü (admin panelinden oluşturulan hesaplar)
-    try{
-      const savedAuthors=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
-      const authorMatch=savedAuthors.find(a=>a.membership&&a.membership.email===email&&a.membership.password===pass&&a.membership.status!=='suspended');
-      if(authorMatch){
-        u={name:authorMatch.name,email:authorMatch.membership.email,pass,role:'yazar',joined:authorMatch.membership.createdAt||''};
-        if(!users.find(x=>x.email===email)){users.push(u);saveUsers();}
-      }
-    }catch(e){}
+  try{
+    const res=await fetch('/api/user-auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'login',email,pass})});
+    const data=await res.json();
+    if(res.ok&&data.user){
+      u={...data.user,pass};
+      if(data.token)u.token=data.token;
+      const idx=users.findIndex(x=>x.email===email);
+      if(idx>-1)users[idx]=u;else users.push(u);
+      saveUsers();
+    }else if(!res.ok&&!u){err.textContent=data.error||'E-posta veya şifre hatalı.';err.style.display='block';return}
+  }catch(e){
+    if(!u){
+      try{
+        const savedAuthors=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
+        const am=savedAuthors.find(a=>a.membership&&a.membership.email===email&&a.membership.password===pass&&a.membership.status!=='suspended');
+        if(am){u={name:am.name,email:am.membership.email,pass,role:'yazar',joined:am.membership.createdAt||''};if(!users.find(x=>x.email===email)){users.push(u);saveUsers();}}
+      }catch(e2){}
+    }
   }
   if(!u){err.textContent='E-posta veya şifre hatalı.';err.style.display='block';return}
   const rem=sid('rememberMe');
@@ -7925,16 +7935,28 @@ function fmtTxt(fmt){
   if(fmt==='bold')rep=`**${sel}**`;else if(fmt==='italic')rep=`_${sel}_`;else if(fmt==='h2')rep=`\n## ${sel}\n`;else if(fmt==='quote')rep=`\n> ${sel}\n`;
   ta.value=ta.value.substring(0,start)+rep+ta.value.substring(end);
 }
-function publishPost(){
-  const title=sid('beTitle')?.value.trim(),body=sid('beBody')?.value.trim(),cat=sid('beCat')?.value;
-  if(!title||!body){toast('Başlık ve içerik gerekli!');return}
+async function publishPost(){
+  const title=sid('beTitle')?.value.trim(),rawBody=sid('beBody')?.value.trim(),cat=sid('beCat')?.value;
+  if(!title||!rawBody){toast('Başlık ve içerik gerekli!');return}
+  const btn=document.querySelector('.be-pub-btn');
+  if(btn){btn.disabled=true;btn.textContent='Yayınlanıyor…';}
   const colors={'Leyla Karadeniz':'#2D4A3E','Ahmet Demir':'#4A2D3E','Fatma Yıldız':'#3E3A2D','Can Öztürk':'#2D3A4A','Deniz Kaya':'#2D3E3A','Dr. Zeynep Koç':'#2A4A5A'};
   const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  const safeTitle=esc(title);
-  const safeBody=esc(body);
+  const safeTitle=esc(title);const safeBody=esc(rawBody);
   const formattedBody=safeBody.replace(/\n\n/g,'</p><p>').replace(/## (.*)/g,'<h2>$1</h2>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/_(.*?)_/g,'<em>$1</em>');
-  const newPost={id:blogData.length+1,title:safeTitle,author:currentUser.name,initials:currentUser.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),color:colors[currentUser.name]||'#2D4A3E',date:'Bugün',cat,type:'article',excerpt:safeBody.slice(0,120)+'...',body:`<p>${formattedBody}</p>`,images:_pendingBlogImages.length?_pendingBlogImages.slice():[],bg:'linear-gradient(135deg,#2D4A3E,#1a3a2e)'};
-  blogData.unshift(newPost);saveBlogData(blogData);toast('✦ Yazınız yayınlandı!');sid('beTitle').value='';sid('beBody').value='';_pendingBlogImages=[];renderBlogImagePreviews();renderBlogPreview();renderProfile();
+  const newPost={title:safeTitle,author:currentUser.name,initials:currentUser.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase(),color:colors[currentUser.name]||'#2D4A3E',cat,type:'article',excerpt:safeBody.slice(0,120)+'...',body:`<p>${formattedBody}</p>`,images:_pendingBlogImages.length?_pendingBlogImages.slice():[]};
+  if(currentUser?.token){
+    try{
+      const res=await fetch('/api/blog.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'publish',email:currentUser.email,token:currentUser.token,post:newPost})});
+      const data=await res.json();
+      if(res.ok&&data.posts){blogData=data.posts;_saveBlogLocal(data.posts);}
+      else{toast(data.error||'Sunucu hatası!');if(btn){btn.disabled=false;btn.textContent='Yayınla';}return;}
+    }catch(e){blogData.unshift({...newPost,id:Date.now()});_saveBlogLocal(blogData);}
+  }else{blogData.unshift({...newPost,id:Date.now()});_saveBlogLocal(blogData);}
+  toast('✦ Yazınız Akgül Gazetesi\'ne yayınlandı!');
+  sid('beTitle').value='';sid('beBody').value='';_pendingBlogImages=[];
+  renderBlogImagePreviews();renderBlogPreview();renderProfile();
+  if(btn){btn.disabled=false;btn.textContent='Yayınla';}
 }
 
 /* ── NAV YÜKSEKLİĞİ — dinamik CSS değişkeni ── */
@@ -9732,23 +9754,6 @@ async function sendAIW(){
           </div>
           <div class="card" style="margin-bottom:1.25rem">
             <div class="card-head">
-              <span class="card-title"><i class="ti ti-tag"></i>Kampanya & İndirim (Slide 6)</span>
-              <div class="card-acts">
-                <button class="card-btn primary" onclick="adminSaveCampaignContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="g2">
-                <div class="field"><label>Rozet Metni</label><input type="text" id="adm-camp-badge-inp" placeholder="Sınırlı Süre · Yaz Kampanyası"></div>
-                <div class="field"><label>Kampanya Bitiş Tarihi</label><input type="date" id="adm-camp-end-inp"></div>
-              </div>
-              <div class="field"><label>Üst Etiket</label><input type="text" id="adm-camp-ey-inp"></div>
-              <div class="field"><label>Başlık</label><input type="text" id="adm-camp-h1-inp"></div>
-              <div class="field"><label>Açıklama</label><textarea id="adm-camp-p-inp" rows="2" style="width:100%;resize:vertical"></textarea></div>
-            </div>
-          </div>
-          <div class="card" style="margin-bottom:1.25rem">
-            <div class="card-head">
               <span class="card-title"><i class="ti ti-truck"></i>Kargo & Ödeme</span>
               <div class="card-acts">
                 <button class="card-btn primary" onclick="adminSaveShippingContent()"><i class="ti ti-check" style="font-size:13px"></i>Kaydet</button>
@@ -11501,8 +11506,6 @@ function adminRenderContent(){
   const ap=ag('adm-slider-autoplay'); if(ap)ap.checked=ss.autoplay!==false;
   admRenderSlideList();
   const seo=c.seo||{}; fv('adm-seo-title-inp',seo.title); fv('adm-seo-desc-inp',seo.description); fv('adm-seo-keys-inp',seo.keywords);
-  const camp=(c.slides&&c.slides[5])||{}, campMeta=c.campaign||{};
-  fv('adm-camp-badge-inp',camp.badge); fv('adm-camp-ey-inp',camp.eyebrow); fv('adm-camp-h1-inp',camp.title); fv('adm-camp-p-inp',camp.desc); fv('adm-camp-end-inp',campMeta.endDate);
   const sh=c.shipping||{}, siteS=admLoad('akgulSettings',{});
   fv('adm-ship-free-inp',sh.freeShip||siteS.freeShip); fv('adm-ship-cost-inp',sh.shipCost||siteS.shipCost); fv('adm-ship-wa-inp',sh.whatsapp||siteS.waPhone);
 }
@@ -12130,13 +12133,6 @@ window.adminSaveSeoContent = function(){
   adminSiteContent.seo={title:agv('adm-seo-title-inp'),description:ag('adm-seo-desc-inp')?.value.trim(),keywords:agv('adm-seo-keys-inp')};
   admSaveContent(); adminToast('✦ SEO ayarları güncellendi!');
 };
-window.adminSaveCampaignContent = function(){
-  if(!adminSiteContent.slides||adminSiteContent.slides.length<6) adminSiteContent.slides=[{},{},{},{},{},{}];
-  const existing=adminSiteContent.slides[5]||{};
-  adminSiteContent.slides[5]={...existing,badge:agv('adm-camp-badge-inp'),eyebrow:agv('adm-camp-ey-inp'),title:agv('adm-camp-h1-inp'),desc:ag('adm-camp-p-inp')?.value.trim()};
-  adminSiteContent.campaign={endDate:agv('adm-camp-end-inp')};
-  admSaveContent(); adminToast('✦ Kampanya güncellendi!');
-};
 window.adminSaveShippingContent = function(){
   const wa=agv('adm-ship-wa-inp').replace(/\D/g,'');
   const freeShip=parseInt(agv('adm-ship-free-inp'))||500;
@@ -12593,6 +12589,49 @@ window.adminBootstrap = function(){
 ═══════════════════════════════════════ */
 let authorSession=JSON.parse(sessionStorage.getItem('akgulAuthorSession')||'null');
 
+function admAuthorTab(tab){
+  const stats=document.getElementById('ap-stats-sec');
+  const write=document.getElementById('ap-write-sec');
+  if(stats)stats.style.display=tab==='panel'?'':'none';
+  if(write)write.style.display=tab==='write'?'':'none';
+  ['ap-tab-panel','ap-tab-write'].forEach(id=>{
+    const b=document.getElementById(id);if(!b)return;
+    const active=(id==='ap-tab-panel')===(tab==='panel');
+    b.style.borderBottom=active?'2px solid var(--ink)':'2px solid transparent';
+    b.style.color=active?'var(--ink)':'var(--muted)';
+    b.style.fontWeight=active?'700':'400';
+  });
+}
+async function authorPublishPost(){
+  const titleEl=document.getElementById('ap-wr-title');
+  const bodyEl=document.getElementById('ap-wr-body');
+  const catEl=document.getElementById('ap-wr-cat');
+  const fbk=document.getElementById('ap-wr-feedback');
+  const btn=document.getElementById('ap-wr-btn');
+  const title=(titleEl?.value||'').trim();
+  const rawBody=(bodyEl?.value||'').trim();
+  const cat=catEl?.value||'Genel';
+  const showFbk=(msg,ok)=>{if(!fbk)return;fbk.style.display='block';fbk.style.background=ok?'#f0fff4':'#fff0f0';fbk.style.color=ok?'#1a6b3a':'#8B1A1A';fbk.textContent=msg;};
+  if(!title||!rawBody){showFbk('Başlık ve içerik zorunludur.');return;}
+  if(!authorSession?.token){showFbk('Oturum süresi dolmuş, tekrar giriş yapın.');return;}
+  if(btn){btn.disabled=true;btn.textContent='Yayınlanıyor…';}
+  if(fbk)fbk.style.display='none';
+  const initials=authorSession.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  const safeBody=esc(rawBody);
+  const formattedBody=safeBody.replace(/\n\n/g,'</p><p>').replace(/## (.*)/g,'<h2>$1</h2>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/_(.*?)_/g,'<em>$1</em>');
+  const post={title,author:authorSession.name,initials,color:'#2D4A3E',cat,excerpt:rawBody.slice(0,200),body:`<p>${formattedBody}</p>`,images:[]};
+  try{
+    const res=await fetch('/api/blog.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'publish',email:authorSession.email,token:authorSession.token,post})});
+    const data=await res.json();
+    if(!res.ok){showFbk(data.error||'Hata oluştu.');return;}
+    blogData=data.posts;_saveBlogLocal(data.posts);
+    renderBlogPreview();
+    if(titleEl)titleEl.value='';if(bodyEl)bodyEl.value='';
+    showFbk('✦ Yazınız Akgül Gazetesi\'ne yayınlandı!',true);
+  }catch(e){showFbk('Bağlantı hatası. Lütfen tekrar deneyin.');}
+  finally{if(btn){btn.disabled=false;btn.textContent='Yayınla';}}
+}
 function showAuthorLoginModal(){
   if(authorSession){renderAuthorPanel();return;}
   const m=document.getElementById('authorLoginModal');if(!m)return;
@@ -12621,7 +12660,7 @@ async function authorLogin(){
       return;
     }
     const author=data.author;
-    authorSession={name:author.name,email};
+    authorSession={name:author.name,email,token:data.token||''};
     sessionStorage.setItem('akgulAuthorSession',JSON.stringify(authorSession));
     // Yerel cache güncelle
     const authorsData=JSON.parse(localStorage.getItem('akgul_authors_v2')||'[]');
@@ -12654,10 +12693,10 @@ function renderAuthorPanel(){
   const booksData=JSON.parse(localStorage.getItem('akgul_books_v2')||'[]');
   const ordersData=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
   const myBooks=booksData.filter(b=>b.author===author.name);
+  const myPosts=blogData.filter(p=>p.author===author.name&&p.type!=='ilan').slice(0,5);
   const totalViews=myBooks.reduce((s,b)=>s+(b.views||0),0);
   const totalReviews=myBooks.reduce((s,b)=>s+(b.reviews?.length||0),0);
-  const totalAvg=myBooks.length?(myBooks.reduce((s,b)=>{const r=b.reviews||[];const a=r.length?r.reduce((rs,rv)=>rs+rv.s,0)/r.length:(b.rating||0);return s+a;},0)/myBooks.length).toFixed(1):'—';
-  function calcSiteSales(title){return ordersData.filter(o=>o.status!=='İptal').reduce((sum,o)=>{const it=(o.items||[]).find(i=>i.title===title);return sum+(it?it.qty:0);},0);}
+  function calcSiteSales(t){return ordersData.filter(o=>o.status!=='İptal').reduce((s,o)=>{const i=(o.items||[]).find(x=>x.title===t);return s+(i?i.qty:0);},0);}
   const totalSiteSales=myBooks.reduce((s,b)=>s+calcSiteSales(b.title),0);
   const totalExtSales=myBooks.reduce((s,b)=>s+(b.externalSales||0),0);
   const avColor=author.color||'#2D4A3E';
@@ -12665,78 +12704,103 @@ function renderAuthorPanel(){
   const panel=document.getElementById('authorPanelContent');
   if(!panel)return;
   panel.innerHTML=`
-    <div style="background:linear-gradient(135deg,${avColor},${avColor}bb);padding:2rem 1.5rem;display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
-      <div style="width:68px;height:68px;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.3);flex-shrink:0;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:#fff">
-        ${author.photo?`<img src="${escHtml(author.photo)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:initials}
+    <div style="position:relative;background:linear-gradient(150deg,${avColor},${avColor}99);overflow:hidden">
+      <div style="position:absolute;inset:0;opacity:.07;background-image:repeating-linear-gradient(135deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:22px 22px;pointer-events:none"></div>
+      <div style="position:relative;display:flex;justify-content:flex-end;padding:.8rem .9rem 0">
+        <button onclick="authorLogout()" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.75);padding:.3rem .85rem;border-radius:20px;font-size:.64rem;cursor:pointer;font-family:var(--font-sans);letter-spacing:.06em">Çıkış</button>
       </div>
-      <div style="flex:1;min-width:0">
-        <div style="font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:#fff">${escHtml(author.name)}</div>
-        <div style="font-size:.78rem;color:rgba(255,255,255,.65);margin-top:.15rem">${escHtml(author.genre)}</div>
-        <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-top:.1rem">Üyelik: ${escHtml(author.membership.createdAt||'—')}</div>
+      <div style="position:relative;padding:1rem 1.5rem 0;text-align:center">
+        <div style="width:82px;height:82px;border-radius:50%;margin:0 auto .85rem;border:2.5px solid rgba(255,255,255,.38);background:rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:1.75rem;font-weight:700;color:#fff;overflow:hidden;box-shadow:0 8px 28px rgba(0,0,0,.3)">
+          ${author.photo?`<img src="${escHtml(author.photo)}" style="width:100%;height:100%;object-fit:cover">`:initials}
+        </div>
+        <div style="font-family:var(--font-serif);font-size:1.45rem;font-weight:700;color:#fff;letter-spacing:-.015em;line-height:1.2">${escHtml(author.name)}</div>
+        <div style="font-size:.58rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.22em;margin-top:.32rem">${escHtml(author.genre||'Yazar')}</div>
+        ${author.quote?`<div style="margin:.85rem auto 0;max-width:260px;font-family:var(--font-serif);font-style:italic;font-size:.77rem;color:rgba(255,255,255,.58);line-height:1.65">"${escHtml(author.quote)}"</div>`:''}
       </div>
-      <button onclick="authorLogout()" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;padding:.48rem 1rem;border-radius:6px;font-size:.75rem;cursor:pointer;font-family:var(--font-sans);white-space:nowrap">Çıkış Yap</button>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;padding:1.1rem;background:#fff;border-bottom:1px solid var(--border)">
-      <div style="text-align:center;padding:.7rem;background:var(--cream);border-radius:8px">
-        <div style="font-family:var(--font-serif);font-size:1.5rem;font-weight:700;color:var(--ink)">${myBooks.length}</div>
-        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Kitap</div>
-      </div>
-      <div style="text-align:center;padding:.7rem;background:var(--cream);border-radius:8px">
-        <div style="font-family:var(--font-serif);font-size:1.5rem;font-weight:700;color:var(--ink)">${totalViews}</div>
-        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Görüntüleme</div>
-      </div>
-      <div style="text-align:center;padding:.7rem;background:var(--cream);border-radius:8px">
-        <div style="font-family:var(--font-serif);font-size:1.5rem;font-weight:700;color:var(--ink)">${totalReviews}</div>
-        <div style="font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Yorum · ★${totalAvg}</div>
-      </div>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;padding:.85rem 1.1rem;background:#fff;border-bottom:1px solid var(--border)">
-      <div style="text-align:center;padding:.65rem;background:#f0f7f2;border-radius:8px;border:1px solid #d0e8d8">
-        <div style="font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:#2D4A3E">${totalSiteSales}</div>
-        <div style="font-size:.62rem;color:#2D4A3E;text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem;opacity:.75">Siteden Satış</div>
-      </div>
-      <div style="text-align:center;padding:.65rem;background:#f5f0e8;border-radius:8px;border:1px solid #e8d8c0">
-        <div style="font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:#9A7A45">${totalExtSales}</div>
-        <div style="font-size:.62rem;color:#9A7A45;text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem;opacity:.75">Site Dışı Satış</div>
-      </div>
-      <div style="text-align:center;padding:.65rem;background:#0D0C09;border-radius:8px">
-        <div style="font-family:var(--font-serif);font-size:1.4rem;font-weight:700;color:#C8A96E">${totalSiteSales+totalExtSales}</div>
-        <div style="font-size:.62rem;color:rgba(200,169,110,.6);text-transform:uppercase;letter-spacing:.06em;margin-top:.1rem">Toplam Satış</div>
+      <div style="position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:1.5rem;background:rgba(0,0,0,.22);border-top:1px solid rgba(255,255,255,.1)">
+        <div style="padding:.85rem .3rem;text-align:center;border-right:1px solid rgba(255,255,255,.07)">
+          <div style="font-family:var(--font-serif);font-size:1.2rem;font-weight:700;color:#fff">${myBooks.length}</div>
+          <div style="font-size:.5rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;margin-top:.1rem">Kitap</div>
+        </div>
+        <div style="padding:.85rem .3rem;text-align:center;border-right:1px solid rgba(255,255,255,.07)">
+          <div style="font-family:var(--font-serif);font-size:1.2rem;font-weight:700;color:#fff">${totalViews>999?(totalViews/1000).toFixed(1)+'K':totalViews}</div>
+          <div style="font-size:.5rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;margin-top:.1rem">Görüntüleme</div>
+        </div>
+        <div style="padding:.85rem .3rem;text-align:center;border-right:1px solid rgba(255,255,255,.07)">
+          <div style="font-family:var(--font-serif);font-size:1.2rem;font-weight:700;color:#fff">${totalReviews}</div>
+          <div style="font-size:.5rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;margin-top:.1rem">Yorum</div>
+        </div>
+        <div style="padding:.85rem .3rem;text-align:center">
+          <div style="font-family:var(--font-serif);font-size:1.2rem;font-weight:700;color:#C8A96E">${totalSiteSales+totalExtSales}</div>
+          <div style="font-size:.5rem;color:rgba(200,169,110,.4);text-transform:uppercase;letter-spacing:.1em;margin-top:.1rem">Satış</div>
+        </div>
       </div>
     </div>
-    ${author.membership.note?`<div style="margin:1.1rem 1.1rem 0;padding:.9rem 1rem;background:#fffbf0;border:1px solid #e8d8a0;border-radius:8px;border-left:3px solid #C8A96E">
-      <div style="font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:#9A7A45;margin-bottom:.35rem">✦ Yayınevi Notu</div>
-      <div style="font-size:.82rem;color:var(--ink);line-height:1.65">${escHtml(author.membership.note)}</div>
-    </div>`:''}
-    <div style="padding:1.1rem">
-      <div style="font-family:var(--font-serif);font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:.85rem;padding-bottom:.55rem;border-bottom:1px solid var(--border)">Katalogdaki Kitaplarım</div>
-      ${myBooks.length?myBooks.map(b=>{
-        const revs=b.reviews||[];
-        const avg=revs.length?(revs.reduce((s,r)=>s+r.s,0)/revs.length).toFixed(1):(b.rating||'—');
-        return`<div style="display:flex;align-items:center;gap:.9rem;padding:.8rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.5rem;background:#fff">
-          <div style="width:40px;height:56px;border-radius:4px;background:${b.bg||'linear-gradient(145deg,#2D4A3E,#1a3a2e)'};flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center">
-            ${b.cover?`<img src="${escHtml(b.cover)}" style="width:100%;height:100%;object-fit:cover">`:`<div style="font-size:6px;color:rgba(255,255,255,.6);text-align:center;padding:2px;line-height:1.2">${escHtml(b.title)}</div>`}
+    <div style="display:flex;background:var(--parchment,#FAF7F2);border-bottom:1px solid var(--border)">
+      <button id="ap-tab-panel" onclick="admAuthorTab('panel')" style="flex:1;padding:.85rem .5rem;border:none;border-bottom:2px solid var(--ink);margin-bottom:-1px;background:none;font-family:var(--font-serif);font-size:.82rem;color:var(--ink);cursor:pointer;font-weight:700">Panelim</button>
+      <button id="ap-tab-write" onclick="admAuthorTab('write')" style="flex:1;padding:.85rem .5rem;border:none;border-bottom:2px solid transparent;margin-bottom:-1px;background:none;font-family:var(--font-serif);font-style:italic;font-size:.82rem;color:var(--muted);cursor:pointer">Yazı Yaz ✦</button>
+    </div>
+    <div id="ap-stats-sec" style="background:var(--parchment,#FAF7F2);min-height:180px">
+      ${author.membership.note?`<div style="margin:1rem 1rem 0;padding:1rem 1.1rem;background:#fff;border-radius:10px;border-left:3px solid #C8A96E;box-shadow:0 2px 10px rgba(0,0,0,.05)">
+        <div style="font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#C8A96E;margin-bottom:.4rem">✦ Yayınevi Notu</div>
+        <div style="font-size:.82rem;color:var(--ink);line-height:1.7">${escHtml(author.membership.note)}</div>
+      </div>`:''}
+      ${myPosts.length?`<div style="padding:1rem 1rem .25rem">
+        <div style="font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);padding-bottom:.55rem;border-bottom:1px solid var(--border);margin-bottom:.75rem">Son Yazılarım</div>
+        ${myPosts.map((p,i)=>`<div style="display:flex;align-items:center;gap:.8rem;padding:.65rem 0;${i<myPosts.length-1?'border-bottom:1px solid var(--border)':''}">
+          <div style="flex-shrink:0;width:32px;height:32px;border-radius:7px;background:${p.bg||'linear-gradient(135deg,#2D4A3E,#1a3a2e)'};display:flex;align-items:center;justify-content:center">
+            <svg viewBox="0 0 16 16" style="width:11px;height:11px;fill:rgba(255,255,255,.75)"><path d="M2 4h12v1.5H2zm0 3h12v1.5H2zm0 3h7v1.5H2z"/></svg>
           </div>
           <div style="flex:1;min-width:0">
-            <div style="font-weight:600;font-size:.85rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(b.title)}</div>
-            <div style="font-size:.7rem;color:var(--muted);margin-top:.1rem">${b.badge?`<span style="background:rgba(200,169,110,.15);color:#9A7A45;padding:1px 6px;border-radius:4px;font-size:.62rem;margin-right:.35rem">${escHtml(b.badge)}</span>`:''}${b.cat||''}</div>
+            <div style="font-size:.82rem;font-weight:600;color:var(--ink);font-family:var(--font-serif);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(p.title)}</div>
+            <div style="font-size:.63rem;color:var(--muted);margin-top:.12rem">${escHtml(p.cat||'Genel')} · ${escHtml(p.date||'')}</div>
           </div>
-          <div style="text-align:right;flex-shrink:0;font-size:.72rem;color:var(--muted)">
-            <div>${b.views||0} görüntüleme</div>
-            <div>${revs.length} yorum · ★${avg}</div>
-            <div style="margin-top:.35rem;display:flex;gap:.3rem;justify-content:flex-end;flex-wrap:wrap">
-              <span style="background:#f0f7f2;color:#2D4A3E;padding:1px 6px;border-radius:4px;font-size:.62rem;border:1px solid #d0e8d8" title="Siteden satış">${calcSiteSales(b.title)} site</span>
-              <span style="background:#f5f0e8;color:#9A7A45;padding:1px 6px;border-radius:4px;font-size:.62rem;border:1px solid #e8d8c0" title="Site dışı satış">${b.externalSales||0} dışı</span>
+        </div>`).join('')}
+      </div>`:''}
+      <div style="padding:1rem 1rem 1.5rem">
+        <div style="font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);padding-bottom:.55rem;border-bottom:1px solid var(--border);margin-bottom:.75rem">Kitaplarım</div>
+        ${myBooks.length?myBooks.map(b=>{
+          const revs=b.reviews||[];
+          const avg=revs.length?(revs.reduce((s,r)=>s+r.s,0)/revs.length).toFixed(1):(b.rating||'—');
+          const siteSales=calcSiteSales(b.title);
+          return`<div style="display:flex;gap:.9rem;padding:.85rem;background:#fff;border-radius:10px;margin-bottom:.55rem;box-shadow:0 2px 10px rgba(0,0,0,.05);border:1px solid rgba(0,0,0,.05)">
+            <div style="width:46px;height:66px;border-radius:6px;background:${b.bg||'linear-gradient(145deg,#2D4A3E,#1a3a2e)'};flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.22)">
+              ${b.cover?`<img src="${escHtml(b.cover)}" style="width:100%;height:100%;object-fit:cover">`:`<div style="font-size:5px;color:rgba(255,255,255,.7);text-align:center;padding:3px;line-height:1.3;font-family:var(--font-serif)">${escHtml(b.title)}</div>`}
             </div>
-            <div style="font-size:.82rem;font-weight:600;color:var(--ink);margin-top:.15rem">₺${b.price}</div>
-          </div>
-        </div>`;
-      }).join(''):`<div style="text-align:center;padding:2rem;color:var(--muted);font-size:.82rem">Katalogda henüz kitabınız bulunmuyor.</div>`}
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:.28rem">
+              <div style="font-family:var(--font-serif);font-weight:700;font-size:.88rem;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escHtml(b.title)}</div>
+              <div style="font-size:.66rem;color:var(--muted)">${escHtml(b.cat||'')} · ₺${b.price}</div>
+              <div style="display:flex;gap:.9rem;font-size:.65rem;flex-wrap:wrap">
+                <span style="color:var(--muted)">${b.views||0} görüntüleme</span>
+                <span style="color:var(--muted)">★ ${avg} (${revs.length})</span>
+                <span style="color:#2D6B45;font-weight:600">${siteSales+(b.externalSales||0)} satış</span>
+              </div>
+            </div>
+          </div>`;
+        }).join(''):`<div style="text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.8rem;font-style:italic;opacity:.7">Katalogda henüz kitabınız bulunmuyor.</div>`}
+      </div>
     </div>
-    ${(author.bio||author.quote)?`<div style="padding:0 1.1rem 1.5rem">
-      ${author.bio?`<div style="padding:.9rem;background:var(--cream);border-radius:8px;font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:.6rem">${escHtml(author.bio)}</div>`:''}
-      ${author.quote?`<div style="padding:.9rem;border-left:3px solid var(--gold);font-family:var(--font-serif);font-style:italic;font-size:.88rem;color:var(--ink);line-height:1.65">"${escHtml(author.quote)}"</div>`:''}
-    </div>`:''}`;
+    <div id="ap-write-sec" style="display:none;background:#fff;padding:1.35rem 1.25rem">
+      <div style="display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:end;margin-bottom:.9rem">
+        <div>
+          <label style="display:block;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:.35rem">Başlık *</label>
+          <input id="ap-wr-title" type="text" placeholder="Yazınıza bir başlık verin..." style="width:100%;padding:.72rem .9rem;border:1.5px solid var(--border,#e0d8cc);border-radius:8px;font-size:.88rem;font-family:var(--font-serif);color:var(--ink);background:#fff;outline:none;box-sizing:border-box" onfocus="this.style.borderColor='#C8A96E'" onblur="this.style.borderColor=''">
+        </div>
+        <div>
+          <label style="display:block;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:.35rem">Kategori</label>
+          <select id="ap-wr-cat" style="padding:.72rem .8rem;border:1.5px solid var(--border,#e0d8cc);border-radius:8px;font-size:.8rem;font-family:var(--font-sans);color:var(--ink);background:#fff;outline:none">
+            <option>Yazarlık</option><option>Şiir &amp; Dil</option><option>Tarih &amp; Araştırma</option><option>Felsefe</option><option>Çocuk Edebiyatı</option><option>Psikoloji &amp; Okuma</option><option>Genel</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:1rem">
+        <label style="display:block;font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:.35rem">İçerik *</label>
+        <textarea id="ap-wr-body" rows="11" placeholder="Yazınızı burada kaleme alın...&#10;&#10;**kalın**, _italik_, ## başlık, > alıntı desteklenir." style="width:100%;padding:.8rem .9rem;border:1.5px solid var(--border,#e0d8cc);border-radius:8px;font-size:.85rem;font-family:var(--font-sans);color:var(--ink);resize:vertical;line-height:1.75;box-sizing:border-box;outline:none" onfocus="this.style.borderColor='#C8A96E'" onblur="this.style.borderColor=''"></textarea>
+      </div>
+      <div id="ap-wr-feedback" style="display:none;padding:.85rem 1rem;border-radius:8px;font-size:.82rem;margin-bottom:.85rem;line-height:1.5"></div>
+      <button id="ap-wr-btn" onclick="authorPublishPost()" style="width:100%;padding:1rem;background:linear-gradient(135deg,${avColor},${avColor}dd);color:#fff;border:none;border-radius:8px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:var(--font-serif);letter-spacing:.04em;box-shadow:0 4px 18px rgba(0,0,0,.18)">Akgül Gazetesi'ne Yayınla</button>
+      <div style="margin-top:.65rem;text-align:center;font-size:.62rem;color:var(--muted)">Yazınız editöryal onay olmaksızın Akgül Gazetesi'ne yayınlanacaktır.</div>
+    </div>`;
   document.getElementById('authorPanelOverlay').style.display='flex';
   document.body.style.overflow='hidden';
 }

@@ -60,4 +60,5 @@ curl_close($ch);
 
 $safeMembership = $found['membership'];
 unset($safeMembership['password']);
-echo json_encode(['author' => array_merge($found, ['membership' => $safeMembership])], JSON_UNESCAPED_UNICODE);
+$token = hash('sha256', strtolower($email) . '|' . date('Y-m-d') . '|' . $ADMIN_SECRET);
+echo json_encode(['author' => array_merge($found, ['membership' => $safeMembership]), 'token' => $token], JSON_UNESCAPED_UNICODE);

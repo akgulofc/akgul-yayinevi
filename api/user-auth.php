@@ -60,7 +60,8 @@ if ($action === 'login') {
     }
     if (!$found) { http_response_code(401); echo json_encode(['error' => 'E-posta veya şifre hatalı']); exit; }
     unset($found['pass']);
-    echo json_encode(['user' => $found], JSON_UNESCAPED_UNICODE);
+    $token = hash('sha256', strtolower($email) . '|' . date('Y-m-d') . '|' . $ADMIN_SECRET);
+    echo json_encode(['user' => $found, 'token' => $token], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
