@@ -7593,7 +7593,8 @@ function renderAskidaCart(){
     body.innerHTML=`<div class="ask-cp-empty"><div style="font-size:2.8rem;margin-bottom:.75rem">📚</div><div style="font-family:var(--font-serif);font-size:1rem;color:var(--cream);margin-bottom:.4rem">Kitap Bırakma Sepeti Boş</div><div style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:1.1rem">Katalogdan bir kitap seçip 📚 butonuna basın —<br>bedelini ödeyin, ihtiyacı olan biri okusun.</div><button class="ask-btn ask-btn-gold" onclick="toggleAskidaCart();go('books')">Kitaplara Göz At</button></div>`;
     if(foot)foot.innerHTML='';return;
   }
-  const discPct=loadAskidaData().discountRate||10;
+  const _askData=(()=>{try{return JSON.parse(localStorage.getItem('akgulAskida')||'null')||{discountRate:10};}catch(e){return{discountRate:10};}})();
+  const discPct=_askData.discountRate||10;
   body.innerHTML=askidaCart.map(c=>{
     const b=findBook(c.id);if(!b)return'';
     const cvr=b.cover?`<img src="${escHtml(b.cover)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0" onerror="this.style.display='none'">`:bookCoverSvg(b);
