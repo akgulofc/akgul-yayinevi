@@ -6330,6 +6330,8 @@ function openAuthorModal(name){
 }
 
 /* ── AI (Öneri Sayfası) ── */
+const AI_SITE_EP = '/api/site-ai.php';
+const GROQ_RECOMMEND_EP = '/api/ai-recommend.php';
 function initAIOneri(){
   const first=sid('aiMoods')?.querySelector('.ai-mood-btn');
   if(first){first.classList.add('sel');selAiMood(first,'Hüzünlü ve düşünceli')}
@@ -9063,8 +9065,6 @@ window.addEventListener('popstate',function(e){
 /* ═══════════════════════════════════════
    SİTE KULLANICI AI
 ═══════════════════════════════════════ */
-const AI_SITE_EP = '/api/site-ai.php';
-const GROQ_RECOMMEND_EP = '/api/ai-recommend.php';
 let aiSiteHistory = [];
 let aiSiteOpen = false;
 
