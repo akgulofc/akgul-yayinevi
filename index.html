@@ -4840,21 +4840,23 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="legal-body">
     <a class="legal-back" onclick="history.back()">← Geri Dön</a>
     <h2>1. Hangi Verileri Topluyoruz?</h2>
-    <p><strong>Doğrudan verdiğiniz bilgiler:</strong> Üyelik formu, sipariş formu veya iletişim formu aracılığıyla paylaştığınız ad, e-posta, telefon ve adres bilgileri.</p>
-    <p><strong>Otomatik toplanan bilgiler:</strong> Tercihleriniz ve sepet içeriği yalnızca cihazınızda (tarayıcı localStorage) saklanır; sunucuya gönderilmez.</p>
+    <p><strong>Doğrudan verdiğiniz bilgiler:</strong> Üyelik formu, sipariş formu, iletişim formu veya e-bülten kaydı aracılığıyla paylaştığınız ad, e-posta, telefon ve adres bilgileri.</p>
+    <p><strong>Otomatik toplanan bilgiler:</strong> Sepet, favori listesi ve oturum bilgileri öncelikle tarayıcınızda (localStorage) saklanır. Üye girişi yapıldığında favori listesi ve blog yorumları sunucumuza da kaydedilerek cihazlar arası senkronizasyon sağlanır.</p>
+    <p><strong>Analitik veriler:</strong> Sitemizde Google Analytics kullanılmaktadır. Bu hizmet; ziyaret sayısı, tıklanan sayfalar ve tarayıcı türü gibi anonim istatistiksel verileri toplamaktadır. Google'ın gizlilik politikası için <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:var(--gold)">policies.google.com/privacy</a> adresini ziyaret edin.</p>
     <h2>2. Verileri Nasıl Kullanıyoruz?</h2>
     <ul>
       <li>Siparişlerinizi işlemek ve kargoya vermek</li>
       <li>Hesabınızı yönetmek ve güvende tutmak</li>
       <li>Müşteri destek taleplerinizi yanıtlamak</li>
-      <li>Site güvenliğini ve performansını iyileştirmek</li>
+      <li>E-bülten abonelerine yeni kitap ve kampanya bilgisi göndermek</li>
+      <li>Site güvenliğini, performansını ve kullanıcı deneyimini iyileştirmek</li>
     </ul>
-    <h2>3. Çerezler</h2>
-    <p>Sitemiz yalnızca tarayıcı <strong>localStorage</strong> ve <strong>sessionStorage</strong> kullanmaktadır. Üçüncü taraf izleme çerezi kullanılmamaktadır. Detaylar için <a style="color:var(--gold);cursor:pointer" onclick="go('cerez')">Çerez Politikamızı</a> inceleyiniz.</p>
+    <h2>3. Çerezler ve Yerel Depolama</h2>
+    <p>Sitemiz, işlevsel amaçlarla tarayıcı <strong>localStorage</strong> kullanmaktadır. Ayrıca Google Analytics aracılığıyla analitik amaçlı çerezler yerleştirilmektedir. Detaylar için <a style="color:var(--gold);cursor:pointer" onclick="go('cerez')">Çerez Politikamızı</a> inceleyiniz.</p>
     <h2>4. Üçüncü Taraf Paylaşımı</h2>
-    <p>Kişisel verileriniz; sipariş teslimatı için kargo şirketleri, ödeme işlemi için iyzico Ödeme Hizmetleri A.Ş. ve yasal zorunluluk halinde kamu kurumları ile paylaşılabilir. Pazarlama amacıyla üçüncü taraflara satılmaz veya devredilmez.</p>
+    <p>Kişisel verileriniz; sipariş teslimatı için kargo şirketleri, ödeme işlemi için iyzico Ödeme Hizmetleri A.Ş., anonim analitik için Google LLC ve yasal zorunluluk halinde kamu kurumları ile paylaşılabilir. Pazarlama amacıyla üçüncü taraflara satılmaz veya devredilmez.</p>
     <h2>5. Veri Güvenliği</h2>
-    <p>Kullanıcı şifreleri güvenli hash algoritması ile şifrelenmiş olarak saklanmaktadır. Tüm iletişim HTTPS üzerinden şifrelenir.</p>
+    <p>Kullanıcı şifreleri bcrypt algoritması ile hashlenerek saklanmaktadır. Sunucu iletişimi HTTPS üzerinden şifrelenir. Veriler GitHub'ın altyapısında barındırılmakta olup erişim özel API anahtarlarıyla kısıtlıdır.</p>
     <h2>6. İletişim</h2>
     <p>Gizlilik politikamıza ilişkin sorularınız için: <strong>akgulyayinevi@gmail.com</strong></p>
     <p class="legal-updated">Son güncelleme: Mayıs 2026</p>
@@ -4938,20 +4940,30 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   <div class="legal-body">
     <a class="legal-back" onclick="history.back()">← Geri Dön</a>
     <h2>Çerez Kullanımı</h2>
-    <p><strong>akgulyayinevi.com</strong> sitemiz geleneksel anlamda üçüncü taraf izleme çerezi (cookie) <strong>kullanmamaktadır.</strong></p>
-    <h2>localStorage ve sessionStorage</h2>
-    <p>Sitemiz kullanıcı deneyimini iyileştirmek amacıyla tarayıcınızın yerel depolama alanını (<strong>localStorage</strong>) kullanmaktadır. Bu veriler yalnızca cihazınızda saklanır ve başka sitelerle paylaşılmaz.</p>
+    <p><strong>akgulyayinevi.com</strong> sitemiz aşağıdaki çerez ve yerel depolama türlerini kullanmaktadır:</p>
+    <h2>1. İşlevsel Depolama (localStorage)</h2>
+    <p>Sitemiz kullanıcı deneyimini iyileştirmek amacıyla tarayıcınızın yerel depolama alanını (<strong>localStorage</strong>) kullanmaktadır. Bu veriler yalnızca cihazınızda saklanır.</p>
     <h3>Neler saklanır?</h3>
     <ul>
       <li><strong>Sepet içeriği:</strong> Sepetinize eklediğiniz kitaplar</li>
-      <li><strong>Kullanıcı oturumu:</strong> Giriş yaptıysanız oturum bilgileri</li>
-      <li><strong>Favoriler:</strong> İstek listenize eklediğiniz kitaplar</li>
-      <li><strong>Site tercihleri:</strong> Dil, tema, son arama gibi tercihler</li>
+      <li><strong>Kullanıcı oturumu:</strong> Giriş yaptıysanız oturum ve kimlik doğrulama bilgileri</li>
+      <li><strong>Favoriler:</strong> İstek listenize eklediğiniz kitaplar (üye iseniz sunucuyla da senkronize edilir)</li>
+      <li><strong>Site tercihleri:</strong> Son arama, filtre ve görünüm tercihleri</li>
     </ul>
     <h3>Nasıl silinir?</h3>
-    <p>Tarayıcınızın ayarlar → gizlilik → site verilerini temizle bölümünden bu verileri istediğiniz zaman silebilirsiniz.</p>
-    <h2>Üçüncü Taraf Scriptler</h2>
-    <p>Sitemizde Google Fonts ve benzeri performans araçları kullanılmaktadır. Bu araçlar standart teknik loglama yapabilir; ancak kişisel izleme çerezi bırakmaz.</p>
+    <p>Tarayıcınızın Ayarlar → Gizlilik → Site Verilerini Temizle bölümünden bu verileri istediğiniz zaman silebilirsiniz.</p>
+    <h2>2. Analitik Çerezler (Google Analytics)</h2>
+    <p>Sitemizde <strong>Google Analytics 4 (G-RJ3TSET0RF)</strong> kullanılmaktadır. Bu hizmet, sitenin nasıl kullanıldığını anlamamıza yardımcı olan anonim istatistikler toplar:</p>
+    <ul>
+      <li>Ziyaret sayısı ve oturum süresi</li>
+      <li>Ziyaret edilen sayfalar</li>
+      <li>Coğrafi bölge (şehir düzeyinde, anonim)</li>
+      <li>Kullanılan tarayıcı ve cihaz türü</li>
+    </ul>
+    <p>Google Analytics IP adresinizi anonimleştirir; kişisel kimliğinizi tespit etmek için kullanılmaz. Google'ın gizlilik politikası: <a href="https://policies.google.com/privacy" target="_blank" rel="noopener" style="color:var(--gold)">policies.google.com/privacy</a></p>
+    <p>Google Analytics çerezlerini devre dışı bırakmak için <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener" style="color:var(--gold)">Google Analytics Opt-out eklentisini</a> kullanabilirsiniz.</p>
+    <h2>3. Üçüncü Taraf Fontlar</h2>
+    <p>Sitemizde Google Fonts kullanılmaktadır. Bu hizmet font dosyalarını sunmak amacıyla standart sunucu logları oluşturabilir; kişisel izleme çerezi bırakmaz.</p>
     <h2>İletişim</h2>
     <p>Sorularınız için: <strong>akgulyayinevi@gmail.com</strong></p>
     <p class="legal-updated">Son güncelleme: Mayıs 2026</p>
