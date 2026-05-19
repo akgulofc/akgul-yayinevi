@@ -6338,8 +6338,26 @@ renderBooks('all');
     books=data;
     localStorage.setItem('akgul_books_v2',JSON.stringify(books));
     localStorage.setItem('akgulAdminBooks',JSON.stringify(books));
+    // Admin paneli açıksa adminBooks'u da güncelle
+    if(typeof adminBooks!=='undefined')adminBooks=books;
     renderBooks(currentFilter||'all');
     if(typeof renderEditors==='function')renderEditors();
+  }catch(e){}
+})();
+
+/* ── Sunucudan yazarları yükle ── */
+(async function syncAuthorsFromServer(){
+  try{
+    const res=await fetch('/api/authors.php?t='+Date.now());
+    if(!res.ok)return;
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length)return;
+    authors=data;
+    localStorage.setItem('akgul_authors_v2',JSON.stringify(authors));
+    // Admin paneli açıksa adminAuthorsData'yı da güncelle
+    if(typeof adminAuthorsData!=='undefined')adminAuthorsData=authors;
+    if(typeof renderAuthors==='function')renderAuthors();
+    if(typeof renderAuthorsList==='function')renderAuthorsList();
   }catch(e){}
 })();
 
@@ -11270,6 +11288,30 @@ let adminAuthorsData = admLoad(ADM_STORE_AUTHORS, admDefaultAuthors());
 let adminUsers     = admLoad(ADM_STORE_USERS,   []);
 let adminNotifs    = admLoad(ADM_STORE_NOTIFS,  admDefaultNotifs());
 
+async function admRefreshBooks(){
+  try{
+    const res=await fetch('https://raw.githubusercontent.com/akgulofc/akgul-yayinevi/main/data/books.json?t='+Date.now());
+    if(!res.ok)return;
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length)return;
+    adminBooks=data;
+    if(typeof books!=='undefined')books=data;
+    admSave(ADM_STORE_BOOKS,adminBooks);
+    admSave('akgulAdminBooks',adminBooks);
+  }catch(e){}
+}
+async function admRefreshAuthors(){
+  try{
+    const creds=admGetCreds();
+    const res=await fetch('/api/authors.php?t='+Date.now(),{headers:{'x-admin-secret':creds.pass}});
+    if(!res.ok)return;
+    const data=await res.json();
+    if(!Array.isArray(data)||!data.length)return;
+    adminAuthorsData=data;
+    if(typeof authors!=='undefined')authors=data;
+    admSave(ADM_STORE_AUTHORS,adminAuthorsData);
+  }catch(e){}
+}
 function admSaveBooks(){ admSave(ADM_STORE_BOOKS,adminBooks); admSave('akgulAdminBooks',adminBooks); admUpdateNavBadges(); admPushToGitHub(); }
 async function admPushToGitHub(){
   try{
@@ -11292,10 +11334,8 @@ function admSaveOrders(){
 function admSaveBlog(){ admSave(ADM_STORE_BLOG,adminBlogPosts); admSave('akgulSiteBlog',adminBlogPosts); admUpdateNavBadges(); }
 function admSaveAuthors(){
   admSave(ADM_STORE_AUTHORS,adminAuthorsData);
+  if(typeof authors!=='undefined') authors=adminAuthorsData;
   admPushAuthorsToGitHub();
-  if(typeof authors!=='undefined'){
-    authors=adminAuthorsData.map(a=>Object.assign({books:[],color:'#2D4A3E',initials:(a.name||'').slice(0,2).toUpperCase(),soc:{},featured:false,bio:'',quote:''},a));
-  }
 }
 async function admPushAuthorsToGitHub(){
   try{
@@ -11305,8 +11345,9 @@ async function admPushAuthorsToGitHub(){
       headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
       body:JSON.stringify({authors:adminAuthorsData})
     });
-    if(!res.ok)adminToast('Yazarlar sunucuya kaydedilemedi','warn');
-  }catch(e){}
+    if(res.ok) adminToast('Yazarlar sunucuya kaydedildi ✓','success');
+    else adminToast('Yazarlar sunucuya kaydedilemedi','warn');
+  }catch(e){adminToast('Bağlantı hatası – yazarlar yerel kaydedildi','warn');}
 }
 function admSaveUsers(){ admSave(ADM_STORE_USERS,adminUsers); }
 function admSaveNotifs(){ admSave(ADM_STORE_NOTIFS,adminNotifs); }
@@ -11439,8 +11480,9 @@ function adminInitApp(){
   if(ag('adm-nav-users')) ag('adm-nav-users').style.display=isEditor?'none':'';
   if(ag('adm-nav-settings')) ag('adm-nav-settings').style.display=isEditor?'none':'';
   if(ag('adm-nav-system-sec')) ag('adm-nav-system-sec').style.display=isEditor?'none':'';
-  adminRenderDashChart();
-  adminRenderTopBooks();
+  // Sunucudan taze kitap ve yazar verisi çek
+  admRefreshBooks().then(()=>{ adminRenderTopBooks(); adminRenderDashChart(); });
+  admRefreshAuthors();
   adminRenderDashOrders();
   admUpdateNavBadges();
   adminRenderNotifs();
@@ -11487,9 +11529,9 @@ window.adminNav = function(el){
   const br = ag('adm-tbBread');
   if(br) br.innerHTML=`<i class="ti ti-chevron-right"></i><span>${m.bread||''}</span>`;
   adminCloseSidebar();
-  if(pid==='p-books')    adminRenderBooks();
+  if(pid==='p-books'){   admRefreshBooks().then(()=>adminRenderBooks()); }
   if(pid==='p-analytics')adminRenderAnalytics();
-  if(pid==='p-authors')  adminRenderAuthorsTable();
+  if(pid==='p-authors'){  admRefreshAuthors().then(()=>adminRenderAuthorsTable()); }
   if(pid==='p-press')    window.adminRenderPressProcess&&window.adminRenderPressProcess();
   if(pid==='p-orders')   adminRenderOrders();
   if(pid==='p-sales')    adminRenderSales();
