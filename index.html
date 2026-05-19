@@ -1076,6 +1076,8 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .books-filter{display:flex;gap:.55rem;flex-wrap:wrap;margin-bottom:2.2rem}
 .fcat{padding:7px 18px;border:1px solid var(--border);background:var(--white);border-radius:24px;font-size:.73rem;cursor:pointer;color:var(--muted);transition:all .2s var(--ease-spring);font-family:var(--font-sans)}
 .fcat.act,.fcat:hover{background:var(--ink);color:var(--gold);border-color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.books-sort-sel{margin-left:auto;background:var(--white);border:1px solid var(--border);border-radius:24px;padding:7px 14px 7px 16px;font-size:.73rem;color:var(--muted);cursor:pointer;font-family:var(--font-sans);outline:none;transition:border-color .2s;flex-shrink:0}
+.books-sort-sel:focus,.books-sort-sel:hover{border-color:var(--ink);color:var(--ink)}
 .books-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1.5rem}
 .book-card{cursor:pointer;transition:transform .32s var(--ease-spring)}
 .book-card:hover{transform:translateY(-9px)}
@@ -1584,6 +1586,17 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .cc-icon svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .cc-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.18em;color:var(--gold);margin-bottom:.35rem;font-weight:700}
 .cc-val{font-size:.82rem;color:rgba(200,190,176,.8);line-height:1.55}
+.contact-form-wrap{max-width:680px;margin:2.5rem auto 0}
+.contact-form{display:flex;flex-direction:column;gap:.85rem}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
+@media(max-width:600px){.cf-row{grid-template-columns:1fr}}
+.cf-input{background:rgba(255,255,255,.04);border:1px solid rgba(200,169,110,.15);border-radius:8px;color:var(--white);padding:.75rem 1rem;font-size:.88rem;font-family:var(--font-sans);outline:none;transition:border-color .2s,background .2s;width:100%;box-sizing:border-box}
+.cf-input::placeholder{color:rgba(200,190,176,.35)}
+.cf-input:focus{border-color:rgba(200,169,110,.5);background:rgba(255,255,255,.06)}
+.cf-textarea{min-height:130px;resize:vertical}
+.cf-btn{background:var(--gold);color:var(--ink);border:none;border-radius:8px;padding:.8rem 2rem;font-size:.9rem;font-weight:700;cursor:pointer;transition:opacity .2s,transform .15s;align-self:flex-start}
+.cf-btn:hover{opacity:.88;transform:translateY(-1px)}
+.cf-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
 
 /* ── FOOTER ── */
 footer{background:var(--ink);position:relative;overflow:hidden}
@@ -1662,6 +1675,20 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .mbn-wa{width:100%;padding:13px;background:#25D366;color:#fff;border:none;border-radius:4px;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .25s var(--ease-spring);font-family:var(--font-sans)}
 .mbn-wa:hover{background:#128C7E}
 .mbn-wa svg{width:16px;height:16px}
+.ord-query-box{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:1.75rem}
+.ord-query-result-row{display:flex;gap:.5rem;flex-wrap:wrap;margin:.3rem 0;font-size:.82rem}
+.ord-query-lbl{color:var(--muted);font-size:.7rem;text-transform:uppercase;letter-spacing:.07em;font-weight:600;width:90px;flex-shrink:0}
+.similar-books{margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.25rem}
+.similar-title{font-family:var(--font-serif);font-size:.9rem;font-weight:700;color:var(--ink);margin-bottom:.85rem}
+.similar-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem}
+@media(max-width:500px){.similar-grid{grid-template-columns:repeat(2,1fr)}}
+.similar-card{cursor:pointer;transition:transform .2s}
+.similar-card:hover{transform:translateY(-3px)}
+.similar-cover{width:100%;aspect-ratio:2/3;border-radius:5px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.18);margin-bottom:.45rem;position:relative}
+.similar-meta{padding:0 .1rem}
+.similar-name{font-size:.72rem;font-weight:600;color:var(--ink);line-clamp:2;-webkit-line-clamp:2;display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:.18rem;line-height:1.35}
+.similar-auth{font-size:.65rem;color:var(--muted);margin-bottom:.18rem}
+.similar-price{font-size:.75rem;font-weight:700;color:var(--gold)}
 .review-form{margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.5rem}
 .review-form h4{font-family:var(--font-serif);font-size:1rem;color:var(--ink);margin-bottom:1rem;display:flex;align-items:center;gap:.4rem}
 .review-form h4 small{font-family:var(--font-sans);font-size:.65rem;color:var(--muted);font-weight:400}
@@ -1874,6 +1901,13 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .chk-field input:focus,.chk-field textarea:focus{border-color:var(--gold)}
 .chk-field textarea{resize:vertical;min-height:58px;line-height:1.5}
 .chk-err{color:#C0392B;font-size:.72rem;margin-top:.28rem;display:none}
+.chk-iban-box{background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.2);border-radius:var(--radius);padding:.85rem 1rem;margin-bottom:.85rem}
+.chk-iban-title{display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--gold);margin-bottom:.6rem}
+.chk-iban-body p{font-size:.78rem;color:var(--muted);margin:0 0 .4rem;line-height:1.55}
+.chk-iban-row{display:flex;align-items:center;gap:.5rem;font-size:.8rem;margin-bottom:.22rem;flex-wrap:wrap}
+.chk-iban-lbl{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);width:62px;flex-shrink:0}
+.chk-iban-copy{background:none;border:1px solid rgba(200,169,110,.3);border-radius:4px;padding:3px 6px;cursor:pointer;color:var(--gold);display:flex;align-items:center;transition:background .2s}
+.chk-iban-copy:hover{background:rgba(200,169,110,.12)}
 .chk-row{display:grid;grid-template-columns:1fr 1fr;gap:0 .75rem}
 .chk-btn{width:100%;padding:.88rem;border:none;border-radius:var(--radius);font-weight:700;font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;transition:all .22s var(--ease);font-family:var(--font-sans);margin-top:.35rem;letter-spacing:.03em}
 .chk-btn.primary{background:var(--gold);color:var(--ink)}
@@ -1920,6 +1954,18 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .legal-back{display:inline-flex;align-items:center;gap:.4rem;font-size:.78rem;color:var(--gold);cursor:pointer;margin-bottom:1.5rem;text-decoration:none}
 .legal-back:hover{opacity:.75}
 .legal-updated{font-size:.75rem;color:rgba(107,99,85,.55);margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border)}
+.ft-newsletter-bar{background:rgba(200,169,110,.06);border-top:1px solid rgba(200,169,110,.1);border-bottom:1px solid rgba(200,169,110,.1);padding:1.1rem 2rem}
+.ft-nl-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
+.ft-nl-text{display:flex;flex-direction:column;gap:.18rem}
+.ft-nl-text strong{font-size:.88rem;color:rgba(230,220,200,.9);font-weight:600}
+.ft-nl-text span{font-size:.72rem;color:rgba(200,192,178,.55)}
+.ft-nl-form{display:flex;gap:.5rem;flex-shrink:0}
+.ft-nl-inp{background:rgba(255,255,255,.05);border:1px solid rgba(200,169,110,.2);border-radius:6px;color:var(--white);padding:.55rem .9rem;font-size:.8rem;outline:none;width:220px;transition:border-color .2s}
+.ft-nl-inp::placeholder{color:rgba(200,192,178,.35)}
+.ft-nl-inp:focus{border-color:rgba(200,169,110,.5)}
+.ft-nl-btn{background:var(--gold);color:var(--ink);border:none;border-radius:6px;padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;cursor:pointer;transition:opacity .2s;white-space:nowrap}
+.ft-nl-btn:hover{opacity:.85}
+@media(max-width:600px){.ft-nl-inner{flex-direction:column;align-items:flex-start}.ft-nl-form{width:100%}.ft-nl-inp{flex:1}}
 .ft-legal-links{display:flex;flex-wrap:wrap;gap:.5rem .9rem;margin-top:1rem}
 .ft-legal-links a{font-size:.72rem;color:rgba(200,169,110,.38);cursor:pointer;transition:color .2s;text-decoration:none}
 .ft-legal-links a:hover{color:rgba(200,169,110,.7)}
@@ -3929,6 +3975,13 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <button class="fcat" onclick="fcat(this,'cocuk')">Çocuk</button>
       <button class="fcat" onclick="fcat(this,'hikaye')">Hikâye</button>
       <button class="fcat" onclick="fcat(this,'akademik')">Akademik</button>
+      <select class="books-sort-sel" id="booksSortSel" onchange="booksSort(this.value)" title="Sırala">
+        <option value="default">Sırala</option>
+        <option value="newest">En Yeni</option>
+        <option value="price_asc">Fiyat: Düşükten Yükseğe</option>
+        <option value="price_desc">Fiyat: Yüksekten Düşüğe</option>
+        <option value="alpha">A'dan Z'ye</option>
+      </select>
     </div>
     <div class="books-grid" id="booksGrid"></div>
   </div>
@@ -4032,6 +4085,20 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div id="cc-tel-card" class="contact-card" onclick="window.location.href='tel:+905366483096'"><div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.09a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div class="cc-label">Telefon</div><div class="cc-val" id="cc-tel-val">0 536 648 30 96</div></div>
         <div id="cc-email-card" class="contact-card" onclick="window.location.href='mailto:akgulyayinevi@gmail.com'"><div class="cc-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="cc-label">E-posta</div><div class="cc-val" id="cc-email-val">akgulyayinevi@gmail.com</div></div>
         <div id="cc-ig-card" class="contact-card" onclick="window.open('https://www.instagram.com/akgulyayinevi','_blank')"><div class="cc-icon"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></div><div class="cc-label">Instagram</div><div class="cc-val" id="cc-ig-val">@akgulyayinevi</div></div>
+      </div>
+      <!-- İletişim Formu -->
+      <div class="contact-form-wrap" style="margin-top:2.5rem">
+        <p class="sec-label" style="color:var(--gold);text-align:center">Mesaj Gönderin</p>
+        <h3 style="font-family:var(--font-serif);color:var(--white);text-align:center;font-size:1.5rem;margin:.3rem 0 1.5rem">Sizden <em>duymak</em> istiyoruz</h3>
+        <form class="contact-form" id="contactForm" onsubmit="submitContactForm(event)">
+          <div class="cf-row">
+            <input class="cf-input" id="cfName" type="text" placeholder="Adınız Soyadınız" maxlength="100" required>
+            <input class="cf-input" id="cfEmail" type="email" placeholder="E-posta adresiniz" maxlength="150" required>
+          </div>
+          <input class="cf-input" id="cfSubject" type="text" placeholder="Konu (isteğe bağlı)" maxlength="150" style="width:100%;box-sizing:border-box">
+          <textarea class="cf-input cf-textarea" id="cfMessage" placeholder="Mesajınızı buraya yazın..." maxlength="2000" required></textarea>
+          <button type="submit" class="cf-btn" id="cfSubmitBtn">Mesaj Gönder</button>
+        </form>
       </div>
     </div>
   </div>
@@ -4891,6 +4958,98 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
 </div>
 
+<!-- ═══════════ TOPLU SİPARİŞ ═══════════ -->
+<div class="page" id="page-toplu-siparis">
+  <div class="legal-hero">
+    <h1>Toplu Sipariş</h1>
+    <p style="color:rgba(230,220,200,.7);font-size:.9rem;margin-top:.5rem">Okullar, kütüphaneler, kurumlar ve hediyeler için özel fiyat</p>
+  </div>
+  <div class="legal-body">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem">
+      <div style="background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.15);border-radius:10px;padding:1.25rem;text-align:center">
+        <div style="font-size:1.75rem;margin-bottom:.4rem">📚</div>
+        <strong style="font-size:.85rem;color:var(--ink)">10+ Adet</strong>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:.25rem">%10 indirim</div>
+      </div>
+      <div style="background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.15);border-radius:10px;padding:1.25rem;text-align:center">
+        <div style="font-size:1.75rem;margin-bottom:.4rem">🏛️</div>
+        <strong style="font-size:.85rem;color:var(--ink)">50+ Adet</strong>
+        <div style="font-size:.75rem;color:var(--muted);margin-top:.25rem">%15 indirim + ücretsiz kargo</div>
+      </div>
+    </div>
+    <form class="contact-form" id="bulkOrderForm" onsubmit="submitBulkOrder(event)">
+      <div class="cf-row">
+        <input class="cf-input" id="boName" type="text" placeholder="Yetkili Ad Soyad *" maxlength="100" required>
+        <input class="cf-input" id="boOrg" type="text" placeholder="Kurum / Okul Adı *" maxlength="150" required>
+      </div>
+      <div class="cf-row">
+        <input class="cf-input" id="boEmail" type="email" placeholder="E-posta *" maxlength="150" required>
+        <input class="cf-input" id="boPhone" type="tel" placeholder="Telefon *" maxlength="20" required>
+      </div>
+      <input class="cf-input" id="boBooks" type="text" placeholder="İstediğiniz kitap(lar) ve adet" maxlength="300" required style="width:100%;box-sizing:border-box">
+      <textarea class="cf-input cf-textarea" id="boNote" placeholder="Ek notlar (teslimat adresi, fatura bilgisi vb.)" maxlength="1000" style="min-height:90px"></textarea>
+      <button type="submit" class="cf-btn" id="boSubmitBtn">Teklif İste</button>
+    </form>
+    <p style="font-size:.75rem;color:var(--muted);margin-top:1.5rem;text-align:center">Formunuzu aldıktan sonra en geç <strong>1 iş günü</strong> içinde size dönüş yapıyoruz.</p>
+  </div>
+</div>
+
+<!-- ═══════════ BASIN / MEDYA ═══════════ -->
+<div class="page" id="page-basin-medya">
+  <div class="legal-hero">
+    <h1>Basın &amp; Medya</h1>
+    <p style="color:rgba(230,220,200,.7);font-size:.9rem;margin-top:.5rem">Medya, röportaj ve iş birliği talepleri için</p>
+  </div>
+  <div class="legal-body">
+    <h2>Biz Kimiz?</h2>
+    <p>Akgül Yayınevi, 2020 yılında Adana'da kurulan bağımsız bir yayınevidir. Roman, şiir, deneme, çocuk kitabı ve akademik eserler yayınlayan yayınevimiz; yerli yazarlara ses vermeyi ve Türk okuyucusuna kaliteli, özgün eserler sunmayı hedeflemektedir.</p>
+    <h2>Basın Kiti</h2>
+    <p>Logo dosyaları, yayınevi tanıtım metni, yönetici biyografileri ve yüksek çözünürlüklü görseller için:</p>
+    <p><a onclick="window.location.href='mailto:akgulyayinevi@gmail.com?subject=Basın Kiti Talebi'" style="color:var(--gold);cursor:pointer;font-weight:600">akgulyayinevi@gmail.com</a> adresine "Basın Kiti Talebi" konusuyla e-posta gönderebilirsiniz.</p>
+    <h2>Medya İletişim</h2>
+    <p>Röportaj, etkinlik daveti ve medya iş birlikleri için:</p>
+    <ul>
+      <li><strong>E-posta:</strong> akgulyayinevi@gmail.com</li>
+      <li><strong>WhatsApp:</strong> <a href="https://wa.me/905366483096" target="_blank" rel="noopener" style="color:var(--gold)">+90 536 648 30 96</a></li>
+    </ul>
+    <h2>Yayın Takvimi</h2>
+    <p>Yaklaşan kitap lansmanları ve etkinlikler hakkında bilgi almak için bültenimize abone olun veya <a onclick="go('blog')" style="color:var(--gold);cursor:pointer">Akgül Gazetesi</a>'ni takip edin.</p>
+    <h2>Röportaj Talebi</h2>
+    <form class="contact-form" style="margin-top:1rem" id="pressForm" onsubmit="submitPressForm(event)">
+      <div class="cf-row">
+        <input class="cf-input" id="prName" type="text" placeholder="Adınız Soyadınız *" maxlength="100" required>
+        <input class="cf-input" id="prOrg" type="text" placeholder="Yayın Organı / Kurum *" maxlength="150" required>
+      </div>
+      <div class="cf-row">
+        <input class="cf-input" id="prEmail" type="email" placeholder="E-posta *" maxlength="150" required>
+        <input class="cf-input" id="prPhone" type="tel" placeholder="Telefon (opsiyonel)" maxlength="20">
+      </div>
+      <textarea class="cf-input cf-textarea" id="prMessage" placeholder="Talep veya röportaj konusu hakkında kısa bilgi *" maxlength="1000" required></textarea>
+      <button type="submit" class="cf-btn" id="prSubmitBtn">Talebi Gönder</button>
+    </form>
+    <div class="legal-updated">Son güncelleme: Mayıs 2025</div>
+  </div>
+</div>
+
+<!-- ═══════════ SİPARİŞ SORGULA ═══════════ -->
+<div class="page" id="page-siparis-sorgula">
+  <div class="legal-hero">
+    <h1>Sipariş Sorgula</h1>
+    <p style="color:rgba(230,220,200,.7);font-size:.9rem;margin-top:.5rem">Sipariş numaranızla durumunuzu öğrenin</p>
+  </div>
+  <div style="max-width:560px;margin:0 auto;padding:3rem 1.5rem 5rem">
+    <div class="ord-query-box">
+      <label style="display:block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Sipariş Numarası</label>
+      <div style="display:flex;gap:.6rem">
+        <input type="text" id="ordQueryInp" class="cf-input" placeholder="ÖRN: ORD-20240101-XXXX" style="flex:1" oninput="clearOrdQuery()" onkeydown="if(event.key==='Enter')queryOrder()">
+        <button onclick="queryOrder()" style="background:var(--gold);color:var(--ink);border:none;border-radius:8px;padding:.7rem 1.25rem;font-weight:700;font-size:.85rem;cursor:pointer;white-space:nowrap">Sorgula</button>
+      </div>
+      <div id="ordQueryResult" style="margin-top:1.25rem"></div>
+    </div>
+    <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:2rem">Sipariş numaranız WhatsApp onay mesajında yer alır.<br>Bulamazsanız <a onclick="go('home');setTimeout(()=>sid('contact-sec')?.scrollIntoView({behavior:'smooth'}),300)" style="color:var(--gold);cursor:pointer">bize ulaşın</a>.</p>
+  </div>
+</div>
+
 <!-- ═══════════ AUTH ═══════════ -->
 <div class="page" id="page-auth">
   <div class="auth-split">
@@ -5266,6 +5425,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a onclick="go('ai-oneri')">AI Kitap Öneri</a></li>
         <li><a onclick="go('eser-basvuru')">Eser Başvuru</a></li>
         <li><a onclick="go('about')">Hakkımızda</a></li>
+        <li><a onclick="go('siparis-sorgula')">Sipariş Sorgula</a></li>
+        <li><a onclick="go('toplu-siparis')">Toplu Sipariş</a></li>
+        <li><a onclick="go('basin-medya')">Basın &amp; Medya</a></li>
       </ul>
     </div>
 
@@ -5343,6 +5505,19 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           Yerli Yayıncı
         </div>
       </div>
+    </div>
+  </div>
+  <!-- E-bülten -->
+  <div class="ft-newsletter-bar">
+    <div class="ft-nl-inner">
+      <div class="ft-nl-text">
+        <strong>E-Bültenimize Abone Olun</strong>
+        <span>Yeni kitaplar, etkinlikler ve indirimler için</span>
+      </div>
+      <form class="ft-nl-form" onsubmit="submitNewsletter(event)">
+        <input class="ft-nl-inp" id="ftNlEmail" type="email" placeholder="E-posta adresiniz" maxlength="150" required>
+        <button class="ft-nl-btn" type="submit">Abone Ol</button>
+      </form>
     </div>
   </div>
   <div class="ft-legal-links" style="max-width:1200px;margin:0 auto;padding:.4rem 2rem .8rem">
@@ -5430,6 +5605,26 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="chk-field">
           <label>Sipariş Notu <span class="opt">(opsiyonel)</span></label>
           <textarea id="chkNote" placeholder="Kargo veya sipariş ile ilgili notunuz…" style="min-height:44px"></textarea>
+        </div>
+        <!-- Havale/IBAN bilgisi -->
+        <div class="chk-iban-box">
+          <div class="chk-iban-title">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            Ödeme Bilgileri
+          </div>
+          <div class="chk-iban-body">
+            <p>Siparişiniz <strong>WhatsApp</strong> üzerinden onaylandıktan sonra aşağıdaki hesaba havale/EFT yapabilirsiniz:</p>
+            <div class="chk-iban-row"><span class="chk-iban-lbl">Banka</span><span id="ibanBank">Ziraat Bankası</span></div>
+            <div class="chk-iban-row"><span class="chk-iban-lbl">Ad Soyad</span><span id="ibanName">Ömer Faruk Akgül</span></div>
+            <div class="chk-iban-row">
+              <span class="chk-iban-lbl">IBAN</span>
+              <span id="ibanNo" style="font-family:monospace;letter-spacing:.05em">TR00 0000 0000 0000 0000 0000 00</span>
+              <button class="chk-iban-copy" onclick="copyIban()" title="Kopyala">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+            </div>
+            <p style="font-size:.72rem;color:var(--muted);margin-top:.5rem">Açıklama kısmına <strong>sipariş numaranızı</strong> yazmayı unutmayın.</p>
+          </div>
         </div>
         <button class="chk-btn primary" onclick="submitOrder()">
           <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.09a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -5685,6 +5880,9 @@ async function fetchServerData(){
       if(data.settings.waPhone)WA_PHONE=data.settings.waPhone;
       if(data.settings.freeShip)FREE_SHIP=data.settings.freeShip;
       if(data.settings.shipCost)SHIP_COST=data.settings.shipCost;
+      if(data.settings.ibanBank){const el=sid('ibanBank');if(el)el.textContent=data.settings.ibanBank;}
+      if(data.settings.ibanName){const el=sid('ibanName');if(el)el.textContent=data.settings.ibanName;}
+      if(data.settings.ibanNo){const el=sid('ibanNo');if(el)el.firstChild.textContent=data.settings.ibanNo;}
     }
     if(data.editorPick&&data.editorPick.length){
       localStorage.setItem('akgulEditorPick',JSON.stringify(data.editorPick));
@@ -5783,6 +5981,9 @@ const _SEO_TITLES={
   'surpriz-kutu':'Sürpriz Kutu | Akgül Yayınevi',
   'profile':'Hesabım | Akgül Yayınevi',
   'wishlist':'İstek Listem | Akgül Yayınevi',
+  'siparis-sorgula':'Sipariş Sorgula | Akgül Yayınevi',
+  'toplu-siparis':'Toplu Sipariş | Akgül Yayınevi',
+  'basin-medya':'Basın & Medya | Akgül Yayınevi',
 };
 function go(page){
   closeNav();
@@ -6075,8 +6276,13 @@ function bookAspect(fmt){return{square:'1/1',landscape:'4/3'}[fmt||'']||'2/3'}
 function renderBooks(filter){
   const g=sid('booksGrid');if(!g)return;
   const _hideOOS=JSON.parse(localStorage.getItem('akgulSettings')||'{}').hideOutOfStock;
-  let list=filter==='all'?books:books.filter(b=>b.cat===filter);
+  let list=filter==='all'?[...books]:books.filter(b=>b.cat===filter);
   if(_hideOOS)list=list.filter(b=>b.stock!==0);
+  const s=currentSort||'default';
+  if(s==='newest')list.sort((a,b)=>(b.id||0)-(a.id||0));
+  else if(s==='price_asc')list.sort((a,b)=>(parseFloat(a.price)||0)-(parseFloat(b.price)||0));
+  else if(s==='price_desc')list.sort((a,b)=>(parseFloat(b.price)||0)-(parseFloat(a.price)||0));
+  else if(s==='alpha')list.sort((a,b)=>(a.title||'').localeCompare(b.title||'','tr'));
   if(!list.length){g.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--muted);padding:3rem">Bu kategoride henüz kitap yok.</p>';return}
   g.innerHTML=list.map(b=>{
     if(!Array.isArray(b.reviews))b.reviews=[];
@@ -6112,7 +6318,9 @@ function renderBooks(filter){
     </div>`}).join('');
 }
 let currentFilter='all';
+let currentSort='default';
 function fcat(el,cat){currentFilter=cat;document.querySelectorAll('.fcat').forEach(b=>b.classList.remove('act'));el.classList.add('act');renderBooks(cat)}
+function booksSort(val){currentSort=val;renderBooks(currentFilter)}
 function filterAndScroll(cat){
   const btn=[...document.querySelectorAll('.fcat')].find(b=>b.getAttribute('onclick')&&b.getAttribute('onclick').includes(`'${cat}'`));
   if(btn)fcat(btn,cat);
@@ -6893,6 +7101,7 @@ function openModal(id){
         Paylaş
       </button>
     </div>
+    ${(()=>{const similar=books.filter(x=>x.id!==b.id&&x.cat===b.cat&&x.stock!==0).sort(()=>Math.random()-.5).slice(0,4);return similar.length?`<div class="similar-books"><div class="similar-title">Benzer Kitaplar</div><div class="similar-grid">${similar.map(s=>`<div class="similar-card" onclick="closeMod();setTimeout(()=>openModal(${s.id}),60)"><div class="similar-cover">${s.cover?`<img src="${escHtml(s.cover)}" alt="${escHtml(s.title)}" style="width:100%;height:100%;object-fit:cover;border-radius:4px">`:bookCoverSvg(s)}</div><div class="similar-meta"><div class="similar-name">${escHtml(s.title)}</div><div class="similar-auth">${escHtml(s.author)}</div><div class="similar-price">₺${s.price}</div></div></div>`).join('')}</div></div>`:'';})()}
     <div class="review-form">
       <h4>Yorum Yap <small>(puan ver ve paylaş)</small></h4>
       ${currentUser?`
@@ -6924,6 +7133,12 @@ function openModal(id){
   history.pushState({overlay:'modal'},'',location.href);
 }
 function closeMod(){sid('moverlay').classList.remove('on');document.body.style.overflow='';_setOgMeta();}
+function copyIban(){
+  const iban=(sid('ibanNo')?.textContent||'').replace(/\s/g,'');
+  if(!iban)return;
+  navigator.clipboard.writeText(iban).then(()=>toast('IBAN kopyalandı!')).catch(()=>toast('Kopyalanamadı'));
+}
+
 function shareBook(id){
   const b=books.find(x=>x.id===id);if(!b)return;
   const txt=`📖 "${b.title}" — ${b.author}\nAkgül Yayınevi'nden incele: https://akgulyayinevi.com`;
@@ -8003,6 +8218,32 @@ function closeCheckout(){
   document.body.style.overflow='';
 }
 
+function queryOrder(){
+  const q=(sid('ordQueryInp')?.value||'').trim();
+  const res=sid('ordQueryResult');
+  if(!res)return;
+  if(!q){res.innerHTML='<div style="color:#C0392B;font-size:.82rem">Lütfen sipariş numarası girin.</div>';return;}
+  const orders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
+  const o=orders.find(x=>(x.id||'').toLowerCase()===q.toLowerCase());
+  if(!o){
+    res.innerHTML=`<div style="text-align:center;padding:1.5rem;background:var(--cream);border-radius:8px;border:1px solid var(--border)"><div style="font-size:2rem;margin-bottom:.5rem;opacity:.35">📦</div><div style="font-size:.85rem;color:var(--muted)">Bu numarayla sipariş bulunamadı.<br>Numarayı kontrol edin veya bize ulaşın.</div></div>`;
+    return;
+  }
+  const statusColor={'Tamamlandı':'#2e7d32','Kargoda':'#1565c0','Hazırlanıyor':'#e65100','İptal':'#c62828'}[o.status]||'#555';
+  const kargoRow=o.kargo?.takipNo?`<div class="ord-query-result-row"><span class="ord-query-lbl">Kargo</span><span><strong>${escHtml(o.kargo.firma||'')}</strong> — Takip: <span style="font-family:monospace;color:var(--gold)">${escHtml(o.kargo.takipNo)}</span></span></div>`:'';
+  res.innerHTML=`<div style="background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:1.1rem 1.25rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:.5rem;flex-wrap:wrap">
+      <span style="font-family:monospace;font-size:.82rem;color:var(--muted)">${escHtml(o.id)}</span>
+      <span style="background:${statusColor};color:#fff;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px">${escHtml(o.status||'?')}</span>
+    </div>
+    <div class="ord-query-result-row"><span class="ord-query-lbl">Kitap</span><span style="font-weight:500">${escHtml(o.book)}</span></div>
+    <div class="ord-query-result-row"><span class="ord-query-lbl">Tarih</span><span>${escHtml(o.date)}</span></div>
+    <div class="ord-query-result-row"><span class="ord-query-lbl">Tutar</span><span style="font-weight:700;color:var(--gold)">₺${o.total}</span></div>
+    ${kargoRow}
+  </div>`;
+}
+function clearOrdQuery(){const r=sid('ordQueryResult');if(r)r.innerHTML='';}
+
 function submitOrder(){
   const name=(sid('chkName')?.value||'').trim();
   const phone=(sid('chkPhone')?.value||'').trim();
@@ -8691,11 +8932,13 @@ function renderOkurContents(){
   const ordBadge=s=>s==='Tamamlandı'?'done':s==='Kargoda'?'ship':s==='Hazırlanıyor'?'proc':'canc';
   const ordersHtml=myOrders.length
     ?myOrders.map(o=>{
-      const kargoHtml=o.kargo?.takipNo?`<div style="margin-top:.5rem;display:flex;align-items:center;gap:.5rem;font-size:.76rem;color:var(--muted)">
+      const _kUrl=(f,n)=>{const fl=(f||'').toLowerCase();const ne=encodeURIComponent(n);if(fl.includes('mng'))return`https://www.mngkargo.com.tr/irsaliye-sorgula?barcode=${ne}`;if(fl.includes('yurt'))return`https://www.yurticikargo.com/tr/online-islemler/gonderi-sorgula?code=${ne}`;if(fl.includes('aras'))return`https://www.araskargo.com.tr/en/track?documentNo=${ne}`;if(fl.includes('ptt'))return`https://www.ptt.gov.tr/tr/gonderi-takip?id=${ne}`;if(fl.includes('s\xFCrat')||fl.includes('surat'))return`https://www.suratkargo.com.tr/KargoneredeContent.aspx?no=${ne}`;return'';};
+      const kargoHtml=o.kargo?.takipNo?(()=>{const url=_kUrl(o.kargo.firma,o.kargo.takipNo);return`<div style="margin-top:.5rem;display:flex;align-items:center;gap:.5rem;font-size:.76rem;color:var(--muted);flex-wrap:wrap">
         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
         <strong style="color:var(--ink)">${escHtml(o.kargo.firma||'Kargo')}</strong>
         — Takip No: <span style="font-family:monospace;color:var(--gold);font-weight:600">${escHtml(o.kargo.takipNo)}</span>
-      </div>`:'';
+        ${url?`<a href="${url}" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:underline;font-size:.72rem;margin-left:.2rem">Takip Et →</a>`:''}
+      </div>`;})():'';
       return `<div class="ord-row">
         <div class="ord-row-head">
           <span class="ord-num">${escHtml(o.id)}</span>
@@ -12789,6 +13032,75 @@ function askidaWaitlistJoin(){
   }
   const row=document.getElementById('ask-wl-row');
   if(row)row.innerHTML='<div style="color:#4ecb87;font-size:.82rem;margin-top:.85rem">✓ Kitap geldiğinde bilgilendireceğiz!</div>';
+}
+
+function submitContactForm(e){
+  e.preventDefault();
+  const name=sid('cfName').value.trim();
+  const email=sid('cfEmail').value.trim();
+  const subject=sid('cfSubject').value.trim();
+  const message=sid('cfMessage').value.trim();
+  if(!name||!email||!message){toast('Ad, e-posta ve mesaj gerekli');return;}
+  const btn=sid('cfSubmitBtn');
+  btn.disabled=true;btn.textContent='Gönderiliyor...';
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'add_contact_message',name,email,subject,message})})
+  .then(r=>r.json()).then(d=>{
+    if(d.success){
+      toast('Mesajınız iletildi, en kısa sürede dönüş yapacağız!');
+      sid('contactForm').reset();
+    } else {
+      toast(d.error||'Bir hata oluştu');
+    }
+  }).catch(()=>toast('Bağlantı hatası, lütfen tekrar deneyin'))
+  .finally(()=>{btn.disabled=false;btn.textContent='Mesaj Gönder';});
+}
+
+function submitBulkOrder(e){
+  e.preventDefault();
+  const name=sid('boName').value.trim(),org=sid('boOrg').value.trim(),email=sid('boEmail').value.trim(),phone=sid('boPhone').value.trim(),books2=sid('boBooks').value.trim(),note=sid('boNote').value.trim();
+  const btn=sid('boSubmitBtn');btn.disabled=true;btn.textContent='Gönderiliyor...';
+  const subject=`Toplu sipariş talebi: ${org}`;
+  const message=`Kurum: ${org}\nTelefon: ${phone}\nKitaplar: ${books2}\n\n${note}`;
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'add_contact_message',name,email,subject,message})})
+  .then(r=>r.json()).then(d=>{
+    if(d.success){toast('Talebiniz alındı! En kısa sürede size dönüş yapacağız.');sid('bulkOrderForm').reset();}
+    else toast(d.error||'Bir hata oluştu');
+  }).catch(()=>toast('Bağlantı hatası'))
+  .finally(()=>{btn.disabled=false;btn.textContent='Teklif İste';});
+}
+
+function submitPressForm(e){
+  e.preventDefault();
+  const name=sid('prName').value.trim(),org=sid('prOrg').value.trim(),email=sid('prEmail').value.trim(),phone=sid('prPhone').value.trim(),message=sid('prMessage').value.trim();
+  const btn=sid('prSubmitBtn');btn.disabled=true;btn.textContent='Gönderiliyor...';
+  const subject=`Basın / Röportaj talebi: ${org}`;
+  const fullMsg=`Yayın organı: ${org}\nTelefon: ${phone||'—'}\n\n${message}`;
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'add_contact_message',name,email,subject,message:fullMsg})})
+  .then(r=>r.json()).then(d=>{
+    if(d.success){toast('Talebiniz alındı!');sid('pressForm').reset();}
+    else toast(d.error||'Bir hata oluştu');
+  }).catch(()=>toast('Bağlantı hatası'))
+  .finally(()=>{btn.disabled=false;btn.textContent='Talebi Gönder';});
+}
+
+function submitNewsletter(e){
+  e.preventDefault();
+  const emailEl=sid('ftNlEmail');
+  const email=emailEl.value.trim();
+  if(!email){toast('Lütfen e-posta adresinizi girin');return;}
+  const btn=e.target.querySelector('.ft-nl-btn');
+  btn.disabled=true;btn.textContent='...';
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({action:'add_newsletter',email})})
+  .then(r=>r.json()).then(d=>{
+    if(d.already){toast('Bu e-posta zaten aboneler listesinde!');return;}
+    if(d.success){toast('Abone oldunuz! Haberdar edileceksiniz.');emailEl.value='';}
+    else toast(d.error||'Bir hata oluştu');
+  }).catch(()=>toast('Bağlantı hatası'))
+  .finally(()=>{btn.disabled=false;btn.textContent='Abone Ol';});
 }
 
 function askidaShareBadge(title){

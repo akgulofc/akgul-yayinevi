@@ -49,9 +49,11 @@ function loadSync($url, $hdrs) {
     if (!isset($data['content']))      $data['content']      = [];
     if (!isset($data['specialPages'])) $data['specialPages'] = [];
     if (!isset($data['applications']))   $data['applications']   = [];
-    if (!isset($data['blogComments']))   $data['blogComments']   = [];
-    if (!isset($data['wishlistItems']))  $data['wishlistItems']  = [];
-    if (!isset($data['askidaWaitlist'])) $data['askidaWaitlist'] = [];
+    if (!isset($data['blogComments']))      $data['blogComments']      = [];
+    if (!isset($data['wishlistItems']))     $data['wishlistItems']     = [];
+    if (!isset($data['askidaWaitlist']))    $data['askidaWaitlist']    = [];
+    if (!isset($data['contactMessages']))   $data['contactMessages']   = [];
+    if (!isset($data['newsletter']))        $data['newsletter']        = [];
     return [$data, $d['sha'] ?? null];
 }
 
@@ -248,13 +250,50 @@ if ($action === 'add_askida_waitlist') {
     exit;
 }
 
+/* ── add_contact_message: iletişim formu mesajı kaydet (auth gerekmez) ── */
+if ($action === 'add_contact_message') {
+    $name    = substr(strip_tags($body['name']    ?? ''), 0, 100);
+    $email   = strtolower(trim($body['email']  ?? ''));
+    $subject = substr(strip_tags($body['subject'] ?? ''), 0, 150);
+    $message = substr(strip_tags($body['message'] ?? ''), 0, 2000);
+    if (!$name || !$email || !$message) { http_response_code(400); echo json_encode(['error' => 'Ad, e-posta ve mesaj gerekli']); exit; }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { http_response_code(400); echo json_encode(['error' => 'Geçersiz e-posta']); exit; }
+    [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
+    $entry = ['name' => $name, 'email' => $email, 'subject' => $subject, 'message' => $message, 'date' => date('j.n.Y H:i'), 'read' => false];
+    array_unshift($sync['contactMessages'], $entry);
+    if (count($sync['contactMessages']) > 200) $sync['contactMessages'] = array_slice($sync['contactMessages'], 0, 200);
+    if (!saveSync($syncUrl, $ghHdrs, $sync, $sha, "İletişim: {$name} ({$email})")) {
+        http_response_code(500); echo json_encode(['error' => 'Kaydetme hatası']); exit;
+    }
+    echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+/* ── add_newsletter: bülten aboneliği (auth gerekmez) ── */
+if ($action === 'add_newsletter') {
+    $email = strtolower(trim($body['email'] ?? ''));
+    $name  = substr(strip_tags($body['name'] ?? ''), 0, 100);
+    if (!$email) { http_response_code(400); echo json_encode(['error' => 'E-posta gerekli']); exit; }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) { http_response_code(400); echo json_encode(['error' => 'Geçersiz e-posta']); exit; }
+    [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
+    foreach ($sync['newsletter'] as $n) {
+        if (strtolower($n['email'] ?? '') === $email) { echo json_encode(['success' => true, 'already' => true], JSON_UNESCAPED_UNICODE); exit; }
+    }
+    $sync['newsletter'][] = ['email' => $email, 'name' => $name, 'date' => date('j.n.Y')];
+    if (!saveSync($syncUrl, $ghHdrs, $sync, $sha, "Bülten: {$email}")) {
+        http_response_code(500); echo json_encode(['error' => 'Kaydetme hatası']); exit;
+    }
+    echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 /* ── admin_save: admin herhangi bir veriyi kaydeder ── */
 if (!$isAdmin) { http_response_code(401); echo json_encode(['error' => 'Yetkisiz']); exit; }
 
 if ($action === 'admin_save') {
     $key   = $body['key']   ?? '';
     $value = $body['value'] ?? null;
-    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages', 'pressProcess', 'applications', 'blogComments', 'wishlistItems', 'askidaWaitlist'];
+    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages', 'pressProcess', 'applications', 'blogComments', 'wishlistItems', 'askidaWaitlist', 'contactMessages', 'newsletter'];
     if (!in_array($key, $allowed, true)) { http_response_code(400); echo json_encode(['error' => 'Geçersiz key']); exit; }
     [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
     $sync[$key] = $value;
