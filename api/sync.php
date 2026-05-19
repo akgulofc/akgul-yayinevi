@@ -48,7 +48,10 @@ function loadSync($url, $hdrs) {
     if (!isset($data['editorPick']))   $data['editorPick']   = [];
     if (!isset($data['content']))      $data['content']      = [];
     if (!isset($data['specialPages'])) $data['specialPages'] = [];
-    if (!isset($data['applications'])) $data['applications'] = [];
+    if (!isset($data['applications']))   $data['applications']   = [];
+    if (!isset($data['blogComments']))   $data['blogComments']   = [];
+    if (!isset($data['wishlistItems']))  $data['wishlistItems']  = [];
+    if (!isset($data['askidaWaitlist'])) $data['askidaWaitlist'] = [];
     return [$data, $d['sha'] ?? null];
 }
 
@@ -189,13 +192,69 @@ if ($action === 'claim_askida') {
     exit;
 }
 
+/* ── add_blog_comment: blog yorumu ekle (auth gerekmez) ── */
+if ($action === 'add_blog_comment') {
+    $postId  = trim($body['postId'] ?? '');
+    $comment = $body['comment'] ?? null;
+    if (!$postId || !$comment || !($comment['t'] ?? '')) { http_response_code(400); echo json_encode(['error' => 'Yorum verisi eksik']); exit; }
+    $safe = [
+        'u' => substr(strip_tags($comment['u'] ?? 'Anonim'), 0, 80),
+        't' => substr(strip_tags($comment['t'] ?? ''), 0, 600),
+        'd' => date('j.n.Y'),
+    ];
+    [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
+    if (!isset($sync['blogComments'][$postId])) $sync['blogComments'][$postId] = [];
+    $sync['blogComments'][$postId][] = $safe;
+    if (count($sync['blogComments'][$postId]) > 100) $sync['blogComments'][$postId] = array_slice($sync['blogComments'][$postId], -100);
+    if (!saveSync($syncUrl, $ghHdrs, $sync, $sha, "Blog yorum: {$postId}")) {
+        http_response_code(500); echo json_encode(['error' => 'Kaydetme hatası']); exit;
+    }
+    echo json_encode(['success' => true, 'comments' => $sync['blogComments'][$postId]], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+/* ── wishlist_sync: favorileri kaydet/sil (token auth) ── */
+if ($action === 'wishlist_sync') {
+    $email = strtolower(trim($body['email'] ?? ''));
+    $token = trim($body['token'] ?? '');
+    $ids   = $body['ids'] ?? null;
+    if (!$email || !$token || !is_array($ids)) { http_response_code(400); echo json_encode(['error' => 'Eksik parametre']); exit; }
+    if (!verifyToken($email, $token, $ADMIN_SECRET)) { http_response_code(401); echo json_encode(['error' => 'Oturum süresi doldu']); exit; }
+    [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
+    $sync['wishlistItems'][$email] = array_values(array_filter($ids, 'is_numeric'));
+    if (!saveSync($syncUrl, $ghHdrs, $sync, $sha, "Wishlist: {$email}")) {
+        http_response_code(500); echo json_encode(['error' => 'Kaydetme hatası']); exit;
+    }
+    echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+/* ── add_askida_waitlist: askıda bekleme listesi (token auth) ── */
+if ($action === 'add_askida_waitlist') {
+    $email = strtolower(trim($body['email'] ?? ''));
+    $token = trim($body['token'] ?? '');
+    $name  = substr(strip_tags($body['name'] ?? ''), 0, 100);
+    if (!$email || !$token || !$name) { http_response_code(400); echo json_encode(['error' => 'Eksik parametre']); exit; }
+    if (!verifyToken($email, $token, $ADMIN_SECRET)) { http_response_code(401); echo json_encode(['error' => 'Oturum süresi doldu']); exit; }
+    [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
+    foreach ($sync['askidaWaitlist'] as $w) {
+        if (strtolower($w['email'] ?? '') === $email) { echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE); exit; }
+    }
+    $sync['askidaWaitlist'][] = ['email' => $email, 'name' => $name, 'date' => date('j.n.Y')];
+    if (!saveSync($syncUrl, $ghHdrs, $sync, $sha, "Askıda waitlist: {$email}")) {
+        http_response_code(500); echo json_encode(['error' => 'Kaydetme hatası']); exit;
+    }
+    echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 /* ── admin_save: admin herhangi bir veriyi kaydeder ── */
 if (!$isAdmin) { http_response_code(401); echo json_encode(['error' => 'Yetkisiz']); exit; }
 
 if ($action === 'admin_save') {
     $key   = $body['key']   ?? '';
     $value = $body['value'] ?? null;
-    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages', 'pressProcess', 'applications'];
+    $allowed = ['orders', 'cekilis', 'askida', 'settings', 'editorPick', 'content', 'specialPages', 'pressProcess', 'applications', 'blogComments', 'wishlistItems', 'askidaWaitlist'];
     if (!in_array($key, $allowed, true)) { http_response_code(400); echo json_encode(['error' => 'Geçersiz key']); exit; }
     [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
     $sync[$key] = $value;

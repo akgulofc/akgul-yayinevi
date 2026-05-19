@@ -41,6 +41,15 @@ function gh_put($url, $headers, $data) {
     return ['code' => $code, 'body' => $res];
 }
 
+function verifyPass($plain, $stored) {
+    // Yeni format: password_hash ile hashlenmiş
+    if (strpos($stored, '$2y$') === 0 || strpos($stored, '$2a$') === 0) {
+        return password_verify($plain, $stored);
+    }
+    // Eski format: düz metin (migration için)
+    return $plain === $stored;
+}
+
 $r       = gh_get($apiUrl, $ghHeaders);
 $users   = [];
 $fileSha = null;
@@ -51,31 +60,61 @@ if ($r['code'] === 200) {
 }
 
 if ($action === 'login') {
-    $email = $body['email'] ?? '';
-    $pass  = $body['pass']  ?? '';
+    $email = strtolower(trim($body['email'] ?? ''));
+    $pass  = $body['pass'] ?? '';
     if (!$email || !$pass) { http_response_code(400); echo json_encode(['error' => 'E-posta ve şifre gerekli']); exit; }
+
     $found = null;
-    foreach ($users as $u) {
-        if (strtolower($u['email']) === strtolower($email) && $u['pass'] === $pass) { $found = $u; break; }
+    $foundIdx = -1;
+    foreach ($users as $i => $u) {
+        if (strtolower($u['email'] ?? '') === $email && verifyPass($pass, $u['pass'] ?? '')) {
+            $found = $u;
+            $foundIdx = $i;
+            break;
+        }
     }
     if (!$found) { http_response_code(401); echo json_encode(['error' => 'E-posta veya şifre hatalı']); exit; }
-    unset($found['pass']);
+
+    // Düz metin şifreyi hash'e migrate et
+    if (strpos($found['pass'], '$2y$') !== 0 && strpos($found['pass'], '$2a$') !== 0) {
+        $users[$foundIdx]['pass'] = password_hash($pass, PASSWORD_BCRYPT);
+        $putData = [
+            'message'   => "Şifre hash migrasyon: {$email}",
+            'content'   => base64_encode(json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)),
+            'committer' => ['name' => 'Akgül System', 'email' => 'akgulyayinevi@gmail.com'],
+            'sha'       => $fileSha,
+        ];
+        gh_put($apiUrl, $ghHeaders, $putData);
+    }
+
     $token = hash('sha256', strtolower($email) . '|' . date('Y-m-d') . '|' . $ADMIN_SECRET);
-    echo json_encode(['user' => $found, 'token' => $token], JSON_UNESCAPED_UNICODE);
+    $safe  = $found;
+    unset($safe['pass']);
+    echo json_encode(['user' => $safe, 'token' => $token], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 if ($action === 'register') {
-    $name  = $body['name']   ?? '';
-    $email = $body['email']  ?? '';
-    $pass  = $body['pass']   ?? '';
+    $name  = trim($body['name']  ?? '');
+    $email = strtolower(trim($body['email'] ?? ''));
+    $pass  = $body['pass'] ?? '';
     if (!$name || !$email || !$pass) { http_response_code(400); echo json_encode(['error' => 'Ad, e-posta ve şifre gerekli']); exit; }
     foreach ($users as $u) {
-        if (strtolower($u['email']) === strtolower($email)) { http_response_code(409); echo json_encode(['error' => 'Bu e-posta zaten kayıtlı']); exit; }
+        if (strtolower($u['email'] ?? '') === $email) { http_response_code(409); echo json_encode(['error' => 'Bu e-posta zaten kayıtlı']); exit; }
     }
-    $newUser = ['name' => $name, 'email' => $email, 'pass' => $pass, 'role' => $body['role'] ?? 'okur', 'joined' => $body['joined'] ?? date('Y-m-d')];
+    $newUser = [
+        'name'   => $name,
+        'email'  => $email,
+        'pass'   => password_hash($pass, PASSWORD_BCRYPT),
+        'role'   => $body['role'] ?? 'okur',
+        'joined' => $body['joined'] ?? date('Y-m-d'),
+    ];
     $users[] = $newUser;
-    $putData = ['message' => "Yeni üye: {$name}", 'content' => base64_encode(json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)), 'committer' => ['name' => 'Akgül System', 'email' => 'akgulyayinevi@gmail.com']];
+    $putData = [
+        'message'   => "Yeni üye: {$name}",
+        'content'   => base64_encode(json_encode($users, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)),
+        'committer' => ['name' => 'Akgül System', 'email' => 'akgulyayinevi@gmail.com'],
+    ];
     if ($fileSha) $putData['sha'] = $fileSha;
     gh_put($apiUrl, $ghHeaders, $putData);
     unset($newUser['pass']);
