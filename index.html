@@ -2090,14 +2090,25 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .psb-val{font-family:var(--font-serif);font-size:1.35rem;font-weight:700;color:var(--white);display:block}
 .psb-lbl{font-size:.6rem;text-transform:uppercase;letter-spacing:.12em;color:rgba(200,169,110,.6);margin-top:.15rem;display:block}
 .psb-divider{width:1px;height:28px;background:rgba(200,169,110,.2)}
-.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1rem;margin-top:1rem}
-.badge-item{background:var(--cream);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;transition:all .2s}
-.badge-item:not(.locked):hover{border-color:var(--gold);transform:translateY(-2px)}
-.badge-item.locked{opacity:.42;filter:grayscale(1)}
-.badge-icon{font-size:1.8rem;display:block;margin-bottom:.5rem}
-.badge-name{font-size:.82rem;font-weight:700;color:var(--ink);font-family:var(--font-serif)}
-.badge-desc{font-size:.67rem;color:var(--muted);margin-top:.2rem;line-height:1.4}
-.badge-earned{font-size:.6rem;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;margin-top:.35rem}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:1rem;margin-top:1rem}
+.badge-item{background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:1.1rem .9rem;text-align:center;transition:all .22s;position:relative;overflow:hidden}
+.badge-item:not(.locked):hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 6px 20px rgba(200,169,110,.15)}
+.badge-item.locked{opacity:.38;filter:grayscale(1)}
+.badge-item.earned{border-color:rgba(200,169,110,.45);background:linear-gradient(135deg,rgba(200,169,110,.06),rgba(200,169,110,.02))}
+.badge-item.earned::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,169,110,.08) 0%,transparent 60%);pointer-events:none}
+.badge-icon{font-size:2rem;display:block;margin-bottom:.55rem;line-height:1}
+.badge-name{font-size:.84rem;font-weight:700;color:var(--ink);font-family:var(--font-serif)}
+.badge-desc{font-size:.66rem;color:var(--muted);margin-top:.25rem;line-height:1.45}
+.badge-req{font-size:.62rem;color:rgba(200,169,110,.7);margin-top:.3rem;font-style:italic}
+.badge-earned{font-size:.58rem;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;margin-top:.4rem;font-weight:700}
+.badge-progress{margin-top:.45rem;height:3px;background:rgba(200,169,110,.15);border-radius:2px;overflow:hidden}
+.badge-progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .6s ease}
+.badge-all-done{background:linear-gradient(135deg,rgba(200,169,110,.12),rgba(200,169,110,.04));border:2px solid var(--gold);border-radius:14px;padding:1.5rem;text-align:center;margin-top:1.5rem}
+.badge-all-done-title{font-family:var(--font-serif);font-size:1.1rem;color:var(--ink);margin-bottom:.4rem}
+.badge-all-done-sub{font-size:.78rem;color:var(--muted);margin-bottom:1rem;line-height:1.5}
+.badge-coupon-reveal{display:flex;align-items:center;justify-content:center;gap:.6rem;background:var(--ink);border-radius:8px;padding:.65rem 1.1rem;cursor:pointer;user-select:none}
+.badge-coupon-code{font-family:monospace;font-size:1.05rem;font-weight:700;color:var(--gold);letter-spacing:.12em}
+.badge-coupon-hint{font-size:.65rem;color:rgba(200,169,110,.6);margin-top:.35rem}
 .bwish{position:absolute;top:7px;right:7px;z-index:3;background:rgba(255,255,255,.88);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .2s;line-height:1;padding:0}
 .bwish:hover{transform:scale(1.18)}
 .bwish.wishlisted{background:rgba(231,76,60,.13);color:#E74C3C}
@@ -5320,6 +5331,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
             <div class="admin-card-body">
               <p style="font-size:.78rem;color:var(--txt2);margin-bottom:.75rem">Her satıra bir kupon: <code style="background:rgba(200,169,110,.1);padding:1px 5px;border-radius:3px;font-size:.75rem">KOD:İNDİRİM%</code> — örn. <code style="background:rgba(200,169,110,.1);padding:1px 5px;border-radius:3px;font-size:.75rem">YAZAR10:10</code></p>
               <div class="admin-field"><label>Aktif Kuponlar</label><textarea id="set-coupons" rows="5" placeholder="YAZAR10:10&#10;KAMPANYA15:15&#10;VIP20:20" style="font-family:monospace;font-size:.82rem"></textarea></div>
+              <div class="admin-field" style="margin-top:.75rem"><label>Tüm Rozetler Kuponu <span style="font-weight:400;color:var(--txt3)">(tüm rozetleri kazanan üyeye gösterilen kod)</span></label><input id="set-allbadges-coupon" placeholder="TAMROZET50" style="font-family:monospace"></div>
               <button class="admin-submit" onclick="adminSaveCoupons()">Kuponları Kaydet</button>
             </div>
           </div>
@@ -8824,28 +8836,52 @@ function renderOkurContents(){
   const wlBooks=books.filter(b=>wl.includes(b.id));
 
   /* ── BADGES ── */
+  const myOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]').filter(o=>o.customer===currentUser.name||o.email===currentUser.email);
+  const revC=myRevs.length, wlC=wl.length, ordC=myOrders.length;
+  const _bp=(val,max)=>Math.min(100,Math.round(val/max*100));
   const allBadges=[
-    {icon:'🌱',name:'İlk Adım',desc:'Akgül Yayınevi ailesine hoş geldin',earned:true},
-    {icon:'💬',name:'İlk Yorumcum',desc:'İlk yorumunu yaptın',earned:myRevs.length>=1},
-    {icon:'📚',name:'Kitap Kurdu',desc:'3 veya daha fazla yorum yaptın',earned:myRevs.length>=3},
-    {icon:'⭐',name:'Eleştirmen',desc:'5 veya daha fazla yorum yaptın',earned:myRevs.length>=5},
-    {icon:'❤️',name:'İstek Listecim',desc:'İlk kitabını listeye ekledin',earned:wl.length>=1},
-    {icon:'🎯',name:'Koleksiyoncu',desc:'3 kitabı istek listene ekledin',earned:wl.length>=3},
+    {icon:'🌱',name:'İlk Adım',      desc:'Akgül Yayınevi ailesine hoş geldin',req:'Hesap oluştur',        earned:true,           prog:100,max:1},
+    {icon:'💬',name:'İlk Söz',       desc:'İlk kitap yorumunu yaptın',           req:'1 yorum',             earned:revC>=1,        prog:_bp(revC,1),   max:1},
+    {icon:'📖',name:'Okur',          desc:'Düzenli yorum yapan bir okursun',      req:'3 yorum',             earned:revC>=3,        prog:_bp(revC,3),   max:3},
+    {icon:'📚',name:'Kitap Kurdu',   desc:'Kitaplara olan sevgin yorumlarına yansıdı',req:'7 yorum',         earned:revC>=7,        prog:_bp(revC,7),   max:7},
+    {icon:'⭐',name:'Eleştirmen',    desc:'Kitap dünyasının gerçek sesi oldun',   req:'15 yorum',            earned:revC>=15,       prog:_bp(revC,15),  max:15},
+    {icon:'❤️',name:'Koleksiyoncu', desc:'Beğendiğin kitapları listeliyorsun',   req:'5 istek listesi',     earned:wlC>=5,         prog:_bp(wlC,5),    max:5},
+    {icon:'🛒',name:'İlk Sipariş',  desc:'Akgül Yayınevi\'nden ilk alışverişin',req:'1 sipariş',           earned:ordC>=1,        prog:_bp(ordC,1),   max:1},
+    {icon:'🏆',name:'Sadık Okur',   desc:'Akgül ailesinin vazgeçilmez bir parçasısın',req:'3 sipariş',      earned:ordC>=3,        prog:_bp(ordC,3),   max:3},
   ];
   const earnedCount=allBadges.filter(b=>b.earned).length;
+  const allDone=earnedCount===allBadges.length;
+  const couponCode=siteSettings.allBadgesCoupon||'TAMROZET50';
+  const overallPct=Math.round(earnedCount/allBadges.length*100);
   const badgesHtml=`
-    <div style="display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap">
       <div class="stat-card" style="padding:.6rem 1.2rem"><div class="stat-card-num" style="font-size:1.2rem">${earnedCount}</div><div class="stat-card-lbl" style="font-size:.65rem">Rozet</div></div>
-      <span style="font-size:.8rem;color:var(--muted)">${earnedCount} / ${allBadges.length} rozet kazanıldı</span>
+      <div style="flex:1;min-width:160px">
+        <div style="display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:.35rem"><span>${earnedCount} / ${allBadges.length} rozet kazanıldı</span><span>${overallPct}%</span></div>
+        <div style="height:5px;background:rgba(200,169,110,.15);border-radius:3px;overflow:hidden"><div style="height:100%;width:${overallPct}%;background:var(--gold);border-radius:3px;transition:width .8s ease"></div></div>
+      </div>
     </div>
-    <div class="badge-grid">${allBadges.map(bg=>`
-      <div class="badge-item${bg.earned?'':' locked'}">
+    <div class="badge-grid">${allBadges.map(bg=>{
+      const showProg=!bg.earned&&bg.prog>0&&bg.prog<100;
+      return`<div class="badge-item${bg.earned?' earned':' locked'}">
         <span class="badge-icon">${bg.icon}</span>
         <div class="badge-name">${bg.name}</div>
         <div class="badge-desc">${bg.desc}</div>
-        ${bg.earned?'<div class="badge-earned">✓ Kazanıldı</div>':'<div class="badge-earned" style="color:var(--muted)">Kilitli</div>'}
-      </div>`).join('')}
-    </div>`;
+        <div class="badge-req">${bg.req}</div>
+        ${showProg?`<div class="badge-progress"><div class="badge-progress-fill" style="width:${bg.prog}%"></div></div>`:''}
+        ${bg.earned?'<div class="badge-earned">✓ Kazanıldı</div>':''}
+      </div>`;}).join('')}
+    </div>
+    ${allDone?`<div class="badge-all-done">
+      <div class="badge-all-done-title">🎉 Tüm Rozetleri Kazandın!</div>
+      <div class="badge-all-done-sub">Akgül Yayınevi'nin en sadık okuru oldun.<br>Sana özel <strong>%50 indirim kuponu</strong>:</div>
+      <div class="badge-coupon-reveal" onclick="navigator.clipboard&&navigator.clipboard.writeText('${couponCode}').then(()=>toast('Kupon kopyalandı!'))">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="rgba(200,169,110,.7)" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span class="badge-coupon-code">${couponCode}</span>
+      </div>
+      <div class="badge-coupon-hint">Kopyalamak için tıkla · Sepette "İndirim Kodu" alanına gir</div>
+    </div>`:''}
+  `;
 
   /* ── LIBRARY (from reviews) ── */
   const libBooks=books.filter(b=>b.reviews.some(r=>r.u===currentUser.name));
@@ -9493,15 +9529,20 @@ function loadSettingsForm(){
   f('set-waphone',s.waPhone);f('set-freeship',s.freeShip);f('set-shipcost',s.shipCost);
   const ce=sid('set-coupons');
   if(ce&&Array.isArray(s.coupons))ce.value=s.coupons.map(c=>c.code+':'+c.discount).join('\n');
+  const abc=sid('set-allbadges-coupon');if(abc)abc.value=s.allBadgesCoupon||'TAMROZET50';
 }
 function adminSaveCoupons(){
   const raw=(sid('set-coupons')?.value||'').trim();
   const coupons=raw?raw.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const[code,...rest]=l.split(':');const disc=parseInt(rest.join(':'))||0;return{code:(code||'').toUpperCase().trim(),discount:disc,active:true};}).filter(c=>c.code&&c.discount>0):[];
-  siteSettings.coupons=coupons;
+  const allBadgesCoupon=((sid('set-allbadges-coupon')?.value||'').trim().toUpperCase())||'TAMROZET50';
+  const couponsWithBadge=coupons.filter(c=>c.code!==allBadgesCoupon);
+  couponsWithBadge.push({code:allBadgesCoupon,discount:50,active:true,badge:true});
+  siteSettings.coupons=couponsWithBadge;
+  siteSettings.allBadgesCoupon=allBadgesCoupon;
   localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
   fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':adminCredentials.pass},
     body:JSON.stringify({action:'admin_save',key:'settings',value:siteSettings})}).then(r=>{
-    toast(r.ok?`✦ ${coupons.length} kupon kaydedildi!`:'✦ Kuponlar yerel kaydedildi');
+    toast(r.ok?`✦ ${coupons.length} kupon + rozet kuponu kaydedildi!`:'✦ Kuponlar yerel kaydedildi');
   }).catch(()=>toast('✦ Kuponlar kaydedildi!'));
 }
 function adminChangePass(){
