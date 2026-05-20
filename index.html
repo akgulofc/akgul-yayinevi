@@ -1642,12 +1642,16 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ft-ci-val a{color:rgba(200,192,178,.72);text-decoration:none;transition:color .2s}
 .ft-ci-val a:hover{color:var(--gold)}
 
-.ft-dist-bar{border-top:1px solid rgba(200,169,110,.08);padding:1.1rem 2rem}
-.ft-dist-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;justify-content:center}
-.ft-dist-lbl{font-size:.7rem;color:rgba(200,169,110,.4);flex-shrink:0;font-weight:500;letter-spacing:.04em}
-.ft-dist-platforms{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:center}
-.ft-dist-link{display:inline-flex;align-items:center;padding:.3rem .85rem;border:1px solid rgba(200,169,110,.16);border-radius:4px;font-size:.69rem;color:rgba(200,169,110,.52);text-decoration:none;transition:all .18s;font-family:var(--font-sans);font-weight:500;letter-spacing:.03em}
-.ft-dist-link:hover{border-color:rgba(200,169,110,.45);color:var(--gold);background:rgba(200,169,110,.06)}
+.ft-dist-bar{border-top:1px solid rgba(200,169,110,.08);padding:1.2rem 2rem}
+.ft-dist-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;justify-content:center}
+.ft-dist-lbl{font-size:.68rem;color:rgba(200,169,110,.38);flex-shrink:0;font-weight:500;letter-spacing:.05em;text-transform:uppercase}
+.ft-dist-platforms{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;justify-content:center}
+.ft-dist-logo{display:inline-flex;align-items:center;gap:.4rem;padding:.38rem .9rem;border-radius:6px;font-size:.72rem;font-weight:700;text-decoration:none;transition:opacity .18s,transform .15s;letter-spacing:.02em;font-family:var(--font-sans);opacity:.82}
+.ft-dist-logo:hover{opacity:1;transform:translateY(-1px)}
+.ft-dist-logo.ky{background:#f6621d;color:#fff}
+.ft-dist-logo.dr{background:#1b3a6b;color:#fff}
+.ft-dist-logo.ix{background:#ff5500;color:#fff}
+.ft-dist-logo.px{background:#3a9e35;color:#fff}
 .ft-bottom{border-top:1px solid rgba(200,169,110,.07);padding:1.4rem 2rem}
 .ft-bottom-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 .ft-copy{font-size:.67rem;color:rgba(200,192,178,.48);letter-spacing:.04em}
@@ -5456,10 +5460,22 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <div class="ft-dist-inner">
       <span class="ft-dist-lbl">Kitaplarımız aynı zamanda burada:</span>
       <div class="ft-dist-platforms">
-        <a class="ft-dist-link" href="https://www.kitapyurdu.com/index.php?route=product/search&filter_publisher=akgul-yayinevi" target="_blank" rel="noopener">Kitapyurdu</a>
-        <a class="ft-dist-link" href="https://www.dr.com.tr/Ara/q-akgul+yayinevi" target="_blank" rel="noopener">D&amp;R</a>
-        <a class="ft-dist-link" href="https://www.idefix.com/arama?q=akgul+yayinevi" target="_blank" rel="noopener">idefix</a>
-        <a class="ft-dist-link" href="https://www.prefix.com.tr" target="_blank" rel="noopener">Prefix</a>
+        <a class="ft-dist-logo ky" href="https://www.kitapyurdu.com/index.php?route=product/search&filter_publisher=akgul-yayinevi" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor"><path d="M3 2h6v16H3zM11 2h6v16h-6z" opacity=".85"/><path d="M9 2h2v16H9z" opacity=".5"/></svg>
+          kitapyurdu
+        </a>
+        <a class="ft-dist-logo dr" href="https://www.dr.com.tr/Ara/q-akgul+yayinevi" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor"><path d="M3 3h5.5C11.5 3 14 5.5 14 10s-2.5 7-5.5 7H3V3zm3 3v8h2.5c1.7 0 2.5-1.8 2.5-4s-.8-4-2.5-4H6z"/><path d="M15 8h1.5C17.9 8 19 9 19 11s-1.1 3-2.5 3H15V8zm2 2v2h.5c.5 0 .5-.5.5-1s0-1-.5-1H17z" opacity=".9"/></svg>
+          D&amp;R
+        </a>
+        <a class="ft-dist-logo ix" href="https://www.idefix.com/arama?q=akgul+yayinevi" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor"><circle cx="10" cy="10" r="7"/><path d="M10 7v3M10 13v.5" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
+          idefix
+        </a>
+        <a class="ft-dist-logo px" href="https://www.prefix.com.tr" target="_blank" rel="noopener">
+          <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor"><path d="M3 3h5c2.2 0 4 1.8 4 4s-1.8 4-4 4H6v6H3V3zm3 3v5h2c1.1 0 1-1 1-2.5S9.1 6 8 6H6z"/></svg>
+          prefix
+        </a>
       </div>
     </div>
   </div>
