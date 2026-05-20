@@ -1642,6 +1642,12 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ft-ci-val a{color:rgba(200,192,178,.72);text-decoration:none;transition:color .2s}
 .ft-ci-val a:hover{color:var(--gold)}
 
+.ft-dist-bar{border-top:1px solid rgba(200,169,110,.08);padding:1.1rem 2rem}
+.ft-dist-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;justify-content:center}
+.ft-dist-lbl{font-size:.7rem;color:rgba(200,169,110,.4);flex-shrink:0;font-weight:500;letter-spacing:.04em}
+.ft-dist-platforms{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;justify-content:center}
+.ft-dist-link{display:inline-flex;align-items:center;padding:.3rem .85rem;border:1px solid rgba(200,169,110,.16);border-radius:4px;font-size:.69rem;color:rgba(200,169,110,.52);text-decoration:none;transition:all .18s;font-family:var(--font-sans);font-weight:500;letter-spacing:.03em}
+.ft-dist-link:hover{border-color:rgba(200,169,110,.45);color:var(--gold);background:rgba(200,169,110,.06)}
 .ft-bottom{border-top:1px solid rgba(200,169,110,.07);padding:1.4rem 2rem}
 .ft-bottom-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 .ft-copy{font-size:.67rem;color:rgba(200,192,178,.48);letter-spacing:.04em}
@@ -5445,6 +5451,19 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 
   </div>
 
+  <!-- Dağıtım Noktaları -->
+  <div class="ft-dist-bar">
+    <div class="ft-dist-inner">
+      <span class="ft-dist-lbl">Kitaplarımız aynı zamanda burada:</span>
+      <div class="ft-dist-platforms">
+        <a class="ft-dist-link" href="https://www.kitapyurdu.com/index.php?route=product/search&filter_publisher=akgul-yayinevi" target="_blank" rel="noopener">Kitapyurdu</a>
+        <a class="ft-dist-link" href="https://www.dr.com.tr/Ara/q-akgul+yayinevi" target="_blank" rel="noopener">D&amp;R</a>
+        <a class="ft-dist-link" href="https://www.idefix.com/arama?q=akgul+yayinevi" target="_blank" rel="noopener">idefix</a>
+        <a class="ft-dist-link" href="https://www.prefix.com.tr" target="_blank" rel="noopener">Prefix</a>
+      </div>
+    </div>
+  </div>
+
   <!-- Alt bar -->
   <div class="ft-bottom">
     <div class="ft-bottom-inner">
@@ -5970,9 +5989,11 @@ function go(page){
   }
   if(page==='orders'){
     _goFromHistory=true;go('profile');_goFromHistory=false;
-    const _tabs=[...document.querySelectorAll('.ptab')];
-    const _idx=_tabs.findIndex(t=>t.textContent.trim()==='Siparişlerim');
-    if(_idx>=0){ptab(_tabs[_idx],_idx);_tabs[_idx].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+    setTimeout(()=>{
+      const _tabs=[...document.querySelectorAll('.ptab')];
+      const _idx=_tabs.findIndex(t=>t.textContent.trim()==='Siparişlerim');
+      if(_idx>=0){ptab(_tabs[_idx],_idx);_tabs[_idx].scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}
+    },50);
     return;
   }
   if(page==='wishlist'){
@@ -7073,9 +7094,17 @@ function openModal(id){
   const _wl=getWishlist();const _wishlisted=_wl.includes(b.id);
   const waMsg=encodeURIComponent(`Merhaba, "${b.title}" kitabını sipariş etmek istiyorum.`);
   const stars='★'.repeat(Math.round(b.rating))+'☆'.repeat(5-Math.round(b.rating));
-  const _hasKunye=b.listPrice||b.publishDate||b.isbn||b.bindingType||b.paperType||b.dimensions||b.pages;
-  const _kunyeRows=_hasKunye?[b.listPrice?['Liste Fiyatı','₺ '+b.listPrice]:null,b.publishDate?['Yayın Tarihi',b.publishDate]:null,b.isbn?['ISBN',b.isbn]:null,['Dil',b.language||'TÜRKÇE'],b.pages?['Sayfa Sayısı',b.pages]:null,b.bindingType?['Cilt Tipi',b.bindingType]:null,b.paperType?['Kağıt Cinsi',b.paperType]:null,b.dimensions?['Boyut',b.dimensions]:null].filter(Boolean):[];
-  const kunyeHtml=_kunyeRows.length?`<div class="kunye"><div class="kunye-title">Künye</div><div class="kunye-table">${_kunyeRows.map(([l,v])=>`<span class="kunye-lbl">${l}</span><span class="kunye-val">${escHtml(String(v))}</span>`).join('')}</div></div>`:'';
+  const _kunyeRows=[
+    b.listPrice?['Liste Fiyatı','₺ '+b.listPrice]:null,
+    b.publishDate?['Yayın Tarihi',b.publishDate]:null,
+    b.isbn?['ISBN',b.isbn]:null,
+    ['Dil',b.language||'TÜRKÇE'],
+    b.pages?['Sayfa Sayısı',b.pages+' sayfa']:null,
+    b.bindingType?['Cilt Tipi',b.bindingType]:null,
+    b.paperType?['Kağıt Cinsi',b.paperType]:null,
+    b.dimensions?['Boyut',b.dimensions]:null,
+  ].filter(Boolean);
+  const kunyeHtml=`<div class="kunye"><div class="kunye-title">Künye</div><div class="kunye-table">${_kunyeRows.map(([l,v])=>`<span class="kunye-lbl">${l}</span><span class="kunye-val">${escHtml(String(v))}</span>`).join('')}</div></div>`;
   const revHtml=b.reviews.length?b.reviews.map((r,i)=>`<div class="review-item" style="animation-delay:${i*30}ms"><div class="review-item-stars">${'★'.repeat(r.s)}<span style="color:var(--border)">${'☆'.repeat(5-r.s)}</span></div><div class="review-item-text">${escHtml(r.t)}</div><div class="review-item-by">— ${escHtml(r.u)}<span class="review-item-date">· ${r.d||'geçen gün'}</span></div></div>`).join(''):'<div class="review-empty">Henüz yorum yok. İlk yorumu sen yap!</div>';
   sid('modalContent').innerHTML=`
     <button class="mclose" onclick="closeMod()">×</button>
