@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/mailer.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
@@ -75,6 +76,13 @@ if ($action === 'login') {
     }
     if (!$found) { http_response_code(401); echo json_encode(['error' => 'E-posta veya şifre hatalı']); exit; }
 
+    // Doğrulanmamış hesap kontrolü
+    if (isset($found['verified']) && $found['verified'] === false) {
+        http_response_code(403);
+        echo json_encode(['error' => 'E-posta adresiniz henüz doğrulanmamış. Lütfen gelen kutunuzu kontrol edin.', 'unverified' => true]);
+        exit;
+    }
+
     // Düz metin şifreyi hash'e migrate et
     if (strpos($found['pass'], '$2y$') !== 0 && strpos($found['pass'], '$2a$') !== 0) {
         $users[$foundIdx]['pass'] = password_hash($pass, PASSWORD_BCRYPT);
@@ -102,12 +110,17 @@ if ($action === 'register') {
     foreach ($users as $u) {
         if (strtolower($u['email'] ?? '') === $email) { http_response_code(409); echo json_encode(['error' => 'Bu e-posta zaten kayıtlı']); exit; }
     }
+    $verifyToken  = bin2hex(random_bytes(32));
+    $verifyExpiry = time() + 86400; // 24 saat
     $newUser = [
-        'name'   => $name,
-        'email'  => $email,
-        'pass'   => password_hash($pass, PASSWORD_BCRYPT),
-        'role'   => $body['role'] ?? 'okur',
-        'joined' => $body['joined'] ?? date('Y-m-d'),
+        'name'         => $name,
+        'email'        => $email,
+        'pass'         => password_hash($pass, PASSWORD_BCRYPT),
+        'role'         => $body['role'] ?? 'okur',
+        'joined'       => $body['joined'] ?? date('Y-m-d'),
+        'verified'     => false,
+        'verifyToken'  => $verifyToken,
+        'verifyExpiry' => $verifyExpiry,
     ];
     $users[] = $newUser;
     $putData = [
@@ -117,8 +130,13 @@ if ($action === 'register') {
     ];
     if ($fileSha) $putData['sha'] = $fileSha;
     gh_put($apiUrl, $ghHeaders, $putData);
-    unset($newUser['pass']);
-    echo json_encode(['user' => $newUser], JSON_UNESCAPED_UNICODE);
+
+    // Doğrulama maili gönder
+    sendVerificationMail($email, $name, $verifyToken);
+
+    $safe = $newUser;
+    unset($safe['pass'], $safe['verifyToken'], $safe['verifyExpiry']);
+    echo json_encode(['user' => $safe, 'needsVerification' => true], JSON_UNESCAPED_UNICODE);
     exit;
 }
 

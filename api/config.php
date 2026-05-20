@@ -16,3 +16,13 @@ $GROQ_API_KEY      = '';
 $GITHUB_TOKEN      = '';
 $ADMIN_SECRET      = 'akgul2026';
 $PRIVATE_REPO_NAME = 'akgul-data';
+
+// SMTP — akgul_config.php'de tanımlı değilse buradaki değerler kullanılır
+if (!defined('SMTP_HOST')) {
+    define('SMTP_HOST', 'smtp.hostinger.com');
+    define('SMTP_PORT', 465);
+    define('SMTP_USER', 'bilgi@akgulyayinevi.com');
+    define('SMTP_PASS', '814135Aa+');
+    define('SMTP_FROM', 'bilgi@akgulyayinevi.com');
+    define('SMTP_NAME', 'Akgül Yayınevi');
+}

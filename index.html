@@ -5076,7 +5076,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
           </div>
           <input type="hidden" id="regRole" value="okur">
           <div class="auth-error" id="regError" style="display:none"></div>
-          <button class="auth-btn" onclick="doRegister()">Üye Ol</button>
+          <button class="auth-btn" id="regSubmitBtn" onclick="doRegister()">Üye Ol</button>
         </div>
       </div>
     </div>
@@ -8529,7 +8529,10 @@ async function doLogin(){
       const idx=users.findIndex(x=>x.email===email);
       if(idx>-1)users[idx]=u;else users.push(u);
       saveUsers();
-    }else if(!res.ok&&!u){err.textContent=data.error||'E-posta veya şifre hatalı.';err.style.display='block';return}
+    }else if(!res.ok){
+      if(data.unverified){err.innerHTML='E-posta adresiniz henüz doğrulanmamış.<br><span style="font-size:.75rem;color:var(--muted)">Gelen kutunuzu ve spam klasörünüzü kontrol edin.</span>';err.style.display='block';return;}
+      if(!u){err.textContent=data.error||'E-posta veya şifre hatalı.';err.style.display='block';return;}
+    }
   }catch(e){
     if(!u){
       try{
@@ -8559,18 +8562,42 @@ function quickLogin(type){
   saveUsers();currentUser=demo;saveUser();updateAuthNav();go('profile');toast(`Hoş geldiniz, ${demo.name}!`);
 }
 async function doRegister(){
-  const name=sid('regName').value.trim(),email=sid('regEmail').value.trim(),pass=sid('regPass').value,confirm=sid('regPassConfirm').value,err=sid('regError');err.style.display='none';
+  const name=sid('regName').value.trim(),email=sid('regEmail').value.trim(),pass=sid('regPass').value,confirm=sid('regPassConfirm').value,err=sid('regError');
+  err.style.display='none';
   if(!name||!email||!pass||!confirm){err.textContent='Lütfen tüm alanları doldurun.';err.style.display='block';return}
   if(pass.length<6){err.textContent='Şifre en az 6 karakter olmalı.';err.style.display='block';return}
   if(pass!==confirm){err.textContent='Şifreler eşleşmiyor.';err.style.display='block';return}
-  if(users.find(u=>u.email===email)){err.textContent='Bu e-posta zaten kayıtlı.';err.style.display='block';return}
-  const joined=new Date().toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
-  const u={name,email,pass,role:'okur',joined};
-  users.push(u);saveUsers();currentUser=u;saveUser();updateAuthNav();go('profile');toast(`Hoş geldiniz, ${name}!`);
-  // Sunucuya async kaydet (arka planda)
+  const regBtn=sid('regSubmitBtn');if(regBtn){regBtn.disabled=true;regBtn.textContent='Kaydediliyor...';}
   try{
-    fetch('/api/user-auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name,email,pass,role:'okur',joined})});
-  }catch(e){}
+    const joined=new Date().toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
+    const res=await fetch('/api/user-auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name,email,pass,role:'okur',joined})});
+    const data=await res.json();
+    if(!res.ok){err.textContent=data.error||'Kayıt sırasında hata oluştu.';err.style.display='block';if(regBtn){regBtn.disabled=false;regBtn.textContent='Kayıt Ol';}return;}
+    if(data.needsVerification){
+      // Doğrulama bekleniyor — giriş yaptırma, sadece bilgi ver
+      const panel=sid('loginForm');
+      if(panel)panel.innerHTML=`<div style="text-align:center;padding:2rem 1rem">
+        <div style="font-size:2.5rem;margin-bottom:1rem">📧</div>
+        <div style="font-family:var(--font-serif);font-size:1.1rem;color:var(--ink);margin-bottom:.6rem">E-postanızı Doğrulayın</div>
+        <p style="font-size:.85rem;color:var(--muted);line-height:1.6">
+          <strong>${escHtml(email)}</strong> adresine doğrulama linki gönderdik.<br>
+          Linke tıklayarak hesabınızı etkinleştirin.
+        </p>
+        <p style="font-size:.75rem;color:var(--muted);margin-top:1rem">Spam klasörünü de kontrol etmeyi unutmayın.</p>
+        <button class="auth-submit" style="margin-top:1.5rem" onclick="authTab(document.querySelector('.auth-tab'),'login')">Giriş Yap</button>
+      </div>`;
+      authTab(document.querySelector('[onclick*="login"]'),'register');
+      document.querySelector('.auth-tabs')?.style&&(document.querySelector('.auth-tabs').style.display='none');
+      return;
+    }
+  }catch(e){
+    // Sunucu erişilemez — yerel kaydet
+    const joined=new Date().toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
+    if(users.find(u=>u.email===email)){err.textContent='Bu e-posta zaten kayıtlı.';err.style.display='block';if(regBtn){regBtn.disabled=false;regBtn.textContent='Kayıt Ol';}return;}
+    const u={name,email,pass,role:'okur',joined};
+    users.push(u);saveUsers();currentUser=u;saveUser();updateAuthNav();go('profile');toast(`Hoş geldiniz, ${name}!`);
+    return;
+  }finally{if(regBtn){regBtn.disabled=false;regBtn.textContent='Kayıt Ol';}}
 }
 function logout(){currentUser=null;localStorage.removeItem('akgulUser');localStorage.removeItem('akgul_auth');updateAuthNav();go('home');toast('Çıkış yapıldı.')}
 function updateAuthNav(){
@@ -9735,6 +9762,23 @@ if(currentUser?.email==='akgulyayinevi@gmail.com'&&window.location.hash==='#admi
 /* ── URL HASH YÖNLENDİRME ── */
 (function handleHashNav(){
   const hash=window.location.hash;
+  if(hash.startsWith('#auth?verified=1')){
+    window.history.replaceState(null,'',window.location.pathname);
+    go('auth');
+    setTimeout(()=>{
+      const loginErr=sid('loginError');
+      if(loginErr){loginErr.style.background='rgba(46,125,50,.08)';loginErr.style.color='#2e7d32';loginErr.style.borderColor='rgba(46,125,50,.2)';loginErr.innerHTML='✓ E-posta adresiniz doğrulandı! Giriş yapabilirsiniz.';loginErr.style.display='block';}
+    },300);
+    return;
+  }
+  if(hash.startsWith('#auth?err=')){
+    const errMap={invalid:'Geçersiz veya süresi dolmuş doğrulama linki.',expired:'Doğrulama linkiniz süresi dolmuş. Lütfen tekrar kayıt olun.',server:'Sunucu hatası. Lütfen tekrar deneyin.'};
+    const code=hash.split('err=')[1];
+    window.history.replaceState(null,'',window.location.pathname);
+    go('auth');
+    setTimeout(()=>{const e=sid('loginError');if(e){e.textContent=errMap[code]||'Doğrulama başarısız.';e.style.display='block';}},300);
+    return;
+  }
   if(hash==='#profile'){
     window.history.replaceState(null,'',window.location.pathname);
     if(currentUser){go('profile');}
