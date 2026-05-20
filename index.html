@@ -8058,6 +8058,14 @@ function applyCoupon(){
   const coupons=Array.isArray(siteSettings.coupons)?siteSettings.coupons:[];
   const c=coupons.find(x=>(x.code||'').toUpperCase()===code&&x.active!==false);
   if(!c){activeCoupon=null;setMsg('Geçersiz veya süresi dolmuş indirim kodu.','err');_renderCheckoutSummary();return;}
+  if(c.badge){
+    if(!currentUser){activeCoupon=null;setMsg('Bu kuponu kullanmak için giriş yapmanız gerekiyor.','err');_renderCheckoutSummary();return;}
+    const revC=books.flatMap(b=>b.reviews.filter(r=>r.u===currentUser.name)).length;
+    const wlC=getWishlist().length;
+    const ordC=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]').filter(o=>o.customer===currentUser.name||o.email===currentUser.email).length;
+    const allEarned=[true,revC>=1,revC>=3,revC>=7,revC>=15,wlC>=5,ordC>=1,ordC>=3].every(Boolean);
+    if(!allEarned){activeCoupon=null;setMsg('Bu kupon yalnızca tüm 8 rozeti tamamlamış üyelere özeldir.','err');_renderCheckoutSummary();return;}
+  }
   activeCoupon=c;
   setMsg(`%${c.discount} indirim uygulandı (${c.code})!`,'ok');
   _renderCheckoutSummary();
