@@ -14,7 +14,7 @@ foreach ($_candidates as $_p) {
 // Hiçbiri bulunamazsa boş default
 $GROQ_API_KEY      = '';
 $GITHUB_TOKEN      = '';
-$ADMIN_SECRET      = 'akgul2026';
+$ADMIN_SECRET      = ''; // akgul_config.php'de tanımlanmalı
 $PRIVATE_REPO_NAME = 'akgul-data';
 
 // iyzico — akgul_config.php'de tanımlı değilse placeholder
@@ -22,12 +22,12 @@ if (!defined('IYZICO_API_KEY'))    define('IYZICO_API_KEY',    '');
 if (!defined('IYZICO_SECRET_KEY')) define('IYZICO_SECRET_KEY', '');
 if (!defined('IYZICO_SANDBOX'))    define('IYZICO_SANDBOX',    true);
 
-// SMTP — akgul_config.php'de tanımlı değilse buradaki değerler kullanılır
+// SMTP — akgul_config.php'de tanımlanmalı; buradaki değerler boş kalır
 if (!defined('SMTP_HOST')) {
-    define('SMTP_HOST', 'smtp.hostinger.com');
+    define('SMTP_HOST', '');
     define('SMTP_PORT', 465);
-    define('SMTP_USER', 'bilgi@akgulyayinevi.com');
-    define('SMTP_PASS', '814135Aa+');
-    define('SMTP_FROM', 'bilgi@akgulyayinevi.com');
+    define('SMTP_USER', '');
+    define('SMTP_PASS', '');
+    define('SMTP_FROM', '');
     define('SMTP_NAME', 'Akgül Yayınevi');
 }

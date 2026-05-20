@@ -16,6 +16,14 @@ $body = json_decode(file_get_contents('php://input'), true);
 if (!$body || !isset($body['authors']) || !is_array($body['authors'])) { http_response_code(400); echo json_encode(['error' => 'Geçersiz istek']); exit; }
 
 $authors = $body['authors'];
+// Yeni veya değişmiş plain-text şifreleri hash'le
+foreach ($authors as &$a) {
+    $pw = $a['membership']['password'] ?? '';
+    if ($pw !== '' && !str_starts_with($pw, '$2y$') && !str_starts_with($pw, '$2a$')) {
+        $a['membership']['password'] = password_hash($pw, PASSWORD_BCRYPT);
+    }
+}
+unset($a);
 $owner   = 'akgulofc';
 $apiUrl  = "https://api.github.com/repos/{$owner}/{$PRIVATE_REPO_NAME}/contents/authors.json";
 $headers = [

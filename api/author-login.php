@@ -38,12 +38,22 @@ $authors = json_decode(base64_decode(str_replace("\n", '', $data['content'])), t
 if (!$authors) { http_response_code(503); echo json_encode(['error' => 'Sunucu verisi okunamadı']); exit; }
 
 $found = null;
+$needsRehash = false;
 foreach ($authors as &$a) {
-    if (isset($a['membership']['email']) &&
-        strtolower($a['membership']['email']) === strtolower($email) &&
-        $a['membership']['password'] === $password) {
-        $found = &$a;
-        break;
+    if (!isset($a['membership']['email'])) continue;
+    if (strtolower($a['membership']['email']) !== strtolower($email)) continue;
+    $stored = $a['membership']['password'] ?? '';
+    // bcrypt hash
+    if (str_starts_with($stored, '$2y$') || str_starts_with($stored, '$2a$')) {
+        if (password_verify($password, $stored)) { $found = &$a; break; }
+    } else {
+        // plain-text (legacy) — doğrula ve otomatik hash'le
+        if ($stored === $password) {
+            $found = &$a;
+            $found['membership']['password'] = password_hash($password, PASSWORD_BCRYPT);
+            $needsRehash = true;
+            break;
+        }
     }
 }
 
