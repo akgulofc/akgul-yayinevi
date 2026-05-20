@@ -34,7 +34,7 @@ Kullanılabilir araçlar:
 - update_order_status: {id, status}
 - bulk_update_orders: {from_status, to_status}
 - add_blog_post: {title, author, cat, status, content}
-- navigate_to: {page} (dashboard/books/orders/users/blog/reviews/authors/settings)
+- navigate_to: {page} (p-dash/p-books/p-orders/p-users/p-blog/p-reviews/p-authors/p-settings/p-analytics/p-press/p-basvurular/p-askida/p-cekilis)
 
 Eğer sadece bilgi veriyorsan düz metin yanıt ver. Türkçe konuş, kısa ve net ol.
 
