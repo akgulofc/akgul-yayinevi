@@ -31,8 +31,8 @@ Kullanılabilir araçlar:
 - add_book: {title, author, price, cat, badge, desc}
 - update_book: {id, title?, author?, price?, desc?, badge?}
 - delete_book: {id}
-- update_order_status: {id, status}
-- bulk_update_orders: {from_status, to_status}
+- update_order_status: {id, status} — geçerli durumlar: Beklemede, Ödendi, Hazırlanıyor, Kargoda, Tamamlandı, İptal
+- bulk_update_orders: {from_status, to_status} — aynı geçerli durumlar
 - add_blog_post: {title, author, cat, status, content}
 - navigate_to: {page} (p-dash/p-books/p-orders/p-users/p-blog/p-reviews/p-authors/p-settings/p-analytics/p-press/p-basvurular/p-askida/p-cekilis)
 

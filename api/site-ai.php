@@ -31,7 +31,7 @@ Sık sorulan sorular ve yanıtları:
 - İade ve cayma hakkı? → Teslimattan itibaren 14 gün içinde gerekçesiz iade hakkınız var. Kargo ücreti tarafımızdan karşılanır.
 - İmzalı kitap alabilir miyim? → Evet, hediye sepeti özelliğinde imzalı kopya seçeneği mevcuttur.
 - Toplu sipariş yapabilir miyim? → Evet, 10+ adet için %10, 50+ adet için %15 indirim ve ücretsiz kargo uygulanır. Toplu sipariş formu sitemizdedir.
-- Ödeme yöntemleri? → Banka havalesi/EFT ve iyzico üzerinden kredi/banka kartı.
+- Ödeme yöntemleri? → iyzico güvenli ödeme altyapısı üzerinden kredi ve banka kartı.
 - Sürpriz kitap kutusu nedir? → Ruh halinize göre seçilmiş, kraft ambalajlı, el yazısı not kartlı özel kitap paketi.
 - Askıda kitap nedir? → Topluluk kitaplığı projesidir. Kitap bırakabilir veya talep edebilirsiniz.
 - Yazar başvurusu nasıl yapılır? → "Eser Başvuru" sayfasından başvuru formunu doldurabilirsiniz.

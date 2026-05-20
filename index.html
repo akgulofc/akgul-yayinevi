@@ -3335,6 +3335,8 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 #adminSite .p-proc{background:var(--warn-bg);color:var(--warn-txt)}
 #adminSite .p-ship{background:var(--info-bg);color:var(--info-txt)}
 #adminSite .p-canc{background:var(--danger-bg);color:var(--danger-txt)}
+#adminSite .p-wait{background:#fff3cd;color:#856404}
+#adminSite .p-paid{background:#d1e7dd;color:#0a3622}
 #adminSite .p-pub{background:var(--success-bg);color:var(--success-txt)}
 #adminSite .p-draft{background:var(--warn-bg);color:var(--warn-txt)}
 #adminSite .cat-pill{font-size:.62rem;padding:2px 8px;background:var(--bg3);border:1px solid var(--brd2);border-radius:20px;color:var(--txt2)}
@@ -4157,7 +4159,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div class="ask-how-num">2</div>
       <div class="ask-how-icon">💫</div>
       <div class="ask-how-lbl">Askıya Bırak</div>
-      <div class="ask-how-desc">WhatsApp'tan sipariş ver, indirim kodunu anında kullan</div>
+      <div class="ask-how-desc">Sepete ekle, ödeme sırasında indirim kodunu kullan</div>
     </div>
     <div class="ask-how-arrow">→</div>
     <div class="ask-how-step">
@@ -5487,9 +5489,6 @@ async function fetchServerData(){
       if(data.settings.waPhone)WA_PHONE=data.settings.waPhone;
       if(data.settings.freeShip)FREE_SHIP=data.settings.freeShip;
       if(data.settings.shipCost)SHIP_COST=data.settings.shipCost;
-      if(data.settings.ibanBank){const el=sid('ibanBank');if(el)el.textContent=data.settings.ibanBank;}
-      if(data.settings.ibanName){const el=sid('ibanName');if(el)el.textContent=data.settings.ibanName;}
-      if(data.settings.ibanNo){const el=sid('ibanNo');if(el)el.firstChild.textContent=data.settings.ibanNo;}
       if(data.settings.platformLinks)applyPlatformLinks();
     }
     if(data.editorPick&&data.editorPick.length){
@@ -6419,9 +6418,7 @@ function openAuthorModal(name){
   const avgRating=authorBooks.length?(authorBooks.reduce((s,b)=>s+b.rating,0)/authorBooks.length).toFixed(1):null;
   const totalReviews=authorBooks.reduce((s,b)=>s+b.reviews.length,0);
   const s=a.soc||{};
-  const waSvg=`<svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.149-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.074-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.522 3.659 1.432 5.169L2 22l4.975-1.404A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>`;
   const bookCards=authorBooks.map(b=>{
-    const waMsg=encodeURIComponent(`Merhaba, "${b.title}" kitabını sipariş etmek istiyorum.`);
     const stars='★'.repeat(Math.round(b.rating))+'☆'.repeat(5-Math.round(b.rating));
     return`<div class="am-book">
       <div class="am-book-cover" style="position:relative;overflow:hidden;cursor:pointer" onclick="closeMod();setTimeout(()=>openModal(${b.id}),220)">${b.cover?`<img src="${escHtml(b.cover)}" alt="${escHtml(b.title)}" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0">`:bookCoverSvg(b)}</div>
@@ -6432,7 +6429,7 @@ function openAuthorModal(name){
         <div class="am-book-price">₺${b.price}</div>
         <div class="am-book-actions">
           <button class="mbn" style="padding:6px 14px;font-size:.75rem" onclick="addCart(${b.id})">Sepete Ekle</button>
-          <button class="mbn-wa" style="padding:6px 10px;font-size:.7rem" onclick="window.open('https://wa.me/'+WA_PHONE+'?text=${waMsg}','_blank')">${waSvg} WA</button>
+          <button class="mbn" style="padding:6px 10px;font-size:.7rem;background:var(--gold);color:var(--ink);font-weight:700" onclick="addCart(${b.id});closeMod();setTimeout(checkout,120)">Hemen Al</button>
         </div>
       </div>
     </div>`;
@@ -6724,7 +6721,6 @@ function openModal(id){
   _setOgMeta(`${b.title} — Akgül Yayınevi`,descText||`${b.author} tarafından yazılan kitap`,b.cover||'','https://akgulyayinevi.com/');
   const ldEl=document.getElementById('_ld_book'); if(ldEl)ldEl.textContent=JSON.stringify({'@context':'https://schema.org','@type':'Book','name':b.title,'author':{'@type':'Person','name':b.author},'offers':{'@type':'Offer','price':b.price,'priceCurrency':'TRY','availability':'https://schema.org/InStock'},'description':descText});
   const _wl=getWishlist();const _wishlisted=_wl.includes(b.id);
-  const waMsg=encodeURIComponent(`Merhaba, "${b.title}" kitabını sipariş etmek istiyorum.`);
   const stars='★'.repeat(Math.round(b.rating))+'☆'.repeat(5-Math.round(b.rating));
   const _kunyeRows=[
     b.listPrice?['Liste Fiyatı','₺ '+b.listPrice]:null,
@@ -6756,10 +6752,7 @@ function openModal(id){
       <button class="mbn" onclick="addCart(${b.id});closeMod()">Sepete Ekle</button>
       <button class="mbn" style="background:rgba(200,169,110,.12);border:1px solid rgba(200,169,110,.35);color:var(--gold)" onclick="closeMod();openGiftItemModal(${b.id})">🎁 Hediye Et</button>
       <button class="bwish mbn-wish${_wishlisted?' wishlisted':''}" data-id="${b.id}" onclick="toggleWishlist(${b.id},event)">${_wishlisted?'♥ İstek Listesinde':'♡ İstek Listesine Ekle'}</button>
-      <button class="mbn-wa" onclick="window.open('https://wa.me/${WA_PHONE}?text=${waMsg}','_blank')">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp ile Sipariş
-      </button>
+      <button class="mbn" style="background:var(--gold);color:var(--ink);font-weight:700" onclick="addCart(${b.id});closeMod();setTimeout(checkout,120)">Hemen Al</button>
       <button class="mbn" style="background:transparent;border:1px solid var(--border);color:var(--muted);display:flex;align-items:center;gap:.5rem;justify-content:center;font-size:.8rem" onclick="shareBook(${b.id})">
         <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
         Paylaş
@@ -6797,12 +6790,6 @@ function openModal(id){
   history.pushState({overlay:'modal'},'',location.href);
 }
 function closeMod(){sid('moverlay').classList.remove('on');document.body.style.overflow='';_setOgMeta();}
-function copyIban(){
-  const iban=(sid('ibanNo')?.textContent||'').replace(/\s/g,'');
-  if(!iban)return;
-  navigator.clipboard.writeText(iban).then(()=>toast('IBAN kopyalandı!')).catch(()=>toast('Kopyalanamadı'));
-}
-
 function shareBook(id){
   const b=books.find(x=>x.id===id);if(!b)return;
   const txt=`📖 "${b.title}" — ${b.author}\nAkgül Yayınevi'nden incele: https://akgulyayinevi.com`;
@@ -7806,14 +7793,23 @@ function renderAskidaCart(){
     </div>`;
   }).join('');
   const total=askidaCart.reduce((s,c)=>{const b=findBook(c.id);return s+(b?b.price*c.qty:0)},0);
-  const waLines=askidaCart.map(c=>{const b=findBook(c.id);return b?`• ${b.title} ×${c.qty} — ₺${b.price*c.qty}`:''}).filter(Boolean).join('\n');
-  const _waMsg=encodeURIComponent(`Merhaba! Askıda kitap bırakmak istiyorum:\n\n${waLines}\n\nToplam: ₺${total}`);
   if(foot)foot.innerHTML=`
     <div class="ask-cp-sum"><span class="ask-cp-sum-lbl">Toplam bağış tutarı</span><span class="ask-cp-sum-val">₺${total}</span></div>
-    <button class="ask-cp-wa" onclick="window.open('https://wa.me/${WA_PHONE}?text=${_waMsg}','_blank')">
-      <svg viewBox="0 0 24 24" fill="currentColor" style="width:16px;height:16px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp ile Bağış Siparişi Ver
+    <button class="ask-cp-wa" style="background:var(--gold);color:var(--ink)" onclick="askidaCartCheckout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      Sepete Ekle ve Öde
     </button>`;
+}
+
+function askidaCartCheckout(){
+  askidaCart.forEach(c=>{
+    const b=findBook(c.id);if(!b)return;
+    const existing=cart.find(x=>x.id===b.id);
+    if(existing)existing.qty+=c.qty;else cart.push({id:b.id,qty:c.qty});
+  });
+  saveCart();updateBadge();
+  toggleAskidaCart();
+  setTimeout(checkout,150);
 }
 
 function renderCart(){
@@ -10039,11 +10035,12 @@ function updateLiveBar(){
 
         <!-- ── SİPARİŞLER ─────────────────── -->
         <div class="page" id="adm-p-orders">
-          <div class="kpi-row">
-            <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-check" style="color:#C8A96E"></i></div></div><div class="kpi-val" id="adm-ordKpiDone">4</div><div class="kpi-lbl">Tamamlandı</div></div>
-            <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-truck" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="adm-ordKpiShip">1</div><div class="kpi-lbl">Kargoda</div></div>
-            <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-loader" style="color:#8B3A2A"></i></div></div><div class="kpi-val" id="adm-ordKpiProc">1</div><div class="kpi-lbl">Hazırlanıyor</div></div>
-            <div class="kpi k4"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(74,45,62,.1)"><i class="ti ti-currency-lira" style="color:#4A2D3E"></i></div></div><div class="kpi-val" id="adm-ordKpiRev">₺1.340</div><div class="kpi-lbl">Toplam Gelir</div></div>
+          <div class="kpi-row" style="grid-template-columns:repeat(5,1fr)">
+            <div class="kpi k1"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(200,169,110,.1)"><i class="ti ti-clock" style="color:#C8A96E"></i></div></div><div class="kpi-val" id="adm-ordKpiBekl">0</div><div class="kpi-lbl">Beklemede</div></div>
+            <div class="kpi k2"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,160,100,.1)"><i class="ti ti-credit-card" style="color:#2da064"></i></div></div><div class="kpi-val" id="adm-ordKpiOdendi">0</div><div class="kpi-lbl">Ödendi</div></div>
+            <div class="kpi k3"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(139,58,42,.1)"><i class="ti ti-loader" style="color:#8B3A2A"></i></div></div><div class="kpi-val" id="adm-ordKpiProc">0</div><div class="kpi-lbl">Hazırlanıyor</div></div>
+            <div class="kpi k4"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(45,74,62,.1)"><i class="ti ti-truck" style="color:#2D4A3E"></i></div></div><div class="kpi-val" id="adm-ordKpiShip">0</div><div class="kpi-lbl">Kargoda</div></div>
+            <div class="kpi k5"><div class="kpi-top"><div class="kpi-icon" style="background:rgba(74,45,62,.1)"><i class="ti ti-currency-lira" style="color:#4A2D3E"></i></div></div><div class="kpi-val" id="adm-ordKpiRev">₺0</div><div class="kpi-lbl">Toplam Gelir</div></div>
           </div>
           <div class="card">
             <div class="card-head">
@@ -10058,6 +10055,8 @@ function updateLiveBar(){
                 </select>
                 <select id="adm-orderStatusFilter" onchange="adminRenderOrders()" style="font-size:.72rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
                   <option value="">Tüm Durumlar</option>
+                  <option value="Beklemede">Beklemede</option>
+                  <option value="Ödendi">Ödendi</option>
                   <option value="Hazırlanıyor">Hazırlanıyor</option>
                   <option value="Kargoda">Kargoda</option>
                   <option value="Tamamlandı">Tamamlandı</option>
@@ -11031,7 +11030,7 @@ function adminRenderDashOrders(){
       <div class="o-price">₺${o.total}</div>
     </div>`).join('');
 }
-function admSPill(s){return s==='Tamamlandı'?'p-done':s==='Kargoda'?'p-ship':s==='Hazırlanıyor'?'p-proc':'p-canc';}
+function admSPill(s){return s==='Tamamlandı'?'p-done':s==='Kargoda'?'p-ship':s==='Hazırlanıyor'?'p-proc':s==='Ödendi'?'p-paid':s==='Beklemede'?'p-wait':'p-canc';}
 
 /* ═══════════════════════════════════════
    BOOKS
@@ -11518,11 +11517,12 @@ window.adminRenderOrders = function(){
   let list=adminOrders;
   if(sf) list=list.filter(o=>o.status===sf);
   if(tf) list=list.filter(o=>(o.orderType||'normal')===tf);
-  const done=adminOrders.filter(o=>o.status==='Tamamlandı').length;
-  const ship=adminOrders.filter(o=>o.status==='Kargoda').length;
+  const bekl=adminOrders.filter(o=>o.status==='Beklemede').length;
+  const odendi=adminOrders.filter(o=>o.status==='Ödendi').length;
   const proc=adminOrders.filter(o=>o.status==='Hazırlanıyor').length;
+  const ship=adminOrders.filter(o=>o.status==='Kargoda').length;
   const rev=adminOrders.filter(o=>o.status!=='İptal').reduce((s,o)=>s+o.total,0);
-  admSetTxt('adm-ordKpiDone',done); admSetTxt('adm-ordKpiShip',ship); admSetTxt('adm-ordKpiProc',proc); admSetTxt('adm-ordKpiRev','₺'+rev.toLocaleString('tr-TR'));
+  admSetTxt('adm-ordKpiBekl',bekl); admSetTxt('adm-ordKpiOdendi',odendi); admSetTxt('adm-ordKpiProc',proc); admSetTxt('adm-ordKpiShip',ship); admSetTxt('adm-ordKpiRev','₺'+rev.toLocaleString('tr-TR'));
   const t=ag('adm-ordersTable'); if(!t)return;
   if(!list.length){t.innerHTML=`<tbody><tr><td colspan="10" style="text-align:center;padding:2rem;color:var(--txt3);font-size:.82rem">Eşleşen sipariş bulunamadı</td></tr></tbody>`;return;}
   t.innerHTML=`<thead><tr><th>No</th><th>Tür</th><th>Müşteri</th><th>Telefon</th><th>Ürün</th><th>Şehir</th><th>Toplam</th><th>Tarih</th><th>Durum</th><th style="text-align:center">İşlem</th></tr></thead><tbody>`+
@@ -11586,7 +11586,7 @@ window.adminOpenOrderDetail = function(id){
     </select>
     <label style="font-size:.75rem;color:var(--txt3);margin-left:.5rem">Durum:</label>
     <select id="adm-odStatusSel" style="font-size:.75rem;padding:.28rem .5rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);outline:none">
-      ${['Hazırlanıyor','Kargoda','Tamamlandı','İptal'].map(s=>`<option${o.status===s?' selected':''}>${s}</option>`).join('')}
+      ${['Beklemede','Ödendi','Hazırlanıyor','Kargoda','Tamamlandı','İptal'].map(s=>`<option${o.status===s?' selected':''}>${s}</option>`).join('')}
     </select>
     <button class="card-btn" onclick="adminUpdateOrderFromDetail('${o.id}')">Güncelle</button>
     ${waPhone?`<button class="card-btn" style="margin-left:auto" onclick="window.open('https://wa.me/${waPhone}','_blank')">WhatsApp</button>`:'<span style="flex:1"></span>'}
@@ -12667,7 +12667,7 @@ function askidaOpenBirak(){
       <button class="ask-modal-x" onclick="_askCloseModal('ask-birak-over')">✕</button>
     </div>
     <div class="ask-modal-body">
-      <p style="font-size:.78rem;color:rgba(245,239,229,.38);margin-bottom:1.1rem;line-height:1.6">Bırakmak istediğin kitabı seç. Onayladıktan sonra indirim kodu oluşturulur, WhatsApp'tan sipariş verirken kullanırsın.</p>
+      <p style="font-size:.78rem;color:rgba(245,239,229,.38);margin-bottom:1.1rem;line-height:1.6">Bırakmak istediğin kitabı seç. Onayladıktan sonra indirim kodu oluşturulur, bir sonraki siparişinde kullanırsın.</p>
       <div class="ask-sel-grid">${cards}</div>
       <div id="ask-note-wrap" style="display:none;margin-top:.9rem">
         <label style="font-size:.68rem;color:rgba(245,239,229,.4);display:block;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.08em">Okuyucuya not bırak <span style="opacity:.5">(isteğe bağlı)</span></label>
@@ -12717,7 +12717,7 @@ function askidaBirakKitap(bookId){
         <div style="font-family:var(--font-serif);font-size:2.2rem;color:var(--gold);font-weight:700;line-height:1">%${pct}</div>
         <div style="font-size:.68rem;color:rgba(245,239,229,.35);margin-top:.2rem">Bir sonraki siparişinde</div>
       </div>
-      <p style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:.75rem">Onayladıktan sonra indirim kodun oluşturulacak. Sipariş sırasında WhatsApp'ta paylaş.</p>
+      <p style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:.75rem">Onayladıktan sonra indirim kodun oluşturulacak. Sepete ekleyip ödeme sırasında kullanabilirsin.</p>
       <div>
         <label style="font-size:.68rem;color:rgba(245,239,229,.38);display:block;margin-bottom:.2rem;text-transform:uppercase;letter-spacing:.08em">Okuyucuya not bırak <span style="opacity:.55">(isteğe bağlı)</span></label>
         <textarea id="ask-donor-note" class="ask-donor-textarea" maxlength="180" placeholder="Bu kitap bana çok şey kattı, umarım sana da ilham verir..."></textarea>
@@ -12751,7 +12751,7 @@ function askidaConfirmBirak(){
   if(body) body.innerHTML=`<div style="text-align:center;padding:.75rem 0">
     <div style="font-size:2.2rem;margin-bottom:.6rem">🎉</div>
     <div style="font-family:var(--font-serif);font-size:1.1rem;color:var(--cream);margin-bottom:.3rem">"${escHtml(item.bookTitle)}" askıya bırakıldı!</div>
-    <p style="font-size:.78rem;color:rgba(245,239,229,.42);margin-bottom:1rem">WhatsApp siparişinde bu kodu paylaş, %${d.discountRate} indirim kazanırsın:</p>
+    <p style="font-size:.78rem;color:rgba(245,239,229,.42);margin-bottom:1rem">Bir sonraki siparişinde bu kodu kullan, %${d.discountRate} indirim kazan:</p>
     <div class="ask-code-box">
       <div class="ask-code-val">${code}</div>
       <div class="ask-code-note">%${d.discountRate} indirim · Tek kullanımlık</div>
@@ -12765,10 +12765,9 @@ function askidaConfirmBirak(){
     <button class="ask-btn ask-btn-outline" style="margin-top:.5rem;width:100%" onclick="askidaShareBadge('${escHtml(shareTitle).replace(/'/g,"\\'")}')">Rozeti Paylaş</button>
   </div>`;
   if(foot){
-    const waMsg=encodeURIComponent(`Merhaba! "${item.bookTitle}" kitabını askıya bırakmak istiyorum. İndirim kodum: ${code}`);
     foot.innerHTML=`
       <button class="ask-btn ask-btn-outline" onclick="_askCloseModal('ask-birak-over');renderAskida()">Kapat</button>
-      <a href="https://wa.me/${typeof WA_PHONE!=='undefined'?WA_PHONE:'905366483096'}?text=${waMsg}" target="_blank" class="ask-btn ask-btn-gold" onclick="setTimeout(()=>{_askCloseModal('ask-birak-over');renderAskida();},400)">WhatsApp'ta Sipariş Ver</a>`;
+      <button class="ask-btn ask-btn-gold" onclick="_askCloseModal('ask-birak-over');renderAskida();const b=books.find(x=>x.id===${item.bookId});if(b){const ex=cart.find(c=>c.id===b.id);if(ex)ex.qty++;else cart.push({id:b.id,qty:1});saveCart();updateBadge();}setTimeout(checkout,150)">Sepete Ekle ve Öde</button>`;
   }
 }
 
@@ -12794,11 +12793,11 @@ function askidaAl(itemId){
         <div style="font-size:.6rem;color:rgba(200,169,110,.55);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem">Kitabı bırakan kişiden</div>
         <div style="font-size:.8rem;color:rgba(245,239,229,.7);font-style:italic;line-height:1.55">"${escHtml(item.donorNote)}"</div>
       </div>`:''}
-      <p style="font-size:.8rem;color:rgba(245,239,229,.45);line-height:1.65">WhatsApp üzerinden iletişime geçip kitabı talep edebilirsin. Her kullanıcı yalnızca bir kez alabilir.</p>
+      <p style="font-size:.8rem;color:rgba(245,239,229,.45);line-height:1.65">Talep ettiğinizde indirim kodunuz oluşturulur, sepete ekleyip ödeme yapabilirsiniz. Her kullanıcı yalnızca bir kez alabilir.</p>
     </div></div>
     <div class="ask-modal-foot">
       <button class="ask-btn ask-btn-outline" onclick="document.getElementById('ask-al-over').remove()">İptal</button>
-      <button class="ask-btn ask-btn-gold" onclick="askidaConfirmAl('${itemId}')">WhatsApp'ta İste</button>
+      <button class="ask-btn ask-btn-gold" onclick="askidaConfirmAl('${itemId}')">Talep Et</button>
     </div>
   </div>`;
   document.body.appendChild(over);
@@ -12820,25 +12819,22 @@ function askidaConfirmAl(itemId){
       body:JSON.stringify({action:'claim_askida',email:currentUser.email,token:currentUser.token,itemId})}).catch(()=>{});
   }
   document.getElementById('ask-al-over')?.remove();
-  const waMsg=encodeURIComponent(`Merhaba! Askıdaki "${item.bookTitle}" kitabını almak istiyorum. İndirim kodum: ${code}`);
-  const waTel=typeof WA_PHONE!=='undefined'?WA_PHONE:'905366483096';
   const over2=document.createElement('div');
   over2.className='ask-modal-over'; over2.id='ask-al-success-over';
   over2.innerHTML=`<div class="ask-modal" style="max-width:400px">
     <div class="ask-modal-hd"><span class="ask-modal-title">🎉 Kitap Ayrıldı!</span></div>
     <div class="ask-modal-body" style="text-align:center;padding:1.5rem 1.25rem">
-      <div style="font-size:.84rem;color:rgba(245,239,229,.55);margin-bottom:1.2rem;line-height:1.65">"<strong style="color:var(--cream)">${escHtml(item.bookTitle)}</strong>" sana ayrıldı. WhatsApp'tan onayladıktan sonra kitabın gönderilecek.</div>
+      <div style="font-size:.84rem;color:rgba(245,239,229,.55);margin-bottom:1.2rem;line-height:1.65">"<strong style="color:var(--cream)">${escHtml(item.bookTitle)}</strong>" sana ayrıldı. Aşağıdaki indirim kodunu kullanarak sepetten ödeme yapabilirsin.</div>
       <div style="font-size:.68rem;color:rgba(200,169,110,.7);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.45rem">İndirim Kodun</div>
       <div style="background:rgba(200,169,110,.09);border:1px dashed rgba(200,169,110,.38);border-radius:8px;padding:.85rem 1.2rem;margin-bottom:.4rem">
         <div style="font-family:monospace;font-size:1.5rem;font-weight:700;color:var(--gold);letter-spacing:.18em">${code}</div>
       </div>
-      <div style="font-size:.7rem;color:rgba(245,239,229,.32);margin-bottom:1.25rem">%${discPct} indirim · Tek kullanımlık · WhatsApp'ta paylaş</div>
+      <div style="font-size:.7rem;color:rgba(245,239,229,.32);margin-bottom:1.25rem">%${discPct} indirim · Tek kullanımlık</div>
+      <button class="ask-btn ask-btn-outline" style="width:100%;margin-bottom:.5rem" onclick="navigator.clipboard.writeText('${code}').then(()=>this.textContent='✓ Kopyalandı')">Kodu Kopyala</button>
     </div>
     <div class="ask-modal-foot">
-      <button class="ask-btn ask-btn-gold" style="width:100%;gap:.5rem;display:flex;align-items:center;justify-content:center" onclick="window.open('https://wa.me/${waTel}?text=${waMsg}','_blank');document.getElementById('ask-al-success-over')?.remove();renderAskida()">
-        <svg viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp ile Onayla
-      </button>
+      <button class="ask-btn ask-btn-outline" onclick="document.getElementById('ask-al-success-over')?.remove();renderAskida()">Kapat</button>
+      <button class="ask-btn ask-btn-gold" onclick="(()=>{const _b=books.find(x=>x.id===${item.bookId});if(_b){const _ex=cart.find(c=>c.id===_b.id);if(_ex)_ex.qty++;else cart.push({id:_b.id,qty:1});saveCart();updateBadge();}const _inp=sid('chkCoupon');if(_inp)_inp.value='${code}';document.getElementById('ask-al-success-over')?.remove();setTimeout(checkout,150);})()">Sepete Ekle ve Öde</button>
     </div>
   </div>`;
   document.body.appendChild(over2);
@@ -13168,7 +13164,7 @@ document.querySelectorAll('#adminSite .modal-overlay').forEach(m=>m.addEventList
 ═══════════════════════════════════════ */
 function admUpdateNavBadges(){
   const bn=ag('adm-navBookCount'); if(bn) bn.textContent=adminBooks.length;
-  const oc=ag('adm-navOrderCount'); if(oc){const p=adminOrders.filter(o=>o.status==='Hazırlanıyor').length;oc.textContent=p;oc.style.display=p>0?'':'none';}
+  const oc=ag('adm-navOrderCount'); if(oc){const p=adminOrders.filter(o=>o.status==='Beklemede'||o.status==='Hazırlanıyor').length;oc.textContent=p;oc.style.display=p>0?'':'none';}
   const bl=ag('adm-navBlogCount'); if(bl) bl.textContent=blogData.length;
   const rc=ag('adm-navReviewCount'); if(rc){const t=adminBooks.reduce((s,b)=>s+b.reviews.length,0);rc.textContent=t;}
   const kb=ag('adm-kpiBooks'); if(kb) kb.textContent=adminBooks.length;
