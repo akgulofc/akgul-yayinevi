@@ -1090,6 +1090,13 @@ nav{position:sticky;top:0;z-index:500;background:rgba(13,12,9,.97);backdrop-filt
 .bcov-title{font-family:var(--font-serif);font-size:.95rem;color:#fff;font-weight:600;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.5)}
 .bcov-author{font-size:.68rem;color:rgba(255,255,255,.65)}
 .bbadge{position:absolute;top:10px;right:10px;background:var(--gold);color:var(--ink);font-size:.52rem;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:.1em;text-transform:uppercase;z-index:6;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.bbadge-new{background:linear-gradient(135deg,#2e7d32,#43a047);color:#fff;animation:bbpulse 2.5s ease-in-out infinite}
+@keyframes bbpulse{0%,100%{box-shadow:0 2px 8px rgba(0,0,0,.3)}50%{box-shadow:0 2px 14px rgba(67,160,71,.6)}}
+.site-breadcrumb{background:rgba(15,14,11,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(200,169,110,.1);padding:.38rem 1.5rem;font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:.35rem;position:sticky;top:64px;z-index:90;flex-wrap:wrap}
+.site-breadcrumb a{color:var(--gold);text-decoration:none;opacity:.75;cursor:pointer;transition:opacity .15s}
+.site-breadcrumb a:hover{opacity:1}
+.site-breadcrumb .bc-sep{opacity:.35}
+@media(max-width:600px){.site-breadcrumb{padding:.32rem 1rem;font-size:.68rem;top:56px}}
 .bviews{position:absolute;top:10px;left:18px;background:rgba(0,0,0,.6);color:#fff;font-size:.58rem;padding:2px 7px;border-radius:10px;z-index:6;display:flex;align-items:center;gap:3px;backdrop-filter:blur(6px)}
 .bviews svg{width:10px;height:10px;stroke:#fff;fill:none;stroke-width:2}
 .brating{position:absolute;bottom:10px;right:10px;z-index:6;display:flex;align-items:center;gap:3px;background:rgba(0,0,0,.65);padding:3px 8px;border-radius:8px;backdrop-filter:blur(6px)}
@@ -1901,6 +1908,15 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .chk-field input:focus,.chk-field textarea:focus{border-color:var(--gold)}
 .chk-field textarea{resize:vertical;min-height:58px;line-height:1.5}
 .chk-err{color:#C0392B;font-size:.72rem;margin-top:.28rem;display:none}
+.chk-coupon-row{display:flex;gap:.5rem;margin-top:.3rem}
+.chk-coupon-row input{flex:1;padding:.52rem .78rem;border:1.5px solid var(--border);border-radius:var(--radius);font-size:.84rem;color:var(--ink);background:var(--white);outline:none;transition:border-color .2s;text-transform:uppercase;letter-spacing:.06em}
+.chk-coupon-row input:focus{border-color:var(--gold)}
+.chk-coupon-btn{padding:.52rem 1rem;background:var(--gold);color:var(--ink);border:none;border-radius:var(--radius);font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap;letter-spacing:.04em;transition:filter .15s}
+.chk-coupon-btn:hover{filter:brightness(1.12)}
+.chk-coupon-msg{font-size:.74rem;margin-top:.4rem;padding:.3rem .65rem;border-radius:4px;display:none}
+.chk-coupon-msg.ok{background:rgba(46,125,50,.1);color:#2e7d32;border:1px solid rgba(46,125,50,.2)}
+.chk-coupon-msg.err{background:rgba(198,40,40,.08);color:#c62828;border:1px solid rgba(198,40,40,.15)}
+.chk-discount-row{color:#2e7d32;font-weight:600}
 .chk-iban-box{background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.2);border-radius:var(--radius);padding:.85rem 1rem;margin-bottom:.85rem}
 .chk-iban-title{display:flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:var(--gold);margin-bottom:.6rem}
 .chk-iban-body p{font-size:.78rem;color:var(--muted);margin:0 0 .4rem;line-height:1.55}
@@ -3812,6 +3828,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     </button>
   </div>
 </nav>
+<div id="siteBreadcrumb" class="site-breadcrumb" style="display:none" aria-label="Konum"></div>
 
 <!-- ══════════════════════════════════════
      ARAMA — COMMAND PALETTE
@@ -5390,6 +5407,14 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
               <button class="admin-submit" onclick="adminSaveSettings()">Ayarları Kaydet</button>
             </div>
           </div>
+          <div class="admin-card" style="margin-top:1.5rem">
+            <div class="admin-card-head"><div class="admin-card-title">İndirim Kuponları</div></div>
+            <div class="admin-card-body">
+              <p style="font-size:.78rem;color:var(--txt2);margin-bottom:.75rem">Her satıra bir kupon: <code style="background:rgba(200,169,110,.1);padding:1px 5px;border-radius:3px;font-size:.75rem">KOD:İNDİRİM%</code> — örn. <code style="background:rgba(200,169,110,.1);padding:1px 5px;border-radius:3px;font-size:.75rem">YAZAR10:10</code></p>
+              <div class="admin-field"><label>Aktif Kuponlar</label><textarea id="set-coupons" rows="5" placeholder="YAZAR10:10&#10;KAMPANYA15:15&#10;VIP20:20" style="font-family:monospace;font-size:.82rem"></textarea></div>
+              <button class="admin-submit" onclick="adminSaveCoupons()">Kuponları Kaydet</button>
+            </div>
+          </div>
           <div class="admin-card" style="margin-top:1.5rem"><div class="admin-card-head"><div class="admin-card-title">İstatistik Özeti</div></div><div class="admin-card-body"><div class="admin-kpi-row" id="settingsStats"></div></div></div>
         </div>
       </main>
@@ -5617,6 +5642,15 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <div class="chk-field">
           <label>Sipariş Notu <span class="opt">(opsiyonel)</span></label>
           <textarea id="chkNote" placeholder="Kargo veya sipariş ile ilgili notunuz…" style="min-height:44px"></textarea>
+        </div>
+        <!-- İndirim Kodu -->
+        <div class="chk-field">
+          <label>İndirim Kodu <span class="opt">(opsiyonel)</span></label>
+          <div class="chk-coupon-row">
+            <input type="text" id="chkCoupon" placeholder="KUPON2025" autocomplete="off">
+            <button class="chk-coupon-btn" type="button" onclick="applyCoupon()">Uygula</button>
+          </div>
+          <div class="chk-coupon-msg" id="chkCouponMsg"></div>
         </div>
         <!-- Havale/IBAN bilgisi -->
         <div class="chk-iban-box">
@@ -5997,9 +6031,17 @@ const _SEO_TITLES={
   'toplu-siparis':'Toplu Sipariş | Akgül Yayınevi',
   'basin-medya':'Basın & Medya | Akgül Yayınevi',
 };
+const _PAGE_LABELS={'about':'Hakkımızda','authors':'Yazarlarımız','blog':'Akgül Gazetesi','surpriz-kutu':'Sürpriz Kutu','hediye-sepeti':'Hediye Sepeti','askida-kitap':'Askıda Kitap','cekilis':'Çekiliş Robotu','ai-oneri':'AI Kitap Öneri','eser-basvuru':'Eser Başvuru','profile':'Profilim','auth':'Giriş Yap','gizlilik':'Gizlilik Politikası','cerez':'Çerez Politikası','kullanim':'Kullanım Koşulları','siparis-sorgula':'Sipariş Sorgula','toplu-siparis':'Toplu Sipariş','basin-medya':'Basın & Medya','wishlist':'İstek Listesi'};
+function _updateBreadcrumb(page){
+  const bc=sid('siteBreadcrumb');if(!bc)return;
+  if(page==='home'||page==='admin'){bc.style.display='none';return;}
+  bc.style.display='flex';
+  bc.innerHTML=`<a onclick="go('home')">Ana Sayfa</a><span class="bc-sep">/</span><span>${_PAGE_LABELS[page]||page}</span>`;
+}
 function go(page){
   closeNav();
   document.title=_SEO_TITLES[page]||_SEO_TITLES['home'];
+  _updateBreadcrumb(page);
   if(!_goFromHistory){
     const _hp=page==='orders'?'profile':page==='books'||page==='contact'?'home':page;
     if(page!=='admin')history.pushState({page:_hp},'','#'+_hp);
@@ -6309,7 +6351,16 @@ function renderBooks(filter){
     return`<div class="book-card" onclick="openModal(${b.id})">
       <div class="bcover" style="aspect-ratio:${bookAspect(b.coverFormat)}">
         ${coverHtml}
-        ${b.stock===0?`<div class="bbadge" style="background:rgba(198,40,40,.85)">Tükendi</div>`:b.stock!=null&&b.stock<=5?`<div class="bbadge" style="background:rgba(200,120,40,.88)">Son ${b.stock} adet!</div>`:b.badge?`<div class="bbadge">${escHtml(b.badge)}</div>`:''}
+        ${(()=>{
+          if(b.stock===0)return`<div class="bbadge" style="background:rgba(198,40,40,.85)">Tükendi</div>`;
+          if(b.comingSoon)return`<div class="bbadge" style="background:rgba(90,60,160,.9)">Yakında</div>`;
+          if(b.newRelease)return`<div class="bbadge bbadge-new">Yeni Çıktı</div>`;
+          if(b.stock!=null&&b.stock<=5)return`<div class="bbadge" style="background:rgba(200,120,40,.88)">Son ${b.stock} adet!</div>`;
+          if(b.badge)return`<div class="bbadge">${escHtml(b.badge)}</div>`;
+          const pd=b.publishDate?new Date(b.publishDate):null;
+          if(pd&&!isNaN(pd)&&(Date.now()-pd)<60*24*60*60*1000)return`<div class="bbadge bbadge-new">Yeni Çıktı</div>`;
+          return'';
+        })()}
         <div class="bviews"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>${b.views}</div>
         <div class="bcover-ov">
           ${avg?`<div class="bov-rating"><span class="bov-stars">${starsHtml}</span><span class="bov-rcount">&thinsp;${b.rating||avg.toFixed(1)}</span></div>`:''}
@@ -8084,6 +8135,33 @@ updateGiftBadge();
 
 /* ── SEPET ── */
 let FREE_SHIP=siteSettings.freeShip||500;let SHIP_COST=siteSettings.shipCost||35;
+let activeCoupon=null;
+function applyCoupon(){
+  const code=(sid('chkCoupon')?.value||'').trim().toUpperCase();
+  const msg=sid('chkCouponMsg');
+  const setMsg=(txt,type)=>{if(msg){msg.textContent=txt;msg.className='chk-coupon-msg '+type;msg.style.display=txt?'':'none';}};
+  if(!code){setMsg('Lütfen bir indirim kodu girin.','err');return;}
+  const coupons=Array.isArray(siteSettings.coupons)?siteSettings.coupons:[];
+  const c=coupons.find(x=>(x.code||'').toUpperCase()===code&&x.active!==false);
+  if(!c){activeCoupon=null;setMsg('Geçersiz veya süresi dolmuş indirim kodu.','err');_renderCheckoutSummary();return;}
+  activeCoupon=c;
+  setMsg(`%${c.discount} indirim uygulandı (${c.code})!`,'ok');
+  _renderCheckoutSummary();
+}
+function _renderCheckoutSummary(){
+  if(!cart.length)return;
+  const subtotal=cart.reduce((s,c)=>{const b=books.find(x=>x.id===c.id);return s+(b?b.price*c.qty:0)},0);
+  const shipping=subtotal>=FREE_SHIP?0:SHIP_COST;
+  const discount=activeCoupon?Math.round(subtotal*(activeCoupon.discount/100)):0;
+  const total=subtotal+shipping-discount;
+  const sumEl=sid('chkSummary');if(!sumEl)return;
+  const lines=cart.map(c=>{const b=books.find(x=>x.id===c.id);return`<div class="chk-sum-row"><span>${escHtml(b.title)} ×${c.qty}</span><span>₺${b.price*c.qty}</span></div>`}).join('');
+  const discRow=discount>0?`<div class="chk-sum-row chk-discount-row"><span>İndirim (${activeCoupon.code})</span><span>−₺${discount}</span></div>`:'';
+  sumEl.innerHTML=lines
+    +`<div class="chk-sum-row"><span>Kargo</span><span>${shipping===0?'<span style="color:#2D4A3E;font-weight:600">Ücretsiz ✓</span>':'₺'+shipping}</span></div>`
+    +discRow
+    +`<div class="chk-sum-row total"><span>Genel Toplam</span><span>₺${total}</span></div>`;
+}
 function addCart(id){
   const ex=cart.find(c=>c.id===id);if(ex)ex.qty++;else cart.push({id,qty:1});
   saveCart();updateBadge();renderBooks(currentFilter||'all');
@@ -8220,16 +8298,7 @@ function toggleCart(){
 }
 function checkout(){
   if(!cart.length){toast('Sepetiniz boş!');return;}
-  const subtotal=cart.reduce((s,c)=>{const b=books.find(x=>x.id===c.id);return s+(b?b.price*c.qty:0)},0);
-  const shipping=subtotal>=FREE_SHIP?0:SHIP_COST;
-  const total=subtotal+shipping;
-  const sumEl=sid('chkSummary');
-  if(sumEl){
-    const lines=cart.map(c=>{const b=books.find(x=>x.id===c.id);return`<div class="chk-sum-row"><span>${escHtml(b.title)} ×${c.qty}</span><span>₺${b.price*c.qty}</span></div>`}).join('');
-    sumEl.innerHTML=lines
-      +`<div class="chk-sum-row"><span>Kargo</span><span>${shipping===0?'<span style="color:#2D4A3E;font-weight:600">Ücretsiz ✓</span>':'₺'+shipping}</span></div>`
-      +`<div class="chk-sum-row total"><span>Genel Toplam</span><span>₺${total}</span></div>`;
-  }
+  _renderCheckoutSummary();
   sid('chkForm').style.display='';
   sid('chkConfirm').style.display='none';
   if(currentUser){
@@ -8290,19 +8359,25 @@ function submitOrder(){
   if(!ok)return;
   const subtotal=cart.reduce((s,c)=>{const b=books.find(x=>x.id===c.id);return s+(b?b.price*c.qty:0)},0);
   const shipping=subtotal>=FREE_SHIP?0:SHIP_COST;
-  const total=subtotal+shipping;
+  const discount=activeCoupon?Math.round(subtotal*(activeCoupon.discount/100)):0;
+  const total=subtotal+shipping-discount;
+  const couponCode=activeCoupon?activeCoupon.code:null;
   const ordId='#AK'+Date.now().toString(36).slice(-4).toUpperCase();
   const items=cart.map(c=>{const b=books.find(x=>x.id===c.id);return{id:b.id,title:b.title,author:b.author,qty:c.qty,price:b.price,lineTotal:b.price*c.qty}});
   const bookNames=items.map(i=>`${i.title} ×${i.qty}`).join(', ');
   const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
-  const order={id:ordId,customer:name,phone,email,city,address,note,book:bookNames,items,subtotal,shipping,total,date:today,status:'Hazırlanıyor',orderType:'normal'};
+  const order={id:ordId,customer:name,phone,email,city,address,note,book:bookNames,items,subtotal,shipping,discount,couponCode,total,date:today,status:'Hazırlanıyor',orderType:'normal'};
   const existing=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
   existing.unshift(order);
   localStorage.setItem('akgul_orders_v2',JSON.stringify(existing));
   fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'add_order',order})}).catch(()=>{});
+  activeCoupon=null;
+  const couponInp=sid('chkCoupon');if(couponInp)couponInp.value='';
+  const couponMsg=sid('chkCouponMsg');if(couponMsg)couponMsg.style.display='none';
   const itemLines=items.map(i=>`• ${i.title} ×${i.qty} = ₺${i.lineTotal}`).join('\n');
   const shipLine=shipping===0?'Kargo: Ücretsiz ✓':`Kargo: ₺${shipping}`;
-  const waMsg=`Merhaba, sipariş vermek istiyorum.\n\nSipariş No: ${ordId}\n\n${itemLines}\n\n${shipLine}\nGenel Toplam: ₺${total}\n\n— Müşteri Bilgileri —\nAd: ${name}\nTelefon: ${phone}\nŞehir: ${city}\nAdres: ${address}${note?'\nNot: '+note:''}`;
+  const discLine=discount>0?`İndirim (${couponCode}): −₺${discount}\n`:'';
+  const waMsg=`Merhaba, sipariş vermek istiyorum.\n\nSipariş No: ${ordId}\n\n${itemLines}\n\n${shipLine}\n${discLine}Genel Toplam: ₺${total}\n\n— Müşteri Bilgileri —\nAd: ${name}\nTelefon: ${phone}\nŞehir: ${city}\nAdres: ${address}${note?'\nNot: '+note:''}`;
   const conf=sid('chkConfirm');
   if(conf){
     conf.innerHTML=`
@@ -8314,6 +8389,7 @@ function submitOrder(){
         <div class="chk-confirm-detail">
           ${items.map(i=>`<div class="cd-row"><span>${escHtml(i.title)} ×${i.qty}</span><strong>₺${i.lineTotal}</strong></div>`).join('')}
           ${shipping>0?`<div class="cd-row"><span>Kargo</span><strong>₺${shipping}</strong></div>`:''}
+          ${discount>0?`<div class="cd-row" style="color:#2e7d32"><span>İndirim (${escHtml(couponCode||'')})</span><strong>−₺${discount}</strong></div>`:''}
           <div class="cd-row cd-total"><span>Toplam</span><strong>₺${total}</strong></div>
         </div>
         <button class="chk-btn wa" onclick="window.open('https://wa.me/${WA_PHONE}?text='+encodeURIComponent(${JSON.stringify(waMsg)}),'_blank')">
@@ -9176,6 +9252,7 @@ function adminLogout(){adminLoggedIn=false;sid('adminPanel').style.display='none
 function adminTab(el,sec){
   document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('act'));el.classList.add('act');
   document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('act'));const t=sid('as-'+sec);if(t)t.classList.add('act');
+  if(sec==='settings'){loadSettingsForm();renderSettingsStats();}
 }
 function renderAdminDashboard(){
   const totalRev=books.reduce((s,b)=>s+b.price*Math.floor(b.views/8),0),totalViews=books.reduce((s,b)=>s+b.views,0);
@@ -9536,8 +9613,20 @@ function adminSaveSettings(){
 }
 function loadSettingsForm(){
   const s=siteSettings;
-  const f=(id,val)=>{const el=sid(id);if(el&&val)el.value=val};
+  const f=(id,val)=>{const el=sid(id);if(el&&val!==undefined&&val!==null)el.value=val};
   f('set-waphone',s.waPhone);f('set-freeship',s.freeShip);f('set-shipcost',s.shipCost);
+  const ce=sid('set-coupons');
+  if(ce&&Array.isArray(s.coupons))ce.value=s.coupons.map(c=>c.code+':'+c.discount).join('\n');
+}
+function adminSaveCoupons(){
+  const raw=(sid('set-coupons')?.value||'').trim();
+  const coupons=raw?raw.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const[code,...rest]=l.split(':');const disc=parseInt(rest.join(':'))||0;return{code:(code||'').toUpperCase().trim(),discount:disc,active:true};}).filter(c=>c.code&&c.discount>0):[];
+  siteSettings.coupons=coupons;
+  localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':adminCredentials.pass},
+    body:JSON.stringify({action:'admin_save',key:'settings',value:siteSettings})}).then(r=>{
+    toast(r.ok?`✦ ${coupons.length} kupon kaydedildi!`:'✦ Kuponlar yerel kaydedildi');
+  }).catch(()=>toast('✦ Kuponlar kaydedildi!'));
 }
 function adminChangePass(){
   const old=sid('set-oldpass')?.value,n1=sid('set-newpass')?.value,n2=sid('set-newpass2')?.value;
@@ -10537,6 +10626,12 @@ async function sendAIW(){
                 <div class="field"><label>Cilt Tipi</label><input id="adm-nb-binding" placeholder="Karton Kapak"></div>
                 <div class="field"><label>Kağıt Cinsi</label><input id="adm-nb-paper" placeholder="Kitap Kağıdı"></div>
                 <div class="field"><label>Boyut</label><input id="adm-nb-dims" placeholder="22 x 22 cm"></div>
+                <div class="field field-full" style="padding-top:.6rem;border-top:1px solid var(--brd2)"><label style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);font-weight:700;display:block;margin-bottom:.5rem">Kart Rozeti</label>
+                  <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+                    <label style="display:flex;align-items:center;gap:.4rem;font-size:.82rem;cursor:pointer;font-weight:500"><input type="checkbox" id="adm-nb-newRelease" style="width:15px;height:15px;accent-color:var(--gold)"> Yeni Çıktı <span style="font-size:.68rem;color:var(--txt3)">(yeşil rozet)</span></label>
+                    <label style="display:flex;align-items:center;gap:.4rem;font-size:.82rem;cursor:pointer;font-weight:500"><input type="checkbox" id="adm-nb-comingSoon" style="width:15px;height:15px;accent-color:var(--gold)"> Yakında <span style="font-size:.68rem;color:var(--txt3)">(mor rozet)</span></label>
+                  </div>
+                </div>
               </div>
               <div class="form-actions">
                 <button class="tb-btn primary" onclick="adminAddBook()"><i class="ti ti-check"></i>Kitabı Ekle</button>
@@ -11673,13 +11768,16 @@ window.adminAddBook = function(){
   const title=agv('adm-nb-title'),author=agv('adm-nb-author'),price=parseInt(agv('adm-nb-price'))||0,cat=agv('adm-nb-cat'),badge=agv('adm-nb-badge')||null,pages=parseInt(agv('adm-nb-pages'))||0,coverFormat=agv('adm-nb-format')||'portrait',desc=_quillDesc?(_quillDesc.getText().trim()?_quillDesc.root.innerHTML:''):'';
   const listPrice=agv('adm-nb-listprice')||null,publishDate=agv('adm-nb-pubdate')||null,isbn=agv('adm-nb-isbn')||null,language=agv('adm-nb-lang')||'TÜRKÇE',bindingType=agv('adm-nb-binding')||null,paperType=agv('adm-nb-paper')||null,dimensions=agv('adm-nb-dims')||null;
   const stockRaw=agv('adm-nb-stock');const stock=stockRaw!==''&&stockRaw!=null?parseInt(stockRaw):null;
+  const newRelease=ag('adm-nb-newRelease')?.checked||false;
+  const comingSoon=ag('adm-nb-comingSoon')?.checked||false;
   if(!title){adminToast('Kitap adı zorunlu!','warn');return;}
   if(!author){adminToast('Yazar adı zorunlu!','warn');return;}
   if(price<1){adminToast('Geçerli bir fiyat girin!','warn');return;}
-  const newBook={id:Date.now(),title,author,price,cat,badge,pages,stock,desc,cover:admCurrentCoverData||'',coverFormat,listPrice,publishDate,isbn,language,bindingType,paperType,dimensions,views:0,reviews:[]};
+  const newBook={id:Date.now(),title,author,price,cat,badge,pages,stock,desc,cover:admCurrentCoverData||'',coverFormat,listPrice,publishDate,isbn,language,bindingType,paperType,dimensions,newRelease,comingSoon,views:0,reviews:[]};
   adminBooks.unshift(newBook);
   admSaveBooks(); adminRenderBooks(); adminRenderTopBooks();
   ['adm-nb-title','adm-nb-author','adm-nb-price','adm-nb-badge','adm-nb-pages','adm-nb-stock','adm-nb-listprice','adm-nb-pubdate','adm-nb-isbn','adm-nb-lang','adm-nb-binding','adm-nb-paper','adm-nb-dims'].forEach(id=>{const e=ag(id);if(e)e.value='';}); if(_quillDesc)_quillDesc.setText('');;
+  const _nrEl=ag('adm-nb-newRelease');if(_nrEl)_nrEl.checked=false;const _csEl=ag('adm-nb-comingSoon');if(_csEl)_csEl.checked=false;
   adminRemoveCover(); ag('adm-nb-cat').value='roman'; const _fmtEl=ag('adm-nb-format');if(_fmtEl)_fmtEl.value='portrait';
   ag('adm-addBookCard').style.display='none';
   adminToast(`✦ "${title}" eklendi!`);
@@ -11749,6 +11847,12 @@ window.adminEditBook = function(id){
       <div class="field"><label>Cilt Tipi</label><input id="adm-eb-binding" placeholder="Karton Kapak" value="${admEsc(b.bindingType||'')}"></div>
       <div class="field"><label>Kağıt Cinsi</label><input id="adm-eb-paper" placeholder="Kitap Kağıdı" value="${admEsc(b.paperType||'')}"></div>
       <div class="field"><label>Boyut</label><input id="adm-eb-dims" placeholder="22 x 22 cm" value="${admEsc(b.dimensions||'')}"></div>
+      <div class="field field-full" style="padding-top:.6rem;border-top:1px solid var(--brd2)"><label style="font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--txt3);font-weight:700;display:block;margin-bottom:.5rem">Kart Rozeti</label>
+        <div style="display:flex;gap:1.5rem;flex-wrap:wrap">
+          <label style="display:flex;align-items:center;gap:.4rem;font-size:.82rem;cursor:pointer;font-weight:500"><input type="checkbox" id="adm-eb-newRelease" style="width:15px;height:15px;accent-color:var(--gold)"${b.newRelease?' checked':''}> Yeni Çıktı <span style="font-size:.68rem;color:var(--txt3)">(yeşil rozet)</span></label>
+          <label style="display:flex;align-items:center;gap:.4rem;font-size:.82rem;cursor:pointer;font-weight:500"><input type="checkbox" id="adm-eb-comingSoon" style="width:15px;height:15px;accent-color:var(--gold)"${b.comingSoon?' checked':''}> Yakında <span style="font-size:.68rem;color:var(--txt3)">(mor rozet)</span></label>
+        </div>
+      </div>
     </div>
     <div class="form-actions">
       <button class="tb-btn primary" onclick="adminSaveEditBook(${b.id})"><i class="ti ti-check"></i>Kaydet</button>
@@ -11769,6 +11873,7 @@ window.adminSaveEditBook = function(id){
   b.pages=parseInt(agv('adm-eb-pages'))||0; b.coverFormat=agv('adm-eb-format')||'portrait';
   const _stk=agv('adm-eb-stock'); b.stock=(_stk!==''&&_stk!=null)?parseInt(_stk):null; b.desc=_quillEditDesc?(_quillEditDesc.getText().trim()?_quillEditDesc.root.innerHTML:''):agv('adm-eb-desc');
   b.listPrice=agv('adm-eb-listprice')||null; b.publishDate=agv('adm-eb-pubdate')||null; b.isbn=agv('adm-eb-isbn')||null; b.language=agv('adm-eb-lang')||'TÜRKÇE'; b.bindingType=agv('adm-eb-binding')||null; b.paperType=agv('adm-eb-paper')||null; b.dimensions=agv('adm-eb-dims')||null;
+  b.newRelease=ag('adm-eb-newRelease')?.checked||false; b.comingSoon=ag('adm-eb-comingSoon')?.checked||false;
   b.cover=(ag('adm-eb-cover')?.value||'').trim();
   admSaveBooks(); adminRenderBooks(); adminRenderTopBooks();
   adminCloseModal('adm-editModal');
