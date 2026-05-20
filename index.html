@@ -5060,25 +5060,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
 </div>
 
-<!-- ═══════════ SİPARİŞ SORGULA ═══════════ -->
-<div class="page" id="page-siparis-sorgula">
-  <div class="legal-hero">
-    <h1>Sipariş Sorgula</h1>
-    <p style="color:rgba(230,220,200,.7);font-size:.9rem;margin-top:.5rem">Sipariş numaranızla durumunuzu öğrenin</p>
-  </div>
-  <div style="max-width:560px;margin:0 auto;padding:3rem 1.5rem 5rem">
-    <div class="ord-query-box">
-      <label style="display:block;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem">Sipariş Numarası</label>
-      <div style="display:flex;gap:.6rem">
-        <input type="text" id="ordQueryInp" class="cf-input" placeholder="ÖRN: ORD-20240101-XXXX" style="flex:1" oninput="clearOrdQuery()" onkeydown="if(event.key==='Enter')queryOrder()">
-        <button onclick="queryOrder()" style="background:var(--gold);color:var(--ink);border:none;border-radius:8px;padding:.7rem 1.25rem;font-weight:700;font-size:.85rem;cursor:pointer;white-space:nowrap">Sorgula</button>
-      </div>
-      <div id="ordQueryResult" style="margin-top:1.25rem"></div>
-    </div>
-    <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:2rem">Sipariş numaranız WhatsApp onay mesajında yer alır.<br>Bulamazsanız <a onclick="go('home');setTimeout(()=>sid('contact-sec')?.scrollIntoView({behavior:'smooth'}),300)" style="color:var(--gold);cursor:pointer">bize ulaşın</a>.</p>
-  </div>
-</div>
-
 <!-- ═══════════ AUTH ═══════════ -->
 <div class="page" id="page-auth">
   <div class="auth-split">
@@ -5462,7 +5443,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a onclick="go('ai-oneri')">AI Kitap Öneri</a></li>
         <li><a onclick="go('eser-basvuru')">Eser Başvuru</a></li>
         <li><a onclick="go('about')">Hakkımızda</a></li>
-        <li><a onclick="go('siparis-sorgula')">Sipariş Sorgula</a></li>
         <li><a onclick="go('toplu-siparis')">Toplu Sipariş</a></li>
         <li><a onclick="go('basin-medya')">Basın &amp; Medya</a></li>
       </ul>
@@ -6027,11 +6007,10 @@ const _SEO_TITLES={
   'surpriz-kutu':'Sürpriz Kutu | Akgül Yayınevi',
   'profile':'Hesabım | Akgül Yayınevi',
   'wishlist':'İstek Listem | Akgül Yayınevi',
-  'siparis-sorgula':'Sipariş Sorgula | Akgül Yayınevi',
   'toplu-siparis':'Toplu Sipariş | Akgül Yayınevi',
   'basin-medya':'Basın & Medya | Akgül Yayınevi',
 };
-const _PAGE_LABELS={'about':'Hakkımızda','authors':'Yazarlarımız','blog':'Akgül Gazetesi','surpriz-kutu':'Sürpriz Kutu','hediye-sepeti':'Hediye Sepeti','askida-kitap':'Askıda Kitap','cekilis':'Çekiliş Robotu','ai-oneri':'AI Kitap Öneri','eser-basvuru':'Eser Başvuru','profile':'Profilim','auth':'Giriş Yap','gizlilik':'Gizlilik Politikası','cerez':'Çerez Politikası','kullanim':'Kullanım Koşulları','siparis-sorgula':'Sipariş Sorgula','toplu-siparis':'Toplu Sipariş','basin-medya':'Basın & Medya','wishlist':'İstek Listesi'};
+const _PAGE_LABELS={'about':'Hakkımızda','authors':'Yazarlarımız','blog':'Akgül Gazetesi','surpriz-kutu':'Sürpriz Kutu','hediye-sepeti':'Hediye Sepeti','askida-kitap':'Askıda Kitap','cekilis':'Çekiliş Robotu','ai-oneri':'AI Kitap Öneri','eser-basvuru':'Eser Başvuru','profile':'Profilim','auth':'Giriş Yap','gizlilik':'Gizlilik Politikası','cerez':'Çerez Politikası','kullanim':'Kullanım Koşulları','toplu-siparis':'Toplu Sipariş','basin-medya':'Basın & Medya','wishlist':'İstek Listesi'};
 function _updateBreadcrumb(page){
   const bc=sid('siteBreadcrumb');if(!bc)return;
   if(page==='home'||page==='admin'){bc.style.display='none';return;}
@@ -8316,32 +8295,6 @@ function closeCheckout(){
   sid('chkOverlay').classList.remove('open');
   document.body.style.overflow='';
 }
-
-function queryOrder(){
-  const q=(sid('ordQueryInp')?.value||'').trim();
-  const res=sid('ordQueryResult');
-  if(!res)return;
-  if(!q){res.innerHTML='<div style="color:#C0392B;font-size:.82rem">Lütfen sipariş numarası girin.</div>';return;}
-  const orders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
-  const o=orders.find(x=>(x.id||'').toLowerCase()===q.toLowerCase());
-  if(!o){
-    res.innerHTML=`<div style="text-align:center;padding:1.5rem;background:var(--cream);border-radius:8px;border:1px solid var(--border)"><div style="font-size:2rem;margin-bottom:.5rem;opacity:.35">📦</div><div style="font-size:.85rem;color:var(--muted)">Bu numarayla sipariş bulunamadı.<br>Numarayı kontrol edin veya bize ulaşın.</div></div>`;
-    return;
-  }
-  const statusColor={'Tamamlandı':'#2e7d32','Kargoda':'#1565c0','Hazırlanıyor':'#e65100','İptal':'#c62828'}[o.status]||'#555';
-  const kargoRow=o.kargo?.takipNo?`<div class="ord-query-result-row"><span class="ord-query-lbl">Kargo</span><span><strong>${escHtml(o.kargo.firma||'')}</strong> — Takip: <span style="font-family:monospace;color:var(--gold)">${escHtml(o.kargo.takipNo)}</span></span></div>`:'';
-  res.innerHTML=`<div style="background:var(--cream);border:1.5px solid var(--border);border-radius:8px;padding:1.1rem 1.25rem">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;gap:.5rem;flex-wrap:wrap">
-      <span style="font-family:monospace;font-size:.82rem;color:var(--muted)">${escHtml(o.id)}</span>
-      <span style="background:${statusColor};color:#fff;font-size:.7rem;font-weight:700;padding:3px 10px;border-radius:20px">${escHtml(o.status||'?')}</span>
-    </div>
-    <div class="ord-query-result-row"><span class="ord-query-lbl">Kitap</span><span style="font-weight:500">${escHtml(o.book)}</span></div>
-    <div class="ord-query-result-row"><span class="ord-query-lbl">Tarih</span><span>${escHtml(o.date)}</span></div>
-    <div class="ord-query-result-row"><span class="ord-query-lbl">Tutar</span><span style="font-weight:700;color:var(--gold)">₺${o.total}</span></div>
-    ${kargoRow}
-  </div>`;
-}
-function clearOrdQuery(){const r=sid('ordQueryResult');if(r)r.innerHTML='';}
 
 function submitOrder(){
   const name=(sid('chkName')?.value||'').trim();
