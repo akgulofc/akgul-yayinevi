@@ -1802,30 +1802,30 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ask-cart-badge.on{transform:scale(1)}
 .ask-cp-overlay{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:700;display:none;opacity:0;transition:opacity .25s}
 .ask-cp-overlay.on{display:block;opacity:1}
-.ask-cp{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:92vw;background:#0D0C09;border-left:1px solid rgba(200,169,110,.12);z-index:710;transform:translateX(110%);transition:transform .3s var(--ease);display:flex;flex-direction:column;box-shadow:-8px 0 48px rgba(0,0,0,.55)}
+.ask-cp{position:fixed;top:0;right:0;bottom:0;width:420px;max-width:92vw;background:var(--white);border-left:1px solid var(--border);z-index:710;transform:translateX(110%);transition:transform .3s var(--ease);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.15)}
 .ask-cp.on{transform:translateX(0)}
-.ask-cp-head{padding:1.5rem;border-bottom:1px solid rgba(200,169,110,.12);display:flex;align-items:center;justify-content:space-between}
-.ask-cp-head h3{font-family:var(--font-serif);font-size:1.12rem;font-weight:700;color:var(--cream);display:flex;align-items:center;gap:.45rem;margin:0}
-.ask-cp-close{background:none;border:none;color:rgba(245,239,229,.32);font-size:1.4rem;cursor:pointer;padding:.1rem .4rem;line-height:1;transition:color .15s}
-.ask-cp-close:hover{color:var(--gold)}
+.ask-cp-head{padding:1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.ask-cp-head h3{font-family:var(--font-serif);font-size:1.3rem;font-weight:700;color:var(--ink);display:flex;align-items:center;gap:.45rem;margin:0}
+.ask-cp-close{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;padding:.1rem .4rem;line-height:1;transition:color .15s}
+.ask-cp-close:hover{color:var(--ink)}
 .ask-cp-body{flex:1;overflow-y:auto;padding:1rem 1.5rem}
-.ask-cp-foot{padding:1.5rem;border-top:1px solid rgba(200,169,110,.12)}
+.ask-cp-foot{padding:1.5rem;border-top:1px solid var(--border);background:var(--cream)}
 .ask-cp-empty{text-align:center;padding:3rem 1rem}
-.ask-cp-item{display:flex;align-items:flex-start;gap:.85rem;padding:.85rem 0;border-bottom:1px solid rgba(200,169,110,.07)}
+.ask-cp-item{display:flex;align-items:flex-start;gap:.85rem;padding:.85rem 0;border-bottom:1px solid var(--border)}
 .ask-cp-item:last-child{border-bottom:none}
-.ask-cp-cover{width:44px;aspect-ratio:2/3;border-radius:4px;flex-shrink:0;position:relative;overflow:hidden;box-shadow:2px 3px 12px rgba(0,0,0,.55);cursor:pointer;transition:transform .2s}
+.ask-cp-cover{width:44px;aspect-ratio:2/3;border-radius:4px;flex-shrink:0;position:relative;overflow:hidden;box-shadow:2px 3px 12px rgba(0,0,0,.22);cursor:pointer;transition:transform .2s}
 .ask-cp-cover:hover{transform:scale(1.05)}
 .ask-cp-info{flex:1;min-width:0}
-.ask-cp-title{font-family:var(--font-serif);font-size:.88rem;color:var(--cream);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.1rem;cursor:pointer}
+.ask-cp-title{font-family:var(--font-serif);font-size:.88rem;color:var(--ink);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:.1rem;cursor:pointer}
 .ask-cp-title:hover{color:var(--gold)}
-.ask-cp-author{font-size:.69rem;color:rgba(245,239,229,.33);margin-bottom:.28rem}
+.ask-cp-author{font-size:.69rem;color:var(--muted);margin-bottom:.28rem}
 .ask-cp-price{font-size:.83rem;color:var(--gold);font-weight:700}
 .ask-cp-qty{display:flex;align-items:center;gap:.3rem}
-.ask-cp-qty button{width:22px;height:22px;border-radius:50%;background:rgba(200,169,110,.1);border:1px solid rgba(200,169,110,.22);color:var(--gold);font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .15s}
-.ask-cp-qty button:hover{background:rgba(200,169,110,.24)}
-.ask-cp-qty span{font-size:.82rem;color:var(--cream);min-width:18px;text-align:center}
-.ask-cp-rm{background:none;border:none;color:rgba(245,239,229,.18);cursor:pointer;font-size:1.15rem;padding:.1rem;line-height:1;transition:color .15s;flex-shrink:0}
-.ask-cp-rm:hover{color:#ff6b6b}
+.ask-cp-qty button{width:22px;height:22px;border-radius:50%;background:rgba(200,169,110,.12);border:1px solid rgba(200,169,110,.3);color:var(--gold-d);font-size:.88rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:background .15s}
+.ask-cp-qty button:hover{background:rgba(200,169,110,.28)}
+.ask-cp-qty span{font-size:.82rem;color:var(--ink);min-width:18px;text-align:center}
+.ask-cp-rm{background:none;border:none;color:var(--border);cursor:pointer;font-size:1.15rem;padding:.1rem;line-height:1;transition:color .15s;flex-shrink:0}
+.ask-cp-rm:hover{color:#E74C3C}
 /* ── İSTEK LİSTESİ PANELİ ── */
 .wl-panel-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:700;display:none;opacity:0;transition:opacity .25s}
 .wl-panel-overlay.on{display:block;opacity:1}
@@ -1866,7 +1866,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ask-cp-disc{background:rgba(200,169,110,.07);border:1px solid rgba(200,169,110,.13);border-radius:7px;padding:.65rem .85rem;margin-bottom:.75rem;font-size:.73rem;color:rgba(245,239,229,.42);text-align:center;line-height:1.55}
 .ask-cp-disc strong{color:var(--gold)}
 .ask-cp-sum{display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem}
-.ask-cp-sum-lbl{font-size:.78rem;color:rgba(245,239,229,.38)}
+.ask-cp-sum-lbl{font-size:.78rem;color:var(--muted)}
 .ask-cp-sum-val{font-family:var(--font-serif);font-size:1.15rem;font-weight:700;color:var(--gold)}
 .ask-cp-wa{width:100%;padding:13px;background:#25D366;color:#fff;border:none;border-radius:7px;font-weight:700;font-size:.85rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;font-family:var(--font-sans);letter-spacing:.03em}
 .ask-cp-wa:hover{background:#128C7E}
@@ -5662,7 +5662,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <div class="ask-cp-overlay" id="askCpOverlay" onclick="toggleAskidaCart()"></div>
 <div class="ask-cp" id="askCartPanel">
   <div class="ask-cp-head">
-    <h3>📚 Kitap Bırak <span id="askCpCount" style="font-size:.7rem;font-weight:400;color:rgba(245,239,229,.3)"></span></h3>
+    <h3>📚 Kitap Bırak <span id="askCpCount" style="font-size:.75rem;font-weight:400;color:var(--muted)"></span></h3>
     <button class="ask-cp-close" onclick="toggleAskidaCart()">×</button>
   </div>
   <div class="ask-cp-body" id="askCpBody"></div>
@@ -8138,7 +8138,7 @@ function renderAskidaCart(){
   const totalQty=askidaCart.reduce((s,c)=>s+c.qty,0);
   if(cnt)cnt.textContent=totalQty?`(${totalQty} kitap)`:'';
   if(!askidaCart.length){
-    body.innerHTML=`<div class="ask-cp-empty"><div style="font-size:2.8rem;margin-bottom:.75rem">📚</div><div style="font-family:var(--font-serif);font-size:1rem;color:var(--cream);margin-bottom:.4rem">Kitap Bırakma Sepeti Boş</div><div style="font-size:.78rem;color:rgba(245,239,229,.38);line-height:1.65;margin-bottom:1.1rem">Katalogdan bir kitap seçip 📚 butonuna basın —<br>bedelini ödeyin, ihtiyacı olan biri okusun.</div><button class="ask-btn ask-btn-gold" onclick="toggleAskidaCart();go('books')">Kitaplara Göz At</button></div>`;
+    body.innerHTML=`<div class="ask-cp-empty"><div style="font-size:2.8rem;margin-bottom:.75rem">📚</div><div style="font-family:var(--font-serif);font-size:1.15rem;color:var(--ink);font-weight:700;margin-bottom:.4rem">Kitap Bırakma Sepeti Boş</div><div style="font-size:.8rem;color:var(--muted);line-height:1.65;margin-bottom:1.1rem">Katalogdan bir kitap seçip 📚 butonuna basın —<br>bedelini ödeyin, ihtiyacı olan biri okusun.</div><button class="cp-empty-cta" onclick="toggleAskidaCart();go('books')">Kitaplara Göz At</button></div>`;
     if(foot)foot.innerHTML='';return;
   }
   const _askData=(()=>{try{return JSON.parse(localStorage.getItem('akgulAskida')||'null')||{discountRate:10};}catch(e){return{discountRate:10};}})();
@@ -8151,7 +8151,7 @@ function renderAskidaCart(){
       <div class="ask-cp-info">
         <div class="ask-cp-title" onclick="toggleAskidaCart();openModal(${b.id})">${escHtml(b.title)}</div>
         <div class="ask-cp-author">${escHtml(b.author)}</div>
-        <div class="ask-cp-price">₺${b.price*c.qty}${c.qty>1?` <span style="font-size:.67rem;color:rgba(245,239,229,.3)">(${c.qty}×₺${b.price})</span>`:''}</div>
+        <div class="ask-cp-price">₺${b.price*c.qty}${c.qty>1?` <span style="font-size:.67rem;color:var(--muted)">(${c.qty}×₺${b.price})</span>`:''}</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;flex-shrink:0">
         <button class="ask-cp-rm" onclick="removeAskidaCart(${b.id})" title="Kaldır">×</button>
