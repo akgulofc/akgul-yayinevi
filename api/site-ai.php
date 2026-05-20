@@ -22,7 +22,23 @@ $storeContext = isset($data['books'])
       "\nBlog yazıları: " . json_encode(array_slice($data['blog'] ?? [], 0, 5), JSON_UNESCAPED_UNICODE)
     : '';
 
-$systemPrompt = "Sen Akgül Yayınevi'nin samimi ve bilgili kitap asistanısın. Müşterilere kitap önerisi yapar, yayınevi hakkında bilgi verirsin. Kısa ve sıcak yanıtlar ver, Türkçe konuş.\n\n{$storeContext}";
+$faq = <<<'FAQ'
+
+Sık sorulan sorular ve yanıtları:
+- Kargo ne kadar sürer? → Ödeme onayından itibaren 3-7 iş günü içinde kargoya verilir.
+- Kargo ücreti nedir? → 500 TL ve üzeri siparişlerde ücretsiz, altında 35 TL.
+- Nasıl sipariş verebilirim? → Sepete ekleyip siparişi onaylayın, iyzico güvenli ödeme sayfasında kredi/banka kartıyla ödeme yapabilirsiniz.
+- İade ve cayma hakkı? → Teslimattan itibaren 14 gün içinde gerekçesiz iade hakkınız var. Kargo ücreti tarafımızdan karşılanır.
+- İmzalı kitap alabilir miyim? → Evet, hediye sepeti özelliğinde imzalı kopya seçeneği mevcuttur.
+- Toplu sipariş yapabilir miyim? → Evet, 10+ adet için %10, 50+ adet için %15 indirim ve ücretsiz kargo uygulanır. Toplu sipariş formu sitemizdedir.
+- Ödeme yöntemleri? → Banka havalesi/EFT ve iyzico üzerinden kredi/banka kartı.
+- Sürpriz kitap kutusu nedir? → Ruh halinize göre seçilmiş, kraft ambalajlı, el yazısı not kartlı özel kitap paketi.
+- Askıda kitap nedir? → Topluluk kitaplığı projesidir. Kitap bırakabilir veya talep edebilirsiniz.
+- Yazar başvurusu nasıl yapılır? → "Eser Başvuru" sayfasından başvuru formunu doldurabilirsiniz.
+- Adres ve iletişim? → Tavşantepe Mah. TOKİ FG/5 A Blok K:5 No:12, Adana. Tel: +90 536 648 30 96. E-posta: akgulyayinevi@gmail.com
+FAQ;
+
+$systemPrompt = "Sen Akgül Yayınevi'nin samimi ve bilgili kitap asistanısın. Müşterilere kitap önerisi yapar, yayınevi ve satış süreçleri hakkında bilgi verirsin. Kısa ve sıcak yanıtlar ver, Türkçe konuş.\n\n{$storeContext}\n\n{$faq}";
 
 $payload = json_encode([
     'model'       => 'llama-3.3-70b-versatile',

@@ -304,4 +304,29 @@ if ($action === 'admin_save') {
     exit;
 }
 
+/* ── update_order_status: sipariş durumu güncelle (admin auth) ── */
+if ($action === 'update_order_status') {
+    if (!$isAdmin) { http_response_code(403); echo json_encode(['error' => 'Yetkisiz']); exit; }
+    $id     = $body['id']     ?? '';
+    $status = $body['status'] ?? '';
+    if (!$id || !$status) { http_response_code(400); echo json_encode(['error' => 'Eksik parametre']); exit; }
+    [$sync, $sha] = loadSync($syncUrl, $ghHdrs);
+    $updated = false;
+    foreach ($sync['orders'] as &$ord) {
+        if (($ord['id'] ?? '') === $id) {
+            $ord['status'] = $status;
+            if (!empty($body['paymentToken'])) $ord['paymentToken'] = $body['paymentToken'];
+            $updated = true;
+            break;
+        }
+    }
+    unset($ord);
+    if (!$updated) { http_response_code(404); echo json_encode(['error' => 'Sipariş bulunamadı']); exit; }
+    if (!saveSync($syncUrl, $ghHdrs, $sync, $sha, "Sipariş güncellendi: {$id} → {$status}")) {
+        http_response_code(500); echo json_encode(['error' => 'Kaydetme hatası']); exit;
+    }
+    echo json_encode(['success' => true], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 http_response_code(400); echo json_encode(['error' => 'Geçersiz action']);

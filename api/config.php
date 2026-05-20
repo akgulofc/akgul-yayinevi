@@ -17,6 +17,11 @@ $GITHUB_TOKEN      = '';
 $ADMIN_SECRET      = 'akgul2026';
 $PRIVATE_REPO_NAME = 'akgul-data';
 
+// iyzico — akgul_config.php'de tanımlı değilse placeholder
+if (!defined('IYZICO_API_KEY'))    define('IYZICO_API_KEY',    '');
+if (!defined('IYZICO_SECRET_KEY')) define('IYZICO_SECRET_KEY', '');
+if (!defined('IYZICO_SANDBOX'))    define('IYZICO_SANDBOX',    true);
+
 // SMTP — akgul_config.php'de tanımlı değilse buradaki değerler kullanılır
 if (!defined('SMTP_HOST')) {
     define('SMTP_HOST', 'smtp.hostinger.com');
