@@ -2577,105 +2577,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ai-review-meta{font-size:.66rem;color:var(--muted)}
 .ai-review-empty{font-size:.85rem;color:var(--muted);text-align:center;padding:1.5rem 0}
 
-/* ── ADMİN PANELİ ── */
-.admin-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 72px)}
-@media(max-width:900px){.admin-layout{grid-template-columns:1fr}}
-.admin-sidebar{background:var(--ink);padding:2rem 0;position:sticky;top:var(--nav-h,60px);height:calc(100vh - var(--nav-h,60px));overflow-y:auto}
-@media(max-width:900px){.admin-sidebar{position:static;height:auto;display:flex;flex-wrap:wrap;padding:.75rem;gap:.25rem}}
-.admin-sidebar-title{font-family:var(--font-serif);color:var(--gold);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1.5rem 1rem;opacity:.7}
-@media(max-width:900px){.admin-sidebar-title{display:none}}
-@media(max-width:900px){.admin-sidebar .sb-section{display:none}}
-.admin-nav-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1.5rem;color:#B0A898;font-size:.8rem;cursor:pointer;transition:all .2s;border-left:3px solid transparent;white-space:nowrap}
-.admin-nav-item:hover{color:var(--gold);background:rgba(200,169,110,.06)}
-.admin-nav-item.act{color:var(--gold);border-left-color:var(--gold);background:rgba(200,169,110,.08)}
-@media(max-width:900px){.admin-nav-item{border-left:none;border-bottom:2px solid transparent;padding:.5rem .75rem;border-radius:4px;font-size:.72rem}}
-@media(max-width:900px){.admin-nav-item.act{border-bottom-color:var(--gold);background:rgba(200,169,110,.1)}}
-.admin-nav-icon{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
-.admin-main{padding:2rem;background:var(--paper);overflow-y:auto}
-.admin-section{display:none}
-.admin-section.act{display:block;animation:pgIn .3s var(--ease)}
-.admin-page-title{font-family:var(--font-serif);font-size:1.8rem;color:var(--ink);font-weight:700;margin-bottom:.3rem}
-.admin-page-sub{font-size:.82rem;color:var(--muted);margin-bottom:2rem}
-.admin-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:2.5rem}
-.admin-kpi{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:1.25rem 1.5rem;position:relative;overflow:hidden}
-.admin-kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--gold)}
-.admin-kpi-val{font-family:var(--font-serif);font-size:2rem;color:var(--ink);font-weight:700}
-.admin-kpi-lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:.2rem}
-.admin-kpi-delta{font-size:.72rem;color:#2E7D32;margin-top:.3rem;font-weight:500}
-.admin-kpi-delta.neg{color:#C62828}
-.admin-card{background:var(--white);border:1px solid var(--border);border-radius:10px;margin-bottom:1.5rem;overflow:hidden}
-.admin-card-head{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)}
-.admin-card-title{font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--ink)}
-.admin-card-body{padding:1.5rem}
-.admin-table{width:100%;border-collapse:collapse;font-size:.82rem}
-.admin-table th{text-align:left;font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:.6rem 1rem;border-bottom:1px solid var(--border);background:var(--cream);font-weight:500}
-.admin-table td{padding:.75rem 1rem;border-bottom:1px solid rgba(221,213,197,.4);color:var(--ink);vertical-align:middle}
-.admin-table tr:last-child td{border-bottom:none}
-.admin-table tr:hover td{background:rgba(200,169,110,.04)}
-.admin-badge{display:inline-block;font-size:.6rem;padding:2px 8px;border-radius:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
-.ab-okur{background:#E3F2FD;color:#1565C0}
-.ab-yazar{background:#F3E5F5;color:#6A1B9A}
-.ab-admin{background:#FFF3E0;color:#E65100}
-.ab-aktif{background:#E8F5E9;color:#2E7D32}
-.ab-yeni{background:#FFF8E1;color:#F57F17}
-.cover-preview{display:none;align-items:flex-start;gap:.75rem;margin-top:.5rem}
-.cover-preview.on{display:flex}
-.cover-preview img{width:75px;height:117px;object-fit:cover;border-radius:4px;border:1px solid var(--brd2)}
-.cover-preview .cp-info{font-size:.7rem;color:var(--muted);line-height:1.6}
-.admin-action-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:4px;font-size:.7rem;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
-.admin-action-btn:hover{border-color:var(--gold);color:var(--gold)}
-.admin-action-btn.danger:hover{border-color:#C62828;color:#C62828}
-.admin-action-btn.success{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.app-card{display:flex;align-items:center;gap:1rem;padding:.75rem;background:var(--cream);border-radius:6px;border:1px solid var(--border);margin-bottom:.5rem}
-.app-card:last-child{margin-bottom:0}
-.app-card img{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0}
-.app-card-info{flex:1;min-width:0}
-.app-card-name{font-weight:600;font-size:.82rem;color:var(--ink);margin-bottom:.15rem}
-.app-card-date{font-size:.68rem;color:var(--muted)}
-.app-card-actions{display:flex;gap:.4rem;flex-shrink:0}
-.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-@media(max-width:600px){.admin-form-grid{grid-template-columns:1fr}}
-.admin-field{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem}
-.admin-field label{font-size:.7rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:500}
-.admin-field input,.admin-field select,.admin-field textarea{padding:9px 12px;border:1px solid var(--border);border-radius:5px;font-family:var(--font-sans);font-size:.85rem;color:var(--ink);outline:none;transition:border-color .2s;background:var(--white)}
-.admin-field input:focus,.admin-field select:focus,.admin-field textarea:focus{border-color:var(--gold)}
-.admin-field textarea{resize:vertical;min-height:80px}
-.admin-field-full{grid-column:1/-1}
-.admin-submit{background:var(--ink);color:var(--gold);border:none;padding:10px 24px;border-radius:5px;font-size:.82rem;font-weight:500;cursor:pointer;transition:all .2s;font-family:var(--font-sans);letter-spacing:.06em;text-transform:uppercase}
-.admin-submit:hover{background:var(--gold);color:var(--ink)}
-.admin-mini-chart{display:flex;align-items:flex-end;gap:4px;height:60px;margin-top:.5rem}
-.admin-bar{flex:1;border-radius:2px 2px 0 0;background:var(--gold);opacity:.65;transition:opacity .2s;cursor:default;min-width:10px}
-.admin-bar:hover{opacity:1}
-.admin-chart-labels{display:flex;gap:4px;margin-top:.3rem}
-.admin-chart-labels span{flex:1;text-align:center;font-size:.58rem;color:var(--muted)}
-.admin-split{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-@media(max-width:768px){.admin-split{grid-template-columns:1fr}}
-.admin-order-row{display:flex;align-items:center;gap:1rem;padding:.75rem 0;border-bottom:1px solid rgba(221,213,197,.4)}
-.admin-order-row:last-child{border-bottom:none}
-.admin-order-info{flex:1;min-width:0}
-.admin-order-name{font-size:.85rem;font-weight:500;color:var(--ink)}
-.admin-order-detail{font-size:.72rem;color:var(--muted)}
-.admin-order-price{font-family:var(--font-serif);font-size:.95rem;font-weight:700;color:var(--gold)}
-.admin-top-book{display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-bottom:1px solid rgba(221,213,197,.3)}
-.admin-top-book:last-child{border-bottom:none}
-.admin-top-cover{width:30px;aspect-ratio:2/3;border-radius:3px;flex-shrink:0}
-.admin-top-info{flex:1;min-width:0}
-.admin-top-title{font-size:.82rem;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.admin-top-author{font-size:.7rem;color:var(--muted)}
-.admin-top-views{font-size:.75rem;color:var(--gold);font-weight:600}
-.admin-search{width:100%;padding:9px 14px;border:1px solid var(--border);border-radius:6px;font-size:.85rem;font-family:var(--font-sans);outline:none;transition:border-color .2s;background:var(--white);margin-bottom:1rem}
-.admin-search:focus{border-color:var(--gold)}
-.admin-login-wrap{min-height:calc(100vh - 72px);display:flex;align-items:center;justify-content:center;background:var(--paper)}
-.admin-login-box{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:2.5rem;width:100%;max-width:400px;box-shadow:var(--shadow-lg)}
-.notice-bar{background:linear-gradient(90deg,rgba(200,169,110,.12),rgba(200,169,110,.05));border:1px solid rgba(200,169,110,.25);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem;font-size:.82rem;color:var(--muted)}
-.notice-bar svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:1.8;flex-shrink:0}
-.review-flag{display:flex;align-items:flex-start;gap:1rem;padding:.75rem 0;border-bottom:1px solid rgba(221,213,197,.3)}
-.review-flag:last-child{border-bottom:none}
-.review-flag-book{font-size:.7rem;color:var(--gold);font-weight:600;margin-bottom:.2rem}
-.review-flag-text{font-size:.8rem;color:var(--ink);line-height:1.5}
-.review-flag-meta{font-size:.7rem;color:var(--muted);margin-top:.2rem}
-.review-flag-actions{display:flex;gap:.4rem;flex-shrink:0;margin-top:.2rem}
-
 /* ── HOME AUTHORS GRID ── */
 .home-authors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.5rem}
 .home-author-card{background:rgba(255,255,255,.06);border:1px solid rgba(200,169,110,.15);border-radius:8px;padding:1.25rem;text-align:center;cursor:pointer;transition:all .2s}
@@ -3064,35 +2965,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     font-size: 16px !important
   }
 
-  /* ── ADMİN ── */
-  .admin-layout { grid-template-columns: 1fr }
-  .admin-sidebar {
-    position: static; height: auto;
-    display: flex; flex-wrap: nowrap;
-    overflow-x: auto; -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding: .6rem .75rem; gap: .2rem
-  }
-  .admin-sidebar::-webkit-scrollbar { display: none }
-  .admin-sidebar-title { display: none }
-  .admin-nav-item {
-    border-left: none; border-bottom: 2px solid transparent;
-    padding: .55rem .85rem; border-radius: 6px;
-    font-size: .73rem; flex-shrink: 0; white-space: nowrap
-  }
-  .admin-nav-item.act { border-bottom-color: var(--gold); background: rgba(200,169,110,.1) }
-  .admin-main { padding: 1.25rem 1rem }
-  .admin-page-title { font-size: 1.5rem; margin-bottom: .25rem }
-  .admin-page-sub { font-size: .78rem; margin-bottom: 1.25rem }
-  .admin-kpi-row { grid-template-columns: repeat(2,1fr); gap: .6rem; margin-bottom: 1.5rem }
-  .admin-kpi { padding: 1rem 1.1rem }
-  .admin-kpi-val { font-size: 1.7rem }
-  .admin-card-body { padding: .9rem; overflow-x: auto; -webkit-overflow-scrolling: touch }
-  .admin-table { min-width: 500px; font-size: .78rem }
-  .admin-table th,.admin-table td { padding: .6rem .75rem }
-  .admin-split { grid-template-columns: 1fr }
-  .admin-form-grid { grid-template-columns: 1fr }
-
   /* ── AI ÖNERI SAYFASI ── */
   .ai-page .ai-result { gap: .75rem }
   .ai-rec-card { flex-direction: column }
@@ -3210,10 +3082,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .author-card .author-av-wrap { height: 100px }
   .author-body { padding: .85rem }
 
-  /* Admin */
-  .admin-kpi-row { grid-template-columns: repeat(2,1fr) }
-  .admin-main { padding: 1rem .85rem }
-
   /* AI panel — dar ekranda tam genişlik */
   .ai-site-panel { width: 100vw }
 
@@ -3284,10 +3152,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   .badd { font-size: .58rem; padding: 4px 6px }
   .bwish-bar { width: 22px; height: 22px; font-size: .72rem }
 
-  /* Admin */
-  .admin-main { padding: .85rem .7rem }
-  .admin-kpi-row { gap: .4rem }
-
   /* Yazar modal */
   .am-header { margin: -1.25rem -1rem 1rem; padding: 1.5rem 1rem .9rem }
   .am-initials { width: 64px; height: 64px; font-size: 1.6rem }
@@ -3341,49 +3205,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ai-site-send:disabled{opacity:.35;cursor:not-allowed}
 @media(max-width:480px){.ai-site-panel{width:100vw}.ai-site-fab span{display:none}}
 
-/* ── AI PANEL (Admin) ─────────────────────────────────────── */
-.ai-fab-w{position:fixed;bottom:1.5rem;right:1.5rem;z-index:900;background:linear-gradient(135deg,#C8A96E,#9A7A45);border:none;border-radius:50px;padding:.58rem 1.05rem;cursor:pointer;align-items:center;gap:.42rem;font-size:.8rem;font-weight:600;color:#0F0E0B;box-shadow:0 4px 20px rgba(200,169,110,.4);transition:all .16s cubic-bezier(.4,0,.2,1);font-family:var(--font-sans,'DM Sans',system-ui,sans-serif);display:none}
-.ai-fab-w.visible{display:flex}
-.ai-fab-w:hover{transform:translateY(-2px);box-shadow:0 6px 28px rgba(200,169,110,.5)}
-.ai-fab-w i{font-size:15px}
-.ai-panel-w{position:fixed;top:0;right:0;width:370px;height:100vh;background:#fff;border-left:1px solid #DDD5C5;z-index:1200;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-4px 0 32px rgba(15,14,11,.1)}
-.ai-panel-w.open{transform:translateX(0)}
-.ai-panel-head-w{padding:.78rem 1rem;border-bottom:1px solid #DDD5C5;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.ai-panel-title-w{display:flex;align-items:center;gap:.42rem;font-size:.84rem;font-weight:600;color:#0F0E0B;font-family:var(--font-sans,'DM Sans',system-ui,sans-serif)}
-.ai-panel-title-w i{font-size:15px;color:#C8A96E}
-.ai-panel-btns-w{display:flex;align-items:center;gap:.2rem}
-.ai-close-w{background:none;border:none;cursor:pointer;color:#A09882;font-size:18px;padding:.2rem;border-radius:4px;display:flex;align-items:center;transition:background .16s}
-.ai-close-w:hover{background:#F5F0E8;color:#0F0E0B}
-.ai-clr-w{background:none;border:1px solid #DDD5C5;border-radius:4px;cursor:pointer;color:#6B6355;font-size:.65rem;padding:.22rem .48rem;transition:all .16s;font-family:inherit}
-.ai-clr-w:hover{border-color:#C8A96E;color:#0F0E0B}
-.ai-messages-w{flex:1;overflow-y:auto;padding:.85rem;display:flex;flex-direction:column;gap:.55rem;font-family:var(--font-sans,'DM Sans',system-ui,sans-serif)}
-.ai-welcome-w{background:linear-gradient(135deg,rgba(200,169,110,.07),rgba(200,169,110,.02));border:1px solid rgba(200,169,110,.15);border-radius:8px;padding:.85rem}
-.ai-welcome-title-w{font-size:.8rem;font-weight:600;color:#0F0E0B;margin-bottom:.35rem}
-.ai-welcome-hint-w{font-size:.7rem;color:#6B6355;margin-bottom:.45rem}
-.ai-examples-w{display:flex;flex-direction:column;gap:.25rem}
-.ai-example-w{font-size:.71rem;color:#6B6355;background:#fff;border:1px solid #DDD5C5;border-radius:5px;padding:.3rem .62rem;cursor:pointer;transition:all .16s;text-align:left;width:100%;font-family:inherit}
-.ai-example-w:hover{border-color:#C8A96E;color:#0F0E0B}
-.ai-bubble-w{max-width:90%}
-.ai-bubble-w.user{align-self:flex-end}
-.ai-bubble-w.ai{align-self:flex-start}
-.ai-bubble-inner-w{padding:.52rem .78rem;border-radius:8px;font-size:.78rem;line-height:1.55}
-.ai-bubble-w.user .ai-bubble-inner-w{background:#C8A96E;color:#0F0E0B;border-radius:8px 8px 4px 8px}
-.ai-bubble-w.ai .ai-bubble-inner-w{background:#FAF7F1;border:1px solid #DDD5C5;color:#0F0E0B;border-radius:4px 8px 8px 8px}
-.ai-chip-w{align-self:flex-start;background:#EDF7EE;border:1px solid rgba(46,125,50,.18);border-radius:5px;padding:.28rem .62rem;font-size:.69rem;color:#2E7D32;display:flex;align-items:center;gap:.32rem}
-.ai-chip-w i{font-size:11px}
-.ai-thinking-w{align-self:flex-start;background:#FAF7F1;border:1px solid #DDD5C5;border-radius:4px 8px 8px 8px;padding:.42rem .72rem;display:flex;align-items:center;gap:.38rem}
-.ai-dots-w{display:flex;gap:3px}
-.ai-dots-w span{width:5px;height:5px;border-radius:50%;background:#A09882;animation:waiDot 1.1s ease-in-out infinite}
-.ai-dots-w span:nth-child(2){animation-delay:.18s}
-.ai-dots-w span:nth-child(3){animation-delay:.36s}
-@keyframes waiDot{0%,60%,100%{transform:translateY(0);opacity:.35}30%{transform:translateY(-5px);opacity:1}}
-.ai-input-row-w{padding:.68rem .9rem;border-top:1px solid #DDD5C5;display:flex;gap:.42rem;align-items:flex-end;background:#fff;flex-shrink:0}
-.ai-input-row-w textarea{flex:1;resize:none;border:1px solid #DDD5C5;border-radius:5px;padding:.4rem .68rem;font-size:.78rem;color:#0F0E0B;background:#FAF7F1;outline:none;line-height:1.5;max-height:110px;font-family:var(--font-sans,'DM Sans',system-ui,sans-serif);transition:border-color .16s,box-shadow .16s}
-.ai-input-row-w textarea:focus{border-color:#C8A96E;box-shadow:0 0 0 3px rgba(200,169,110,.1)}
-.ai-send-w{width:33px;height:33px;border-radius:5px;background:#C8A96E;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#0F0E0B;font-size:14px;transition:opacity .16s;flex-shrink:0}
-.ai-send-w:hover{opacity:.85}
-.ai-send-w:disabled{opacity:.42;cursor:not-allowed}
-@media(max-width:480px){.ai-panel-w{width:100vw}.ai-fab-w span{display:none}}
 </style>
 
 <!-- ── ADMIN SITE CSS ── -->
@@ -5125,252 +4946,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
 </div>
 
-<!-- ═══════════ ADMİN PANELİ ═══════════ -->
-<div class="page" id="page-admin">
-  <div id="adminLoginWrap" style="display:none"></div>
-  <div id="adminPanel" style="display:none">
-    <div class="admin-layout">
-      <aside class="admin-sidebar">
-        <div class="admin-sidebar-title">Yönetim Paneli</div>
-        <div class="admin-nav-item act" onclick="adminTab(this,'dashboard')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Genel Bakış
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'books')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Kitaplar
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'users')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Kullanıcılar
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'authors')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Yazarlar
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'orders')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Siparişler
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'blog')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>Blog Yazıları
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'applications')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>Başvurular
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'reviews')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Yorumlar
-        </div>
-        <div class="admin-nav-item" onclick="adminTab(this,'settings')">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Ayarlar
-        </div>
-        <div class="admin-nav-item" onclick="adminLogout()" style="margin-top:auto;border-top:1px solid rgba(200,169,110,.1);padding-top:1rem">
-          <svg class="admin-nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Çıkış Yap
-        </div>
-      </aside>
-      <main class="admin-main">
-        <div class="admin-section act" id="as-dashboard">
-          <div class="admin-page-title">Genel Bakış</div>
-          <div class="admin-page-sub" id="adminWelcome">Hoş geldiniz</div>
-<div class="admin-kpi-row" id="adminKpis"></div>
-          <div class="admin-split">
-            <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Aylık Satış Trendi</div></div><div class="admin-card-body"><div class="admin-mini-chart" id="adminChart"></div><div class="admin-chart-labels" id="adminChartLabels"></div></div></div>
-            <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">En Çok Görüntülenen</div></div><div class="admin-card-body" id="adminTopBooks"></div></div>
-          </div>
-          <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Son Siparişler</div></div><div class="admin-card-body" id="adminRecentOrders"></div></div>
-        </div>
-        <div class="admin-section" id="as-books">
-          <div class="admin-page-title">Kitap Yönetimi</div>
-          <div class="admin-page-sub">Katalogdaki kitapları düzenleyin veya yeni kitap ekleyin</div>
-          <div class="admin-card" style="margin-bottom:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">✦ Yeni Kitap Ekle</div></div>
-            <div class="admin-card-body">
-              <div class="admin-form-grid">
-                <div class="admin-field"><label>Kitap Adı</label><input type="text" id="nb-title" placeholder="Kitabın adı"></div>
-                <div class="admin-field"><label>Yazar</label><input type="text" id="nb-author" placeholder="Yazar adı"></div>
-                <div class="admin-field"><label>Fiyat (₺)</label><input type="number" id="nb-price" placeholder="150"></div>
-                <div class="admin-field"><label>Kategori</label><select id="nb-cat"><option value="roman">Roman</option><option value="siir">Şiir</option><option value="tarih">Tarih</option><option value="deneme">Deneme</option><option value="felsefe">Felsefe</option><option value="kisisel">Kişisel Gelişim</option><option value="cocuk">Çocuk</option><option value="hikaye">Hikâye</option><option value="akademik">Akademik</option></select></div>
-                <div class="admin-field"><label>Rozet (opsiyonel)</label><input type="text" id="nb-badge" placeholder="Yeni / Bestseller / Öne Çıkan"></div>
-                <div class="admin-field"><label>Arka Plan Rengi</label><input type="color" id="nb-color1" value="#1a3a2e" style="height:42px;padding:4px 8px"> <input type="color" id="nb-color2" value="#2D4A3E" style="height:42px;padding:4px 8px;margin-left:.5rem"></div>
-                <div class="admin-field admin-field-full"><label>Kapak Görseli</label>
-                  <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
-                    <div style="flex:1;min-width:150px">
-                      <input type="file" id="nb-cover" accept="image/*" onchange="previewAdminCover(this)">
-                      <div class="cover-preview" id="adminCoverPreview" style="display:none;margin-top:.5rem;align-items:flex-start;gap:.75rem">
-                        <img id="adminCoverImg" alt="Kapak önizleme" style="width:75px;height:117px;object-fit:cover;border-radius:4px;border:1px solid var(--brd2)">
-                        <div class="cover-prev-info"><div id="adminCoverDims"></div></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="admin-field admin-field-full"><label>Açıklama</label><textarea id="nb-desc" placeholder="Kitabın kısa açıklaması..."></textarea></div>
-              </div>
-              <button class="admin-submit" onclick="adminAddBook()">Kitabı Ekle</button>
-            </div>
-          </div>
-          <div class="admin-card">
-            <div class="admin-card-head"><div class="admin-card-title">Mevcut Kitaplar</div><span style="font-size:.78rem;color:var(--muted)" id="bookCount"></span></div>
-            <div class="admin-card-body" style="padding:0">
-              <input class="admin-search" style="margin:1rem 1.5rem;width:calc(100% - 3rem)" placeholder="Kitap veya yazar ara..." oninput="adminSearchBooks(this.value)" id="bookSearchInput">
-              <table class="admin-table" id="adminBooksTable"></table>
-            </div>
-          </div>
-        </div>
-        <div class="admin-section" id="as-users">
-          <div class="admin-page-title">Kullanıcı Yönetimi</div>
-          <div class="admin-page-sub">Kayıtlı üyeler ve rolleri</div>
-          <div class="admin-kpi-row" id="userKpis"></div>
-          <div class="admin-card">
-            <div class="admin-card-head"><div class="admin-card-title">Tüm Kullanıcılar</div></div>
-            <div class="admin-card-body" style="padding:0">
-              <input class="admin-search" style="margin:1rem 1.5rem;width:calc(100% - 3rem)" placeholder="İsim veya e-posta ara..." oninput="adminSearchUsers(this.value)" id="userSearchInput">
-              <table class="admin-table" id="adminUsersTable"></table>
-            </div>
-          </div>
-        </div>
-        <div class="admin-section" id="as-authors">
-          <div class="admin-page-title">Yazar Yönetimi</div>
-          <div class="admin-page-sub">Yazar hesaplarını oluşturun ve yönetin</div>
-          <div class="admin-kpi-row" id="authorKpis"></div>
-          <!-- Üyelik Ekle Overlay -->
-          <div id="membershipOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:900;align-items:center;justify-content:center;padding:1rem">
-            <div style="background:var(--white);border-radius:12px;padding:1.75rem;max-width:420px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.3)">
-              <div style="font-family:var(--font-serif);font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:.25rem" id="membershipTitle"></div>
-              <div style="font-size:.78rem;color:var(--muted);margin-bottom:1.25rem">Bu yazar için siteye giriş yapabilecek bir üyelik hesabı oluşturun.</div>
-              <div class="admin-field"><label>E-posta <span style="color:#c0392b">*</span></label><input type="email" id="mb-email" placeholder="yazar@ornek.com"></div>
-              <div class="admin-field"><label>Şifre <span style="color:#c0392b">*</span></label><input type="password" id="mb-pass" placeholder="En az 6 karakter"></div>
-              <div style="display:flex;gap:.5rem;margin-top:1.1rem">
-                <button class="admin-submit" onclick="adminSaveMembership()" style="flex:1">Hesabı Oluştur</button>
-                <button class="admin-action-btn" onclick="closeMembership()" style="padding:9px 18px">İptal</button>
-              </div>
-            </div>
-          </div>
-          <div class="admin-card" style="margin-bottom:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">✦ Yazar Ekle</div></div>
-            <div class="admin-card-body">
-              <div class="admin-form-grid">
-                <div class="admin-field"><label>Ad Soyad <span style="color:#c0392b">*</span></label><input type="text" id="aa-name" placeholder="Yazar adı soyadı"></div>
-                <div class="admin-field"><label>Tür <span style="color:#c0392b">*</span></label><input type="text" id="aa-genre" placeholder="Roman, Şiir, Tarih..."></div>
-                <div class="admin-field admin-field-full"><label>Biyografi</label><textarea id="aa-bio" placeholder="Kısa biyografi..." style="min-height:58px"></textarea></div>
-              </div>
-              <div style="margin:1rem 0 .75rem;border-top:1px solid var(--border);padding-top:.85rem">
-                <div style="font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.75rem">Giriş Hesabı <span style="font-weight:400;text-transform:none;letter-spacing:0">(opsiyonel)</span></div>
-                <div class="admin-form-grid">
-                  <div class="admin-field"><label>E-posta</label><input type="email" id="aa-email" placeholder="yazar@ornek.com"></div>
-                  <div class="admin-field"><label>Şifre</label><input type="password" id="aa-pass" placeholder="En az 6 karakter"></div>
-                </div>
-                <p style="font-size:.72rem;color:var(--muted);margin:0">E-posta ve şifre girilirse yazara siteye giriş yapabilecek bir üyelik hesabı da oluşturulur.</p>
-              </div>
-              <button class="admin-submit" onclick="adminCreateAuthor()">Yazarı Ekle</button>
-            </div>
-          </div>
-          <div class="admin-card" style="margin-bottom:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">✦ Bekleyen Fotoğraflar</div></div>
-            <div class="admin-card-body" id="adminPendingPhotos">
-              <p style="color:var(--muted);font-size:.85rem">Yükleniyor...</p>
-            </div>
-          </div>
-          <div class="admin-card">
-            <div class="admin-card-head"><div class="admin-card-title">Yazar Listesi</div><span style="font-size:.78rem;color:var(--muted)" id="authorCount"></span></div>
-            <div class="admin-card-body" style="padding:0">
-              <table class="admin-table" id="adminAuthorsTable"></table>
-            </div>
-          </div>
-        </div>
-        <div class="admin-section" id="as-orders">
-          <div class="admin-page-title">Sipariş Yönetimi</div>
-          <div class="admin-page-sub">WhatsApp üzerinden gelen siparişleri buradan takip edin</div>
-          <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Sipariş Listesi</div></div><div class="admin-card-body" style="padding:0"><table class="admin-table" id="adminOrdersTable"></table></div></div>
-        </div>
-        <div class="admin-section" id="as-blog">
-          <div class="admin-page-title">Akgül Gazetesi Yönetimi</div>
-          <div class="admin-page-sub">Yeni yazı, ilan veya tanıtım ekleyin; manşet belirleyin</div>
-          <div class="admin-card" style="margin-bottom:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">✦ Yeni İçerik Ekle</div></div>
-            <div class="admin-card-body">
-              <div class="admin-form-grid">
-                <div class="admin-field"><label>Tür</label><select id="nb-blog-type" onchange="adminToggleBlogTypeFields()"><option value="article">Makale / Yazı</option><option value="tanitim">Tanıtım</option><option value="ilan">İlan</option></select></div>
-                <div class="admin-field"><label>Başlık</label><input type="text" id="nb-blog-title" placeholder="Yazı veya ilan başlığı"></div>
-                <div class="admin-field nb-blog-author-field"><label>Yazar</label><input type="text" id="nb-blog-author" placeholder="Yazar adı" value="Akgül Yayınevi"></div>
-                <div class="admin-field nb-blog-cat-field"><label>Kategori</label><select id="nb-blog-cat"><option value="Yazarlık">Yazarlık</option><option value="Şiir & Dil">Şiir & Dil</option><option value="Tarih & Araştırma">Tarih & Araştırma</option><option value="Felsefe">Felsefe</option><option value="Çocuk Edebiyatı">Çocuk Edebiyatı</option><option value="Psikoloji & Okuma">Psikoloji & Okuma</option></select></div>
-                <div class="admin-field nb-blog-ilan-field" style="display:none"><label>İlan Etiketi</label><input type="text" id="nb-blog-ilan-badge" placeholder="FUAR, İMZA GÜNÜ, KAMPANYA..."></div>
-                <div class="admin-field" style="display:flex;align-items:center;gap:.5rem;padding-top:1.5rem"><label style="margin-bottom:0"><input type="checkbox" id="nb-blog-manset" style="margin-right:.35rem">Bu yazıyı Manşet yap</label></div>
-                <div class="admin-field admin-field-full"><label>Kısa Özet / İlan Metni</label><textarea id="nb-blog-summary" placeholder="Yazının kısa özeti veya ilan açıklaması..."></textarea></div>
-              </div>
-              <button class="admin-submit" onclick="adminAddBlogPost()">Yayınla</button>
-            </div>
-          </div>
-          <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Yayınlanan İçerikler</div><span style="font-size:.78rem;color:var(--muted)" id="blogCount"></span></div><div class="admin-card-body" style="padding:0"><table class="admin-table" id="adminBlogTable"></table></div></div>
-        </div>
-        <div class="admin-section" id="as-applications">
-          <div class="admin-page-title">Eser Başvuruları</div>
-          <div class="admin-page-sub">Yazarlardan gelen eser başvurularını inceleyin ve yanıtlayın</div>
-          <div class="admin-kpi-row" id="appKpis"></div>
-          <div class="admin-card">
-            <div class="admin-card-head">
-              <div class="admin-card-title">Başvurular</div>
-              <div style="display:flex;gap:.4rem;flex-wrap:wrap">
-                <button class="admin-action-btn success" id="aaf-all" onclick="filterAdminApps('all')">Tümü</button>
-                <button class="admin-action-btn" id="aaf-bekliyor" onclick="filterAdminApps('bekliyor')">Bekliyor</button>
-                <button class="admin-action-btn" id="aaf-kabul" onclick="filterAdminApps('kabul')">Kabul</button>
-                <button class="admin-action-btn" id="aaf-red" onclick="filterAdminApps('red')">Red</button>
-              </div>
-            </div>
-            <div class="admin-card-body" id="adminAppsList"></div>
-          </div>
-        </div>
-        <div class="admin-section" id="as-reviews">
-          <div class="admin-page-title">Yorum Yönetimi</div>
-          <div class="admin-page-sub">Okuyucu yorumlarını inceleyin ve onaylayın</div>
-          <div class="admin-card"><div class="admin-card-head"><div class="admin-card-title">Tüm Yorumlar</div></div><div class="admin-card-body" id="adminReviewsList"></div></div>
-        </div>
-        <div class="admin-section" id="as-settings">
-          <div class="admin-page-title">Site Ayarları</div>
-          <div class="admin-page-sub">Genel yapılandırma ve admin hesabı</div>
-          <div class="admin-card">
-            <div class="admin-card-head"><div class="admin-card-title">Admin Şifresi Değiştir</div></div>
-            <div class="admin-card-body" style="max-width:440px">
-              <div class="admin-field"><label>Mevcut Şifre</label><input type="password" id="set-oldpass" placeholder="••••••••"></div>
-              <div class="admin-field"><label>Yeni Şifre</label><input type="password" id="set-newpass" placeholder="En az 6 karakter"></div>
-              <div class="admin-field"><label>Yeni Şifre (Tekrar)</label><input type="password" id="set-newpass2" placeholder="••••••••"></div>
-              <button class="admin-submit" onclick="adminChangePass()">Şifreyi Güncelle</button>
-            </div>
-          </div>
-          <div class="admin-card" style="margin-top:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">Site Genel Ayarları</div></div>
-            <div class="admin-card-body">
-              <div class="admin-form-grid">
-                <div class="admin-field"><label>WhatsApp Numarası</label><input type="text" id="set-waphone" placeholder="905xxxxxxxxx" maxlength="12"></div>
-                <div class="admin-field"><label>Ücretsiz Kargo Eşiği (₺)</label><input type="number" id="set-freeship" placeholder="500" min="0"></div>
-                <div class="admin-field"><label>Kargo Ücreti (₺)</label><input type="number" id="set-shipcost" placeholder="35" min="0"></div>
-              </div>
-              <button class="admin-submit" onclick="adminSaveSettings()">Ayarları Kaydet</button>
-            </div>
-          </div>
-          <div class="admin-card" style="margin-top:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">İndirim Kuponları</div></div>
-            <div class="admin-card-body">
-              <p style="font-size:.78rem;color:var(--txt2);margin-bottom:.75rem">Her satıra bir kupon: <code style="background:rgba(200,169,110,.1);padding:1px 5px;border-radius:3px;font-size:.75rem">KOD:İNDİRİM%</code> — örn. <code style="background:rgba(200,169,110,.1);padding:1px 5px;border-radius:3px;font-size:.75rem">YAZAR10:10</code></p>
-              <div class="admin-field"><label>Aktif Kuponlar</label><textarea id="set-coupons" rows="5" placeholder="YAZAR10:10&#10;KAMPANYA15:15&#10;VIP20:20" style="font-family:monospace;font-size:.82rem"></textarea></div>
-              <div class="admin-field" style="margin-top:.75rem"><label>Tüm Rozetler Kuponu <span style="font-weight:400;color:var(--txt3)">(tüm rozetleri kazanan üyeye gösterilen kod)</span></label><input id="set-allbadges-coupon" placeholder="TAMROZET50" style="font-family:monospace"></div>
-              <button class="admin-submit" onclick="adminSaveCoupons()">Kuponları Kaydet</button>
-            </div>
-          </div>
-          <div class="admin-card" style="margin-top:1.5rem">
-            <div class="admin-card-head"><div class="admin-card-title">Dağıtım Noktası Linkleri</div></div>
-            <div class="admin-card-body">
-              <p style="font-size:.78rem;color:var(--txt2);margin-bottom:1rem">Footer'daki platform logolarına tıklandığında açılacak sayfalar. Henüz profil oluşturulmamış platformlarda mevcut arama linklerini kullanabilirsiniz.</p>
-              <div class="admin-form-grid">
-                <div class="admin-field"><label>Kitapyurdu URL</label><input type="url" id="set-link-ky" placeholder="https://www.kitapyurdu.com/..."></div>
-                <div class="admin-field"><label>D&amp;R URL</label><input type="url" id="set-link-dr" placeholder="https://www.dr.com.tr/..."></div>
-                <div class="admin-field"><label>idefix URL</label><input type="url" id="set-link-idefix" placeholder="https://www.idefix.com/..."></div>
-                <div class="admin-field"><label>Prefix URL</label><input type="url" id="set-link-prefix" placeholder="https://www.prefix.com.tr/..."></div>
-              </div>
-              <button class="admin-submit" onclick="adminSavePlatformLinks()">Linkleri Kaydet</button>
-            </div>
-          </div>
-          <div class="admin-card" style="margin-top:1.5rem"><div class="admin-card-head"><div class="admin-card-title">İstatistik Özeti</div></div><div class="admin-card-body"><div class="admin-kpi-row" id="settingsStats"></div></div></div>
-        </div>
-      </main>
-    </div>
-  </div>
-</div>
-
 <!-- FOOTER -->
 <footer>
   <div class="ft-main">
@@ -6087,13 +5662,7 @@ function go(page){
     sid('forgotForm').style.display='none';sid('loginForm').style.display='block';
   }
   if(page==='admin'){
-    adminLoggedIn=true;
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('act'));
-    const panel=sid('adminPanel');
-    if(panel){panel.style.display='block';}
-    window.scrollTo({top:0});
-    renderAdminDashboard();
-    aiAdminVisible(true);
+    adminQuickAccess();
     return;
   }
 }
@@ -9292,35 +8861,6 @@ function adminQuickAccess(){
     toast('Bu bölüme erişim yetkiniz yok.');
   }
 }
-function adminLogout(){adminLoggedIn=false;sid('adminPanel').style.display='none';go('home')}
-function adminTab(el,sec){
-  document.querySelectorAll('.admin-nav-item').forEach(i=>i.classList.remove('act'));el.classList.add('act');
-  document.querySelectorAll('.admin-section').forEach(s=>s.classList.remove('act'));const t=sid('as-'+sec);if(t)t.classList.add('act');
-  if(sec==='settings'){loadSettingsForm();renderSettingsStats();}
-}
-function renderAdminDashboard(){
-  const totalRev=books.reduce((s,b)=>s+b.price*Math.floor(b.views/8),0),totalViews=books.reduce((s,b)=>s+b.views,0);
-  const pendingApps=JSON.parse(localStorage.getItem('akgulApplications')||'[]').filter(a=>!a.status||a.status==='bekliyor').length;
-  const _allOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
-  const kpis=[{val:books.length,lbl:'Toplam Kitap'},{val:users.filter(u=>u.role!=='admin').length,lbl:'Kayıtlı Üye'},{val:'₺'+totalRev.toLocaleString('tr-TR'),lbl:'Tahmini Gelir'},{val:totalViews,lbl:'Toplam Görüntüleme'},{val:_allOrders.filter(o=>o.status==='Tamamlandı').length,lbl:'Tamamlanan Sipariş'},{val:pendingApps,lbl:'Bekleyen Başvuru'},{val:books.reduce((s,b)=>s+b.reviews.length,0),lbl:'Toplam Yorum'}];
-  sid('adminKpis').innerHTML=kpis.map(k=>`<div class="admin-kpi"><div class="admin-kpi-val">${k.val}</div><div class="admin-kpi-lbl">${k.lbl}</div></div>`).join('');
-  const mNames=['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'],_now=new Date();
-  const monthlyData=Array.from({length:12},(_,i)=>{const d=new Date(_now.getFullYear(),_now.getMonth()-11+i,1);const y=d.getFullYear(),m=d.getMonth();return _allOrders.filter(o=>{try{const od=new Date(o.date);return od.getFullYear()===y&&od.getMonth()===m&&o.status!=='İptal'}catch(e){return false}}).length;});
-  const maxS=Math.max(...monthlyData,1);
-  const chartMonths=Array.from({length:12},(_,i)=>{const d=new Date(_now.getFullYear(),_now.getMonth()-11+i,1);return mNames[d.getMonth()];});
-  sid('adminChart').innerHTML=monthlyData.map(v=>`<div class="admin-bar" style="height:${Math.round(v/maxS*100)}%" title="${v} sipariş"></div>`).join('');
-  sid('adminChartLabels').innerHTML=chartMonths.map(m=>`<span>${m}</span>`).join('');
-  const top=[...books].sort((a,b)=>b.views-a.views).slice(0,5);
-  sid('adminTopBooks').innerHTML=top.map(b=>`<div class="admin-top-book"><div class="admin-top-cover" style="${b.cover?'background:var(--cream)':'background:'+b.bg}">${b.cover?`<img src="${b.cover}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`:''}</div><div class="admin-top-info"><div class="admin-top-title">${b.title}</div><div class="admin-top-author">${b.author}</div></div><div class="admin-top-views">${b.views}</div></div>`).join('');
-  const _recent=_allOrders.slice(0,4);
-  sid('adminRecentOrders').innerHTML=_recent.length?_recent.map(o=>`<div class="admin-order-row"><div class="admin-order-info"><div class="admin-order-name">${o.customer} <span style="font-size:.7rem;color:var(--muted)">${o.id}</span></div><div class="admin-order-detail">${o.book} · ${o.date}</div></div><span class="admin-badge ${o.status==='Tamamlandı'?'ab-aktif':o.status==='İptal'?'ab-admin':'ab-yeni'}">${o.status}</span><div class="admin-order-price">₺${o.total}</div></div>`).join(''):'<div style="padding:1rem;color:var(--muted);font-size:.82rem;text-align:center">Henüz sipariş yok</div>';
-}
-function renderAdminBooks(filter=''){
-  const list=filter?books.filter(b=>b.title.toLowerCase().includes(filter)||b.author.toLowerCase().includes(filter)):books;
-  sid('bookCount').textContent=`${list.length} kitap`;
-  sid('adminBooksTable').innerHTML=`<thead><tr><th>Kitap</th><th>Yazar</th><th>Kategori</th><th>Fiyat</th><th>Görüntüleme</th><th>Yorum</th><th>İşlem</th></tr></thead><tbody>${list.map(b=>`<tr><td><div style="display:flex;align-items:center;gap:.6rem"><div style="width:24px;aspect-ratio:2/3;border-radius:2px;flex-shrink:0;overflow:hidden;${b.cover?'background:var(--cream)':'background:'+b.bg}">${b.cover?`<img src="${b.cover}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`:''}</div><span style="font-weight:600">${b.title}</span>${b.badge?`<span class="admin-badge ab-yeni">${b.badge}</span>`:''}</div></td><td>${b.author}</td><td style="text-transform:capitalize">${b.cat}</td><td style="font-weight:600;color:var(--gold)">₺${b.price}</td><td>${b.views}</td><td>${b.reviews.length}</td><td style="display:flex;gap:.4rem"><button class="admin-action-btn" onclick="adminEditBook(${b.id})">Düzenle</button><button class="admin-action-btn danger" onclick="adminDeleteBook(${b.id})">Sil</button></td></tr>`).join('')}</tbody>`;
-}
-function adminSearchBooks(q){renderAdminBooks(q.toLowerCase())}
 let _pendingAdminCover=null;
 function previewAdminCover(input){
   const file=input?.files?.[0];
@@ -9353,12 +8893,12 @@ function adminAddBook(){
   const preview=sid('adminCoverPreview');if(preview)preview.style.display='none';
   const fileInput=sid('nb-cover');if(fileInput)fileInput.value='';
   ['nb-title','nb-author','nb-price','nb-badge','nb-desc'].forEach(id=>{const el=sid(id);if(el)el.value=''});
-  renderAdminBooks();renderBooks('all');renderEditors();toast(`✦ "${title}" kataloğa eklendi!`);
+  renderBooks('all');renderEditors();toast(`✦ "${title}" kataloğa eklendi!`);
 }
 function adminDeleteBook(id){
   const b=books.find(x=>x.id===id);if(!b)return;
   if(!confirm(`"${b.title}" kitabını silmek istediğinizden emin misiniz?`))return;
-  books.splice(books.indexOf(b),1);saveBooks();renderAdminBooks();renderBooks('all');renderEditors();toast(`"${b.title}" silindi.`);
+  books.splice(books.indexOf(b),1);saveBooks();renderBooks('all');renderEditors();toast(`"${b.title}" silindi.`);
 }
 function adminEditBook(id){
   const b=books.find(x=>x.id===id);if(!b)return;
@@ -9397,23 +8937,15 @@ function adminSaveEditBook(id){
   if(!title||!author){toast('Kitap adı ve yazar zorunlu!');return}
   Object.assign(b,{title,author,price,cat,badge,views,desc});
   b.cover=genBookCoverSVG(b);
-  saveBooks();renderAdminBooks();renderBooks(currentFilter||'all');
+  saveBooks();renderBooks(currentFilter||'all');
   closeMod();toast(`✦ "${title}" güncellendi!`);
 }
-function renderAdminUsers(filter=''){
-  const allUsers=[{name:'Admin',email:'admin@akgulyayinevi.com',role:'admin',joined:'Mayıs 2026'},...users];
-  const list=filter?allUsers.filter(u=>u.name.toLowerCase().includes(filter)||u.email.toLowerCase().includes(filter)):allUsers;
-  const okur=allUsers.filter(u=>u.role==='okur').length,yazar=allUsers.filter(u=>u.role==='yazar').length;
-  sid('userKpis').innerHTML=`<div class="admin-kpi"><div class="admin-kpi-val">${allUsers.length}</div><div class="admin-kpi-lbl">Toplam Kullanıcı</div></div><div class="admin-kpi"><div class="admin-kpi-val">${okur}</div><div class="admin-kpi-lbl">Okur</div></div><div class="admin-kpi"><div class="admin-kpi-val">${yazar}</div><div class="admin-kpi-lbl">Yazar</div></div><div class="admin-kpi"><div class="admin-kpi-val">1</div><div class="admin-kpi-lbl">Admin</div></div>`;
-  sid('adminUsersTable').innerHTML=`<thead><tr><th>Ad Soyad</th><th>E-posta</th><th>Rol</th><th>Rol Değiştir</th><th>Üyelik</th><th>İşlem</th></tr></thead><tbody>${list.map(u=>`<tr><td style="font-weight:600">${u.name}</td><td style="color:var(--muted);font-size:.78rem">${u.email}</td><td><span class="admin-badge ${u.role==='admin'?'ab-admin':u.role==='yazar'?'ab-yazar':'ab-okur'}">${u.role==='admin'?'Admin':u.role==='yazar'?'Yazar':'Okur'}</span></td><td>${u.role!=='admin'?`<select onchange="adminChangeRole('${u.email}',this.value)" style="font-size:.72rem;padding:4px 6px;border:1px solid var(--border);border-radius:3px;background:var(--white);color:var(--ink)"><option value="okur"${u.role==='okur'?' selected':''}>Okur</option><option value="yazar"${u.role==='yazar'?' selected':''}>Yazar</option></select>`:'<span style="color:var(--muted);font-size:.72rem">—</span>'}</td><td style="font-size:.78rem;color:var(--muted)">${u.joined||'—'}</td><td>${u.role!=='admin'?`<button class="admin-action-btn danger" onclick="adminDeleteUser('${u.email}')">Sil</button>`:'<span style="color:var(--muted);font-size:.72rem">—</span>'}</td></tr>`).join('')}</tbody>`;
-}
-function adminSearchUsers(q){renderAdminUsers(q.toLowerCase())}
 function adminDeleteUser(email){
   const u=users.find(x=>x.email===email);if(!u)return;
   if(!confirm(`"${u.name}" kullanıcısını silmek istediğinizden emin misiniz?`))return;
   users.splice(users.indexOf(u),1);saveUsers();
   if(currentUser?.email===email){currentUser=null;localStorage.removeItem('akgulUser');updateAuthNav()}
-  renderAdminUsers();renderAdminAuthors();toast(`"${u.name}" silindi.`);
+  toast(`"${u.name}" silindi.`);
 }
 function adminCreateAuthor(){
   const name=sid('aa-name')?.value.trim(),genre=sid('aa-genre')?.value.trim(),
@@ -9432,26 +8964,11 @@ function adminCreateAuthor(){
     if(users.find(u=>u.email===email)){toast('Bu e-posta zaten kayıtlı!');return}
     const joined=new Date().toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
     users.push({name,email,pass,role:'yazar',joined,books:[]});
-    saveUsers();renderAdminUsers();
+    saveUsers();
     msg=`✦ "${name}" eklendi ve üyelik hesabı oluşturuldu!`;
   }
-  renderAdminAuthors();
   ['aa-name','aa-genre','aa-bio','aa-email','aa-pass'].forEach(id=>{const el=sid(id);if(el)el.value=''});
   toast(msg);
-}
-function renderAdminAuthors(){
-  const withAcc=authors.filter(a=>users.some(u=>u.role==='yazar'&&u.name===a.name));
-  const totalBooks=books.filter(b=>authors.some(a=>a.name===b.author)).length;
-  const totalViews=authors.reduce((s,a)=>{const ab=books.filter(b=>b.author===a.name);return s+ab.reduce((ss,b)=>ss+b.views,0)},0);
-  if(sid('authorCount'))sid('authorCount').textContent=`${authors.length} yazar`;
-  sid('authorKpis').innerHTML=`<div class="admin-kpi"><div class="admin-kpi-val">${authors.length}</div><div class="admin-kpi-lbl">Toplam Yazar</div></div><div class="admin-kpi"><div class="admin-kpi-val">${totalBooks}</div><div class="admin-kpi-lbl">Toplam Kitap</div></div><div class="admin-kpi"><div class="admin-kpi-val">${withAcc.length}</div><div class="admin-kpi-lbl">Üyelik Var</div></div><div class="admin-kpi"><div class="admin-kpi-val">${authors.length-withAcc.length}</div><div class="admin-kpi-lbl">Üyelik Yok</div></div>`;
-  sid('adminAuthorsTable').innerHTML=`<thead><tr><th>Ad Soyad</th><th>Tür</th><th>Kitap</th><th>Üyelik Durumu</th><th>İşlem</th></tr></thead><tbody>${authors.length?authors.map((a,i)=>{
-    const bc=books.filter(b=>b.author===a.name).length;
-    const userAcc=users.find(u=>u.role==='yazar'&&u.name===a.name);
-    const badge=userAcc?`<span class="admin-badge ab-aktif">✓ Üye</span><span style="font-size:.7rem;color:var(--muted);display:block;margin-top:2px">${userAcc.email}</span>`:`<span class="admin-badge ab-yeni">Hesap Yok</span>`;
-    const accBtn=userAcc?`<button class="admin-action-btn danger" onclick="adminDeleteUser('${userAcc.email}')">Hesabı Sil</button>`:`<button class="admin-action-btn success" onclick="adminAddMembership(${i})">Hesap Ekle</button>`;
-    return`<tr><td style="font-weight:600">${escHtml(a.name)}</td><td style="color:var(--muted);font-size:.82rem">${escHtml(a.genre||'—')}</td><td>${bc}</td><td>${badge}</td><td style="display:flex;gap:.35rem;flex-wrap:wrap">${accBtn}<button class="admin-action-btn danger" onclick="adminRemoveAuthor(${i})">Yazarı Sil</button></td></tr>`;
-  }).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:1.5rem">Henüz yazar eklenmemiş.</td></tr>'}</tbody>`;
 }
 let _mbAuthorIdx=-1;
 function adminAddMembership(idx){
@@ -9473,7 +8990,7 @@ function adminSaveMembership(){
   if(users.find(u=>u.email===email)){toast('Bu e-posta zaten kayıtlı!');return}
   const joined=new Date().toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
   users.push({name:a.name,email,pass,role:'yazar',joined,books:[]});
-  saveUsers();renderAdminUsers();renderAdminAuthors();closeMembership();
+  saveUsers();closeMembership();
   toast(`✦ "${a.name}" için üyelik oluşturuldu!`);
 }
 function adminRemoveAuthor(idx){
@@ -9481,20 +8998,14 @@ function adminRemoveAuthor(idx){
   if(!confirm(`"${a.name}" yazarını listeden kaldırmak istediğinizden emin misiniz?\n\nNot: Varsa üyelik hesabı ayrıca silinmez.`))return;
   authors.splice(idx,1);
   localStorage.setItem('akgul_authors_v2',JSON.stringify(authors));
-  renderAdminAuthors();toast(`"${a.name}" yazar listesinden kaldırıldı.`);
-}
-function renderAdminOrders(){
-  const liveOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
-  const ordersToShow=liveOrders;
-  const statusColor={'Tamamlandı':'ab-aktif','Kargoda':'ab-okur','Hazırlanıyor':'ab-yeni','İptal':'ab-admin'};
-  sid('adminOrdersTable').innerHTML=`<thead><tr><th>Sipariş No</th><th>Müşteri</th><th>Ürün</th><th>Toplam</th><th>Tarih</th><th>Durum</th><th>İşlem</th></tr></thead><tbody>${ordersToShow.map(o=>`<tr><td style="font-weight:600;color:var(--gold)">${o.id}</td><td>${o.customer}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${o.book}</td><td style="font-weight:700">₺${o.total}</td><td style="color:var(--muted);font-size:.78rem">${o.date}</td><td><span class="admin-badge ${statusColor[o.status]||'ab-yeni'}">${o.status}</span></td><td><select style="padding:3px 6px;border:1px solid var(--border);border-radius:4px;font-size:.7rem;font-family:var(--font-sans);outline:none;cursor:pointer" onchange="adminUpdateOrder('${o.id}',this.value)"><option ${o.status==='Hazırlanıyor'?'selected':''}>Hazırlanıyor</option><option ${o.status==='Kargoda'?'selected':''}>Kargoda</option><option ${o.status==='Tamamlandı'?'selected':''}>Tamamlandı</option><option ${o.status==='İptal'?'selected':''}>İptal</option></select></td></tr>`).join('')}</tbody>`;
+  toast(`"${a.name}" yazar listesinden kaldırıldı.`);
 }
 function adminUpdateOrder(id,status){
   const liveOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
   const liveIdx=liveOrders.findIndex(x=>x.id===id);
   if(liveIdx>=0){liveOrders[liveIdx].status=status;localStorage.setItem('akgul_orders_v2',JSON.stringify(liveOrders));}
   else{const o=demoOrders.find(x=>x.id===id);if(o)o.status=status;}
-  toast(`Sipariş ${id} → ${status}`);renderAdminOrders();renderAdminDashboard();
+  toast(`Sipariş ${id} → ${status}`);
 }
 function renderAdminBlog(){
   const typeBadge={article:'ab-okur',tanitim:'ab-aktif',ilan:'ab-admin','cekilis-sonuc':'ab-yeni'};
@@ -9633,76 +9144,10 @@ function adminAddBlogPost(){
   toast(`✦ "${title}" yayınlandı!`);
 }
 
-/* ── KULLANICI ROL DEĞİŞTİR ── */
-function adminChangeRole(email,role){
-  const u=users.find(x=>x.email===email);if(!u)return;
-  u.role=role;saveUsers();renderAdminUsers();renderAdminAuthors();
-  toast(`"${u.name}" → ${role==='yazar'?'Yazar':'Okur'} rolüne güncellendi.`);
-}
-
-/* ── SITE AYARLARI ── */
-function adminSaveSettings(){
-  const waPhone=(sid('set-waphone')?.value||'').trim().replace(/\D/g,'');
-  const freeShip=parseInt(sid('set-freeship')?.value)||500;
-  const shipCost=parseInt(sid('set-shipcost')?.value)||35;
-  if(waPhone.length>=10)WA_PHONE=waPhone;
-  FREE_SHIP=freeShip;SHIP_COST=shipCost;
-  const settings={waPhone:WA_PHONE,freeShip:FREE_SHIP,shipCost:SHIP_COST};
-  Object.assign(siteSettings,settings);
-  localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
-  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':adminCredentials.pass},
-    body:JSON.stringify({action:'admin_save',key:'settings',value:settings})}).then(r=>{
-    toast(r.ok?'✦ Ayarlar sunucuya kaydedildi!':'✦ Ayarlar kaydedildi (yerel)');
-  }).catch(()=>toast('✦ Ayarlar kaydedildi!'));
-}
-function loadSettingsForm(){
-  const s=siteSettings;
-  const f=(id,val)=>{const el=sid(id);if(el&&val!==undefined&&val!==null)el.value=val};
-  f('set-waphone',s.waPhone);f('set-freeship',s.freeShip);f('set-shipcost',s.shipCost);
-  const ce=sid('set-coupons');
-  if(ce&&Array.isArray(s.coupons))ce.value=s.coupons.map(c=>c.code+':'+c.discount).join('\n');
-  const abc=sid('set-allbadges-coupon');if(abc)abc.value=s.allBadgesCoupon||'TAMROZET50';
-  const pl=s.platformLinks||{};
-  f('set-link-ky',pl.ky);f('set-link-dr',pl.dr);f('set-link-idefix',pl.idefix);f('set-link-prefix',pl.prefix);
-}
 function applyPlatformLinks(){
   const pl=siteSettings.platformLinks||{};
   const set=(id,url)=>{const el=document.getElementById(id);if(el&&url){el.href=url;}};
   set('ft-dist-ky',pl.ky);set('ft-dist-dr',pl.dr);set('ft-dist-idefix',pl.idefix);set('ft-dist-prefix',pl.prefix);
-}
-function adminSavePlatformLinks(){
-  const g=id=>(sid(id)?.value||'').trim();
-  const pl={ky:g('set-link-ky'),dr:g('set-link-dr'),idefix:g('set-link-idefix'),prefix:g('set-link-prefix')};
-  siteSettings.platformLinks=pl;
-  localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
-  applyPlatformLinks();
-  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':adminCredentials.pass},
-    body:JSON.stringify({action:'admin_save',key:'settings',value:siteSettings})}).then(r=>{
-    toast(r.ok?'✦ Platform linkleri kaydedildi!':'✦ Linkler yerel kaydedildi');
-  }).catch(()=>toast('✦ Linkler kaydedildi!'));
-}
-function adminSaveCoupons(){
-  const raw=(sid('set-coupons')?.value||'').trim();
-  const coupons=raw?raw.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const[code,...rest]=l.split(':');const disc=parseInt(rest.join(':'))||0;return{code:(code||'').toUpperCase().trim(),discount:disc,active:true};}).filter(c=>c.code&&c.discount>0):[];
-  const allBadgesCoupon=((sid('set-allbadges-coupon')?.value||'').trim().toUpperCase())||'TAMROZET50';
-  const couponsWithBadge=coupons.filter(c=>c.code!==allBadgesCoupon);
-  couponsWithBadge.push({code:allBadgesCoupon,discount:50,active:true,badge:true});
-  siteSettings.coupons=couponsWithBadge;
-  siteSettings.allBadgesCoupon=allBadgesCoupon;
-  localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
-  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':adminCredentials.pass},
-    body:JSON.stringify({action:'admin_save',key:'settings',value:siteSettings})}).then(r=>{
-    toast(r.ok?`✦ ${coupons.length} kupon + rozet kuponu kaydedildi!`:'✦ Kuponlar yerel kaydedildi');
-  }).catch(()=>toast('✦ Kuponlar kaydedildi!'));
-}
-function adminChangePass(){
-  const old=sid('set-oldpass')?.value,n1=sid('set-newpass')?.value,n2=sid('set-newpass2')?.value;
-  if(old!==adminCredentials.pass){toast('Mevcut şifre hatalı!');return}
-  if(n1.length<6){toast('Yeni şifre en az 6 karakter!');return}
-  if(n1!==n2){toast('Şifreler eşleşmiyor!');return}
-  adminCredentials.pass=n1;localStorage.setItem('akgulAdminCreds',JSON.stringify(adminCredentials));
-  ['set-oldpass','set-newpass','set-newpass2'].forEach(id=>{const el=sid(id);if(el)el.value=''});
-  toast('✦ Şifre güncellendi!');
 }
 function renderSettingsStats(){
   const s=sid('settingsStats');if(!s)return;
@@ -10076,230 +9521,6 @@ function updateLiveBar(){
   const lask=sid('liveAskida');if(lask)lask.textContent=loadAskidaData().items.filter(i=>i.status==='available').length;
 }
 
-/* ═══════════════════════════════════════
-   AI ADMIN ASSISTANT
-═══════════════════════════════════════ */
-const AI_EP_W = '/api/admin-ai.php';
-let aiHistoryW = [];
-let aiOpenW = false;
-
-function aiAdminVisible(show){
-  const fab = sid('aiFabW');
-  if(fab) fab.classList.toggle('visible', show);
-  if(!show && aiOpenW){ aiOpenW=false; const p=sid('aiPanelW');if(p)p.classList.remove('open'); }
-}
-
-// Admin panel görünürlüğünü izle
-(function(){
-  const panel = sid('adminPanel');
-  if(!panel) return;
-  const obs = new MutationObserver(()=>{
-    aiAdminVisible(panel.style.display !== 'none' && adminLoggedIn);
-  });
-  obs.observe(panel,{attributes:true,attributeFilter:['style']});
-})();
-
-function adminNavTo(section){
-  const el = document.querySelector(`.admin-nav-item[onclick*="adminTab(this,'${section}')"]`);
-  if(el) adminTab(el, section);
-}
-
-function toggleAIW(){
-  aiOpenW = !aiOpenW;
-  const panel = sid('aiPanelW');
-  if(panel) panel.classList.toggle('open', aiOpenW);
-  if(aiOpenW){
-    if(!sid('aiMessagesW').children.length) renderAIWelcomeW();
-    setTimeout(()=>sid('aiInputW')?.focus(), 290);
-  }
-}
-document.addEventListener('click', function(e){
-  if(!aiOpenW) return;
-  const panel = sid('aiPanelW');
-  const fab   = sid('aiFabW');
-  if(panel && !panel.contains(e.target) && fab && !fab.contains(e.target)){
-    aiOpenW = false;
-    panel.classList.remove('open');
-  }
-});
-
-function clearAIW(){
-  aiHistoryW = [];
-  sid('aiMessagesW').innerHTML = '';
-  renderAIWelcomeW();
-}
-
-function renderAIWelcomeW(){
-  sid('aiMessagesW').innerHTML = `
-    <div class="ai-welcome-w">
-      <div class="ai-welcome-title-w"><i class="ti ti-sparkles" style="color:#C8A96E;margin-right:.25rem"></i>Merhaba! Nasıl yardımcı olabilirim?</div>
-      <div class="ai-welcome-hint-w">Doğal Türkçe komutlarla paneli yönetin:</div>
-      <div class="ai-examples-w">
-        <button class="ai-example-w" onclick="aiQuickW(this)">Kaç kitabımız var, özet ver</button>
-        <button class="ai-example-w" onclick="aiQuickW(this)">Roman kategorisindeki kitapları listele</button>
-        <button class="ai-example-w" onclick="aiQuickW(this)">Bekleyen siparişleri göster</button>
-        <button class="ai-example-w" onclick="aiQuickW(this)">#002 siparişini kargoya ver</button>
-        <button class="ai-example-w" onclick="aiQuickW(this)">Yeni kitap ekle: Kayıp Şehir, Zeynep Demir, 195 TL, roman, 320 sayfa</button>
-        <button class="ai-example-w" onclick="aiQuickW(this)">Sipariş sayfasına git</button>
-      </div>
-    </div>`;
-}
-
-function aiQuickW(el){ sid('aiInputW').value = el.textContent; sendAIW(); }
-
-function aiKeyDownW(e){
-  if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendAIW(); }
-}
-
-function aiResizeW(el){
-  el.style.height='auto';
-  el.style.height = Math.min(el.scrollHeight,110)+'px';
-}
-
-function aiScrollW(){
-  const m=sid('aiMessagesW'); if(m) m.scrollTop=m.scrollHeight;
-}
-
-function aiAppendBubbleW(role, text){
-  const div=document.createElement('div');
-  div.className='ai-bubble-w '+role;
-  div.innerHTML=`<div class="ai-bubble-inner-w">${escHtml(text).replace(/\n/g,'<br>')}</div>`;
-  sid('aiMessagesW').appendChild(div); aiScrollW(); return div;
-}
-
-function aiAppendThinkingW(){
-  const div=document.createElement('div');
-  div.className='ai-thinking-w';
-  div.innerHTML=`<div class="ai-dots-w"><span></span><span></span><span></span></div><span style="font-size:.71rem;color:#A09882">Düşünüyor…</span>`;
-  sid('aiMessagesW').appendChild(div); aiScrollW(); return div;
-}
-
-function aiAppendChipW(icon, text){
-  const div=document.createElement('div');
-  div.className='ai-chip-w';
-  div.innerHTML=`<i class="ti ${icon}"></i>${escHtml(text)}`;
-  sid('aiMessagesW').appendChild(div); aiScrollW();
-}
-
-function getAIDataW(){
-  return {
-    books: books.map(b=>({id:b.id,title:b.title,author:b.author,price:b.price,cat:b.cat,pages:b.pages||0,badge:b.badge,views:b.views})),
-    orders: JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]'),
-    blogPosts: blogData.map(p=>({id:p.id,title:p.title,author:p.author,date:p.date,cat:p.cat,status:p.status||'Yayında'})),
-    authors: authors.map(a=>({name:a.name,genre:a.genre})),
-    users
-  };
-}
-
-const PAGE_MAP_W = {
-  'p-dash':'dashboard','p-books':'books','p-orders':'orders','p-users':'users',
-  'p-blog':'blog','p-reviews':'reviews','p-analytics':'dashboard',
-  'p-authors':'authors','p-content':'settings','p-settings':'settings',
-  'dashboard':'dashboard','books':'books','orders':'orders','users':'users',
-  'blog':'blog','reviews':'reviews','authors':'authors','settings':'settings'
-};
-const PAGE_LABEL_W = {
-  dashboard:'Genel Bakış',books:'Kitaplar',orders:'Siparişler',users:'Kullanıcılar',
-  blog:'Blog',reviews:'Yorumlar',authors:'Yazarlar',settings:'Ayarlar'
-};
-
-function applyAIActionsW(actions){
-  for(const {tool,params} of actions){
-    if(tool==='add_book'){
-      const newId = books.length ? Math.max(...books.map(b=>b.id))+1 : 1;
-      books.push({id:newId,title:params.title||'',author:params.author||'',price:params.price||0,
-        cat:params.cat||'roman',bg:'linear-gradient(145deg,#1a3a2e,#2D4A3E)',
-        badge:params.badge||null,desc:params.desc||'',cover:'',views:0,rating:0,reviews:[]});
-      saveBooks(); renderAdminBooks(); renderBooks('all');
-      aiAppendChipW('ti-book-2',`"${params.title}" eklendi`);
-
-    } else if(tool==='update_book'){
-      const b=books.find(x=>x.id===params.id);
-      if(b){
-        if(params.title!==undefined) b.title=params.title;
-        if(params.author!==undefined) b.author=params.author;
-        if(params.price!==undefined) b.price=params.price;
-        if(params.desc!==undefined) b.desc=params.desc;
-        if('badge' in params) b.badge=params.badge;
-        saveBooks(); renderAdminBooks();
-        aiAppendChipW('ti-edit',`#${params.id} kitap güncellendi`);
-      }
-
-    } else if(tool==='delete_book'){
-      const idx=books.findIndex(x=>x.id===params.id);
-      if(idx!==-1){
-        const name=books[idx].title;
-        books.splice(idx,1);
-        saveBooks(); renderAdminBooks(); renderBooks('all');
-        aiAppendChipW('ti-trash',`"${name}" silindi`);
-      }
-
-    } else if(tool==='update_order_status'){
-      const _lo=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
-      const _li=_lo.findIndex(x=>x.id===params.id);
-      if(_li>=0){_lo[_li].status=params.status;localStorage.setItem('akgul_orders_v2',JSON.stringify(_lo));renderAdminOrders();renderAdminDashboard();aiAppendChipW('ti-package',`${params.id} → ${params.status}`);}
-
-    } else if(tool==='bulk_update_orders'){
-      const _lo2=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
-      let cnt=0;
-      _lo2.forEach(o=>{if(o.status===params.from_status){o.status=params.to_status;cnt++;}});
-      if(cnt){localStorage.setItem('akgul_orders_v2',JSON.stringify(_lo2));renderAdminOrders();renderAdminDashboard();aiAppendChipW('ti-packages',`${cnt} sipariş: ${params.from_status} → ${params.to_status}`);}
-
-    } else if(tool==='add_blog_post'){
-      const newId=blogData.length?Math.max(...blogData.map(p=>p.id))+1:1;
-      const today=new Date().toLocaleDateString('tr-TR',{day:'numeric',month:'long',year:'numeric'});
-      blogData.unshift({id:newId,title:params.title||'',author:params.author||'',
-        initials:(params.author||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(),
-        color:'#2D4A3E',date:today,cat:params.cat||'',status:params.status||'Taslak',
-        excerpt:params.content||'',body:params.content||'',bg:'linear-gradient(135deg,#2D4A3E,#1d2e2a)',images:[]});
-      saveBlogData(blogData); renderAdminBlog();
-      aiAppendChipW('ti-news',`"${params.title}" blog yazısı eklendi`);
-
-    } else if(tool==='navigate_to'){
-      const sec=PAGE_MAP_W[params.page]||params.page;
-      adminNavTo(sec);
-      aiAppendChipW('ti-arrow-right',(PAGE_LABEL_W[sec]||sec)+' sayfasına gidildi');
-    }
-  }
-}
-
-async function sendAIW(){
-  const input=sid('aiInputW');
-  const text=input?.value.trim();
-  if(!text) return;
-  const btn=sid('aiSendBtnW');
-  input.value=''; input.style.height='auto'; if(btn)btn.disabled=true;
-
-  aiAppendBubbleW('user',text);
-  aiHistoryW.push({role:'user',content:text});
-  const thinking=aiAppendThinkingW();
-
-  try{
-    const res=await fetch(AI_EP_W,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:aiHistoryW,data:getAIDataW()})
-    });
-    thinking.remove();
-
-    if(!res.ok){
-      const e=await res.json().catch(()=>({}));
-      aiAppendBubbleW('ai','Hata: '+(e.error||'Sunucu hatası'));
-      aiHistoryW.pop(); return;
-    }
-
-    const {reply,actions}=await res.json();
-    if(actions&&actions.length) applyAIActionsW(actions);
-    if(reply){ aiAppendBubbleW('ai',reply); aiHistoryW.push({role:'assistant',content:reply}); }
-
-  } catch(err){
-    thinking.remove();
-    aiAppendBubbleW('ai','Sunucuya bağlanılamadı. Proxy çalışıyor mu? (node server.js)');
-    aiHistoryW.pop();
-  } finally{
-    if(btn)btn.disabled=false; input?.focus();
-  }
-}
 </script>
 
 <!-- ── SİTE KULLANICI AI ─────────────────────────────────── -->
@@ -10320,26 +9541,6 @@ async function sendAIW(){
     <textarea id="aiSiteInput" placeholder="Bir şey sorun…" rows="1"
       onkeydown="siteAIKeyDown(event)" oninput="siteAIResize(this)"></textarea>
     <button class="ai-site-send" id="aiSiteSendBtn" onclick="sendSiteAI()"><i class="ti ti-send"></i></button>
-  </div>
-</div>
-
-<!-- ── AI PANEL (Admin) ──────────────────────────────────── -->
-<button class="ai-fab-w" onclick="toggleAIW()" id="aiFabW">
-  <i class="ti ti-sparkles"></i><span>AI Asistan</span>
-</button>
-
-<div class="ai-panel-w" id="aiPanelW">
-  <div class="ai-panel-head-w">
-    <div class="ai-panel-title-w"><i class="ti ti-sparkles"></i>AI Asistan</div>
-    <div class="ai-panel-btns-w">
-      <button class="ai-clr-w" onclick="clearAIW()">Temizle</button>
-    </div>
-  </div>
-  <div class="ai-messages-w" id="aiMessagesW"></div>
-  <div class="ai-input-row-w">
-    <textarea id="aiInputW" placeholder="Komut yazın veya soru sorun…" rows="1"
-      onkeydown="aiKeyDownW(event)" oninput="aiResizeW(this)"></textarea>
-    <button class="ai-send-w" id="aiSendBtnW" onclick="sendAIW()"><i class="ti ti-send"></i></button>
   </div>
 </div>
 
