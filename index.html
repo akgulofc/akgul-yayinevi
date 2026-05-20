@@ -11390,6 +11390,19 @@ async function sendAIW(){
             </div>
           </div>
           <div class="card" style="margin-top:1.25rem">
+            <div class="card-head"><span class="card-title"><i class="ti ti-brand-shopee"></i>Dağıtım Noktası Linkleri</span></div>
+            <div class="card-body">
+              <p style="font-size:.73rem;color:var(--txt2);margin-bottom:.85rem">Footer'daki platform logolarına tıklandığında açılacak sayfa URL'leri. Profil hazır olduğunda buradan güncelleyebilirsiniz.</p>
+              <div class="g2">
+                <div class="field"><label>Kitapyurdu URL</label><input type="url" id="adm-link-ky" placeholder="https://www.kitapyurdu.com/..."></div>
+                <div class="field"><label>D&amp;R URL</label><input type="url" id="adm-link-dr" placeholder="https://www.dr.com.tr/..."></div>
+                <div class="field"><label>idefix URL</label><input type="url" id="adm-link-idefix" placeholder="https://www.idefix.com/..."></div>
+                <div class="field"><label>Prefix URL</label><input type="url" id="adm-link-prefix" placeholder="https://www.prefix.com.tr/..."></div>
+              </div>
+              <button class="tb-btn primary" style="margin-top:.75rem" onclick="admSavePlatformLinks()"><i class="ti ti-check"></i>Linkleri Kaydet</button>
+            </div>
+          </div>
+          <div class="card" style="margin-top:1.25rem">
             <div class="card-head">
               <span class="card-title"><i class="ti ti-user-cog"></i>Editör Hesapları</span>
               <button class="card-btn primary" onclick="adminToggleEditorForm()"><i class="ti ti-plus" style="font-size:13px"></i>Yeni Editör</button>
@@ -12893,7 +12906,21 @@ function adminRenderSettings(){
   const set=(id,val)=>{const e=ag(id);if(e)e.checked=!!val;};
   set('adm-tog-orderNotif',s.orderNotif); set('adm-tog-memberNotif',s.memberNotif); set('adm-tog-reviewNotif',s.reviewNotif);
   set('adm-tog-hideOutOfStock',s.hideOutOfStock); set('adm-tog-aiActive',s.aiActive);
+  const pl=admLoad('akgulSettings',{}).platformLinks||{};
+  const sf=(id,val)=>{const e=ag(id);if(e&&val)e.value=val;};
+  sf('adm-link-ky',pl.ky); sf('adm-link-dr',pl.dr); sf('adm-link-idefix',pl.idefix); sf('adm-link-prefix',pl.prefix);
 }
+window.admSavePlatformLinks = function(){
+  const g=id=>(ag(id)?.value||'').trim();
+  const pl={ky:g('adm-link-ky'),dr:g('adm-link-dr'),idefix:g('adm-link-idefix'),prefix:g('adm-link-prefix')};
+  const pub=admLoad('akgulSettings',{}); pub.platformLinks=pl; admSave('akgulSettings',pub);
+  if(typeof applyPlatformLinks==='function') applyPlatformLinks();
+  const creds=admGetCreds();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':creds.pass},
+    body:JSON.stringify({action:'admin_save',key:'settings',value:pub})}).then(r=>{
+    adminToast(r.ok?'✦ Platform linkleri kaydedildi!':'✦ Linkler yerel kaydedildi');
+  }).catch(()=>adminToast('✦ Linkler kaydedildi!'));
+};
 window.adminChangePass = function(){
   const old=agv('adm-oldp'),np=agv('adm-newp'),np2=agv('adm-newp2');
   const creds=admGetCreds();
