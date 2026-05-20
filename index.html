@@ -5351,6 +5351,19 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
               <button class="admin-submit" onclick="adminSaveCoupons()">Kuponları Kaydet</button>
             </div>
           </div>
+          <div class="admin-card" style="margin-top:1.5rem">
+            <div class="admin-card-head"><div class="admin-card-title">Dağıtım Noktası Linkleri</div></div>
+            <div class="admin-card-body">
+              <p style="font-size:.78rem;color:var(--txt2);margin-bottom:1rem">Footer'daki platform logolarına tıklandığında açılacak sayfalar. Henüz profil oluşturulmamış platformlarda mevcut arama linklerini kullanabilirsiniz.</p>
+              <div class="admin-form-grid">
+                <div class="admin-field"><label>Kitapyurdu URL</label><input type="url" id="set-link-ky" placeholder="https://www.kitapyurdu.com/..."></div>
+                <div class="admin-field"><label>D&amp;R URL</label><input type="url" id="set-link-dr" placeholder="https://www.dr.com.tr/..."></div>
+                <div class="admin-field"><label>idefix URL</label><input type="url" id="set-link-idefix" placeholder="https://www.idefix.com/..."></div>
+                <div class="admin-field"><label>Prefix URL</label><input type="url" id="set-link-prefix" placeholder="https://www.prefix.com.tr/..."></div>
+              </div>
+              <button class="admin-submit" onclick="adminSavePlatformLinks()">Linkleri Kaydet</button>
+            </div>
+          </div>
           <div class="admin-card" style="margin-top:1.5rem"><div class="admin-card-head"><div class="admin-card-title">İstatistik Özeti</div></div><div class="admin-card-body"><div class="admin-kpi-row" id="settingsStats"></div></div></div>
         </div>
       </main>
@@ -5460,22 +5473,22 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
       <div class="ft-dist-platforms">
 
         <!-- Kitapyurdu -->
-        <a class="ft-dist-logo" href="https://www.kitapyurdu.com/index.php?route=product/search&filter_publisher=akgul-yayinevi" target="_blank" rel="noopener" title="Kitapyurdu'da bul">
+        <a id="ft-dist-ky" class="ft-dist-logo" href="https://www.kitapyurdu.com/index.php?route=product/search&filter_publisher=akgul-yayinevi" target="_blank" rel="noopener" title="Kitapyurdu'da bul">
           <img src="logo-ky-t.png" alt="kitapyurdu">
         </a>
 
         <!-- D&R -->
-        <a class="ft-dist-logo" href="https://www.dr.com.tr/Ara/q-akgul+yayinevi" target="_blank" rel="noopener" title="D&R'da bul">
+        <a id="ft-dist-dr" class="ft-dist-logo" href="https://www.dr.com.tr/Ara/q-akgul+yayinevi" target="_blank" rel="noopener" title="D&R'da bul">
           <img src="logo-dr-t.png" alt="D&R">
         </a>
 
         <!-- idefix -->
-        <a class="ft-dist-logo" href="https://www.idefix.com/arama?q=akgul+yayinevi" target="_blank" rel="noopener" title="idefix'te bul">
+        <a id="ft-dist-idefix" class="ft-dist-logo" href="https://www.idefix.com/arama?q=akgul+yayinevi" target="_blank" rel="noopener" title="idefix'te bul">
           <img src="https://images.idefix.com/mpstatics/banner/test-67bdca5fb68de.svg" alt="idefix" referrerpolicy="no-referrer">
         </a>
 
         <!-- Prefix -->
-        <a class="ft-dist-logo" href="https://www.prefix.com.tr" target="_blank" rel="noopener" title="Prefix'te bul">
+        <a id="ft-dist-prefix" class="ft-dist-logo" href="https://www.prefix.com.tr" target="_blank" rel="noopener" title="Prefix'te bul">
           <img src="logo-prefix-t.png" alt="prefix">
         </a>
 
@@ -5892,6 +5905,7 @@ async function fetchServerData(){
       if(data.settings.ibanBank){const el=sid('ibanBank');if(el)el.textContent=data.settings.ibanBank;}
       if(data.settings.ibanName){const el=sid('ibanName');if(el)el.textContent=data.settings.ibanName;}
       if(data.settings.ibanNo){const el=sid('ibanNo');if(el)el.firstChild.textContent=data.settings.ibanNo;}
+      if(data.settings.platformLinks)applyPlatformLinks();
     }
     if(data.editorPick&&data.editorPick.length){
       localStorage.setItem('akgulEditorPick',JSON.stringify(data.editorPick));
@@ -5970,6 +5984,7 @@ async function fetchServerData(){
   }catch(e){}
 }
 fetchServerData();
+applyPlatformLinks();
 
 function saveCart(){localStorage.setItem('akgulCart',JSON.stringify(cart))}
 function saveUsers(){localStorage.setItem('akgulUsers',JSON.stringify(users))}
@@ -9647,6 +9662,24 @@ function loadSettingsForm(){
   const ce=sid('set-coupons');
   if(ce&&Array.isArray(s.coupons))ce.value=s.coupons.map(c=>c.code+':'+c.discount).join('\n');
   const abc=sid('set-allbadges-coupon');if(abc)abc.value=s.allBadgesCoupon||'TAMROZET50';
+  const pl=s.platformLinks||{};
+  f('set-link-ky',pl.ky);f('set-link-dr',pl.dr);f('set-link-idefix',pl.idefix);f('set-link-prefix',pl.prefix);
+}
+function applyPlatformLinks(){
+  const pl=siteSettings.platformLinks||{};
+  const set=(id,url)=>{const el=document.getElementById(id);if(el&&url){el.href=url;}};
+  set('ft-dist-ky',pl.ky);set('ft-dist-dr',pl.dr);set('ft-dist-idefix',pl.idefix);set('ft-dist-prefix',pl.prefix);
+}
+function adminSavePlatformLinks(){
+  const g=id=>(sid(id)?.value||'').trim();
+  const pl={ky:g('set-link-ky'),dr:g('set-link-dr'),idefix:g('set-link-idefix'),prefix:g('set-link-prefix')};
+  siteSettings.platformLinks=pl;
+  localStorage.setItem('akgulSettings',JSON.stringify(siteSettings));
+  applyPlatformLinks();
+  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json','x-admin-secret':adminCredentials.pass},
+    body:JSON.stringify({action:'admin_save',key:'settings',value:siteSettings})}).then(r=>{
+    toast(r.ok?'✦ Platform linkleri kaydedildi!':'✦ Linkler yerel kaydedildi');
+  }).catch(()=>toast('✦ Linkler kaydedildi!'));
 }
 function adminSaveCoupons(){
   const raw=(sid('set-coupons')?.value||'').trim();
