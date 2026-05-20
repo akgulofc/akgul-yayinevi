@@ -2109,6 +2109,14 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .badge-coupon-reveal{display:flex;align-items:center;justify-content:center;gap:.6rem;background:var(--ink);border-radius:8px;padding:.65rem 1.1rem;cursor:pointer;user-select:none}
 .badge-coupon-code{font-family:monospace;font-size:1.05rem;font-weight:700;color:var(--gold);letter-spacing:.12em}
 .badge-coupon-hint{font-size:.65rem;color:rgba(200,169,110,.6);margin-top:.35rem}
+.badge-mystery{border:2px dashed rgba(200,169,110,.25);border-radius:14px;padding:1.5rem;text-align:center;margin-top:1.5rem;background:rgba(200,169,110,.03)}
+.badge-mystery-lock{font-size:2rem;margin-bottom:.5rem;opacity:.6}
+.badge-mystery-title{font-family:var(--font-serif);font-size:1rem;color:var(--muted);margin-bottom:.4rem}
+.badge-mystery-sub{font-size:.75rem;color:rgba(200,169,110,.45);line-height:1.55;margin-bottom:1rem}
+.badge-mystery-progress{display:flex;align-items:center;gap:.6rem;justify-content:center}
+.badge-mystery-bar{flex:1;max-width:160px;height:4px;background:rgba(200,169,110,.12);border-radius:2px;overflow:hidden}
+.badge-mystery-bar-fill{height:100%;background:rgba(200,169,110,.4);border-radius:2px;transition:width .8s ease}
+.badge-mystery-pct{font-size:.7rem;color:rgba(200,169,110,.45);font-variant-numeric:tabular-nums}
 .bwish{position:absolute;top:7px;right:7px;z-index:3;background:rgba(255,255,255,.88);border:none;border-radius:50%;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .2s;line-height:1;padding:0}
 .bwish:hover{transform:scale(1.18)}
 .bwish.wishlisted{background:rgba(231,76,60,.13);color:#E74C3C}
@@ -8715,12 +8723,30 @@ function renderProfile(){
   if(!isYazar&&statBarEl){
     const myRevs=books.flatMap(b=>b.reviews.filter(r=>r.u===currentUser.name));
     const wlCount=getWishlist().length;
-    const joinedMs=currentUser.joinedTs||(Date.now()-Math.floor(Math.random()*6*30*86400000));
-    const months=Math.max(1,Math.round((Date.now()-joinedMs)/(30*86400000)));
+    // Üyelik süresini joined string'inden hesapla (örn. "Mayıs 2026" veya "2026-05-20")
+    const _parseJoined=s=>{
+      if(!s)return null;
+      if(/^\d{4}-\d{2}/.test(s))return new Date(s);
+      const TR_MONTHS={ocak:0,şubat:1,mart:2,nisan:3,mayıs:4,haziran:5,temmuz:6,ağustos:7,eylül:8,ekim:9,kasım:10,aralık:11};
+      const parts=s.toLowerCase().split(/\s+/);
+      if(parts.length>=2){const m=TR_MONTHS[parts[0]],y=parseInt(parts[1]);if(m!==undefined&&y)return new Date(y,m,1);}
+      return null;
+    };
+    const joinDate=_parseJoined(currentUser.joined);
+    const _memberLabel=(()=>{
+      if(!joinDate||isNaN(joinDate))return{val:'—',lbl:'Üyelik'};
+      const now=new Date();
+      let totalMonths=(now.getFullYear()-joinDate.getFullYear())*12+(now.getMonth()-joinDate.getMonth());
+      if(totalMonths<1)totalMonths=1;
+      const yrs=Math.floor(totalMonths/12),mos=totalMonths%12;
+      if(yrs===0)return{val:mos,lbl:mos===1?'Ay Üye':'Ay Üye'};
+      if(mos===0)return{val:yrs,lbl:yrs===1?'Yıl Üye':'Yıl Üye'};
+      return{val:`${yrs}y ${mos}a`,lbl:'Üyelik'};
+    })();
     statBarEl.innerHTML=`<div class="prof-stat-bar">
       <div class="psb-item"><span class="psb-val">${myRevs.length}</span><span class="psb-lbl">Yorum</span></div>
       <div class="psb-divider"></div>
-      <div class="psb-item"><span class="psb-val">${months}</span><span class="psb-lbl">Ay Üye</span></div>
+      <div class="psb-item"><span class="psb-val">${_memberLabel.val}</span><span class="psb-lbl">${_memberLabel.lbl}</span></div>
       <div class="psb-divider"></div>
       <div class="psb-item"><span class="psb-val">${wlCount}</span><span class="psb-lbl">İstek Listesi</span></div>
     </div>`;
@@ -8915,7 +8941,15 @@ function renderOkurContents(){
         <span class="badge-coupon-code">${couponCode}</span>
       </div>
       <div class="badge-coupon-hint">Kopyalamak için tıkla · Sepette "İndirim Kodu" alanına gir</div>
-    </div>`:''}
+    </div>`:`<div class="badge-mystery">
+      <div class="badge-mystery-lock">🔒</div>
+      <div class="badge-mystery-title">Sürpriz Ödül Seni Bekliyor</div>
+      <div class="badge-mystery-sub">Tüm ${allBadges.length} rozeti tamamla, sadık okurlar için sakladığımız özel ödülü kazan.</div>
+      <div class="badge-mystery-progress">
+        <div class="badge-mystery-bar"><div class="badge-mystery-bar-fill" style="width:${overallPct}%"></div></div>
+        <div class="badge-mystery-pct">${earnedCount} / ${allBadges.length}</div>
+      </div>
+    </div>`}
   `;
 
   /* ── LIBRARY (from reviews) ── */
