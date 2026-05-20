@@ -4987,79 +4987,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
   </div>
 </div>
 
-<!-- ═══════════ TOPLU SİPARİŞ ═══════════ -->
-<div class="page" id="page-toplu-siparis">
-  <div class="legal-hero">
-    <h1>Toplu Sipariş</h1>
-    <p style="color:rgba(230,220,200,.7);font-size:.9rem;margin-top:.5rem">Okullar, kütüphaneler, kurumlar ve hediyeler için özel fiyat</p>
-  </div>
-  <div class="legal-body">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:2.5rem">
-      <div style="background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.15);border-radius:10px;padding:1.25rem;text-align:center">
-        <div style="font-size:1.75rem;margin-bottom:.4rem">📚</div>
-        <strong style="font-size:.85rem;color:var(--ink)">10+ Adet</strong>
-        <div style="font-size:.75rem;color:var(--muted);margin-top:.25rem">%10 indirim</div>
-      </div>
-      <div style="background:rgba(200,169,110,.05);border:1px solid rgba(200,169,110,.15);border-radius:10px;padding:1.25rem;text-align:center">
-        <div style="font-size:1.75rem;margin-bottom:.4rem">🏛️</div>
-        <strong style="font-size:.85rem;color:var(--ink)">50+ Adet</strong>
-        <div style="font-size:.75rem;color:var(--muted);margin-top:.25rem">%15 indirim + ücretsiz kargo</div>
-      </div>
-    </div>
-    <form class="contact-form" id="bulkOrderForm" onsubmit="submitBulkOrder(event)">
-      <div class="cf-row">
-        <input class="cf-input" id="boName" type="text" placeholder="Yetkili Ad Soyad *" maxlength="100" required>
-        <input class="cf-input" id="boOrg" type="text" placeholder="Kurum / Okul Adı *" maxlength="150" required>
-      </div>
-      <div class="cf-row">
-        <input class="cf-input" id="boEmail" type="email" placeholder="E-posta *" maxlength="150" required>
-        <input class="cf-input" id="boPhone" type="tel" placeholder="Telefon *" maxlength="20" required>
-      </div>
-      <input class="cf-input" id="boBooks" type="text" placeholder="İstediğiniz kitap(lar) ve adet" maxlength="300" required style="width:100%;box-sizing:border-box">
-      <textarea class="cf-input cf-textarea" id="boNote" placeholder="Ek notlar (teslimat adresi, fatura bilgisi vb.)" maxlength="1000" style="min-height:90px"></textarea>
-      <button type="submit" class="cf-btn" id="boSubmitBtn">Teklif İste</button>
-    </form>
-    <p style="font-size:.75rem;color:var(--muted);margin-top:1.5rem;text-align:center">Formunuzu aldıktan sonra en geç <strong>1 iş günü</strong> içinde size dönüş yapıyoruz.</p>
-  </div>
-</div>
-
-<!-- ═══════════ BASIN / MEDYA ═══════════ -->
-<div class="page" id="page-basin-medya">
-  <div class="legal-hero">
-    <h1>Basın &amp; Medya</h1>
-    <p style="color:rgba(230,220,200,.7);font-size:.9rem;margin-top:.5rem">Medya, röportaj ve iş birliği talepleri için</p>
-  </div>
-  <div class="legal-body">
-    <h2>Biz Kimiz?</h2>
-    <p>Akgül Yayınevi, 2020 yılında Adana'da kurulan bağımsız bir yayınevidir. Roman, şiir, deneme, çocuk kitabı ve akademik eserler yayınlayan yayınevimiz; yerli yazarlara ses vermeyi ve Türk okuyucusuna kaliteli, özgün eserler sunmayı hedeflemektedir.</p>
-    <h2>Basın Kiti</h2>
-    <p>Logo dosyaları, yayınevi tanıtım metni, yönetici biyografileri ve yüksek çözünürlüklü görseller için:</p>
-    <p><a onclick="window.location.href='mailto:akgulyayinevi@gmail.com?subject=Basın Kiti Talebi'" style="color:var(--gold);cursor:pointer;font-weight:600">akgulyayinevi@gmail.com</a> adresine "Basın Kiti Talebi" konusuyla e-posta gönderebilirsiniz.</p>
-    <h2>Medya İletişim</h2>
-    <p>Röportaj, etkinlik daveti ve medya iş birlikleri için:</p>
-    <ul>
-      <li><strong>E-posta:</strong> akgulyayinevi@gmail.com</li>
-      <li><strong>WhatsApp:</strong> <a href="https://wa.me/905366483096" target="_blank" rel="noopener" style="color:var(--gold)">+90 536 648 30 96</a></li>
-    </ul>
-    <h2>Yayın Takvimi</h2>
-    <p>Yaklaşan kitap lansmanları ve etkinlikler hakkında bilgi almak için bültenimize abone olun veya <a onclick="go('blog')" style="color:var(--gold);cursor:pointer">Akgül Gazetesi</a>'ni takip edin.</p>
-    <h2>Röportaj Talebi</h2>
-    <form class="contact-form" style="margin-top:1rem" id="pressForm" onsubmit="submitPressForm(event)">
-      <div class="cf-row">
-        <input class="cf-input" id="prName" type="text" placeholder="Adınız Soyadınız *" maxlength="100" required>
-        <input class="cf-input" id="prOrg" type="text" placeholder="Yayın Organı / Kurum *" maxlength="150" required>
-      </div>
-      <div class="cf-row">
-        <input class="cf-input" id="prEmail" type="email" placeholder="E-posta *" maxlength="150" required>
-        <input class="cf-input" id="prPhone" type="tel" placeholder="Telefon (opsiyonel)" maxlength="20">
-      </div>
-      <textarea class="cf-input cf-textarea" id="prMessage" placeholder="Talep veya röportaj konusu hakkında kısa bilgi *" maxlength="1000" required></textarea>
-      <button type="submit" class="cf-btn" id="prSubmitBtn">Talebi Gönder</button>
-    </form>
-    <div class="legal-updated">Son güncelleme: Mayıs 2025</div>
-  </div>
-</div>
-
 <!-- ═══════════ AUTH ═══════════ -->
 <div class="page" id="page-auth">
   <div class="auth-split">
@@ -5443,8 +5370,6 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
         <li><a onclick="go('ai-oneri')">AI Kitap Öneri</a></li>
         <li><a onclick="go('eser-basvuru')">Eser Başvuru</a></li>
         <li><a onclick="go('about')">Hakkımızda</a></li>
-        <li><a onclick="go('toplu-siparis')">Toplu Sipariş</a></li>
-        <li><a onclick="go('basin-medya')">Basın &amp; Medya</a></li>
       </ul>
     </div>
 
@@ -6007,10 +5932,8 @@ const _SEO_TITLES={
   'surpriz-kutu':'Sürpriz Kutu | Akgül Yayınevi',
   'profile':'Hesabım | Akgül Yayınevi',
   'wishlist':'İstek Listem | Akgül Yayınevi',
-  'toplu-siparis':'Toplu Sipariş | Akgül Yayınevi',
-  'basin-medya':'Basın & Medya | Akgül Yayınevi',
 };
-const _PAGE_LABELS={'about':'Hakkımızda','authors':'Yazarlarımız','blog':'Akgül Gazetesi','surpriz-kutu':'Sürpriz Kutu','hediye-sepeti':'Hediye Sepeti','askida-kitap':'Askıda Kitap','cekilis':'Çekiliş Robotu','ai-oneri':'AI Kitap Öneri','eser-basvuru':'Eser Başvuru','profile':'Profilim','auth':'Giriş Yap','gizlilik':'Gizlilik Politikası','cerez':'Çerez Politikası','kullanim':'Kullanım Koşulları','toplu-siparis':'Toplu Sipariş','basin-medya':'Basın & Medya','wishlist':'İstek Listesi'};
+const _PAGE_LABELS={'about':'Hakkımızda','authors':'Yazarlarımız','blog':'Akgül Gazetesi','surpriz-kutu':'Sürpriz Kutu','hediye-sepeti':'Hediye Sepeti','askida-kitap':'Askıda Kitap','cekilis':'Çekiliş Robotu','ai-oneri':'AI Kitap Öneri','eser-basvuru':'Eser Başvuru','profile':'Profilim','auth':'Giriş Yap','gizlilik':'Gizlilik Politikası','cerez':'Çerez Politikası','kullanim':'Kullanım Koşulları','wishlist':'İstek Listesi'};
 function _updateBreadcrumb(page){
   const bc=sid('siteBreadcrumb');if(!bc)return;
   if(page==='home'||page==='admin'){bc.style.display='none';return;}
@@ -13166,36 +13089,6 @@ function submitContactForm(e){
     }
   }).catch(()=>toast('Bağlantı hatası, lütfen tekrar deneyin'))
   .finally(()=>{btn.disabled=false;btn.textContent='Mesaj Gönder';});
-}
-
-function submitBulkOrder(e){
-  e.preventDefault();
-  const name=sid('boName').value.trim(),org=sid('boOrg').value.trim(),email=sid('boEmail').value.trim(),phone=sid('boPhone').value.trim(),books2=sid('boBooks').value.trim(),note=sid('boNote').value.trim();
-  const btn=sid('boSubmitBtn');btn.disabled=true;btn.textContent='Gönderiliyor...';
-  const subject=`Toplu sipariş talebi: ${org}`;
-  const message=`Kurum: ${org}\nTelefon: ${phone}\nKitaplar: ${books2}\n\n${note}`;
-  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({action:'add_contact_message',name,email,subject,message})})
-  .then(r=>r.json()).then(d=>{
-    if(d.success){toast('Talebiniz alındı! En kısa sürede size dönüş yapacağız.');sid('bulkOrderForm').reset();}
-    else toast(d.error||'Bir hata oluştu');
-  }).catch(()=>toast('Bağlantı hatası'))
-  .finally(()=>{btn.disabled=false;btn.textContent='Teklif İste';});
-}
-
-function submitPressForm(e){
-  e.preventDefault();
-  const name=sid('prName').value.trim(),org=sid('prOrg').value.trim(),email=sid('prEmail').value.trim(),phone=sid('prPhone').value.trim(),message=sid('prMessage').value.trim();
-  const btn=sid('prSubmitBtn');btn.disabled=true;btn.textContent='Gönderiliyor...';
-  const subject=`Basın / Röportaj talebi: ${org}`;
-  const fullMsg=`Yayın organı: ${org}\nTelefon: ${phone||'—'}\n\n${message}`;
-  fetch('/api/sync.php',{method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({action:'add_contact_message',name,email,subject,message:fullMsg})})
-  .then(r=>r.json()).then(d=>{
-    if(d.success){toast('Talebiniz alındı!');sid('pressForm').reset();}
-    else toast(d.error||'Bir hata oluştu');
-  }).catch(()=>toast('Bağlantı hatası'))
-  .finally(()=>{btn.disabled=false;btn.textContent='Talebi Gönder';});
 }
 
 function submitNewsletter(e){
