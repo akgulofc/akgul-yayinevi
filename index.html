@@ -8951,13 +8951,13 @@ function renderOkurContents(){
 
   /* ── ORDERS TAB ── */
   const allStoredOrders=JSON.parse(localStorage.getItem('akgul_orders_v2')||'[]');
-  const myOrders=allStoredOrders.filter(o=>
+  const myOrdersList=allStoredOrders.filter(o=>
     (o.customer&&o.customer===currentUser.name)||
     (o.email&&currentUser.email&&o.email===currentUser.email)
   );
   const ordBadge=s=>s==='Tamamlandı'?'done':s==='Kargoda'?'ship':s==='Hazırlanıyor'?'proc':'canc';
-  const ordersHtml=myOrders.length
-    ?myOrders.map(o=>{
+  const ordersHtml=myOrdersList.length
+    ?myOrdersList.map(o=>{
       const _kUrl=(f,n)=>{const fl=(f||'').toLowerCase();const ne=encodeURIComponent(n);if(fl.includes('mng'))return`https://www.mngkargo.com.tr/irsaliye-sorgula?barcode=${ne}`;if(fl.includes('yurt'))return`https://www.yurticikargo.com/tr/online-islemler/gonderi-sorgula?code=${ne}`;if(fl.includes('aras'))return`https://www.araskargo.com.tr/en/track?documentNo=${ne}`;if(fl.includes('ptt'))return`https://www.ptt.gov.tr/tr/gonderi-takip?id=${ne}`;if(fl.includes('s\xFCrat')||fl.includes('surat'))return`https://www.suratkargo.com.tr/KargoneredeContent.aspx?no=${ne}`;return'';};
       const kargoHtml=o.kargo?.takipNo?(()=>{const url=_kUrl(o.kargo.firma,o.kargo.takipNo);return`<div style="margin-top:.5rem;display:flex;align-items:center;gap:.5rem;font-size:.76rem;color:var(--muted);flex-wrap:wrap">
         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
