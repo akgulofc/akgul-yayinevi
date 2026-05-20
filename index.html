@@ -1654,6 +1654,9 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 .ft-bottom-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap}
 .ft-copy{font-size:.67rem;color:rgba(200,192,178,.48);letter-spacing:.04em}
 .ft-copy strong{color:rgba(200,169,110,.6);font-weight:500}
+.ft-payment-bar{border-top:1px solid rgba(200,169,110,.06);padding:.9rem 2rem;display:flex;align-items:center;justify-content:center;gap:.75rem;flex-wrap:wrap}
+.ft-payment-logo{display:inline-flex;align-items:center;opacity:.55;transition:opacity .18s}
+.ft-payment-logo:hover{opacity:.85}
 .ft-credit{text-align:center;font-size:.58rem;color:rgba(200,192,178,.28);letter-spacing:.06em;padding:.45rem 2rem .75rem;border-top:1px solid rgba(200,169,110,.04)}
 .ft-credit strong{color:rgba(200,169,110,.4);font-weight:500}
 .ft-badges{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
@@ -4768,11 +4771,23 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 <!-- ═══════════ İADE POLİTİKASI ═══════════ -->
 <div class="page" id="page-iade">
   <div class="legal-hero">
-    <h1>İade ve Değişim Politikası</h1>
-    <p>Memnuniyetiniz bizim için önceliklidir</p>
+    <h1>Teslimat ve İade Politikası</h1>
+    <p>Siparişleriniz güvenle elinize ulaşsın</p>
   </div>
   <div class="legal-body">
     <a class="legal-back" onclick="history.back()">← Geri Dön</a>
+    <h2>Teslimat Süresi</h2>
+    <p>Siparişiniz ödeme onayından itibaren <strong>1–2 iş günü</strong> içinde hazırlanarak kargoya teslim edilir. Kargo sürecinde teslimat <strong>3–7 iş günü</strong> içinde gerçekleşmektedir. Özel günler ve tatil dönemlerinde bu süre uzayabilir.</p>
+    <h2>Kargo Ücreti</h2>
+    <ul>
+      <li><strong>500 TL ve üzeri</strong> siparişlerde kargo <strong>ücretsizdir</strong>.</li>
+      <li>500 TL altındaki siparişlerde <strong>35 TL</strong> kargo ücreti uygulanır.</li>
+      <li>Hasarlı veya yanlış ürün gönderimlerinde kargo ücreti tamamen tarafımızca karşılanır.</li>
+    </ul>
+    <h2>Kargo Firması</h2>
+    <p>Siparişler anlaşmalı kargo firmaları aracılığıyla gönderilmektedir. Kargoya verildiğinde tarayıcı adresinize takip bilgisi iletilir.</p>
+    <h2>Teslimat Adresi</h2>
+    <p>Sipariş esnasında belirtilen adrese teslimat yapılır. Adres değişikliği için kargoya verilmeden önce <strong>akgulyayinevi@gmail.com</strong> adresine yazmanız yeterlidir.</p>
     <h2>14 Günlük Cayma Hakkı</h2>
     <p>Türk tüketici mevzuatı kapsamında, ürünleri teslim aldığınız tarihten itibaren <strong>14 gün içinde</strong> hiçbir gerekçe göstermeksizin iade hakkınız bulunmaktadır.</p>
     <h2>İade Koşulları</h2>
@@ -5112,8 +5127,34 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
     <a onclick="go('kvkk')">KVKK Aydınlatma Metni</a>
     <a onclick="go('gizlilik')">Gizlilik Politikası</a>
     <a onclick="go('mesafeli-satis')">Mesafeli Satış Sözleşmesi</a>
-    <a onclick="go('iade')">İade Politikası</a>
+    <a onclick="go('iade')">Teslimat ve İade Politikası</a>
     <a onclick="go('cerez')">Çerez Politikası</a>
+  </div>
+  <!-- Ödeme Yöntemleri -->
+  <div class="ft-payment-bar">
+    <!-- Visa -->
+    <span class="ft-payment-logo" title="Visa">
+      <svg width="52" height="33" viewBox="0 0 52 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px">
+        <rect width="52" height="33" rx="5" fill="#1A1F71"/>
+        <text x="26" y="22" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="900" font-style="italic" fill="white" letter-spacing="1">VISA</text>
+      </svg>
+    </span>
+    <!-- MasterCard -->
+    <span class="ft-payment-logo" title="MasterCard">
+      <svg width="52" height="33" viewBox="0 0 52 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px">
+        <rect width="52" height="33" rx="5" fill="#252525"/>
+        <circle cx="20" cy="16.5" r="9" fill="#EB001B"/>
+        <circle cx="32" cy="16.5" r="9" fill="#F79E1B"/>
+        <path d="M26 9.3a9 9 0 0 1 0 14.4A9 9 0 0 1 26 9.3z" fill="#FF5F00"/>
+      </svg>
+    </span>
+    <!-- iyzico -->
+    <span class="ft-payment-logo" title="iyzico ile öde">
+      <svg width="72" height="33" viewBox="0 0 72 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="border-radius:5px">
+        <rect width="72" height="33" rx="5" fill="#00B9A5"/>
+        <text x="36" y="21" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="white" letter-spacing=".5">iyzico</text>
+      </svg>
+    </span>
   </div>
   <div class="ft-credit">Bu site <strong>Akgül Yayınevi</strong> tarafından tasarlanmıştır.</div>
 </footer>
