@@ -41,7 +41,13 @@ if (($order['shipping'] ?? 0) > 0) {
     ];
 }
 
-$total     = number_format((float)($order['total'] ?? 0), 2, '.', '');
+// iyzico: price = sum of basket items (before discount); paidPrice = what buyer actually pays
+$subtotal  = (float)($order['subtotal'] ?? 0);
+$shipping  = (float)($order['shipping'] ?? 0);
+$discount  = (float)($order['discount'] ?? 0);
+$price     = number_format($subtotal + $shipping, 2, '.', '');
+$paidPrice = number_format(max(0, $subtotal + $shipping - $discount), 2, '.', '');
+$total     = $paidPrice; // used in buyer/address fields below
 $nameParts = explode(' ', trim($order['customer'] ?? 'Musteri'), 2);
 $firstName = $nameParts[0];
 $lastName  = $nameParts[1] ?? '-';
@@ -49,15 +55,15 @@ $ip        = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_A
 $email     = !empty($order['email']) ? $order['email'] : 'musteri@akgulyayinevi.com';
 $rawPhone  = preg_replace('/\D/', '', $order['phone'] ?? '5000000000');
 if (strlen($rawPhone) === 10) $rawPhone = '90' . $rawPhone;
-elseif (str_starts_with($rawPhone, '0')) $rawPhone = '9' . $rawPhone;
+elseif (substr($rawPhone, 0, 1) === '0') $rawPhone = '9' . $rawPhone;
 $phone     = '+' . $rawPhone;
 $ordId     = $order['id'] ?? ('AK' . time());
 
 $requestBody = [
     'locale'              => 'tr',
     'conversationId'      => $ordId,
-    'price'               => $total,
-    'paidPrice'           => $total,
+    'price'               => $price,
+    'paidPrice'           => $paidPrice,
     'currency'            => 'TRY',
     'basketId'            => $ordId,
     'paymentGroup'        => 'PRODUCT',

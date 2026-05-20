@@ -5081,7 +5081,7 @@ footer::before{content:'';position:absolute;inset:0;background:radial-gradient(e
 
         <!-- Prefix -->
         <a id="ft-dist-prefix" class="ft-dist-logo" href="https://www.prefix.com.tr" target="_blank" rel="noopener" title="Prefix'te bul">
-          <img src="logo-prefix-t.png" alt="prefix">
+          <img src="logo-prefix.gif" alt="prefix">
         </a>
 
       </div>
@@ -11445,10 +11445,10 @@ window.adminManageAuthorMembership = function(idx){
       ${!isNew?`<div style="margin-left:auto;font-size:.65rem;color:var(--txt3);text-align:right">Oluşturuldu: ${admEsc(m.createdAt||'—')}<br>Son giriş: ${admEsc(m.lastLogin||'Henüz giriş yapılmadı')}</div>`:''}
     </div>
     <div class="form-grid">
-      <div class="field"><label>E-posta *</label><input id="adm-mem-email" value="${admEsc(m.email||'')}" type="email" placeholder="yazar@ornek.com"></div>
+      <div class="field"><label>E-posta *</label><input id="adm-mem-edit-email" value="${admEsc(m.email||'')}" type="email" placeholder="yazar@ornek.com"></div>
       <div class="field"><label>Şifre *</label><input id="adm-mem-pass" value="${admEsc(m.password||'')}" type="text" placeholder="Şifre belirleyin"></div>
       <div class="field"><label>Durum</label>
-        <select id="adm-mem-status" style="padding:.48rem .65rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.8rem;width:100%;outline:none">
+        <select id="adm-mem-edit-status" style="padding:.48rem .65rem;border:1px solid var(--brd2);border-radius:var(--rad-sm);background:var(--bg3);color:var(--txt1);font-size:.8rem;width:100%;outline:none">
           <option value="active"${(m.status||'active')==='active'?' selected':''}>Aktif</option>
           <option value="suspended"${m.status==='suspended'?' selected':''}>Askıya Alındı</option>
         </select>
@@ -11468,9 +11468,9 @@ window.adminManageAuthorMembership = function(idx){
 
 window.adminSaveAuthorMembership = function(idx){
   const a=adminAuthorsData[idx]; if(!a)return;
-  const email=(ag('adm-mem-email')?.value||'').trim();
+  const email=(ag('adm-mem-edit-email')?.value||'').trim();
   const pass=(ag('adm-mem-pass')?.value||'').trim();
-  const status=ag('adm-mem-status')?.value||'active';
+  const status=ag('adm-mem-edit-status')?.value||'active';
   const note=(ag('adm-mem-note')?.value||'').trim();
   if(!email){adminToast('E-posta zorunlu!','warn');return;}
   if(!pass){adminToast('Şifre zorunlu!','warn');return;}
